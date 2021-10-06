@@ -14,9 +14,9 @@ import {
 } from '@ionic/react';
 import { home, personCircleOutline, searchOutline } from 'ionicons/icons';
 
-function SideMenu({ contentId }: { contentId: string }) {
+function SideMenu() {
   return (
-    <IonMenu menuId={`${contentId}-side-menu`} contentId={contentId}>
+    <IonMenu menuId="side-menu" contentId="main">
       <IonHeader>
         <IonToolbar>
           <IonTitle>Menu</IonTitle>
@@ -29,7 +29,7 @@ function SideMenu({ contentId }: { contentId: string }) {
               <IonIcon icon={home} slot="start" />
               <IonLabel>Home</IonLabel>
             </IonItem>
-            <IonItem routerLink="/">
+            <IonItem routerLink="/auctions">
               <IonIcon icon={searchOutline} slot="start" />
               <IonLabel>Explore Auctions</IonLabel>
             </IonItem>

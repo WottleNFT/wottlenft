@@ -62,7 +62,6 @@ const Index = () => {
           description="Wottlenft is your next NFT auction site."
         />
       }
-      contentId="home"
     >
       <IonContent fullscreen={true} scrollEvents={true}>
         {auctions[0] && (
@@ -113,9 +112,11 @@ const Index = () => {
             >
               {auctions.map((auction) => {
                 return (
-                  <IonSlide key={auction.id} className=" w-56 h-auto p-3">
+                  <IonSlide key={auction.id} className=" w-56 p-3">
                     <Link href={`/auctions/${auction.id}`} passHref>
-                      <AuctionCard auction={auction} />
+                      <a>
+                        <AuctionCard auction={auction} />
+                      </a>
                     </Link>
                   </IonSlide>
                 );

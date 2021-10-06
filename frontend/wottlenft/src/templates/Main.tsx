@@ -5,32 +5,28 @@ import {
   IonButtons,
   IonHeader,
   IonIcon,
-  IonMenuButton,
   IonPage,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
 import { personCircleOutline } from 'ionicons/icons';
 
-import SideMenu from '../Components/SideMenu';
+import SideMenu, { MenuButton } from '../Components/SideMenu';
 
 type IMainProps = {
   meta: ReactNode;
-  contentId: string;
   children: ReactNode;
 };
 
 const Main = (props: IMainProps) => (
   <div>
     {props.meta}
-    <SideMenu contentId={props.contentId} />
-    <IonPage>
+    <SideMenu />
+    <IonPage id="main">
       <IonHeader className="ion-no-border h-1/6">
         <IonToolbar color="primary" className="h-1/2">
           <div className="flex flex-row">
-            <IonMenuButton
-              menu={`${props.contentId}-side-menu`}
-            ></IonMenuButton>
+            <MenuButton />
             <IonTitle>Wottlenft</IonTitle>
           </div>
 

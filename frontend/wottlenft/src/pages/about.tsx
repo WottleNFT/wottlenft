@@ -4,10 +4,7 @@ import { Meta } from '../layout/Meta';
 import { Main } from '../templates/Main';
 
 const About = () => (
-  <Main
-    meta={<Meta title="About" description="Wottlenft About" />}
-    contentId="about"
-  >
+  <Main meta={<Meta title="About" description="Wottlenft About" />}>
     <IonLabel>Wottlenft</IonLabel>
     <p>
       Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione fuga
