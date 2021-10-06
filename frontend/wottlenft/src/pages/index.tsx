@@ -14,39 +14,7 @@ import AuctionCard from '../Components/AuctionCard';
 import { Meta } from '../layout/Meta';
 import { Main } from '../templates/Main';
 import { Auction } from '../types/Auction';
-
-const testAuctions: Auction[] = [
-  {
-    id: 1,
-    title: 'Auction 1',
-    imgUrl: 'https://picsum.photos/200',
-  },
-  {
-    id: 2,
-    title: 'Auction 2',
-    imgUrl: 'https://picsum.photos/200',
-  },
-  {
-    id: 3,
-    title: 'Auction 3',
-    imgUrl: 'https://picsum.photos/200',
-  },
-  {
-    id: 4,
-    title: 'Auction 4',
-    imgUrl: 'https://picsum.photos/200',
-  },
-  {
-    id: 5,
-    title: 'Auction 5',
-    imgUrl: 'https://picsum.photos/200',
-  },
-  {
-    id: 6,
-    title: 'Auction 6',
-    imgUrl: 'https://picsum.photos/200',
-  },
-];
+import { Category } from '../types/Category';
 
 const Index = () => {
   const [auctions, setAuctions] = useState<Auction[]>([]);
@@ -136,3 +104,62 @@ const Index = () => {
 };
 
 export default Index;
+
+const testCategories: Category[] = [
+  {
+    id: 1,
+    name: "Art",
+  },{
+    id: 1,
+    name: "Trading Cards",
+  },{
+    id: 1,
+    name: "Collectibles",
+  },{
+    id: 1,
+    name: "Sports",
+  },{
+    id: 1,
+    name: "Utility",
+  },
+]
+
+
+const testAuctions: Auction[] = [
+  {
+    id: 1,
+    title: 'Auction 1',
+    category: testCategories[1]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+  {
+    id: 2,
+    title: 'Auction 2',
+    category: testCategories[2]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+  {
+    id: 3,
+    title: 'Auction 3',
+    category: testCategories[0]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+  {
+    id: 4,
+    title: 'Auction 4',
+    category: testCategories[1]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+  {
+    id: 5,
+    title: 'Auction 5',
+    category: testCategories[3]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+  {
+    id: 6,
+    title: 'Auction 6',
+    category: testCategories[1]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+];
