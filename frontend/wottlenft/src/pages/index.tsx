@@ -110,16 +110,16 @@ const testCategories: Category[] = [
     id: 1,
     name: "Art",
   },{
-    id: 1,
+    id: 2,
     name: "Trading Cards",
   },{
-    id: 1,
+    id: 3,
     name: "Collectibles",
   },{
-    id: 1,
+    id: 4,
     name: "Sports",
   },{
-    id: 1,
+    id: 5,
     name: "Utility",
   },
 ]

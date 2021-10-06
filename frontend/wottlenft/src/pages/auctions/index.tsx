@@ -97,27 +97,29 @@ function ExploreAuctions() {
           displayedAuctions.map((auction, idx) => {
             return (
               <Link href={`/auctions/${auction.id}`} key={idx}>
-                <IonCard className="rounded-2xl h-32 w-auto mt-3 flex">
-                  <div className="w-1/3">
-                    <img
-                      className="h-full w-full p-2 object-cover rounded-2xl"
-                      alt="Auction"
-                      src={auction.imgUrl}
-                    />
-                  </div>
-
-                  <div className="w-2/3 h-full p-3">
-                    <div className="h-1/2 flex items-center">
-                      <p className="font-bold text-lg line-clamp-2">
-                        {auction.title}
-                      </p>
-                    </div>
-                    <div className="h-1/2 p-0 flex items-center">
-                      <CategoryTag
-                        color="primary"
-                        label={auction.category.name}
-                        className="m-0"
+                <IonCard className="rounded-2xl mt-3">
+                  <div className="flex felx-row">
+                    <div className="w-1/3 h-32">
+                      <img
+                        className="w-full p-2 object-cover rounded-2xl"
+                        alt="Auction"
+                        src={auction.imgUrl}
                       />
+                    </div>
+
+                    <div className="w-2/3 h-full p-3">
+                      <div className="h-1/2 flex items-center">
+                        <p className="font-bold text-lg line-clamp-2">
+                          {auction.title}
+                        </p>
+                      </div>
+                      <div className="h-1/2 p-0 flex items-center">
+                        <CategoryTag
+                          color="primary"
+                          label={auction.category.name}
+                          className="m-0"
+                        />
+                      </div>
                     </div>
                   </div>
                 </IonCard>
@@ -153,16 +155,16 @@ const testCategories: Category[] = [
     id: 1,
     name: "Art",
   },{
-    id: 1,
+    id: 2,
     name: "Trading Cards",
   },{
-    id: 1,
+    id: 3,
     name: "Collectibles",
   },{
-    id: 1,
+    id: 4,
     name: "Sports",
   },{
-    id: 1,
+    id: 5,
     name: "Utility",
   },
 ]
