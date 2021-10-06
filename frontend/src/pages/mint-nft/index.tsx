@@ -8,6 +8,12 @@ type Inputs = {
     image: any,
 }
 
+type Metadata = {
+    name: string,
+    description: string,
+    image: string,
+}
+
 const MintNftPage = () => {
     const { register, handleSubmit } = useForm<Inputs>();
     const [ipfs, setIpfs] = useState<any|null>(null);
@@ -37,8 +43,18 @@ const MintNftPage = () => {
                     reader.onload = async () => {
                         const buffer = Buffer.from(reader.result)
                         const { cid } = await ipfs.add(buffer);
+                        const imageAddr = "https://ipfs.io/ipfs/" + cid.toString();
+
                         console.log("IPFS upload successful");
-                        console.log("View image at https://ipfs.io/ipfs/" + cid.toString());
+                        console.log("View image at " + imageAddr);
+
+                        const metadata: Metadata = {
+                            name: data.nftName,
+                            description: data.description,
+                            image: imageAddr,
+                        }
+                        console.log("Send metadata to backend...");
+                        console.log(JSON.stringify(metadata));
                     }
                 })}>
                     <label>
