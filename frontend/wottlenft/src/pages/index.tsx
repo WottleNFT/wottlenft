@@ -1,186 +1,165 @@
-import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
+import {
+  IonButton,
+  IonContent,
+  IonLabel,
+  IonRouterLink,
+  IonSlide,
+  IonSlides,
+} from '@ionic/react';
+import Link from 'next/link';
+
+import AuctionCard from '../Components/AuctionCard';
 import { Meta } from '../layout/Meta';
 import { Main } from '../templates/Main';
+import { Auction } from '../types/Auction';
+import { Category } from '../types/Category';
 
 const Index = () => {
-  const router = useRouter();
+  const [auctions, setAuctions] = useState<Auction[]>([]);
+  useEffect(() => {
+    setAuctions(testAuctions);
+  }, []);
 
   return (
     <Main
       meta={
         <Meta
-          title="Next.js Boilerplate Presentation"
-          description="Next js Boilerplate is the perfect starter code for your project. Build your React application with the Next.js framework."
+          title="Wottlenft"
+          description="Wottlenft is your next NFT auction site."
         />
       }
     >
-      <a href="https://github.com/ixartz/Next-js-Boilerplate">
-        <img
-          src={`${router.basePath}/assets/images/nextjs-starter-banner.png`}
-          alt="Nextjs starter banner"
-        />
-      </a>
-      <h1 className="font-bold text-2xl">
-        Boilerplate code for your Nextjs project with Tailwind CSS
-      </h1>
-      <p>
-        <span role="img" aria-label="rocket">
-          🚀
-        </span>{' '}
-        Next.js Boilerplate is a starter code for your Next js project by
-        putting developer experience first .{' '}
-        <span role="img" aria-label="zap">
-          ⚡️
-        </span>{' '}
-        Made with Next.js, TypeScript, ESLint, Prettier, Husky, Lint-Staged,
-        VSCode, Netlify, PostCSS, Tailwind CSS.
-      </p>
-      <h2 className="font-semibold text-lg">Next js Boilerplate Features</h2>
-      <p>Developer experience first:</p>
-      <ul>
-        <li>
-          <span role="img" aria-label="fire">
-            🔥
-          </span>{' '}
-          <a href="https://nextjs.org" rel="nofollow">
-            Next.js
-          </a>{' '}
-          for Static Site Generator
-        </li>
-        <li>
-          <span role="img" aria-label="art">
-            🎨
-          </span>{' '}
-          Integrate with{' '}
-          <a href="https://tailwindcss.com" rel="nofollow">
-            Tailwind CSS
-          </a>
-        </li>
-        <li>
-          <span role="img" aria-label="nail_care">
-            💅
-          </span>{' '}
-          PostCSS for processing Tailwind CSS
-        </li>
-        <li>
-          <span role="img" aria-label="tada">
-            🎉
-          </span>{' '}
-          Type checking Typescript
-        </li>
-        <li>
-          <span role="img" aria-label="pencil2">
-            ✏️
-          </span>{' '}
-          Linter with{' '}
-          <a href="https://eslint.org" rel="nofollow">
-            ESLint
-          </a>
-        </li>
-        <li>
-          <span role="img" aria-label="hammer_and_wrench">
-            🛠
-          </span>{' '}
-          Code Formatter with{' '}
-          <a href="https://prettier.io" rel="nofollow">
-            Prettier
-          </a>
-        </li>
-        <li>
-          <span role="img" aria-label="fox_face">
-            🦊
-          </span>{' '}
-          Husky for Git Hooks
-        </li>
-        <li>
-          <span role="img" aria-label="no_entry_sign">
-            🚫
-          </span>{' '}
-          Lint-staged for running linters on Git staged files
-        </li>
-        <li>
-          <span role="img" aria-label="no_entry_sign">
-            🗂
-          </span>{' '}
-          VSCode configuration: Debug, Settings, Tasks and extension for
-          PostCSS, ESLint, Prettier, TypeScript
-        </li>
-        <li>
-          <span role="img" aria-label="robot">
-            🤖
-          </span>{' '}
-          SEO metadata, JSON-LD and Open Graph tags with Next SEO
-        </li>
-        <li>
-          <span role="img" aria-label="robot">
-            ⚙️
-          </span>{' '}
-          <a
-            href="https://www.npmjs.com/package/@next/bundle-analyzer"
-            rel="nofollow"
-          >
-            Bundler Analyzer
-          </a>
-        </li>
-        <li>
-          <span role="img" aria-label="rainbow">
-            🌈
-          </span>{' '}
-          Include a FREE minimalist theme
-        </li>
-        <li>
-          <span role="img" aria-label="hundred">
-            💯
-          </span>{' '}
-          Maximize lighthouse score
-        </li>
-      </ul>
-      <p>Built-in feature from Next.js:</p>
-      <ul>
-        <li>
-          <span role="img" aria-label="coffee">
-            ☕
-          </span>{' '}
-          Minify HTML &amp; CSS
-        </li>
-        <li>
-          <span role="img" aria-label="dash">
-            💨
-          </span>{' '}
-          Live reload
-        </li>
-        <li>
-          <span role="img" aria-label="white_check_mark">
-            ✅
-          </span>{' '}
-          Cache busting
-        </li>
-      </ul>
-      <h2 className="font-semibold text-lg">Our Stater code Philosophy</h2>
-      <ul>
-        <li>Minimal code</li>
-        <li>SEO-friendly</li>
-        <li>
-          <span role="img" aria-label="rocket">
-            🚀
-          </span>{' '}
-          Production-ready
-        </li>
-      </ul>
-      <p>
-        Check our GitHub project for more information about{' '}
-        <a href="https://github.com/ixartz/Next-js-Boilerplate">
-          Nextjs Boilerplate
-        </a>
-        . You can also browse our{' '}
-        <a href="https://creativedesignsguru.com/category/nextjs/">
-          Premium NextJS Templates
-        </a>{' '}
-        on our website to support this project.
-      </p>
+      <IonContent fullscreen={true} scrollEvents={true}>
+        {auctions[0] && (
+          <div className="p-3 h-1/2 flex place-items-center text-center truncate">
+            <img
+              className="p-2 w-1/2 h-full object-cover rounded-2xl"
+              alt="Auction"
+              src={auctions[0].imgUrl}
+            />
+            <div className="w-1/2 flex flex-col gap-6">
+              <IonLabel className="text-2xl" color="primary">
+                {auctions[0].title}
+              </IonLabel>
+              <IonLabel className="text-lg">Time Left:</IonLabel>
+              <div className="flex">
+                <div className="w-1/2 flex flex-col gap-3">
+                  <IonLabel>Current Bid</IonLabel>
+                  <IonLabel>10000 ADA</IonLabel>
+                  <IonLabel>$18000.00</IonLabel>
+                </div>
+                <div className="w-1/2 flex flex-col gap-2 px-10">
+                  <IonLabel>Current Holder</IonLabel>
+                  <IonLabel>Littleholder97</IonLabel>
+                  <IonButton
+                    size="small"
+                    routerLink={`/auctions/${auctions[0].id}`}
+                  >
+                    Read Story
+                  </IonButton>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="h-80 flex flex-col ">
+          <div className="p-3 h-12 flex justify-between">
+            <span className="text-xl">Live Auctions</span>
+            <IonRouterLink href="/auctions" color="primary">
+              View All
+            </IonRouterLink>
+          </div>
+          {auctions.length ? (
+            <IonSlides
+              className="w-full h-full"
+              scrollbar={true}
+              options={{ slidesPerView: 'auto' }}
+            >
+              {auctions.map((auction) => {
+                return (
+                  <IonSlide key={auction.id} className=" w-56 p-3">
+                    <Link href={`/auctions/${auction.id}`} passHref>
+                      <a>
+                        <AuctionCard auction={auction} />
+                      </a>
+                    </Link>
+                  </IonSlide>
+                );
+              })}
+            </IonSlides>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <IonLabel className="text-lg text-gray-400">
+                No Live Auctions Right Now
+              </IonLabel>
+            </div>
+          )}
+        </div>
+      </IonContent>
     </Main>
   );
 };
 
 export default Index;
+
+const testCategories: Category[] = [
+  {
+    id: 1,
+    name: "Art",
+  },{
+    id: 2,
+    name: "Trading Cards",
+  },{
+    id: 3,
+    name: "Collectibles",
+  },{
+    id: 4,
+    name: "Sports",
+  },{
+    id: 5,
+    name: "Utility",
+  },
+]
+
+
+const testAuctions: Auction[] = [
+  {
+    id: 1,
+    title: 'Auction 1',
+    category: testCategories[1]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+  {
+    id: 2,
+    title: 'Auction 2',
+    category: testCategories[2]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+  {
+    id: 3,
+    title: 'Auction 3',
+    category: testCategories[0]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+  {
+    id: 4,
+    title: 'Auction 4',
+    category: testCategories[1]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+  {
+    id: 5,
+    title: 'Auction 5',
+    category: testCategories[3]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+  {
+    id: 6,
+    title: 'Auction 6',
+    category: testCategories[1]!,
+    imgUrl: 'https://picsum.photos/200',
+  },
+];
