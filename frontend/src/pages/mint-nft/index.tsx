@@ -15,9 +15,9 @@ type Metadata = {
 }
 
 const MintNftPage = () => {
-    const { register, handleSubmit } = useForm<Inputs>();
+    const { register, handleSubmit, watch } = useForm<Inputs>();
+    const watchImage = watch("image");
     const [ipfs, setIpfs] = useState<any|null>(null);
-
 
     useEffect(() => {
         const init = async () => {
@@ -38,7 +38,7 @@ const MintNftPage = () => {
 
     return (
         <div className="h-screen w-screen flex flex-col items-center justify-center">
-            <div className="border h-3/5 w-4/12 rounded-md p-10">
+            <div className="border h-4/5 w-4/12 rounded-md p-10">
                 <form className="h-full flex flex-col items-center" onSubmit={handleSubmit((data) => {
                     var reader = new FileReader();
                     reader.readAsArrayBuffer(data.image[0]);
@@ -77,15 +77,20 @@ const MintNftPage = () => {
                             {...register("description")} 
                         />
                     </label>
-                    <label>
-                        File
-                        <input 
-                            className="border rounded p-3 w-full mt-2" 
-                            placeholder="Enter a short description for your NFT"
-                            type="file"
-                            {...register("image")} 
-                        />
-                    </label>
+                    <div className="h-3/5">
+                        <label>
+                            Upload image
+                            {(watchImage && watchImage.length == 1) && 
+                                <img id="imgPreview" src={URL.createObjectURL(watchImage[0])} />
+                            }
+                            <input 
+                                className="border rounded p-3 w-full mt-2" 
+                                placeholder="Enter a short description for your NFT"
+                                type="file"
+                                {...register("image")} 
+                            />
+                        </label>
+                    </div>
                     <button className="border mt-10 w-3/5 h-1/5 rounded-md bg-gray-400">
                         Mint NFT
                     </button>
