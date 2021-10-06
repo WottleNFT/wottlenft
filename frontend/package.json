@@ -16,6 +16,10 @@
   "dependencies": {
     "@ionic/react": "^5.8.1",
     "@ionic/react-router": "^5.8.1",
+    "cids": "^1.1.9",
+    "ipfs": "^0.59.1",
+    "ipfs-core": "^0.11.1",
+    "ipfs-http-client": "^53.0.1",
     "next": "^11.1.2",
     "next-seo": "^4.28.1",
     "react": "^17.0.2",

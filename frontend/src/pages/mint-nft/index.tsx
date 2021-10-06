@@ -1,20 +1,45 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-
+import { create } from 'ipfs-http-client';
 
 type Inputs = {
     nftName: string,
     description: string,
-    image: string,
+    image: any,
 }
 
 const MintNftPage = () => {
     const { register, handleSubmit } = useForm<Inputs>();
+    const [ipfs, setIpfs] = useState<any|null>(null);
+
+
+    useEffect(() => {
+        const init = async () => {
+            if (ipfs) return;
+            try {
+                const client = create('/ip4/127.0.0.1/tcp/5001');
+                setIpfs(client);
+                console.log('IPFS connected')
+            } catch (err) {
+                console.error(err);
+                console.log("Unsuccessful connection to IPFS")
+            }
+        }
+        init();
+    }, []);
 
     return (
         <div className="h-screen w-screen flex flex-col items-center justify-center">
             <div className="border h-3/5 w-4/12 rounded-md p-10">
                 <form className="h-full flex flex-col items-center" onSubmit={handleSubmit((data) => {
-                    console.log(data)
+                    var reader = new FileReader();
+                    reader.readAsArrayBuffer(data.image[0]);
+                    reader.onload = async () => {
+                        const buffer = Buffer.from(reader.result)
+                        const { cid } = await ipfs.add(buffer);
+                        console.log("IPFS upload successful");
+                        console.log("View image at https://ipfs.io/ipfs/" + cid.toString());
+                    }
                 })}>
                     <label>
                         NFT name
