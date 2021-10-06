@@ -1,3 +1,15 @@
+# Setting up IPFS
+The minting NFT page will try to connect to an IPFS node running locally, so in order to test it, you will need to set it up.
+
+1. Follow the installation instructions at https://docs.ipfs.io/install/.
+2. Run `ipfs init`.
+3. Configure IPFS to allow CORS, run these two commands:
+
+        ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
+        ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods ‘[“PUT”, “GET”, “POST”, “OPTIONS”]’
+4. Run `ipfs daemon` to start the IPFS server.
+
+
 # Boilerplate and Starter for Next JS 11+, Tailwind CSS 2.0 and TypeScript [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40Ixartz)](https://twitter.com/ixartz)
 
 <p align="center">
