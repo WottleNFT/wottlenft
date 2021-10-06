@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
 import {
-  IonApp,
   IonButton,
   IonButtons,
   IonHeader,
@@ -22,7 +21,7 @@ type IMainProps = {
 };
 
 const Main = (props: IMainProps) => (
-  <IonApp>
+  <div>
     {props.meta}
     <SideMenu contentId={props.contentId} />
     <IonPage>
@@ -45,7 +44,7 @@ const Main = (props: IMainProps) => (
       </IonHeader>
       {props.children}
     </IonPage>
-  </IonApp>
+  </div>
 );
 
 export { Main };
