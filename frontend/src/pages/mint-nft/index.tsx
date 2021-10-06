@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { create } from 'ipfs-http-client';
+import { NFTStorage, File } from 'nft.storage';
 
 type Inputs = {
     nftName: string,
@@ -17,24 +16,6 @@ type Metadata = {
 const MintNftPage = () => {
     const { register, handleSubmit, watch } = useForm<Inputs>();
     const watchImage = watch("image");
-    const [ipfs, setIpfs] = useState<any|null>(null);
-
-    useEffect(() => {
-        const init = async () => {
-            if (ipfs) return;
-            try {
-                const client = create('/ip4/127.0.0.1/tcp/5001');
-                if (await client.isOnline()) {
-                    setIpfs(client);
-                    console.log('IPFS connected')
-                }
-            } catch (err) {
-                console.error(err);
-                console.log("Unsuccessful connection to IPFS")
-            }
-        }
-        init();
-    }, []);
 
     return (
         <div className="h-screen w-screen flex flex-col items-center justify-center">
@@ -43,20 +24,26 @@ const MintNftPage = () => {
                     var reader = new FileReader();
                     reader.readAsArrayBuffer(data.image[0]);
                     reader.onload = async () => {
-                        const buffer = Buffer.from(reader.result)
-                        const { cid } = await ipfs.add(buffer);
-                        const imageAddr = "https://ipfs.io/ipfs/" + cid.toString();
+                        const apiKey = process.env.nftStorageKey;
+                        const client = new NFTStorage({ token: apiKey });
 
-                        console.log("IPFS upload successful");
-                        console.log("View image at " + imageAddr);
+                        console.log("Storing image on NFTstorage...")
 
-                        const metadata: Metadata = {
+                        const metadata = await client.store({
                             name: data.nftName,
                             description: data.description,
-                            image: imageAddr,
+                            image: data.image[0],
+                        })
+
+                        console.log("Successfully stored image on NFTstorage")
+
+                        const nftMetadata: Metadata = {
+                            name: data.nftName,
+                            description: data.description,
+                            image: metadata.data.image.href,
                         }
                         console.log("Send metadata to backend...");
-                        console.log(JSON.stringify(metadata));
+                        console.log(JSON.stringify(nftMetadata));
                     }
                 })}>
                     <label className="w-full">
