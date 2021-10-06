@@ -1,0 +1,54 @@
+import { useForm } from "react-hook-form";
+
+
+type Inputs = {
+    nftName: string,
+    description: string,
+    image: string,
+}
+
+const MintNftPage = () => {
+    const { register, handleSubmit } = useForm<Inputs>();
+
+    return (
+        <div className="h-screen w-screen flex flex-col items-center justify-center">
+            <div className="border h-3/5 w-4/12 rounded-md p-10">
+                <form className="h-full flex flex-col items-center" onSubmit={handleSubmit((data) => {
+                    console.log(data)
+                })}>
+                    <label>
+                        NFT name
+                        <input 
+                            className="border rounded p-3 w-full my-2" 
+                            placeholder="Enter your NFT's name"
+                            type="text"
+                            {...register("nftName")} 
+                        />
+                    </label>
+                    <label>
+                        Description
+                        <input 
+                            className="border rounded p-3 w-full my-2" 
+                            placeholder="Enter a short description for your NFT"
+                            type="text"
+                            {...register("description")} 
+                        />
+                    </label>
+                    <label>
+                        File
+                        <input 
+                            className="border rounded p-3 w-full mt-2" 
+                            placeholder="Enter a short description for your NFT"
+                            type="file"
+                            {...register("image")} 
+                        />
+                    </label>
+                    <button className="border mt-10 w-3/5 h-1/5 rounded-md bg-gray-400">
+                        Mint NFT
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+}
+export default MintNftPage
