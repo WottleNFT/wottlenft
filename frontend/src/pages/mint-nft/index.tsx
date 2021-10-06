@@ -24,8 +24,10 @@ const MintNftPage = () => {
             if (ipfs) return;
             try {
                 const client = create('/ip4/127.0.0.1/tcp/5001');
-                setIpfs(client);
-                console.log('IPFS connected')
+                if (await client.isOnline()) {
+                    setIpfs(client);
+                    console.log('IPFS connected')
+                }
             } catch (err) {
                 console.error(err);
                 console.log("Unsuccessful connection to IPFS")
