@@ -16,6 +16,9 @@ module.exports = {
       '6xl': '4rem',
     },
     extend: {
+      width: {
+        '500': '500px',
+      },
       colors: {
         gray: {
           100: '#f7fafc',

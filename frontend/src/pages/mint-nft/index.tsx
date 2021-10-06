@@ -38,7 +38,7 @@ const MintNftPage = () => {
 
     return (
         <div className="h-screen w-screen flex flex-col items-center justify-center">
-            <div className="border h-4/5 w-4/12 rounded-md p-10">
+            <div className="border h-4/5 w-500 rounded-md p-10 bg-gray-100">
                 <form className="h-full flex flex-col items-center" onSubmit={handleSubmit((data) => {
                     var reader = new FileReader();
                     reader.readAsArrayBuffer(data.image[0]);
@@ -59,7 +59,7 @@ const MintNftPage = () => {
                         console.log(JSON.stringify(metadata));
                     }
                 })}>
-                    <label>
+                    <label className="w-full">
                         NFT name
                         <input 
                             className="border rounded p-3 w-full my-2" 
@@ -68,7 +68,7 @@ const MintNftPage = () => {
                             {...register("nftName")} 
                         />
                     </label>
-                    <label>
+                    <label className="w-full">
                         Description
                         <input 
                             className="border rounded p-3 w-full my-2" 
@@ -77,7 +77,7 @@ const MintNftPage = () => {
                             {...register("description")} 
                         />
                     </label>
-                    <div className="h-3/5">
+                    <div className="h-3/5 w-full">
                         <label>
                             Upload image
                             {(watchImage && watchImage.length == 1) && 
