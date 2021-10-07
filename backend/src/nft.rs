@@ -2,7 +2,7 @@ use std::convert::TryFrom;
 
 use cardano_serialization_lib::{
     address::Address,
-    crypto::{PrivateKey, PublicKey, ScriptHash, TransactionHash, Vkeywitness, Vkeywitnesses},
+    crypto::{PrivateKey, PublicKey, ScriptHash, TransactionHash, Vkeywitnesses},
     fees::{min_fee, LinearFee},
     metadata::{AuxiliaryData, GeneralTransactionMetadata, MetadataMap, TransactionMetadatum},
     tx_builder::TransactionBuilder,
@@ -253,21 +253,14 @@ impl NftTransactionBuilder {
         let mut prev_witness_set = tx.witness_set();
 
         let mut prev_witnesses = prev_witness_set.vkeys().ok_or_else(|| Error::Unknown)?;
-        println!("prev witness set vkeyslen : {:#?}", prev_witnesses.len());
 
         if let Some(vkeys) = witness_set.vkeys() {
             for i in 0..vkeys.len() {
                 prev_witnesses.add(&vkeys.get(i));
             }
         }
-        println!("prev witness set vkeyslen2 : {:#?}", prev_witnesses.len());
 
-        println!(
-            "curr witness set len: {}",
-            witness_set.vkeys().unwrap().len()
-        );
         prev_witness_set.set_vkeys(&prev_witnesses);
-        println!("final len: {}", prev_witness_set.vkeys().unwrap().len());
         Ok(Transaction::new(&body, &prev_witness_set, auxiliary_data))
     }
 

@@ -1,6 +1,9 @@
 {
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
+  "eslint.workingDirectories": [
+    "frontend"
+  ],
   "jest.autoRun": {
     "watch": false,
     "onSave": "test-file"

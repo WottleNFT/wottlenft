@@ -3,10 +3,7 @@ use crate::{
     Result,
 };
 use actix_web::{post, web, HttpResponse, Scope};
-use cardano_serialization_lib::{
-    address::Address,
-    utils::{from_bignum, BigNum},
-};
+use cardano_serialization_lib::{address::Address, Transaction, TransactionWitnessSet};
 use serde::Deserialize;
 use serde_json::json;
 
@@ -25,8 +22,8 @@ async fn create_nft_transaction(
     data: web::Data<AppState>,
 ) -> Result<HttpResponse> {
     let create_nft = create_nft.into_inner();
-    let address_bech32 = &create_nft.address;
-    let address = Address::from_bech32(address_bech32)?;
+    let hex_address = create_nft.address;
+    let address = Address::from_bytes(hex::decode(hex_address)?)?;
     let utxos = data.cli.query_utxo(&address)?;
     let block_info = data.cli.query_block_information()?;
     let params = data.cli.query_parameters()?;
@@ -40,20 +37,28 @@ async fn create_nft_transaction(
     })))
 }
 
+#[derive(Deserialize)]
+struct Signature {
+    signature: String,
+    transaction: String,
+}
 #[post("/sign")]
 async fn sign_nft_transaction(
-    path: web::Path<String>,
+    signature: web::Json<Signature>,
     data: web::Data<AppState>,
 ) -> Result<HttpResponse> {
-    let address_bech32 = path.into_inner();
-    let address = Address::from_bech32(&address_bech32)?;
-    let utxos = data.cli.query_utxo(&address)?;
+    let Signature {
+        signature,
+        transaction,
+    } = signature.into_inner();
 
-    let mut balance = BigNum::zero();
-    for utxo in utxos {
-        balance = balance.checked_add(&utxo.value.coin())?;
-    }
-    Ok(HttpResponse::Ok().json(json!({ "total_value": from_bignum(&balance) })))
+    let transaction = Transaction::from_bytes(hex::decode(transaction)?)?;
+    let tx_witness_set = TransactionWitnessSet::from_bytes(hex::decode(signature)?)?;
+
+    let tx = NftTransactionBuilder::combine_witness_set(transaction, tx_witness_set)?;
+
+    let tx_id = data.submitter.submit_tx(&tx).await?;
+    Ok(HttpResponse::Ok().json(json!({ "tx_id": tx_id })))
 }
 
 pub fn create_nft_service() -> Scope {

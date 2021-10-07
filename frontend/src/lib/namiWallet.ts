@@ -4,18 +4,18 @@
  */
 
 import cbor from 'cbor';
-import { useDispatch } from 'react-redux';
-import { setWalletInfo } from '../features/wallet/walletSlice';
+
+import { NamiWallet } from '../wallet';
 
 export type WalletInfo = {
-    walletConnected: boolean,
-    balance: number,
-    address: string, 
-}
+  walletConnected: boolean;
+  balance: number;
+  address: string;
+};
 
 export const checkIfWalletConnected = async (): Promise<boolean> => {
   const { cardano } = window;
-  return cardano && (await cardano.isEnabled());
+  return cardano !== undefined && (await cardano.isEnabled());
 };
 
 export const storeWalletInfo = async (): Promise<void> => {
@@ -24,9 +24,9 @@ export const storeWalletInfo = async (): Promise<void> => {
   if (!successfulConnection) {
     return;
   }
-
-  const balance = await cardano.getBalance();
-  const address = (await cardano.getUsedAddresses())[0];
+  const wallet = cardano as NamiWallet;
+  const balance = await wallet.getBalance();
+  const address = (await wallet.getUsedAddresses())[0];
 
   // Stores wallet info in sessionstorage
   sessionStorage.setItem('isConnected', '1');
@@ -36,22 +36,25 @@ export const storeWalletInfo = async (): Promise<void> => {
   console.log('Wallet info updated');
 };
 
-export const retrieveWalletInfo = async (): Promise<WalletInfo|void> => {
-    const { cardano } = window;
-    const successfulConnection = await checkNamiWallet(cardano);
-    if (!successfulConnection) return;
+export const retrieveWalletInfo = async (): Promise<WalletInfo | undefined> => {
+  const { cardano } = window;
+  const successfulConnection = await checkNamiWallet(cardano);
+  if (!successfulConnection) return undefined;
 
-    const balance = cbor.decode(await cardano.getBalance());
-    const address = (await cardano.getUsedAddresses())[0];
+  const wallet = cardano as NamiWallet;
+  const balance = cbor.decode(await wallet.getBalance());
+  const address = (await wallet.getUsedAddresses())[0];
 
-    return ({
-        walletConnected: true,
-        balance: balance,
-        address: address,
-    });
-}
+  return {
+    walletConnected: true,
+    balance,
+    address,
+  };
+};
 
-const checkNamiWallet = async (cardano): Promise<boolean> => {
+const checkNamiWallet = async (
+  cardano: NamiWallet | undefined
+): Promise<boolean> => {
   if (!cardano) {
     console.error('No cardano provider found');
     return false;

@@ -15,17 +15,19 @@ const ConnectWalletButton: React.FC = () => {
       .enable()
       .then(() => {
         storeWalletInfo();
-      }).then(() => {
+      })
+      .then(() => {
         // Convenient way to just update the page with the wallet info for now
-        location.reload();
-      }).catch((err: Error) => {
+        window.location.reload();
+      })
+      .catch((err: Error) => {
         console.log(err);
       });
   };
 
   return (
     <button
-      className="h-16 bg-black text-white w-48 self-end rounded-full m-5"
+      className="self-end w-48 h-16 m-5 text-white bg-black rounded-full"
       onClick={handleConnectWallet}
     >
       Connect to wallet
