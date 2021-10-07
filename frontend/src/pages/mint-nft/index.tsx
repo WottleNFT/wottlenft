@@ -21,7 +21,7 @@ const MintNftPage = () => {
   const { register, handleSubmit, watch } = useForm<Inputs>();
   const watchImage = watch('image');
 
-  const wallet = useSelector((state: RootState) => state.namiWallet);
+  const wallet = useSelector((state: RootState) => state.wallet);
   console.log(wallet);
 
   return (
