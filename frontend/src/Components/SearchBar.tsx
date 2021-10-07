@@ -1,7 +1,8 @@
-import { SearchbarChangeEventDetail } from "@ionic/core";
-import { IonSearchbar } from "@ionic/react";
-import { closeCircleOutline } from "ionicons/icons";
-import { useState } from "react";
+import { useState } from 'react';
+
+import { SearchbarChangeEventDetail } from '@ionic/core';
+import { IonSearchbar } from '@ionic/react';
+import { closeCircleOutline } from 'ionicons/icons';
 
 export interface SearchBarProps {
   onSearch: (value: string) => any;
@@ -9,7 +10,7 @@ export interface SearchBarProps {
 }
 
 function SearchBar({ onSearch, ...others }: SearchBarProps) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
 
   function changeSearchText(event: CustomEvent<SearchbarChangeEventDetail>) {
     const text = event.detail.value as string;

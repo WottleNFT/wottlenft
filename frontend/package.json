@@ -11,17 +11,22 @@
     "clean": "rimraf .next out",
     "lint": "next lint",
     "build-types": "tsc --noEmit --pretty",
-    "prepare": "husky install"
+    "prepare": "cd .. && husky install frontend/.husky"
   },
   "dependencies": {
+    "@ionic/core": "^5.8.2",
     "@ionic/react": "^5.8.1",
     "@ionic/react-router": "^5.8.1",
+    "@reduxjs/toolkit": "^1.6.2",
+    "cbor": "^8.0.2",
     "ionicons": "^5.5.3",
     "next": "^11.1.2",
     "next-seo": "^4.28.1",
+    "nft.storage": "^3.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.17.1",
+    "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
     "styled-jsx-plugin-postcss": "^4.0.1"
   },
@@ -53,6 +58,12 @@
     "rimraf": "^3.0.2",
     "tailwindcss": "^2.2.16",
     "typescript": "^4.4.3"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix src/"
+    ]
   },
   "license": "ISC"
 }

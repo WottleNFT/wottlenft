@@ -1,4 +1,4 @@
-import { IonChip, IonLabel } from "@ionic/react";
+import { IonChip, IonLabel } from '@ionic/react';
 
 type TagProps = {
   color?: string;
@@ -15,5 +15,3 @@ const CategoryTag: React.FC<TagProps> = ({ color, label, ...props }) => {
 };
 
 export default CategoryTag;
-
-

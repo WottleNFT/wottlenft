@@ -1,16 +1,15 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from 'react';
+
+import { IonCard, IonChip, IonContent, IonIcon, IonList } from '@ionic/react';
+import { addOutline } from 'ionicons/icons';
 import Link from 'next/link';
-import { IonCard, IonChip, IonContent, IonIcon, IonList } from "@ionic/react";
-import { addOutline } from "ionicons/icons";
 
-import SearchBar from "../../Components/SearchBar";
-
-import { Category } from "../../types/Category";
-
-import { Auction } from '../../types/Auction';
 import CategoryTag from '../../Components/CategoryTag';
-import { Main } from "../../templates/Main"
-import { Meta } from "../../layout/Meta"
+import SearchBar from '../../Components/SearchBar';
+import { Meta } from '../../layout/Meta';
+import { Main } from '../../templates/Main';
+import { Auction } from '../../types/Auction';
+import { Category } from '../../types/Category';
 
 function ExploreAuctions() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -23,7 +22,7 @@ function ExploreAuctions() {
     setCategories(testCategories);
     setAuctions(testAuctions);
     setDisplayedAuctions(testAuctions);
-        setIsLoaded(true);
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -48,7 +47,7 @@ function ExploreAuctions() {
   function searchAuctions(text: string) {
     setDisplayedAuctions(
       auctionsInSelectedCategories().filter((auction) =>
-        Object.values(auction).join(" ").includes(text)
+        Object.values(auction).join(' ').includes(text)
       )
     );
   }
@@ -60,27 +59,20 @@ function ExploreAuctions() {
   }
 
   return (
-    <Main
-      meta={
-        <Meta
-          title="Explore"
-          description="Explore all auctions."
-        />
-      }
-    >
+    <Main meta={<Meta title="Explore" description="Explore all auctions." />}>
       <IonList>
         <div>
           <SearchBar onSearch={searchAuctions} />
         </div>
 
-        <div className="whitespace-nowrap overflow-x-scroll py-2 mx-2">
+        <div className="py-2 mx-2 overflow-x-scroll whitespace-nowrap">
           {categories.map((category, idx) => {
             return (
               <CategoryTag
                 key={idx}
                 color={
                   selectedCategories.includes(category.id)
-                    ? "primary"
+                    ? 'primary'
                     : undefined
                 }
                 label={category.name}
@@ -97,23 +89,23 @@ function ExploreAuctions() {
           displayedAuctions.map((auction, idx) => {
             return (
               <Link href={`/auctions/${auction.id}`} key={idx}>
-                <IonCard className="rounded-2xl mt-3">
+                <IonCard className="mt-3 rounded-2xl">
                   <div className="flex felx-row">
                     <div className="w-1/3 h-32">
                       <img
-                        className="w-full p-2 object-cover rounded-2xl"
+                        className="object-cover w-full p-2 rounded-2xl"
                         alt="Auction"
                         src={auction.imgUrl}
                       />
                     </div>
 
                     <div className="w-2/3 h-full p-3">
-                      <div className="h-1/2 flex items-center">
-                        <p className="font-bold text-lg line-clamp-2">
+                      <div className="flex items-center h-1/2">
+                        <p className="text-lg font-bold line-clamp-2">
                           {auction.title}
                         </p>
                       </div>
-                      <div className="h-1/2 p-0 flex items-center">
+                      <div className="flex items-center p-0 h-1/2">
                         <CategoryTag
                           color="primary"
                           label={auction.category.name}
@@ -128,15 +120,15 @@ function ExploreAuctions() {
           })
         ) : (
           <div className="p-2">
-            <Link href="/createAuction" >
+            <Link href="/createAuction">
               <IonChip
                 color="primary"
-                className="border-2 border-indigo-500 border-dashed h-32 w-full m-auto"
+                className="w-full h-32 m-auto border-2 border-indigo-500 border-dashed"
               >
                 <div className="flex flex-col items-center w-full">
                   <IonIcon size="large" icon={addOutline} className="p-2" />
-                  <p className="text-lg text-center w-full">
-                    Can't find a auction? Create one!
+                  <p className="w-full text-lg text-center">
+                    Can{"'"}t find a auction? Create one!
                   </p>
                 </div>
               </IonChip>
@@ -153,22 +145,25 @@ export default ExploreAuctions;
 const testCategories: Category[] = [
   {
     id: 1,
-    name: "Art",
-  },{
-    id: 2,
-    name: "Trading Cards",
-  },{
-    id: 3,
-    name: "Collectibles",
-  },{
-    id: 4,
-    name: "Sports",
-  },{
-    id: 5,
-    name: "Utility",
+    name: 'Art',
   },
-]
-
+  {
+    id: 2,
+    name: 'Trading Cards',
+  },
+  {
+    id: 3,
+    name: 'Collectibles',
+  },
+  {
+    id: 4,
+    name: 'Sports',
+  },
+  {
+    id: 5,
+    name: 'Utility',
+  },
+];
 
 const testAuctions: Auction[] = [
   {
