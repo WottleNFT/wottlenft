@@ -1,9 +1,12 @@
 import { NFTStorage } from 'nft.storage';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import { RootState } from '../../app/store';
 import ConnectWalletButton from '../../Components/ConnectWalletButton';
+import WalletInfoPill from '../../Components/WalletInfoPill';
+import { retrieveWalletInfo, WalletInfo } from '../../lib/namiWallet';
 
 type Inputs = {
   nftName: string;
@@ -17,16 +20,35 @@ type Metadata = {
   image: string;
 };
 
+
 const MintNftPage = () => {
   const { register, handleSubmit, watch } = useForm<Inputs>();
   const watchImage = watch('image');
+  const [walletStatusReady, setWalletStatusReady] = useState(false);
+  const [walletInfo, setWalletInfo] = useState<WalletInfo|void>();
 
-  const wallet = useSelector((state: RootState) => state.wallet);
-  console.log(wallet);
+
+  useEffect(() => {
+    const getWalletInfo = async () => {
+        const info = await retrieveWalletInfo();
+        setWalletInfo(info);
+        setWalletStatusReady(true);
+    }
+    getWalletInfo();
+  }, []);
 
   return (
     <div className="flex flex-col items-center w-screen h-screen bg-primary-default">
-      {false ? 'Connected' : <ConnectWalletButton />}
+      {(() => {
+        if (!walletStatusReady) {
+            return "Loading..."
+        } else {
+            return (walletInfo ? 
+                <WalletInfoPill balance={walletInfo.balance} address={walletInfo.address} /> :
+                <ConnectWalletButton />
+            );
+        }
+      })()}
       <div className="p-10 bg-gray-200 border shadow-xl h-4/5 w-500 rounded-xl">
         <form
           className="flex flex-col items-center h-full"

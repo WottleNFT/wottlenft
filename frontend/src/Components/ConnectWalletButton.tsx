@@ -1,11 +1,6 @@
-import { useDispatch } from 'react-redux';
-
-import { setWalletInfo } from '../features/wallet/walletSlice';
 import { storeWalletInfo } from '../lib/namiWallet';
 
 const ConnectWalletButton: React.FC = () => {
-  const dispatch = useDispatch();
-
   const handleConnectWallet = () => {
     const { cardano } = window;
     // Check if there is a cardano provider
@@ -20,14 +15,10 @@ const ConnectWalletButton: React.FC = () => {
       .enable()
       .then(() => {
         storeWalletInfo();
-        dispatch(
-          setWalletInfo({
-            balance: 123,
-            address: 'laskdjklsjd',
-          })
-        );
-      })
-      .catch((err: Error) => {
+      }).then(() => {
+        // Convenient way to just update the page with the wallet info for now
+        location.reload();
+      }).catch((err: Error) => {
         console.log(err);
       });
   };

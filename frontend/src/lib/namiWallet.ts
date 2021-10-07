@@ -4,6 +4,14 @@
  */
 
 import cbor from 'cbor';
+import { useDispatch } from 'react-redux';
+import { setWalletInfo } from '../features/wallet/walletSlice';
+
+export type WalletInfo = {
+    walletConnected: boolean,
+    balance: number,
+    address: string, 
+}
 
 export const checkIfWalletConnected = async (): Promise<boolean> => {
   const { cardano } = window;
@@ -17,13 +25,31 @@ export const storeWalletInfo = async (): Promise<void> => {
     return;
   }
 
+  const balance = await cardano.getBalance();
+  const address = (await cardano.getUsedAddresses())[0];
+
   // Stores wallet info in sessionstorage
   sessionStorage.setItem('isConnected', '1');
-  sessionStorage.setItem('balance', cbor.decode(await cardano.getBalance()));
-  sessionStorage.setItem('address', (await cardano.getUsedAddresses())[0]);
+  sessionStorage.setItem('balance', cbor.decode(balance));
+  sessionStorage.setItem('address', address);
 
   console.log('Wallet info updated');
 };
+
+export const retrieveWalletInfo = async (): Promise<WalletInfo|void> => {
+    const { cardano } = window;
+    const successfulConnection = await checkNamiWallet(cardano);
+    if (!successfulConnection) return;
+
+    const balance = cbor.decode(await cardano.getBalance());
+    const address = (await cardano.getUsedAddresses())[0];
+
+    return ({
+        walletConnected: true,
+        balance: balance,
+        address: address,
+    });
+}
 
 const checkNamiWallet = async (cardano): Promise<boolean> => {
   if (!cardano) {
