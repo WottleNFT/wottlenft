@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { NFTStorage, File } from 'nft.storage';
+import ConnectWalletButton from '../../../src/Components/ConnectWalletButton';
 
 type Inputs = {
     nftName: string,
@@ -18,8 +19,9 @@ const MintNftPage = () => {
     const watchImage = watch("image");
 
     return (
-        <div className="h-screen w-screen flex flex-col items-center justify-center">
-            <div className="border h-4/5 w-500 rounded-md p-10 bg-gray-100">
+        <div className="h-screen w-screen flex flex-col items-center bg-primary-default">
+            <ConnectWalletButton />
+            <div className="border h-4/5 w-500 rounded-xl p-10 bg-gray-200 shadow-xl">
                 <form className="h-full flex flex-col items-center" onSubmit={handleSubmit((data) => {
                     var reader = new FileReader();
                     reader.readAsArrayBuffer(data.image[0]);
@@ -46,11 +48,14 @@ const MintNftPage = () => {
                         console.log(JSON.stringify(nftMetadata));
                     }
                 })}>
+                    <p className="text-center font-semibold text-lg my-2">
+                        Create your NFT here!
+                    </p>
                     <label className="w-full">
                         NFT name
                         <input 
-                            className="border rounded p-3 w-full my-2" 
-                            placeholder="Enter your NFT's name"
+                            className="border rounded p-3 w-full my-2 focus:outline-none focus:ring-2" 
+                            placeholder="Enter a name for your NFT"
                             type="text"
                             {...register("nftName")} 
                         />
@@ -58,7 +63,7 @@ const MintNftPage = () => {
                     <label className="w-full">
                         Description
                         <input 
-                            className="border rounded p-3 w-full my-2" 
+                            className="border rounded p-3 w-full my-2 focus:outline-none focus:ring-2" 
                             placeholder="Enter a short description for your NFT"
                             type="text"
                             {...register("description")} 
@@ -78,7 +83,7 @@ const MintNftPage = () => {
                             />
                         </label>
                     </div>
-                    <button className="border mt-10 w-3/5 h-1/5 rounded-md bg-gray-400">
+                    <button className="border mt-10 w-2/5 h-16 rounded-full bg-black text-white">
                         Mint NFT
                     </button>
                 </form>
