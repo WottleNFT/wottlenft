@@ -1,6 +1,10 @@
 import { useForm } from "react-hook-form";
 import { NFTStorage, File } from 'nft.storage';
 import ConnectWalletButton from '../../../src/Components/ConnectWalletButton';
+import { useEffect, useState } from "react";
+import { checkIfWalletConnected } from "../../lib/namiWallet";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 type Inputs = {
     nftName: string,
@@ -14,13 +18,17 @@ type Metadata = {
     image: string,
 }
 
+
 const MintNftPage = () => {
     const { register, handleSubmit, watch } = useForm<Inputs>();
     const watchImage = watch("image");
 
+    const wallet = useSelector((state: RootState) => state.namiWallet);
+    console.log(wallet);
+
     return (
         <div className="h-screen w-screen flex flex-col items-center bg-primary-default">
-            <ConnectWalletButton />
+            { false ? "Connected" : <ConnectWalletButton /> }
             <div className="border h-4/5 w-500 rounded-xl p-10 bg-gray-200 shadow-xl">
                 <form className="h-full flex flex-col items-center" onSubmit={handleSubmit((data) => {
                     var reader = new FileReader();

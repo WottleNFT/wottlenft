@@ -1,13 +1,10 @@
-import { useEffect } from "react"
-
+import { useDispatch } from "react-redux";
+import { setWalletInfo } from "../features/wallet/walletSlice";
+import { storeWalletInfo } from "../lib/namiWallet";
 
 const ConnectWalletButton: React.FC = () => {
-    useEffect(() => {
-        const f = async () => {
-            console.log(await window.cardano.isEnabled())
-        }
-        f();
-    }, []);
+    const dispatch = useDispatch();
+
     const handleConnectWallet = () => {
         var cardano = window.cardano;
         // Check if there is a cardano provider
@@ -16,17 +13,15 @@ const ConnectWalletButton: React.FC = () => {
             return;
         }
 
-        const enableNamiWallet = async () => {
-            let enabled = await cardano.enable();
-            if (!enabled) {
-                alert ("Connection refused");
-            }
-        }
         cardano.enable().then(() => {
-            console.log("Conencted to Nami wallet");
+            storeWalletInfo();
+            dispatch(setWalletInfo({
+                balance: 123,
+                address: "laskdjklsjd",
+            }))
         }).catch((err: Error) => {
             console.log(err);
-        })
+        });
     }
 
     return (
