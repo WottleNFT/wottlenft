@@ -1,0 +1,12 @@
+version: "3.5"
+
+services:
+  cardano-submit-api:
+    image: inputoutput/cardano-submit-api:1.30.0
+    environment:
+      - NETWORK=${NETWORK:-testnet}
+    volumes:
+      - ${CARDANO_NODE_SOCKET_PATH}:/node-ipc
+    ports:
+      - 8090:8090
+    restart: on-failure
