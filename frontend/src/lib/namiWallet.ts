@@ -6,34 +6,34 @@
 import cbor from 'cbor';
 
 export const checkIfWalletConnected = async (): Promise<boolean> => {
-    var cardano = window.cardano;
-    return cardano && await cardano.isEnabled();
-}
+  const { cardano } = window;
+  return cardano && (await cardano.isEnabled());
+};
 
 export const storeWalletInfo = async (): Promise<void> => {
-    var cardano = window.cardano;
-    const successfulConnection = await checkNamiWallet(cardano);
-    if (!successfulConnection) {
-        return;
-    }
+  const { cardano } = window;
+  const successfulConnection = await checkNamiWallet(cardano);
+  if (!successfulConnection) {
+    return;
+  }
 
-    // Stores wallet info in sessionstorage
-    sessionStorage.setItem("isConnected", '1');
-    sessionStorage.setItem("balance", cbor.decode(await cardano.getBalance()));
-    sessionStorage.setItem("address", (await cardano.getUsedAddresses())[0]);
+  // Stores wallet info in sessionstorage
+  sessionStorage.setItem('isConnected', '1');
+  sessionStorage.setItem('balance', cbor.decode(await cardano.getBalance()));
+  sessionStorage.setItem('address', (await cardano.getUsedAddresses())[0]);
 
-    console.log("Wallet info updated");
-}
+  console.log('Wallet info updated');
+};
 
 const checkNamiWallet = async (cardano): Promise<boolean> => {
-    if (!cardano) {
-        console.error("No cardano provider found");
-        return false;
-    }
-    const enabled = await cardano.isEnabled();
-    if (!enabled) {
-        console.error("Wallet not connected");
-        return false;
-    }
-    return true;
-}
+  if (!cardano) {
+    console.error('No cardano provider found');
+    return false;
+  }
+  const enabled = await cardano.isEnabled();
+  if (!enabled) {
+    console.error('Wallet not connected');
+    return false;
+  }
+  return true;
+};

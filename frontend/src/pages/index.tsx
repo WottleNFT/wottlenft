@@ -108,22 +108,25 @@ export default Index;
 const testCategories: Category[] = [
   {
     id: 1,
-    name: "Art",
-  },{
-    id: 2,
-    name: "Trading Cards",
-  },{
-    id: 3,
-    name: "Collectibles",
-  },{
-    id: 4,
-    name: "Sports",
-  },{
-    id: 5,
-    name: "Utility",
+    name: 'Art',
   },
-]
-
+  {
+    id: 2,
+    name: 'Trading Cards',
+  },
+  {
+    id: 3,
+    name: 'Collectibles',
+  },
+  {
+    id: 4,
+    name: 'Sports',
+  },
+  {
+    id: 5,
+    name: 'Utility',
+  },
+];
 
 const testAuctions: Auction[] = [
   {
