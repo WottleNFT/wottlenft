@@ -17,6 +17,7 @@
     "@ionic/core": "^5.8.2",
     "@ionic/react": "^5.8.1",
     "@ionic/react-router": "^5.8.1",
+    "@reduxjs/toolkit": "^1.6.2",
     "ionicons": "^5.5.3",
     "next": "^11.1.2",
     "next-seo": "^4.28.1",
