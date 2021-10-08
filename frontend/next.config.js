@@ -13,5 +13,7 @@ module.exports = withBundleAnalyzer({
   reactStrictMode: true,
   env: {
     nftStorageKey: process.env.NFT_STORAGE_KEY,
-  }
+    testnetApi: process.env.TESTNET_API,
+    mainnetApi: process.env.MAINNET_API,
+  },
 });

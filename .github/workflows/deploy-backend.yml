@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy frontend
+name: Deploy backend
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy frontend on remote server
+      - name: Deploy backend on remote server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEPLOYMENT_HOST }}
@@ -20,14 +20,12 @@ jobs:
           key: ${{ secrets.DEPLOYMENT_KEY }}
           port: ${{ secrets.DEPLOYMENT_PORT }}
           script: |
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd ~/wottlenft
             git checkout main
             git fetch --all
             git checkout deploy
             git reset --hard origin/deploy
-            cd frontend
-            export NODE_ENV=production
-            npm run build
-            pm2 restart wottle
+            cd backend
+            cargo build --release
+            cp ./target/release/backend ~/testnet/backend
+            sudo systemctl restart testnet-backend.service

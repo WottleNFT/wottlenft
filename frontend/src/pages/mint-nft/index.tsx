@@ -26,6 +26,8 @@ type TransactionResponse = {
   transaction: HexCborString;
 };
 
+const TESTNET_API = process.env.testnetApi as string;
+
 const MintNftPage = () => {
   const { register, handleSubmit, watch } = useForm<Inputs>();
   const watchImage = watch('image');
@@ -71,7 +73,7 @@ const MintNftPage = () => {
               console.log('Send metadata to backend...');
               console.log(JSON.stringify(nftMetadata));
 
-              const response = await fetch('http://localhost:8080/nft/create', {
+              const response = await fetch(`${TESTNET_API}/nft/create`, {
                 method: 'POST',
                 body: JSON.stringify(nftMetadata),
                 headers: {
@@ -83,16 +85,13 @@ const MintNftPage = () => {
                 await response.json();
 
               const signature = await cardano.signTx(transaction, true);
-              const signResponse = await fetch(
-                'http://localhost:8080/nft/sign',
-                {
-                  method: 'POST',
-                  body: JSON.stringify({ signature, transaction }),
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                }
-              );
+              const signResponse = await fetch(`${TESTNET_API}/nft/sign`, {
+                method: 'POST',
+                body: JSON.stringify({ signature, transaction }),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
 
               console.log(await signResponse.json());
               return;
