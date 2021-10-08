@@ -14,8 +14,12 @@ struct AppState {
 }
 
 pub async fn start_server(config: Config) -> Result<()> {
-    let minter =
-        WottleNftMinter::from_cbor_hex(&config.nft_signing_key, &config.nft_verification_key)?;
+    let minter = WottleNftMinter::from_keys(
+        &config.nft_signing_key_path,
+        &config.nft_verification_key_path,
+    )?;
+    let address = format!("127.0.0.1:{}", config.port);
+    println!("Starting server on {}", address);
     Ok(HttpServer::new(move || {
         App::new()
             .wrap(
@@ -32,7 +36,7 @@ pub async fn start_server(config: Config) -> Result<()> {
             .service(address::create_address_service())
             .service(nft::create_nft_service())
     })
-    .bind("127.0.0.1:8080")?
+    .bind(address)?
     .run()
     .await?)
 }

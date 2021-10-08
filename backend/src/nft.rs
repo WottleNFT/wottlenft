@@ -92,10 +92,10 @@ pub struct Policy {
 }
 
 impl WottleNftMinter {
-    pub fn from_cbor_hex(skey_cbor_hex: &str, vkey_cbor_hex: &str) -> Result<WottleNftMinter> {
+    pub fn from_keys(skey_path: &str, vkey_path: &str) -> Result<WottleNftMinter> {
         Ok(Self {
-            skey: decode_private_key(skey_cbor_hex)?,
-            vkey: decode_public_key(vkey_cbor_hex)?,
+            skey: decode_private_key(skey_path)?,
+            vkey: decode_public_key(vkey_path)?,
         })
     }
 
