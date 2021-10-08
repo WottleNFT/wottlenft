@@ -5,7 +5,11 @@ import { useForm } from 'react-hook-form';
 
 import ConnectWalletButton from '../../Components/ConnectWalletButton';
 import WalletInfoPill from '../../Components/WalletInfoPill';
-import { getBackendWalletAPI, retrieveWalletInfo, WalletInfo } from '../../lib/namiWallet';
+import {
+  getBackendWalletAPI,
+  retrieveWalletInfo,
+  WalletInfo,
+} from '../../lib/namiWallet';
 import { HexCborString, NamiWallet } from '../../wallet';
 
 type Inputs = {
@@ -25,9 +29,6 @@ type Metadata = {
 type TransactionResponse = {
   transaction: HexCborString;
 };
-
-const TESTNET_API = process.env.testnetApi as string;
-const MAINNET_API = process.env.mainnetApi as string;
 
 const MintNftPage = () => {
   const { register, handleSubmit, watch } = useForm<Inputs>();
@@ -65,9 +66,9 @@ const MintNftPage = () => {
           className="flex flex-col items-center h-full"
           onSubmit={handleSubmit(async (data) => {
             // Store latest wallet info first to reduce API calls to nami wallet
-            const walletInfo = await retrieveWalletInfo();
+            const tempWalletInfo = await retrieveWalletInfo();
             if (!walletInfo) {
-              alert("Error connecting to wallet")
+              alert('Error connecting to wallet');
               return;
             }
             const cardano = window.cardano as NamiWallet;
@@ -81,25 +82,33 @@ const MintNftPage = () => {
               console.log('Send metadata to backend...');
               console.log(JSON.stringify(nftMetadata));
 
-              const response = await fetch(`${getBackendWalletAPI(walletInfo as WalletInfo)}/nft/create`, {
-                method: 'POST',
-                body: JSON.stringify(nftMetadata),
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              });
+              const response = await fetch(
+                `${getBackendWalletAPI(
+                  tempWalletInfo as WalletInfo
+                )}/nft/create`,
+                {
+                  method: 'POST',
+                  body: JSON.stringify(nftMetadata),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                }
+              );
 
               const { transaction }: TransactionResponse =
                 await response.json();
 
               const signature = await cardano.signTx(transaction, true);
-              const signResponse = await fetch(`${getBackendWalletAPI(walletInfo as WalletInfo)}/nft/sign`, {
-                method: 'POST',
-                body: JSON.stringify({ signature, transaction }),
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              });
+              const signResponse = await fetch(
+                `${getBackendWalletAPI(walletInfo as WalletInfo)}/nft/sign`,
+                {
+                  method: 'POST',
+                  body: JSON.stringify({ signature, transaction }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                }
+              );
 
               console.log(await signResponse.json());
               return;
