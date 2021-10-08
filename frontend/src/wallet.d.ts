@@ -20,4 +20,5 @@ interface NamiWallet {
   getChangeAddress(): Promise<HexCborString>;
   signTx(tx: HexCborString, partialSign?: boolean): Promise<HexCborString>;
   submitTx(tx: HexCborString): Promise<string>;
+  getNetworkId(): Promise<number>;
 }
