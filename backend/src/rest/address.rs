@@ -10,8 +10,7 @@ use crate::rest::AppState;
 
 #[get("/{address}/utxo")]
 async fn get_all_utxos(path: web::Path<String>, data: web::Data<AppState>) -> Result<HttpResponse> {
-    let address_bech32 = path.into_inner();
-    let address = Address::from_bech32(&address_bech32)?;
+    let address = super::parse_address(&path.into_inner())?;
     let utxos = data.cli.query_utxo(&address)?;
     Ok(HttpResponse::Ok().json(utxos))
 }
@@ -21,8 +20,7 @@ async fn get_address_balance(
     path: web::Path<String>,
     data: web::Data<AppState>,
 ) -> Result<HttpResponse> {
-    let address_bech32 = path.into_inner();
-    let address = Address::from_bech32(&address_bech32)?;
+    let address = super::parse_address(&path.into_inner())?;
     let utxos = data.cli.query_utxo(&address)?;
 
     let mut balance = BigNum::zero();

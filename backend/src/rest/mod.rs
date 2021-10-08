@@ -2,15 +2,32 @@ mod address;
 mod nft;
 
 use crate::{
-    cli::command::CardanoCli, config::Config, nft::WottleNftMinter, transaction::Submitter, Result,
+    cli::command::CardanoCli, config::Config, error::Error, nft::WottleNftMinter,
+    transaction::Submitter, Result,
 };
 use actix_cors::Cors;
 use actix_web::{web::Data, App, HttpServer};
+use cardano_serialization_lib::address::Address;
 
 struct AppState {
     cli: CardanoCli,
     submitter: Submitter,
     minter: WottleNftMinter,
+}
+
+pub fn parse_address(address: &str) -> Result<Address> {
+    match Address::from_bech32(address) {
+        Ok(addr) => Ok(addr),
+        Err(_) => {
+            match hex::decode(address)
+                .map_err(|_| ())
+                .and_then(|hex_decoded| Address::from_bytes(hex_decoded).map_err(|_| ()))
+            {
+                Ok(addr) => Ok(addr),
+                Err(_) => Err(Error::Message("Invalid address provided".to_string())),
+            }
+        }
+    }
 }
 
 pub async fn start_server(config: Config) -> Result<()> {

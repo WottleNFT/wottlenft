@@ -22,8 +22,7 @@ async fn create_nft_transaction(
     data: web::Data<AppState>,
 ) -> Result<HttpResponse> {
     let create_nft = create_nft.into_inner();
-    let hex_address = create_nft.address;
-    let address = Address::from_bytes(hex::decode(hex_address)?)?;
+    let address = super::parse_address(&create_nft.address)?;
     let utxos = data.cli.query_utxo(&address)?;
     let block_info = data.cli.query_block_information()?;
     let params = data.cli.query_parameters()?;
