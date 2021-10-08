@@ -25,9 +25,8 @@ jobs:
             cd ~/wottlenft
             git checkout main
             git fetch --all
-            git checkout deploy
-            git reset --hard origin/deploy
+            git reset --hard origin/main
             cd frontend
             export NODE_ENV=production
             npm run build
-            pm2 restart wottle
+            pm2 restart wottle --update-env
