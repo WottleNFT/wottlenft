@@ -4,7 +4,7 @@ name: Deploy backend
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, deploy ]
 
   workflow_dispatch:
 
@@ -28,3 +28,5 @@ jobs:
             cargo build --release
             cp ./target/release/backend ~/testnet/backend
             sudo systemctl restart testnet-backend.service
+            scp ~/testnet/backend prod:~/mainnet/backend
+            ssh prod 'sudo systemctl restart service'
