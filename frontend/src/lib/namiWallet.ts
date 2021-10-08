@@ -8,6 +8,7 @@ import cbor from 'cbor';
 import { NamiWallet } from '../wallet';
 
 export type WalletInfo = {
+  network: number;
   walletConnected: boolean;
   balance: number;
   address: string;
@@ -42,15 +43,26 @@ export const retrieveWalletInfo = async (): Promise<WalletInfo | undefined> => {
   if (!successfulConnection) return undefined;
 
   const wallet = cardano as NamiWallet;
+  const network = await wallet.getNetworkId();
   const balance = cbor.decode(await wallet.getBalance());
   const address = (await wallet.getUsedAddresses())[0];
 
   return {
+    network: network,
     walletConnected: true,
     balance,
     address,
   };
 };
+
+// Gets backend API depending on whether network is testnet or mainnet
+export const getBackendWalletAPI = (walletInfo: WalletInfo) => {
+  if (walletInfo.network) {
+    return process.env.mainnetApi;
+  } else {
+    return process.env.testnetApi;
+  }
+}
 
 const checkNamiWallet = async (
   cardano: NamiWallet | undefined
