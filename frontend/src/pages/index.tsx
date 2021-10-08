@@ -33,24 +33,24 @@ const Index = () => {
     >
       <IonContent fullscreen={true} scrollEvents={true}>
         {auctions[0] && (
-          <div className="p-3 h-1/2 flex place-items-center text-center truncate">
+          <div className="flex p-3 text-center truncate h-1/2 place-items-center">
             <img
-              className="p-2 w-1/2 h-full object-cover rounded-2xl"
+              className="object-cover w-1/2 h-full p-2 rounded-2xl"
               alt="Auction"
               src={auctions[0].imgUrl}
             />
-            <div className="w-1/2 flex flex-col gap-6">
+            <div className="flex flex-col w-1/2 gap-6">
               <IonLabel className="text-2xl" color="primary">
                 {auctions[0].title}
               </IonLabel>
               <IonLabel className="text-lg">Time Left:</IonLabel>
               <div className="flex">
-                <div className="w-1/2 flex flex-col gap-3">
+                <div className="flex flex-col w-1/2 gap-3">
                   <IonLabel>Current Bid</IonLabel>
                   <IonLabel>10000 ADA</IonLabel>
                   <IonLabel>$18000.00</IonLabel>
                 </div>
-                <div className="w-1/2 flex flex-col gap-2 px-10">
+                <div className="flex flex-col w-1/2 gap-2 px-10">
                   <IonLabel>Current Holder</IonLabel>
                   <IonLabel>Littleholder97</IonLabel>
                   <IonButton
@@ -65,8 +65,8 @@ const Index = () => {
           </div>
         )}
 
-        <div className="h-80 flex flex-col ">
-          <div className="p-3 h-12 flex justify-between">
+        <div className="flex flex-col h-80 ">
+          <div className="flex justify-between h-12 p-3">
             <span className="text-xl">Live Auctions</span>
             <IonRouterLink href="/auctions" color="primary">
               View All
@@ -80,7 +80,7 @@ const Index = () => {
             >
               {auctions.map((auction) => {
                 return (
-                  <IonSlide key={auction.id} className=" w-56 p-3">
+                  <IonSlide key={auction.id} className="w-56 p-3 ">
                     <Link href={`/auctions/${auction.id}`} passHref>
                       <a>
                         <AuctionCard auction={auction} />
@@ -91,7 +91,7 @@ const Index = () => {
               })}
             </IonSlides>
           ) : (
-            <div className="w-full h-full flex items-center justify-center">
+            <div className="flex items-center justify-center w-full h-full">
               <IonLabel className="text-lg text-gray-400">
                 No Live Auctions Right Now
               </IonLabel>

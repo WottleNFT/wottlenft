@@ -1,0 +1,31 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy backend
+
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy backend on remote server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOYMENT_HOST }}
+          username: ${{ secrets.DEPLOYMENT_USERNAME }}
+          key: ${{ secrets.DEPLOYMENT_KEY }}
+          port: ${{ secrets.DEPLOYMENT_PORT }}
+          script: |
+            cd ~/wottlenft
+            git checkout main
+            git fetch --all
+            git checkout deploy
+            git reset --hard origin/deploy
+            cd backend
+            cargo build --release
+            cp ./target/release/backend ~/testnet/backend
+            sudo systemctl restart testnet-backend.service
