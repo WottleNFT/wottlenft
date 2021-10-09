@@ -25,7 +25,7 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             cd backend
-            cargo build --release
+            /home/deploy/.cargo/bin/cargo build --release
             sudo /bin/systemctl stop testnet-backend.service
             cp ./target/release/backend ~/testnet/backend
             sudo /bin/systemctl start testnet-backend.service
