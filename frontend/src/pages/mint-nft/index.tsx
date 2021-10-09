@@ -7,6 +7,7 @@ import ConnectWalletButton from '../../Components/ConnectWalletButton';
 import WalletInfoPill from '../../Components/WalletInfoPill';
 import { getBackendWalletAPI, retrieveWalletInfo, WalletInfo } from '../../lib/namiWallet';
 import { HexCborString, NamiWallet } from '../../wallet';
+import { IonSpinner } from '@ionic/react';
 
 type Inputs = {
   nftName: string;
@@ -25,9 +26,6 @@ type Metadata = {
 type TransactionResponse = {
   transaction: HexCborString;
 };
-
-const TESTNET_API = process.env.testnetApi as string;
-const MAINNET_API = process.env.mainnetApi as string;
 
 const MintNftPage = () => {
   const { register, handleSubmit, watch } = useForm<Inputs>();
@@ -48,7 +46,7 @@ const MintNftPage = () => {
     <div className="flex flex-col items-center w-screen h-screen bg-primary-default">
       {(() => {
         if (!walletStatusReady) {
-          return 'Loading...';
+          return <IonSpinner name="crescent" className="self-end h-16 w-48" />;
         }
         return walletInfo ? (
           <WalletInfoPill
@@ -71,39 +69,44 @@ const MintNftPage = () => {
               return;
             }
             const cardano = window.cardano as NamiWallet;
-            if (data.imageUrl) {
-              const nftMetadata: Metadata = {
-                address: await cardano.getChangeAddress(),
-                name: data.nftName,
-                description: data.description,
-                image: data.imageUrl,
-              };
-              console.log('Send metadata to backend...');
-              console.log(JSON.stringify(nftMetadata));
+            //if (data.imageUrl) {
+            //  const nftMetadata: Metadata = {
+            //    address: await cardano.getChangeAddress(),
+            //    name: data.nftName,
+            //    description: data.description,
+            //    image: data.imageUrl,
+            //  };
+            //  console.log('Send metadata to backend...');
+            //  console.log(JSON.stringify(nftMetadata));
 
-              const response = await fetch(`${getBackendWalletAPI(walletInfo as WalletInfo)}/nft/create`, {
-                method: 'POST',
-                body: JSON.stringify(nftMetadata),
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              });
+            //  const response = await fetch(`${getBackendWalletAPI(walletInfo as WalletInfo)}/nft/create`, {
+            //    method: 'POST',
+            //    body: JSON.stringify(nftMetadata),
+            //    headers: {
+            //      'Content-Type': 'application/json',
+            //    },
+            //  });
 
-              const { transaction }: TransactionResponse =
-                await response.json();
+            //  const { transaction }: TransactionResponse =
+            //    await response.json();
 
-              const signature = await cardano.signTx(transaction, true);
-              const signResponse = await fetch(`${getBackendWalletAPI(walletInfo as WalletInfo)}/nft/sign`, {
-                method: 'POST',
-                body: JSON.stringify({ signature, transaction }),
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              });
+            //  const signature = await cardano.signTx(transaction, true);
+            //  const signResponse = await fetch(`${getBackendWalletAPI(walletInfo as WalletInfo)}/nft/sign`, {
+            //    method: 'POST',
+            //    body: JSON.stringify({ signature, transaction }),
+            //    headers: {
+            //      'Content-Type': 'application/json',
+            //    },
+            //  });
 
-              console.log(await signResponse.json());
-              return;
-            }
+            //  console.log(await signResponse.json());
+            //  return;
+            //}
+            const apiKey = process.env.nftStorageKey as string;
+            const client = new NFTStorage({ token: apiKey });
+            const cid = await client.storeBlob(data.image[0]);
+            console.log(cid);
+
             const reader = new FileReader();
             reader.readAsArrayBuffer(data.image[0]);
             reader.onload = async () => {
