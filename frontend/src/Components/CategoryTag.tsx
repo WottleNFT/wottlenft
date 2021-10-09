@@ -1,4 +1,4 @@
-import { IonChip, IonLabel } from '@ionic/react';
+import { IonChip, IonLabel } from "@ionic/react";
 
 type TagProps = {
   color?: string;

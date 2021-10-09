@@ -1,10 +1,10 @@
-import { IonCard, IonCardHeader, IonCardTitle } from '@ionic/react';
+import { IonCard, IonCardHeader, IonCardTitle } from "@ionic/react";
 
-import { Auction } from '../types/Auction';
+import { Auction } from "../types/Auction";
 
 function AuctionCard({ auction }: { auction: Auction }) {
   return (
-    <IonCard className="rounded-2xl w-full h-full m-0">
+    <IonCard className="rounded-2xl w-full h-full m-0 p-2">
       <div className="flex flex-col">
         <div className="h-2/3 w-full">
           <img

@@ -3,9 +3,9 @@
  * Only use in browser context
  */
 
-import cbor from 'cbor';
+import cbor from "cbor";
 
-import { NamiWallet } from '../wallet';
+import { NamiWallet } from "../wallet";
 
 export type WalletInfo = {
   network: number;
@@ -30,11 +30,11 @@ export const storeWalletInfo = async (): Promise<void> => {
   const address = (await wallet.getUsedAddresses())[0];
 
   // Stores wallet info in sessionstorage
-  sessionStorage.setItem('isConnected', '1');
-  sessionStorage.setItem('balance', cbor.decode(balance));
-  sessionStorage.setItem('address', address);
+  sessionStorage.setItem("isConnected", "1");
+  sessionStorage.setItem("balance", cbor.decode(balance));
+  sessionStorage.setItem("address", address);
 
-  console.log('Wallet info updated');
+  console.log("Wallet info updated");
 };
 
 export const retrieveWalletInfo = async (): Promise<WalletInfo | undefined> => {
@@ -67,12 +67,12 @@ const checkNamiWallet = async (
   cardano: NamiWallet | undefined
 ): Promise<boolean> => {
   if (!cardano) {
-    console.error('No cardano provider found');
+    console.error("No cardano provider found");
     return false;
   }
   const enabled = await cardano.isEnabled();
   if (!enabled) {
-    console.error('Wallet not connected');
+    console.error("Wallet not connected");
     return false;
   }
   return true;

@@ -1,4 +1,4 @@
-import { storeWalletInfo } from '../lib/namiWallet';
+import { storeWalletInfo } from "../lib/namiWallet";
 
 const ConnectWalletButton: React.FC = () => {
   const handleConnectWallet = () => {
@@ -6,7 +6,7 @@ const ConnectWalletButton: React.FC = () => {
     // Check if there is a cardano provider
     if (!cardano) {
       alert(
-        'Cardano provider not detected! Get the Nami Wallet extension first.'
+        "Cardano provider not detected! Get the Nami Wallet extension first."
       );
       return;
     }
@@ -27,7 +27,7 @@ const ConnectWalletButton: React.FC = () => {
 
   return (
     <button
-      className="self-end w-48 h-16 m-5 text-white bg-black rounded-full"
+      className="self-end w-48 h-12 m-5 text-white bg-black rounded-full"
       onClick={handleConnectWallet}
     >
       Connect to wallet

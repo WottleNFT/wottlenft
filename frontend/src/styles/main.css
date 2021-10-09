@@ -21,9 +21,9 @@ a:hover {
 }
 
 :root {
-  --ion-color-primary: #4f46e5;
+  --ion-color-primary: #fbbe24;
   --ion-color-primary-rgb: 79, 70, 229;
-  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast: #000000;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
   --ion-color-primary-shade: #463eca;
   --ion-color-primary-tint: #6159e8;
@@ -78,7 +78,7 @@ ion-input {
 
 /** Search Bar */
 ion-searchbar .searchbar-input-container {
-  @apply border-b border-indigo-500 !important;
+  @apply border-b border-yellow-500 !important;
 }
 
 ion-searchbar .searchbar-input-container .searchbar-input {
@@ -86,5 +86,5 @@ ion-searchbar .searchbar-input-container .searchbar-input {
 }
 
 ion-searchbar .searchbar-input-container ion-icon {
-  --icon-color: theme(colors.indigo.500) !important;
+  --icon-color: theme(colors.yellow.500) !important;
 }
