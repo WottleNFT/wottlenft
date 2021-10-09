@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { NFTStorage } from "nft.storage";
 import { useForm } from "react-hook-form";
 
 import ConnectWalletButton from "../../Components/ConnectWalletButton";
-import WalletInfoPill from "../../Components/WalletInfoPill";
-import {
-  getBackendWalletAPI,
-  retrieveWalletInfo,
-  WalletInfo,
-} from "../../lib/namiWallet";
-import { HexCborString, NamiWallet } from "../../wallet";
+import { Status } from "../../features/wallet/walletSlice";
+import useWallet from "../../hooks/useWallet";
+import { HexCborString } from "../../wallet";
 
 type Inputs = {
   nftName: string;
@@ -33,45 +29,19 @@ type TransactionResponse = {
 const MintNftPage = () => {
   const { register, handleSubmit, watch } = useForm<Inputs>();
   const watchImage = watch("image");
-  const [walletStatusReady, setWalletStatusReady] = useState(false);
-  const [walletInfo, setWalletInfo] = useState<WalletInfo | void>();
-
-  useEffect(() => {
-    const getWalletInfo = async () => {
-      const info = await retrieveWalletInfo();
-      setWalletInfo(info);
-      setWalletStatusReady(true);
-    };
-    getWalletInfo();
-  }, []);
+  const wallet = useWallet();
 
   return (
     <div className="flex flex-col items-center w-screen h-screen bg-primary-default">
-      {(() => {
-        if (!walletStatusReady) {
-          return "Loading...";
-        }
-        return walletInfo ? (
-          <WalletInfoPill
-            network={walletInfo.network}
-            balance={walletInfo.balance}
-            address={walletInfo.address}
-          />
-        ) : (
-          <ConnectWalletButton />
-        );
-      })()}
+      <ConnectWalletButton />
       <div className="p-10 bg-gray-200 border shadow-xl h-4/5 w-500 rounded-xl">
         <form
           className="flex flex-col items-center h-full"
           onSubmit={handleSubmit(async (data) => {
-            // Store latest wallet info first to reduce API calls to nami wallet
-            const tempWalletInfo = await retrieveWalletInfo();
-            if (!walletInfo) {
-              // alert("Error connecting to wallet");
-              return;
-            }
-            const cardano = window.cardano as NamiWallet;
+            if (wallet.status !== Status.Enabled) return;
+
+            const { cardano, state } = wallet;
+            const { backendApi } = state;
             if (data.imageUrl) {
               const nftMetadata: Metadata = {
                 address: await cardano.getChangeAddress(),
@@ -82,33 +52,25 @@ const MintNftPage = () => {
               // console.log("Send metadata to backend...");
               // console.log(JSON.stringify(nftMetadata));
 
-              const response = await fetch(
-                `${getBackendWalletAPI(
-                  tempWalletInfo as WalletInfo
-                )}/nft/create`,
-                {
-                  method: "POST",
-                  body: JSON.stringify(nftMetadata),
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                }
-              );
+              const response = await fetch(`${backendApi}/nft/create`, {
+                method: "POST",
+                body: JSON.stringify(nftMetadata),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
 
               const { transaction }: TransactionResponse =
                 await response.json();
 
               const signature = await cardano.signTx(transaction, true);
-              await fetch(
-                `${getBackendWalletAPI(walletInfo as WalletInfo)}/nft/sign`,
-                {
-                  method: "POST",
-                  body: JSON.stringify({ signature, transaction }),
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                }
-              );
+              await fetch(`${backendApi}/nft/sign`, {
+                method: "POST",
+                body: JSON.stringify({ signature, transaction }),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
 
               // console.log(await signResponse.json());
               return;
@@ -138,7 +100,7 @@ const MintNftPage = () => {
               // console.log("Send metadata to backend...");
               // console.log(JSON.stringify(nftMetadata));
 
-              await fetch("http://localhost:8080/nft/create", {
+              await fetch(`${backendApi}/nft/create`, {
                 method: "POST",
                 body: JSON.stringify(nftMetadata),
               });
@@ -195,9 +157,14 @@ const MintNftPage = () => {
               />
             </label>
           </div>
-          <button className="w-2/5 h-16 mt-10 text-white bg-black border rounded-full">
-            Mint NFT
-          </button>
+          {wallet.status === Status.Enabled && (
+            <button className="w-2/5 h-20 mt-10 text-white bg-black border rounded-full hover:bg-gray-800">
+              Mint NFT
+            </button>
+          )}
+          {wallet.status !== Status.Enabled && (
+            <div>Connect with Nami Wallet to mint NFTs</div>
+          )}
         </form>
       </div>
     </div>
