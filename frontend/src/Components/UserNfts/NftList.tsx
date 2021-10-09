@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { IonContent, IonList } from "@ionic/react";
 
@@ -8,6 +8,9 @@ import NftCard from "./NftCard";
 
 const NftList = ({ nfts }: { nfts: Asset[] }) => {
   const [displayedNfts, setDisplayedNfts] = useState<Asset[]>([]);
+  useEffect(() => {
+    setDisplayedNfts(nfts);
+  }, [nfts]);
 
   function searchEvents(text: string) {
     setDisplayedNfts(
@@ -16,13 +19,15 @@ const NftList = ({ nfts }: { nfts: Asset[] }) => {
   }
   return (
     <>
-      <IonList className="p-0">
+      <IonList>
         <SearchBar slot="fixed" onSearch={searchEvents} />
       </IonList>
       <IonContent>
-        {displayedNfts.map((nft, idx) => {
-          return <NftCard nft={nft} key={idx} />;
-        })}
+        <div>
+          {displayedNfts.map((nft, idx) => {
+            return <NftCard nft={nft} key={idx} />;
+          })}
+        </div>
       </IonContent>
     </>
   );

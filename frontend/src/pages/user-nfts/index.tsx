@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 
 import { IonLabel } from "@ionic/react";
 
-import ConnectWalletButton from "../../Components/ConnectWalletButton";
 import NftList from "../../Components/UserNfts/NftList";
-import WalletInfoPill from "../../Components/WalletInfoPill";
+import { Meta } from "../../layout/Meta";
 import {
   getBackendWalletAPI,
   retrieveWalletInfo,
   WalletInfo,
 } from "../../lib/namiWallet";
+import { Main } from "../../templates/Main";
 import { UTxO } from "../../types/UTxO";
 import { NamiWallet } from "../../wallet";
 
@@ -40,10 +40,8 @@ const UserNfts = () => {
       )
         .then((res) => res.json())
         .then((data) => {
-          if (data.results) {
-            setUtxos(data.results);
-            console.log(data.results);
-          }
+          setUtxos(data);
+          console.log("data", data);
         })
         .catch((err) => {
           console.error(err);
@@ -52,33 +50,33 @@ const UserNfts = () => {
     fetchUtxos();
   }, [walletInfo]);
 
+  function getNfts() {
+    const nfts = utxos
+      .map((utxo) => utxo.assets)
+      .filter((assets) => assets.length > 0)
+      .reduce((a, b) => a.concat(b), []);
+    console.log(nfts);
+    return nfts;
+  }
   return (
-    <div className="flex flex-col items-center w-screen h-screen bg-primary-default">
-      {(() => {
-        if (!walletStatusReady) {
-          return "Loading...";
-        }
-        return walletInfo ? (
-          <WalletInfoPill
-            network={walletInfo.network}
-            balance={walletInfo.balance}
-            address={walletInfo.address}
-          />
-        ) : (
-          <ConnectWalletButton />
-        );
-      })()}
-      {!walletInfo ? (
-        <IonLabel>Please Connect Nami Wallet First!</IonLabel>
-      ) : (
-        <NftList
-          nfts={utxos
-            .map((utxo) => utxo.assets)
-            .filter((assets) => assets.length > 0)
-            .reduce((a, b) => a.concat(b), [])}
+    <Main
+      meta={
+        <Meta
+          title="Wottlenft"
+          description="Wottlenft is your next NFT auction site."
         />
+      }
+    >
+      {!walletInfo ? (
+        <IonLabel>
+          {walletStatusReady
+            ? "Please Connect Nami Wallet First!"
+            : "Loading Your Wallet..."}
+        </IonLabel>
+      ) : (
+        <NftList nfts={getNfts()} />
       )}
-    </div>
+    </Main>
   );
 };
 export default UserNfts;

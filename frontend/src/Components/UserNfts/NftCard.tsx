@@ -11,7 +11,7 @@ import { Asset } from "../../types/Asset";
 
 const NftCard = ({ nft }: { nft: Asset }) => {
   return (
-    <IonCard className="rounded-2xl w-full h-full m-0">
+    <IonCard className="rounded-2xl w-full h-full p-2">
       <div className="flex flex-col">
         <div className="h-2/3 w-full">
           {/* <img
