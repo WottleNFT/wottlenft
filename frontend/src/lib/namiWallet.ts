@@ -48,7 +48,7 @@ export const retrieveWalletInfo = async (): Promise<WalletInfo | undefined> => {
   const address = (await wallet.getUsedAddresses())[0];
 
   return {
-    network: network,
+    network,
     walletConnected: true,
     balance,
     address,
@@ -59,10 +59,9 @@ export const retrieveWalletInfo = async (): Promise<WalletInfo | undefined> => {
 export const getBackendWalletAPI = (walletInfo: WalletInfo) => {
   if (walletInfo.network) {
     return process.env.mainnetApi;
-  } else {
-    return process.env.testnetApi;
   }
-}
+  return process.env.testnetApi;
+};
 
 const checkNamiWallet = async (
   cardano: NamiWallet | undefined

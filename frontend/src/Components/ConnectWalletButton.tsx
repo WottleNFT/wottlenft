@@ -27,7 +27,7 @@ const ConnectWalletButton: React.FC = () => {
 
   return (
     <button
-      className="self-end w-48 h-16 m-5 text-white bg-black rounded-full"
+      className="self-end w-48 h-16 mx-5 text-white bg-black rounded-full"
       onClick={handleConnectWallet}
     >
       Connect to wallet
