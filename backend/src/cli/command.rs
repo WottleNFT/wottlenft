@@ -2,12 +2,13 @@ use std::process::{Command, Output};
 
 use cardano_serialization_lib::address::Address;
 
-use crate::cli::utxo::{transform_utxo_output, Utxo};
+use crate::cli::utxo::transform_utxo_output;
 use crate::config::Config;
 use crate::error::Error;
 use crate::Result;
 
 use super::protocol::{BlockInformation, ProtocolParams};
+use cardano_serialization_lib::utils::TransactionUnspentOutput;
 
 struct CliArgumentBuilder {
     testnet_magic: Option<String>,
@@ -91,7 +92,7 @@ impl CardanoCli {
             node_socket_path,
             ..
         } = &self.config;
-        CliArgumentBuilder::new(&cli_path, *is_testnet, &testnet_magic, &node_socket_path)
+        CliArgumentBuilder::new(cli_path, *is_testnet, testnet_magic, node_socket_path)
     }
 
     fn wrap_cmd_output(output: Output) -> Result<String> {
@@ -99,12 +100,12 @@ impl CardanoCli {
             Ok(String::from_utf8(output.stdout).map_err(|err| Error::Message(err.to_string()))?)
         } else {
             Err(Error::Message(
-                String::from_utf8_lossy(&output.stderr).into_owned().into(),
+                String::from_utf8_lossy(&output.stderr).into_owned(),
             ))
         }
     }
 
-    pub fn query_utxo(&self, addr: &Address) -> Result<Vec<Utxo>> {
+    pub fn query_utxo(&self, addr: &Address) -> Result<Vec<TransactionUnspentOutput>> {
         let mut cmd = self
             .builder()
             .query()
@@ -117,7 +118,7 @@ impl CardanoCli {
             .lines()
             .skip(2)
             .map(|line| line.split_whitespace())
-            .map(transform_utxo_output)
+            .map(|s| transform_utxo_output(s, addr))
             .collect()
     }
 
