@@ -69,11 +69,11 @@ const UserNfts = () => {
     >
       <IonContent>
         {!walletInfo ? (
-          <IonLabel className="w-full text-center">
+          <p className="w-full text-center text-2xl font-mono p-4">
             {walletStatusReady
               ? "Please Connect Nami Wallet First!"
               : "Loading Your Wallet..."}
-          </IonLabel>
+          </p>
         ) : (
           <NftList nfts={getNfts()} />
         )}

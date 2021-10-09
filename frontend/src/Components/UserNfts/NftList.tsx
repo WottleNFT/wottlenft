@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { IonContent, IonList } from "@ionic/react";
+import { IonList } from "@ionic/react";
 
 import { Asset } from "../../types/Asset";
 import SearchBar from "../SearchBar";
