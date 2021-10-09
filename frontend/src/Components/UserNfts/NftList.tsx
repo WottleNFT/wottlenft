@@ -22,13 +22,11 @@ const NftList = ({ nfts }: { nfts: Asset[] }) => {
       <IonList>
         <SearchBar slot="fixed" onSearch={searchEvents} />
       </IonList>
-      <IonContent>
-        <div>
-          {displayedNfts.map((nft, idx) => {
-            return <NftCard nft={nft} key={idx} />;
-          })}
-        </div>
-      </IonContent>
+      <div>
+        {displayedNfts.map((nft, idx) => {
+          return <NftCard nft={nft} key={idx} />;
+        })}
+      </div>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { IonLabel } from "@ionic/react";
+import { IonContent, IonLabel } from "@ionic/react";
 
 import NftList from "../../Components/UserNfts/NftList";
 import { Meta } from "../../layout/Meta";
@@ -67,15 +67,17 @@ const UserNfts = () => {
         />
       }
     >
-      {!walletInfo ? (
-        <IonLabel>
-          {walletStatusReady
-            ? "Please Connect Nami Wallet First!"
-            : "Loading Your Wallet..."}
-        </IonLabel>
-      ) : (
-        <NftList nfts={getNfts()} />
-      )}
+      <IonContent>
+        {!walletInfo ? (
+          <IonLabel className="w-full text-center">
+            {walletStatusReady
+              ? "Please Connect Nami Wallet First!"
+              : "Loading Your Wallet..."}
+          </IonLabel>
+        ) : (
+          <NftList nfts={getNfts()} />
+        )}
+      </IonContent>
     </Main>
   );
 };

@@ -38,8 +38,8 @@ const Main = (props: IMainProps) => {
       {props.meta}
       <SideMenu />
       <IonPage id="main">
-        <IonHeader className="ion-no-border h-40">
-          <IonToolbar color="primary" className="h-1/2">
+        <IonHeader className="ion-no-border h-20">
+          <IonToolbar color="primary" className="h-full">
             <div className="flex flex-row">
               <MenuButton />
               <IonTitle>Wottlenft</IonTitle>
