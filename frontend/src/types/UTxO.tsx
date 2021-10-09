@@ -1,4 +1,8 @@
+import { Asset } from "./Asset";
+
 export interface UTxO {
-  name: string;
-  value: string;
+  tx_hash: string;
+  tx_idx: number;
+  lovelace: number;
+  assets: Asset[];
 }

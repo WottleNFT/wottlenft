@@ -126,7 +126,7 @@ function ExploreAuctions() {
             <Link href="/createAuction">
               <IonChip
                 color="primary"
-                className="w-full h-32 m-auto border-2 border-indigo-500 border-dashed"
+                className="w-full h-32 m-auto border-2 border-yellow-500 border-dashed"
               >
                 <div className="flex flex-col items-center w-full">
                   <IonIcon size="large" icon={addOutline} className="p-2" />

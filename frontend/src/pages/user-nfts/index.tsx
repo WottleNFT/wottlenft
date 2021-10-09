@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 
+import { IonLabel } from "@ionic/react";
+
 import ConnectWalletButton from "../../Components/ConnectWalletButton";
+import NftList from "../../Components/UserNfts/NftList";
 import WalletInfoPill from "../../Components/WalletInfoPill";
 import {
   getBackendWalletAPI,
   retrieveWalletInfo,
   WalletInfo,
 } from "../../lib/namiWallet";
+import { UTxO } from "../../types/UTxO";
 import { NamiWallet } from "../../wallet";
 
 const UserNfts = () => {
   const [walletStatusReady, setWalletStatusReady] = useState(false);
   const [walletInfo, setWalletInfo] = useState<WalletInfo | void>();
+  const [utxos, setUtxos] = useState<UTxO[]>([]);
 
   useEffect(() => {
     const getWalletInfo = async () => {
@@ -32,9 +37,17 @@ const UserNfts = () => {
         `${getBackendWalletAPI(
           walletInfo as WalletInfo
         )}/address/${await cardano.getChangeAddress()}/utxo`
-      ).then((res) => {
-        console.log(res);
-      });
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.results) {
+            setUtxos(data.results);
+            console.log(data.results);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     };
     fetchUtxos();
   }, [walletInfo]);
@@ -55,9 +68,16 @@ const UserNfts = () => {
           <ConnectWalletButton />
         );
       })()}
-      {/* { (!walletInfo) 
-      ? <IonLabel>Please Connect Nami Wallet First!</IonLabel>
-      : } */}
+      {!walletInfo ? (
+        <IonLabel>Please Connect Nami Wallet First!</IonLabel>
+      ) : (
+        <NftList
+          nfts={utxos
+            .map((utxo) => utxo.assets)
+            .filter((assets) => assets.length > 0)
+            .reduce((a, b) => a.concat(b), [])}
+        />
+      )}
     </div>
   );
 };

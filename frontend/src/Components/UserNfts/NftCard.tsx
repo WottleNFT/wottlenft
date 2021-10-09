@@ -1,10 +1,15 @@
 import React from "react";
 
-import { IonCard, IonCardHeader, IonCardTitle } from "@ionic/react";
+import {
+  IonCard,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+} from "@ionic/react";
 
-import { NFT } from "../../types/NFT";
+import { Asset } from "../../types/Asset";
 
-const NftCard = ({ nft }: { nft: NFT }) => {
+const NftCard = ({ nft }: { nft: Asset }) => {
   return (
     <IonCard className="rounded-2xl w-full h-full m-0">
       <div className="flex flex-col">
@@ -17,8 +22,10 @@ const NftCard = ({ nft }: { nft: NFT }) => {
         </div>
         <IonCardHeader className="text-left px-2 py-0 truncate">
           <IonCardTitle className="truncate text-base">
-            {nft.policyId}
+            {`Policy Id: ${nft.policy_id}`}
           </IonCardTitle>
+          <IonCardSubtitle>{`Asset name: ${nft.asset_name}`}</IonCardSubtitle>
+          <IonCardSubtitle>{`Qty: ${nft.qty}`}</IonCardSubtitle>
         </IonCardHeader>
       </div>
     </IonCard>

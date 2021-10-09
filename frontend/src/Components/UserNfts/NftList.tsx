@@ -2,12 +2,12 @@ import React, { useState } from "react";
 
 import { IonContent, IonList } from "@ionic/react";
 
-import { NFT } from "../../types/NFT";
+import { Asset } from "../../types/Asset";
 import SearchBar from "../SearchBar";
 import NftCard from "./NftCard";
 
-const NftList = ({ nfts }: { nfts: NFT[] }) => {
-  const [displayedNfts, setDisplayedNfts] = useState<NFT[]>([]);
+const NftList = ({ nfts }: { nfts: Asset[] }) => {
+  const [displayedNfts, setDisplayedNfts] = useState<Asset[]>([]);
 
   function searchEvents(text: string) {
     setDisplayedNfts(

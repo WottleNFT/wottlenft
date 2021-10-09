@@ -43,7 +43,7 @@ module.exports = {
           900: '#2a4365',
         },
         primary: {
-          default: '#FAC748',
+          default: '#fbbe24',
         },
       },
     },
