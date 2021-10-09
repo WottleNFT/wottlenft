@@ -10,6 +10,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { useRouter } from "next/router";
 
 import ConnectWalletButton from "../Components/ConnectWalletButton";
 import SideMenu, { MenuButton } from "../Components/SideMenu";
@@ -22,6 +23,8 @@ type IMainProps = {
 };
 
 const Main = (props: IMainProps) => {
+  const router = useRouter();
+
   const [walletStatusReady, setWalletStatusReady] = useState(false);
   const [walletInfo, setWalletInfo] = useState<WalletInfo | void>();
 
@@ -43,7 +46,12 @@ const Main = (props: IMainProps) => {
           <IonToolbar color="primary" className="h-full">
             <div className="flex flex-row">
               <MenuButton />
-              <IonTitle>Wottlenft</IonTitle>
+              <img
+                className="h-14"
+                alt="Logo"
+                src={`${router.basePath}/logo.png`}
+              />
+              <IonTitle className="p-0">WottleNFT</IonTitle>
             </div>
 
             <IonButtons slot="end" className="flex items-center">

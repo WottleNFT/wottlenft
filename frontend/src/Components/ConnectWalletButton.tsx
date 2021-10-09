@@ -5,9 +5,9 @@ const ConnectWalletButton: React.FC = () => {
     const { cardano } = window;
     // Check if there is a cardano provider
     if (!cardano) {
-      alert(
-        "Cardano provider not detected! Get the Nami Wallet extension first."
-      );
+      // alert(
+      //   "Cardano provider not detected! Get the Nami Wallet extension first."
+      // );
       return;
     }
 
@@ -20,9 +20,7 @@ const ConnectWalletButton: React.FC = () => {
         // Convenient way to just update the page with the wallet info for now
         window.location.reload();
       })
-      .catch((err: Error) => {
-        console.log(err);
-      });
+      .catch((_: Error) => {});
   };
 
   return (

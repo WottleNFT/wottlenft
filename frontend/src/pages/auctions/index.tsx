@@ -32,6 +32,7 @@ function ExploreAuctions() {
     } else {
       setDisplayedAuctions(auctionsInSelectedCategories());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategories, auctions]);
 
   function onTapCategory(categoryId: number) {
@@ -91,7 +92,7 @@ function ExploreAuctions() {
         {displayedAuctions.length ? (
           displayedAuctions.map((auction, idx) => {
             return (
-              <Link href={`/auctions/${auction.id}`} key={idx}>
+              <Link href={`/auctions/${auction.id}`} key={idx} passHref>
                 <IonCard className="mt-3 rounded-2xl">
                   <div className="flex felx-row">
                     <div className="w-1/3 h-32">
@@ -123,7 +124,7 @@ function ExploreAuctions() {
           })
         ) : (
           <div className="p-2">
-            <Link href="/createAuction">
+            <Link href="/createAuction" passHref>
               <IonChip
                 color="primary"
                 className="w-full h-32 m-auto border-2 border-yellow-500 border-dashed"
