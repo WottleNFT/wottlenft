@@ -3,41 +3,24 @@ import React, { useEffect, useState } from "react";
 import { IonContent } from "@ionic/react";
 
 import NftList from "../../Components/UserNfts/NftList";
+import { Status } from "../../features/wallet/walletSlice";
+import useWallet from "../../hooks/useWallet";
 import { Meta } from "../../layout/Meta";
-import {
-  getBackendWalletAPI,
-  retrieveWalletInfo,
-  WalletInfo,
-} from "../../lib/namiWallet";
 import { Main } from "../../templates/Main";
 import { UTxO } from "../../types/UTxO";
-import { NamiWallet } from "../../wallet";
 
 const UserNfts = () => {
-  const [walletStatusReady, setWalletStatusReady] = useState(false);
-  const [walletInfo, setWalletInfo] = useState<WalletInfo | void>();
+  const wallet = useWallet();
   const [utxos, setUtxos] = useState<UTxO[]>([]);
 
   useEffect(() => {
-    const getWalletInfo = async () => {
-      const info = await retrieveWalletInfo();
-      setWalletInfo(info);
-      setWalletStatusReady(true);
-    };
-    getWalletInfo();
-  }, []);
-
-  useEffect(() => {
     const fetchUtxos = async () => {
-      if (!walletInfo) {
+      if (wallet.status !== Status.Enabled) {
         return;
       }
-      const cardano = window.cardano as NamiWallet;
-      fetch(
-        `${getBackendWalletAPI(
-          walletInfo as WalletInfo
-        )}/address/${await cardano.getChangeAddress()}/utxo`
-      )
+      const { state } = wallet;
+      const { backendApi, address } = state;
+      fetch(`${backendApi}/address/${address}/utxo`)
         .then((res) => res.json())
         .then((data) => {
           setUtxos(data);
@@ -47,7 +30,7 @@ const UserNfts = () => {
         });
     };
     fetchUtxos();
-  }, [walletInfo]);
+  }, [wallet]);
 
   function getNfts() {
     const nfts = utxos
@@ -66,9 +49,9 @@ const UserNfts = () => {
       }
     >
       <IonContent>
-        {!walletInfo ? (
-          <p className="w-full text-center text-2xl font-mono p-4">
-            {walletStatusReady
+        {wallet.status !== Status.Enabled ? (
+          <p className="w-full p-4 font-mono text-2xl text-center">
+            {wallet.status !== Status.Loading
               ? "Please Connect Nami Wallet First!"
               : "Loading Your Wallet..."}
           </p>

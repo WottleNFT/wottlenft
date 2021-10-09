@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
+import { Status } from "../../features/wallet/walletSlice";
+import useWallet from "../../hooks/useWallet";
 import { Meta } from "../../layout/Meta";
-import { retrieveWalletInfo } from "../../lib/namiWallet";
 import { Main } from "../../templates/Main";
 import { HexCborString } from "../../wallet";
 
@@ -20,9 +21,9 @@ type Metadata = {
   image: string;
 };
 
-// type TransactionResponse = {
-//  transaction: HexCborString;
-// };
+type TransactionResponse = {
+  transaction: HexCborString;
+};
 
 type PinataResponse = {
   IpfsHash: string;
@@ -34,6 +35,7 @@ type PinataResponse = {
 const MintNftPage = () => {
   const { register, handleSubmit, watch } = useForm<Inputs>();
   const watchImage = watch("image");
+  const wallet = useWallet();
 
   return (
     <Main meta={<Meta title="Mint-NFT" description="Page to create an NFT" />}>
@@ -42,54 +44,12 @@ const MintNftPage = () => {
           <form
             className="flex flex-col items-center h-full"
             onSubmit={handleSubmit(async (data) => {
-              // Store latest wallet info first to reduce API calls to nami wallet
-              const tempWalletInfo = await retrieveWalletInfo();
-              if (!tempWalletInfo) {
+              if (wallet.status !== Status.Enabled) {
                 alert("Error connecting to wallet");
                 return;
               }
-
-              // if (data.imageUrl) {
-              //  const nftMetadata: Metadata = {
-              //    address: await cardano.getChangeAddress(),
-              //    name: data.nftName,
-              //    description: data.description,
-              //    image: data.imageUrl,
-              //  };
-              //  console.log('Send metadata to backend...');
-              //  console.log(JSON.stringify(nftMetadata));
-
-              //  const response = await fetch(
-              //    `${getBackendWalletAPI(
-              //      tempWalletInfo as WalletInfo
-              //    )}/nft/create`,
-              //    {
-              //      method: 'POST',
-              //      body: JSON.stringify(nftMetadata),
-              //      headers: {
-              //        'Content-Type': 'application/json',
-              //      },
-              //    }
-              //  );
-
-              //  const { transaction }: TransactionResponse =
-              //    await response.json();
-
-              //  const signature = await cardano.signTx(transaction, true);
-              //  const signResponse = await fetch(
-              //    `${getBackendWalletAPI(walletInfo as WalletInfo)}/nft/sign`,
-              //    {
-              //      method: 'POST',
-              //      body: JSON.stringify({ signature, transaction }),
-              //      headers: {
-              //        'Content-Type': 'application/json',
-              //      },
-              //    }
-              //  );
-
-              //  console.log(await signResponse.json());
-              //  return;
-              // }
+              const { cardano } = wallet;
+              const { backendApi } = wallet.state;
 
               // Upload to IPFS using Pinata
               const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
@@ -116,7 +76,7 @@ const MintNftPage = () => {
               const ipfsNativeUrl = `ipfs://${pinataData.IpfsHash}`;
 
               const nftMetadata: Metadata = {
-                address: tempWalletInfo.address,
+                address: wallet.state.address,
                 name: data.nftName,
                 description: data.description,
                 image: ipfsNativeUrl,
@@ -124,15 +84,27 @@ const MintNftPage = () => {
               console.log("Send metadata to backend...");
               console.log(JSON.stringify(nftMetadata));
 
-              const createNftRes = await fetch(
-                "http://localhost:8080/nft/create",
-                {
-                  method: "POST",
-                  body: JSON.stringify(nftMetadata),
-                }
-              );
+              const createNftRes = await fetch(`${backendApi}/nft/create`, {
+                method: "POST",
+                body: JSON.stringify(nftMetadata),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
 
-              console.log(await createNftRes.json());
+              const { transaction }: TransactionResponse =
+                await createNftRes.json();
+
+              const signature = await cardano.signTx(transaction, true);
+              const signResponse = await fetch(`${backendApi}/nft/sign`, {
+                method: "POST",
+                body: JSON.stringify({ signature, transaction }),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
+
+              console.log(await signResponse.json());
             })}
           >
             <p className="my-2 text-lg font-semibold text-center">
@@ -156,15 +128,6 @@ const MintNftPage = () => {
                 {...register("description")}
               />
             </label>
-            <label className="w-full">
-              Image Url
-              <input
-                className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
-                placeholder="Enter a short description for your NFT"
-                type="text"
-                {...register("imageUrl")}
-              />
-            </label>
             <div className="w-full h-3/5">
               <label>
                 Upload image
@@ -182,7 +145,7 @@ const MintNftPage = () => {
                 />
               </label>
             </div>
-            <button className="w-2/5 h-16 mt-10 text-white bg-black border rounded-full">
+            <button className="w-2/5 h-16 mt-10 text-white bg-black border rounded-full hover:bg-gray-800">
               Mint NFT
             </button>
           </form>

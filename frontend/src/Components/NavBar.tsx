@@ -1,38 +1,45 @@
-import wottleLogo from '../../public/assets/Logo.png';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { retrieveWalletInfo, WalletInfo } from '../lib/namiWallet';
-import { IonSpinner } from '@ionic/react';
-import WalletInfoPill from './WalletInfoPill';
-import ConnectWalletButton from './ConnectWalletButton';
+import React from "react";
+
+import { IonLabel, IonSpinner } from "@ionic/react";
+import Image from "next/image";
+
+import wottleLogo from "../../public/assets/Logo.png";
+import { Status } from "../features/wallet/walletSlice";
+import useWallet from "../hooks/useWallet";
+import ConnectWalletButton from "./ConnectWalletButton";
+import WalletInfoPill from "./WalletInfoPill";
 
 const NavBar: React.FC = () => {
-  const [walletStatusReady, setWalletStatusReady] = useState<boolean>(false);
-  const [walletInfo, setWalletInfo] = useState<WalletInfo | void>();
-
-  useEffect(() => {
-    const getWalletInfo = async () => {
-      const info = await retrieveWalletInfo();
-      setWalletInfo(info);
-      setWalletStatusReady(true);
-    }
-    getWalletInfo();
-  }, []);
-
   return (
     <div className="flex justify-between w-full">
       <Image alt="wottlelogo" src={wottleLogo} />
-      {(() => {
-        if (!walletStatusReady) return <IonSpinner name="crescent" className="h-16 w-48" />
-        return walletInfo ? 
-          <WalletInfoPill
-            network={walletInfo.network}
-            balance={walletInfo.balance}
-            address={walletInfo.address}
-          /> :
-          <ConnectWalletButton />
-      })()}
+      <WalletInformation />
     </div>
   );
-}
-export default NavBar
+};
+
+const WalletInformation = () => {
+  const wallet = useWallet();
+
+  if (wallet.status === Status.Loading)
+    return (
+      <div className="flex h-20 place-items-center">
+        <IonSpinner name="crescent" className="w-48 h-16" />
+      </div>
+    );
+
+  if (wallet.status === Status.NoExtension)
+    return (
+      <div className="flex h-20 place-items-center">
+        <IonLabel>Install the Nami Wallet Extension</IonLabel>
+      </div>
+    );
+
+  if (wallet.status === Status.Enabled) {
+    return <WalletInfoPill {...wallet.state} />;
+  }
+
+  return <ConnectWalletButton />;
+};
+
+export default NavBar;

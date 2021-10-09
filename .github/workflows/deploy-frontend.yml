@@ -19,6 +19,7 @@ jobs:
           username: ${{ secrets.DEPLOYMENT_USERNAME }}
           key: ${{ secrets.DEPLOYMENT_KEY }}
           port: ${{ secrets.DEPLOYMENT_PORT }}
+          script_stop: true
           script: |
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -28,5 +29,6 @@ jobs:
             git reset --hard origin/main
             cd frontend
             export NODE_ENV=production
+            npm install
             npm run build
             pm2 restart wottle --update-env
