@@ -1,7 +1,6 @@
 use crate::Result;
 use actix_web::{get, web, HttpResponse, Scope};
 use cardano_serialization_lib::{
-    address::Address,
     utils::{from_bignum, BigNum},
 };
 use serde_json::json;

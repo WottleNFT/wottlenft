@@ -3,7 +3,7 @@ use crate::{
     Result,
 };
 use actix_web::{post, web, HttpResponse, Scope};
-use cardano_serialization_lib::{address::Address, Transaction, TransactionWitnessSet};
+use cardano_serialization_lib::{Transaction, TransactionWitnessSet};
 use serde::Deserialize;
 use serde_json::json;
 

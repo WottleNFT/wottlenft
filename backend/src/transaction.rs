@@ -9,6 +9,7 @@ use reqwest::{
 };
 
 use crate::cli::protocol::ProtocolParams;
+use crate::error::Error;
 
 const TWO_HOURS: u32 = 60 * 60 * 2;
 
@@ -91,7 +92,11 @@ impl Submitter {
             .send()
             .await?;
 
-        let text = res.text().await?;
+        let text = res.error_for_status()?.text().await?
+            .replace("\"", "");
+
+        TransactionHash::from_bytes(hex::decode(text.clone().as_bytes())?)
+            .map_err(|_| Error::Message("Unsuccessful transaction. Please try again".to_string()))?;
 
         Ok(text)
     }
