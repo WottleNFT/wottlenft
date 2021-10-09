@@ -11,8 +11,8 @@ import {
   IonButtons,
   IonMenuButton,
   IonMenuToggle,
-} from '@ionic/react';
-import { home, personCircleOutline, searchOutline } from 'ionicons/icons';
+} from "@ionic/react";
+import { home, personCircleOutline, searchOutline } from "ionicons/icons";
 
 function SideMenu() {
   return (

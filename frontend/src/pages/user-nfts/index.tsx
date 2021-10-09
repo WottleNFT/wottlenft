@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { IonContent, IonLabel } from "@ionic/react";
+import { IonContent } from "@ionic/react";
 
 import NftList from "../../Components/UserNfts/NftList";
 import { Meta } from "../../layout/Meta";
@@ -41,10 +41,9 @@ const UserNfts = () => {
         .then((res) => res.json())
         .then((data) => {
           setUtxos(data);
-          console.log("data", data);
         })
-        .catch((err) => {
-          console.error(err);
+        .catch((_) => {
+          // console.error(err);
         });
     };
     fetchUtxos();
@@ -54,8 +53,7 @@ const UserNfts = () => {
     const nfts = utxos
       .map((utxo) => utxo.assets)
       .filter((assets) => assets.length > 0)
-      .reduce((a, b) => a.concat(b), []);
-    console.log(nfts);
+      .reduce((assets1, assets2) => assets1.concat(assets2), []);
     return nfts;
   }
   return (

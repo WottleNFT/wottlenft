@@ -68,7 +68,7 @@ const MintNftPage = () => {
             // Store latest wallet info first to reduce API calls to nami wallet
             const tempWalletInfo = await retrieveWalletInfo();
             if (!walletInfo) {
-              alert("Error connecting to wallet");
+              // alert("Error connecting to wallet");
               return;
             }
             const cardano = window.cardano as NamiWallet;
@@ -79,8 +79,8 @@ const MintNftPage = () => {
                 description: data.description,
                 image: data.imageUrl,
               };
-              console.log("Send metadata to backend...");
-              console.log(JSON.stringify(nftMetadata));
+              // console.log("Send metadata to backend...");
+              // console.log(JSON.stringify(nftMetadata));
 
               const response = await fetch(
                 `${getBackendWalletAPI(
@@ -99,7 +99,7 @@ const MintNftPage = () => {
                 await response.json();
 
               const signature = await cardano.signTx(transaction, true);
-              const signResponse = await fetch(
+              await fetch(
                 `${getBackendWalletAPI(walletInfo as WalletInfo)}/nft/sign`,
                 {
                   method: "POST",
@@ -110,7 +110,7 @@ const MintNftPage = () => {
                 }
               );
 
-              console.log(await signResponse.json());
+              // console.log(await signResponse.json());
               return;
             }
             const reader = new FileReader();
@@ -119,7 +119,7 @@ const MintNftPage = () => {
               const apiKey = process.env.nftStorageKey as string;
               const client = new NFTStorage({ token: apiKey });
 
-              console.log("Storing image on NFTstorage...");
+              // console.log("Storing image on NFTstorage...");
 
               const metadata = await client.store({
                 name: data.nftName,
@@ -127,7 +127,7 @@ const MintNftPage = () => {
                 image: data.image[0],
               });
 
-              console.log("Successfully stored image on NFTstorage");
+              // console.log("Successfully stored image on NFTstorage");
 
               const nftMetadata: Metadata = {
                 address: await cardano.getChangeAddress(),
@@ -135,15 +135,15 @@ const MintNftPage = () => {
                 description: data.description,
                 image: metadata.data.image.href,
               };
-              console.log("Send metadata to backend...");
-              console.log(JSON.stringify(nftMetadata));
+              // console.log("Send metadata to backend...");
+              // console.log(JSON.stringify(nftMetadata));
 
-              const response = await fetch("http://localhost:8080/nft/create", {
+              await fetch("http://localhost:8080/nft/create", {
                 method: "POST",
                 body: JSON.stringify(nftMetadata),
               });
 
-              console.log(await response.json());
+              // console.log(await response.json());
             };
           })}
         >
@@ -181,7 +181,11 @@ const MintNftPage = () => {
             <label>
               Upload image
               {watchImage && watchImage.length === 1 && (
-                <img id="imgPreview" src={URL.createObjectURL(watchImage[0])} />
+                <img
+                  id="imgPreview"
+                  alt="img"
+                  src={URL.createObjectURL(watchImage[0])}
+                />
               )}
               <input
                 className="w-full p-3 mt-2 border rounded"

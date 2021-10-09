@@ -34,7 +34,7 @@ export const storeWalletInfo = async (): Promise<void> => {
   sessionStorage.setItem("balance", cbor.decode(balance));
   sessionStorage.setItem("address", address);
 
-  console.log("Wallet info updated");
+  // console.log("Wallet info updated");
 };
 
 export const retrieveWalletInfo = async (): Promise<WalletInfo | undefined> => {
@@ -67,12 +67,12 @@ const checkNamiWallet = async (
   cardano: NamiWallet | undefined
 ): Promise<boolean> => {
   if (!cardano) {
-    console.error("No cardano provider found");
+    // console.error("No cardano provider found");
     return false;
   }
   const enabled = await cardano.isEnabled();
   if (!enabled) {
-    console.error("Wallet not connected");
+    // console.error("Wallet not connected");
     return false;
   }
   return true;
