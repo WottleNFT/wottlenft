@@ -4,7 +4,6 @@ import {
   IonButton,
   IonButtons,
   IonHeader,
-  IonLabel,
   IonPage,
   IonSpinner,
   IonTitle,
@@ -61,14 +60,16 @@ const Main = (props: IMainProps) => {
                 <IonButton routerLink="/user-nfts">My NFTs</IonButton>
               )}
               {(() => {
-                if (!walletStatusReady) return <IonSpinner name="crescent" />
-                return walletInfo ? 
+                if (!walletStatusReady) return <IonSpinner name="crescent" />;
+                return walletInfo ? (
                   <WalletInfoPill
                     network={walletInfo.network}
                     balance={walletInfo.balance}
                     address={walletInfo.address}
-                  /> : 
+                  />
+                ) : (
                   <ConnectWalletButton />
+                );
               })()}
             </IonButtons>
           </IonToolbar>
