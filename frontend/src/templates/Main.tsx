@@ -1,17 +1,15 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 
 import {
   IonButton,
   IonButtons,
   IonHeader,
-  IonIcon,
   IonPage,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import { personCircleOutline } from 'ionicons/icons';
+} from "@ionic/react";
 
-import SideMenu, { MenuButton } from '../Components/SideMenu';
+import SideMenu, { MenuButton } from "../Components/SideMenu";
 
 type IMainProps = {
   meta: ReactNode;
@@ -32,9 +30,8 @@ const Main = (props: IMainProps) => (
 
           <IonButtons slot="end">
             <IonButton routerLink="/about">About</IonButton>
-            <IonButton routerLink="/">
-              <IonIcon size="large" icon={personCircleOutline} />
-            </IonButton>
+            <IonButton routerLink="/mint-nft">Mint NFT</IonButton>
+            <IonButton routerLink="/user-nfts">My NFTs</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>

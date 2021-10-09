@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import { NFTStorage } from 'nft.storage';
-import { useForm } from 'react-hook-form';
+import { NFTStorage } from "nft.storage";
+import { useForm } from "react-hook-form";
 
-import ConnectWalletButton from '../../Components/ConnectWalletButton';
-import WalletInfoPill from '../../Components/WalletInfoPill';
+import ConnectWalletButton from "../../Components/ConnectWalletButton";
+import WalletInfoPill from "../../Components/WalletInfoPill";
 import {
   getBackendWalletAPI,
   retrieveWalletInfo,
   WalletInfo,
-} from '../../lib/namiWallet';
-import { HexCborString, NamiWallet } from '../../wallet';
+} from "../../lib/namiWallet";
+import { HexCborString, NamiWallet } from "../../wallet";
 
 type Inputs = {
   nftName: string;
@@ -32,7 +32,7 @@ type TransactionResponse = {
 
 const MintNftPage = () => {
   const { register, handleSubmit, watch } = useForm<Inputs>();
-  const watchImage = watch('image');
+  const watchImage = watch("image");
   const [walletStatusReady, setWalletStatusReady] = useState(false);
   const [walletInfo, setWalletInfo] = useState<WalletInfo | void>();
 
@@ -49,7 +49,7 @@ const MintNftPage = () => {
     <div className="flex flex-col items-center w-screen h-screen bg-primary-default">
       {(() => {
         if (!walletStatusReady) {
-          return 'Loading...';
+          return "Loading...";
         }
         return walletInfo ? (
           <WalletInfoPill
@@ -68,7 +68,7 @@ const MintNftPage = () => {
             // Store latest wallet info first to reduce API calls to nami wallet
             const tempWalletInfo = await retrieveWalletInfo();
             if (!walletInfo) {
-              alert('Error connecting to wallet');
+              alert("Error connecting to wallet");
               return;
             }
             const cardano = window.cardano as NamiWallet;
@@ -79,7 +79,7 @@ const MintNftPage = () => {
                 description: data.description,
                 image: data.imageUrl,
               };
-              console.log('Send metadata to backend...');
+              console.log("Send metadata to backend...");
               console.log(JSON.stringify(nftMetadata));
 
               const response = await fetch(
@@ -87,10 +87,10 @@ const MintNftPage = () => {
                   tempWalletInfo as WalletInfo
                 )}/nft/create`,
                 {
-                  method: 'POST',
+                  method: "POST",
                   body: JSON.stringify(nftMetadata),
                   headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                   },
                 }
               );
@@ -102,10 +102,10 @@ const MintNftPage = () => {
               const signResponse = await fetch(
                 `${getBackendWalletAPI(walletInfo as WalletInfo)}/nft/sign`,
                 {
-                  method: 'POST',
+                  method: "POST",
                   body: JSON.stringify({ signature, transaction }),
                   headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                   },
                 }
               );
@@ -119,7 +119,7 @@ const MintNftPage = () => {
               const apiKey = process.env.nftStorageKey as string;
               const client = new NFTStorage({ token: apiKey });
 
-              console.log('Storing image on NFTstorage...');
+              console.log("Storing image on NFTstorage...");
 
               const metadata = await client.store({
                 name: data.nftName,
@@ -127,7 +127,7 @@ const MintNftPage = () => {
                 image: data.image[0],
               });
 
-              console.log('Successfully stored image on NFTstorage');
+              console.log("Successfully stored image on NFTstorage");
 
               const nftMetadata: Metadata = {
                 address: await cardano.getChangeAddress(),
@@ -135,11 +135,11 @@ const MintNftPage = () => {
                 description: data.description,
                 image: metadata.data.image.href,
               };
-              console.log('Send metadata to backend...');
+              console.log("Send metadata to backend...");
               console.log(JSON.stringify(nftMetadata));
 
-              const response = await fetch('http://localhost:8080/nft/create', {
-                method: 'POST',
+              const response = await fetch("http://localhost:8080/nft/create", {
+                method: "POST",
                 body: JSON.stringify(nftMetadata),
               });
 
@@ -156,7 +156,7 @@ const MintNftPage = () => {
               className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
               placeholder="Enter a name for your NFT"
               type="text"
-              {...register('nftName')}
+              {...register("nftName")}
             />
           </label>
           <label className="w-full">
@@ -165,7 +165,7 @@ const MintNftPage = () => {
               className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
               placeholder="Enter a short description for your NFT"
               type="text"
-              {...register('description')}
+              {...register("description")}
             />
           </label>
           <label className="w-full">
@@ -174,7 +174,7 @@ const MintNftPage = () => {
               className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
               placeholder="Enter a short description for your NFT"
               type="text"
-              {...register('imageUrl')}
+              {...register("imageUrl")}
             />
           </label>
           <div className="w-full h-3/5">
@@ -187,7 +187,7 @@ const MintNftPage = () => {
                 className="w-full p-3 mt-2 border rounded"
                 placeholder="Enter a short description for your NFT"
                 type="file"
-                {...register('image')}
+                {...register("image")}
               />
             </label>
           </div>
