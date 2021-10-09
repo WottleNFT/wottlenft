@@ -6,6 +6,7 @@ import {
   IonHeader,
   IonLabel,
   IonPage,
+  IonSpinner,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -60,22 +61,14 @@ const Main = (props: IMainProps) => {
                 <IonButton routerLink="/user-nfts">My NFTs</IonButton>
               )}
               {(() => {
-                if (!walletStatusReady) {
-                  return (
-                    <div className="h-20 flex place-items-center">
-                      <IonLabel>Loading...</IonLabel>
-                    </div>
-                  );
-                }
-                return walletInfo ? (
+                if (!walletStatusReady) return <IonSpinner name="crescent" />
+                return walletInfo ? 
                   <WalletInfoPill
                     network={walletInfo.network}
                     balance={walletInfo.balance}
                     address={walletInfo.address}
-                  />
-                ) : (
+                  /> : 
                   <ConnectWalletButton />
-                );
               })()}
             </IonButtons>
           </IonToolbar>
