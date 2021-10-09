@@ -6,12 +6,14 @@ interface Props {
 
 const WalletInfoPill: React.FC<Props> = (props) => {
   return (
-    <div className="h-16 bg-gray-200 w-48 self-end rounded-full mx-5 flex items-center justify-end px-1 shadow-md">
-      <p className="w-full text-center">{`${!props.network ? 't' : ''}₳ ${props.balance / 1000000}`}</p>
+    <div className="bg-black w-36 self-end rounded-full m-5 flex items-center justify-end px-1 shadow-md">
+      <p className="text-white w-full text-center truncate">{`${
+        !props.network ? "t" : ""
+      }₳ ${props.balance / 1000000}`}</p>
       <img
         src="https://picsum.photos/200"
         alt="profile pic"
-        className="h-14 w-14 rounded-full border-2 border-gray-500"
+        className="h-7 w-7 m-2 rounded-full border-2 border-gray-500"
       />
     </div>
   );

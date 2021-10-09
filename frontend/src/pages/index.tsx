@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 import {
   IonButton,
@@ -7,14 +7,14 @@ import {
   IonRouterLink,
   IonSlide,
   IonSlides,
-} from '@ionic/react';
-import Link from 'next/link';
+} from "@ionic/react";
+import Link from "next/link";
 
-import AuctionCard from '../Components/AuctionCard';
-import { Meta } from '../layout/Meta';
-import { Main } from '../templates/Main';
-import { Auction } from '../types/Auction';
-import { Category } from '../types/Category';
+import AuctionCard from "../Components/AuctionCard";
+import { Meta } from "../layout/Meta";
+import { Main } from "../templates/Main";
+import { Auction } from "../types/Auction";
+import { Category } from "../types/Category";
 
 const Index = () => {
   const [auctions, setAuctions] = useState<Auction[]>([]);
@@ -76,7 +76,7 @@ const Index = () => {
             <IonSlides
               className="w-full h-full"
               scrollbar={true}
-              options={{ slidesPerView: 'auto' }}
+              options={{ slidesPerView: "auto" }}
             >
               {auctions.map((auction) => {
                 return (
@@ -108,61 +108,61 @@ export default Index;
 const testCategories: Category[] = [
   {
     id: 1,
-    name: 'Art',
+    name: "Art",
   },
   {
     id: 2,
-    name: 'Trading Cards',
+    name: "Trading Cards",
   },
   {
     id: 3,
-    name: 'Collectibles',
+    name: "Collectibles",
   },
   {
     id: 4,
-    name: 'Sports',
+    name: "Sports",
   },
   {
     id: 5,
-    name: 'Utility',
+    name: "Utility",
   },
 ];
 
 const testAuctions: Auction[] = [
   {
     id: 1,
-    title: 'Auction 1',
+    title: "Auction 1",
     category: testCategories[1]!,
-    imgUrl: 'https://picsum.photos/200',
+    imgUrl: "https://picsum.photos/200",
   },
   {
     id: 2,
-    title: 'Auction 2',
+    title: "Auction 2",
     category: testCategories[2]!,
-    imgUrl: 'https://picsum.photos/200',
+    imgUrl: "https://picsum.photos/200",
   },
   {
     id: 3,
-    title: 'Auction 3',
+    title: "Auction 3",
     category: testCategories[0]!,
-    imgUrl: 'https://picsum.photos/200',
+    imgUrl: "https://picsum.photos/200",
   },
   {
     id: 4,
-    title: 'Auction 4',
+    title: "Auction 4",
     category: testCategories[1]!,
-    imgUrl: 'https://picsum.photos/200',
+    imgUrl: "https://picsum.photos/200",
   },
   {
     id: 5,
-    title: 'Auction 5',
+    title: "Auction 5",
     category: testCategories[3]!,
-    imgUrl: 'https://picsum.photos/200',
+    imgUrl: "https://picsum.photos/200",
   },
   {
     id: 6,
-    title: 'Auction 6',
+    title: "Auction 6",
     category: testCategories[1]!,
-    imgUrl: 'https://picsum.photos/200',
+    imgUrl: "https://picsum.photos/200",
   },
 ];

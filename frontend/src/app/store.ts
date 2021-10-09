@@ -1,6 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from "@reduxjs/toolkit";
 
-import namiWalletReducer from '../features/wallet/walletSlice';
+import namiWalletReducer from "../features/wallet/walletSlice";
 
 export const store = configureStore({
   reducer: {

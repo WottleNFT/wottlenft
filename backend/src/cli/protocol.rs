@@ -1,14 +1,16 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
 
-pub const MIN_UTXO_VALUE: u64 = 1000000;
+const MIN_UTXO_VALUE: u64 = 1000000;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ProtocolParams {
     pub tx_fee_per_byte: u64,
-    pub min_utxo_value: Option<u64>,
+    #[serde(alias = "minUTxOValue")]
+    #[serde(deserialize_with = "min_utxo_value")]
+    pub min_utxo_value: u64,
     pub stake_pool_deposit: u64,
     pub tx_fee_fixed: u64,
     pub stake_address_deposit: u64,
@@ -17,6 +19,14 @@ pub struct ProtocolParams {
     pub utxo_cost_per_word: u64,
     #[serde(flatten)]
     pub rest: HashMap<String, Value>,
+}
+
+fn min_utxo_value<'de, D>(deserializer: D) -> Result<u64, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let opt = Option::deserialize(deserializer)?;
+    Ok(opt.unwrap_or(MIN_UTXO_VALUE))
 }
 
 #[derive(Serialize, Deserialize, Debug)]

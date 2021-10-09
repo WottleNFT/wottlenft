@@ -20,6 +20,7 @@
     "@ionic/react-router": "^5.8.1",
     "@pinata/sdk": "^1.1.23",
     "@reduxjs/toolkit": "^1.6.2",
+    "axios": "^0.22.0",
     "cbor": "^8.0.2",
     "ionicons": "^5.5.3",
     "next": "^11.1.2",
