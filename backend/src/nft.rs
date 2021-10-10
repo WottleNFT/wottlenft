@@ -9,7 +9,7 @@ use cardano_serialization_lib::{
     ScriptHashNamespace, ScriptPubkey, TimelockExpiry, Transaction, TransactionOutput,
     TransactionWitnessSet,
 };
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::coin::TransactionWitnessSetParams;
 use crate::error::Error::Js;
@@ -20,12 +20,15 @@ use crate::{
     Result,
 };
 use cardano_serialization_lib::utils::TransactionUnspentOutput;
+use std::collections::HashMap;
 
-#[derive(Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct WottleNftMetadata {
     name: String,
     description: String,
     image: String,
+    #[serde(flatten)]
+    pub rest: HashMap<String, serde_json::Value>,
 }
 
 impl WottleNftMetadata {
@@ -34,6 +37,7 @@ impl WottleNftMetadata {
             name,
             description,
             image,
+            rest: HashMap::new(),
         }
     }
 }
@@ -43,6 +47,37 @@ impl std::convert::TryFrom<&WottleNftMetadata> for MetadataMap {
 
     fn try_from(value: &WottleNftMetadata) -> Result<Self> {
         let mut nft_metadata_map = MetadataMap::new();
+        use serde_json::Value::*;
+        for (k, v) in &value.rest {
+            let key = TransactionMetadatum::new_text(k.to_string())?;
+            let value = match v {
+                Bool(bool) => TransactionMetadatum::new_text(format!("{}", bool))?,
+                Number(n) => {
+                    if n.is_i64() {
+                        TransactionMetadatum::new_int(&Int::new_i32(
+                            n.as_i64()
+                                .ok_or(Error::Message("Failed to convert to i32".to_string()))?
+                                as i32,
+                        ))
+                    } else if n.is_u64() {
+                        TransactionMetadatum::new_int(&Int::new(&to_bignum(
+                            n.as_u64()
+                                .ok_or(Error::Message("Failed to convert to u64".to_string()))?,
+                        )))
+                    } else {
+                        TransactionMetadatum::new_text(
+                            n.as_f64()
+                                .ok_or(Error::Message("Failed to convert to u64".to_string()))?
+                                .to_string(),
+                        )?
+                    }
+                }
+                String(s) => TransactionMetadatum::new_text(s.to_string())?,
+                _ => continue,
+            };
+
+            nft_metadata_map.insert(&key, &value);
+        }
 
         nft_metadata_map.insert(
             &TransactionMetadatum::new_text("name".to_string())?,

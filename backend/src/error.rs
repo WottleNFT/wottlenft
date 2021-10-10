@@ -3,6 +3,10 @@ use hex::FromHexError;
 
 use crate::coin::CoinSelectionFailure;
 
+use actix_web::http::header;
+use actix_web::{HttpResponse, HttpResponseBuilder};
+use serde_json::json;
+
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error("{}", .0)]
@@ -48,6 +52,16 @@ impl From<DeserializeError> for Error {
     }
 }
 
-impl actix_web::error::ResponseError for Error {}
+impl actix_web::error::ResponseError for Error {
+    fn error_response(&self) -> HttpResponse {
+        let response_body = json!({
+            "error": self.to_string()
+        })
+        .to_string();
+        HttpResponseBuilder::new(self.status_code())
+            .insert_header((header::CONTENT_TYPE, "application/json"))
+            .body(response_body)
+    }
+}
 
 pub type Result<T> = std::result::Result<T, Error>;
