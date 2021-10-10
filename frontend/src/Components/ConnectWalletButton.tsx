@@ -1,11 +1,16 @@
 import React, { useEffect } from "react";
 
-import { IonLabel, IonSpinner } from "@ionic/react";
+import { IonSpinner } from "@ionic/react";
 
-import { initializeWallet, Status } from "../features/wallet/walletSlice";
+import {
+  initializeWallet,
+  setLoading,
+  Status,
+} from "../features/wallet/walletSlice";
 import { useAppDispatch } from "../hooks";
 import useWallet from "../hooks/useWallet";
 import { Subscription } from "../wallet";
+import NamiWalletPill from "./NamiWalletPill";
 import WalletInfoPill from "./WalletInfoPill";
 
 const ConnectWalletButton: React.FC = () => {
@@ -13,6 +18,10 @@ const ConnectWalletButton: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    window.onload = () => {
+      dispatch(setLoading());
+      dispatch(initializeWallet());
+    };
     dispatch(initializeWallet());
   }, [dispatch]);
 
@@ -41,16 +50,10 @@ const ConnectWalletButton: React.FC = () => {
       </div>
     );
 
-  if (wallet.status === Status.NoExtension)
-    return (
-      <div className="flex h-20 place-items-center">
-        <IonLabel>Install the Nami Wallet Extension</IonLabel>
-      </div>
-    );
+  if (wallet.status === Status.NoExtension) return <NamiWalletPill />;
 
-  if (wallet.status === Status.Enabled) {
+  if (wallet.status === Status.Enabled)
     return <WalletInfoPill {...wallet.state} />;
-  }
 
   return (
     <button

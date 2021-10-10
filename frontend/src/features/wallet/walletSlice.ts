@@ -118,6 +118,9 @@ export const walletSlice = createSlice<WalletStatus, typeof reducers, "Wallet">(
     initialState,
     reducers,
     extraReducers: (builder) => {
+      builder.addCase(initializeWallet.pending, (state, _) => {
+        state.status = Status.Loading;
+      });
       builder.addCase(initializeWallet.fulfilled, (_, action) => {
         return action.payload;
       });
