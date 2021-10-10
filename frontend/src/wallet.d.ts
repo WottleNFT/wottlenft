@@ -19,6 +19,9 @@ type Testnet = 0;
 type Mainnet = 1;
 type Network = Testnet | Mainnet;
 
+type AccountChange = (addresses: [HexCborString]) => void;
+type NetworkChange = (network: Network) => void;
+
 interface NamiWallet {
   enable(): Promise<void>;
   isEnabled(): Promise<boolean>;
@@ -29,6 +32,6 @@ interface NamiWallet {
   signTx(tx: HexCborString, partialSign?: boolean): Promise<HexCborString>;
   submitTx(tx: HexCborString): Promise<string>;
   getNetworkId(): Promise<Network>;
-  onAccountChange(): (addresses: [HexCborString]) => void;
-  onNetworkChange(): (network: Network) => void;
+  onAccountChange(fn: AccountChange): Subscription;
+  onNetworkChange(fn: NetworkChange): Subscription;
 }
