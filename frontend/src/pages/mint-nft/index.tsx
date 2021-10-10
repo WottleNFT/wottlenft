@@ -51,8 +51,8 @@ type CustomFields = Record<string, string | number>;
 
 const MintNftPage = () => {
   // const { register, handleSubmit, watch } = useForm<Inputs>();
-  const [name, setName] = useTextInput();
-  const [description, setDescription] = useTextInput();
+  const [name, setName, resetName] = useTextInput();
+  const [description, setDescription, resetDescription] = useTextInput();
   const [image, setImage] = useState<File | undefined>(undefined);
   const wallet = useWallet();
   const [newField, setNewField] = useState("");
@@ -111,6 +111,17 @@ const MintNftPage = () => {
         </div>
       </label>
     ));
+  };
+
+  const restart = () => {
+    setTransactionId("");
+    setCustomFields({});
+    resetName();
+    resetDescription();
+    setImage(undefined);
+    setNewField("");
+    setIsSubmitting(false);
+    setError("");
   };
 
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -202,7 +213,6 @@ const MintNftPage = () => {
         image: ipfsNativeUrl,
         ...customFields,
       };
-      console.log("Send metadata to backend...");
       console.log(JSON.stringify(nftMetadata));
 
       const createNftRes = await axios.post<
@@ -221,17 +231,15 @@ const MintNftPage = () => {
         transaction,
       });
 
-      console.log(signResponse.data.tx_id);
       setTransactionId(signResponse.data.tx_id);
       window.scrollTo(0, 0);
     } catch (e) {
       console.log(e);
       if (axios.isAxiosError(e)) {
         const err = e as AxiosError<NetworkError>;
-        console.log(err);
-        // if (err.response) setError(err.response?.data.error);
+
+        if (err.response) setError(err.response?.data.error);
       } else {
-        console.log("HERERE");
         setError("Unexpected error...");
       }
     } finally {
@@ -334,7 +342,7 @@ const MintNftPage = () => {
                   <IonButton
                     size="large"
                     className="h-12 col-span-1 px-2 mt-5"
-                    onClick={() => setTransactionId("")}
+                    onClick={restart}
                   >
                     <IonIcon icon={hammer} slot="end" />
                     <div className="w-full p-6 font-bold">Mint Another NFT</div>
