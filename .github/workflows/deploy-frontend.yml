@@ -28,7 +28,7 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             cd frontend
-            export NODE_ENV=production
             npm install
+            export NODE_ENV=production
             npm run build
             pm2 restart wottle --update-env
