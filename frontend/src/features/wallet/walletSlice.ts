@@ -35,6 +35,9 @@ export type WalletState = {
 
 type WalletStatus = NoExtension | Loading | NotEnabled | Enabled;
 
+export const MAINNET = 1;
+export const TESTNET = 0;
+
 const getBackendApi = (network: Network) => {
   return network === 1
     ? (process.env.mainnetApi as string)

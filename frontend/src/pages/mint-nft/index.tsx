@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 
 import {
   IonButton,
@@ -10,7 +10,8 @@ import {
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { add, camera, hammer, trash } from "ionicons/icons";
 
-import { Status } from "../../features/wallet/walletSlice";
+import DisplayTransaction from "../../Components/MintNfts/DisplayTransaction";
+import { MAINNET, Status } from "../../features/wallet/walletSlice";
 import useTextInput from "../../hooks/useTextInput";
 import useWallet from "../../hooks/useWallet";
 import { Meta } from "../../layout/Meta";
@@ -57,6 +58,7 @@ const MintNftPage = () => {
   const [newField, setNewField] = useState("");
   const [customFields, setCustomFields] = useState<CustomFields>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [transactionId, setTransactionId] = useState("");
   const [error, setError] = useState("");
 
   const addCustomField = () => {
@@ -167,10 +169,11 @@ const MintNftPage = () => {
     const { backendApi } = wallet.state;
 
     // Upload to IPFS using Pinata
-    const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
+    const url = "/api/ipfs";
     const formData = new FormData();
     formData.append("file", image as File);
     try {
+      console.log(formData);
       const response = await axios.post<
         FormData,
         AxiosResponse<PinataResponse>
@@ -179,8 +182,6 @@ const MintNftPage = () => {
           "Content-Type": `multipart/form-data; boundary=${
             (formData as any).boundary
           }`,
-          pinata_api_key: process.env.pinataApiKey as string,
-          pinata_secret_api_key: process.env.pinataSecret as string,
         },
       });
 
@@ -221,10 +222,17 @@ const MintNftPage = () => {
       });
 
       console.log(signResponse.data.tx_id);
+      setTransactionId(signResponse.data.tx_id);
+      window.scrollTo(0, 0);
     } catch (e) {
+      console.log(e);
       if (axios.isAxiosError(e)) {
         const err = e as AxiosError<NetworkError>;
-        if (err.response) setError(err.response?.data.error);
+        console.log(err);
+        // if (err.response) setError(err.response?.data.error);
+      } else {
+        console.log("HERERE");
+        setError("Unexpected error...");
       }
     } finally {
       setIsSubmitting(false);
@@ -235,81 +243,104 @@ const MintNftPage = () => {
     <Main meta={<Meta title="Mint-NFT" description="Page to create an NFT" />}>
       <IonContent fullscreen>
         <div className="flex flex-col items-center flex-1 w-screen h-auto min-h-screen pb-20 bg-primary-default">
-          <div className="p-10 bg-gray-200 border shadow-xl w-500 rounded-xl">
+          <div className="w-full p-10 bg-gray-200 border shadow-xl lg:w-1/2 rounded-xl">
             <div className="flex flex-col items-center h-full">
-              <p className="my-2 text-lg font-semibold text-center">
-                Create your NFT here!
-              </p>
-              <label className="w-full">
-                NFT name
-                <input
-                  className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
-                  placeholder="Enter a name for your NFT"
-                  type="text"
-                  value={name}
-                  onChange={setName}
-                />
-              </label>
-              <label className="w-full">
-                Description
-                <input
-                  className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
-                  placeholder="Enter a short description for your NFT"
-                  type="text"
-                  value={description}
-                  onChange={setDescription}
-                />
-              </label>
-              {image && (
-                <div className="w-full">
-                  <p className="pb-2">Image</p>
-                  <img
-                    className="object-cover"
-                    src={URL.createObjectURL(image)}
-                  />
-                  <IonButton onClick={() => setImage(undefined)} expand="full">
-                    Remove Image
-                  </IonButton>
-                </div>
-              )}
-              {!image && (
+              {!transactionId && (
                 <>
-                  <label className="w-full pb-2">Upload Image</label>
-                  <label className="flex flex-row items-center justify-center w-full h-20 align-middle border-4 border-gray-700 border-dashed ">
-                    <IonIcon icon={camera} />
-                    <input hidden type="file" onChange={onImageChange} />
+                  <p className="my-2 text-lg font-semibold text-center">
+                    Create your NFT here!
+                  </p>
+                  <label className="w-full">
+                    NFT name
+                    <input
+                      className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
+                      placeholder="Enter a name for your NFT"
+                      type="text"
+                      value={name}
+                      onChange={setName}
+                    />
                   </label>
+                  <label className="w-full">
+                    Description
+                    <input
+                      className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
+                      placeholder="Enter a short description for your NFT"
+                      type="text"
+                      value={description}
+                      onChange={setDescription}
+                    />
+                  </label>
+                  {image && (
+                    <div className="w-full">
+                      <p className="pb-2">Image</p>
+                      <img
+                        className="object-cover"
+                        src={URL.createObjectURL(image)}
+                      />
+                      <IonButton
+                        onClick={() => setImage(undefined)}
+                        expand="full"
+                      >
+                        Remove Image
+                      </IonButton>
+                    </div>
+                  )}
+                  {!image && (
+                    <>
+                      <label className="w-full pb-2">Upload Image</label>
+                      <label className="flex flex-row items-center justify-center w-full h-20 align-middle border-4 border-gray-700 border-dashed ">
+                        <IonIcon icon={camera} />
+                        <input hidden type="file" onChange={onImageChange} />
+                      </label>
+                    </>
+                  )}
+                  <div className="h-2" />
+                  {renderNewFields()}
+                  <div className="grid items-center w-full grid-cols-5 gap-2 pt-4">
+                    <input
+                      className="col-span-4 p-3 my-2 border-4 border-gray-800 border-dotted rounded focus:outline-none focus:ring-2"
+                      placeholder="Add custom field"
+                      type="text"
+                      value={newField}
+                      onChange={(e) => setNewField(e.target.value)}
+                    />
+                    <IonButton
+                      onClick={addCustomField}
+                      className="h-12 col-span-1 px-2"
+                    >
+                      <IonIcon icon={add} />
+                    </IonButton>
+                  </div>
+                  {error && <IonText color="danger">{error}</IonText>}
+                  {!isSubmitting && (
+                    <IonButton
+                      size="large"
+                      className="h-12 col-span-1 px-2 mt-5"
+                      onClick={onSubmit}
+                    >
+                      <IonIcon icon={hammer} slot="end" />
+                      <div className="w-full p-6 font-bold">Mint NFT</div>
+                    </IonButton>
+                  )}
+                  {isSubmitting && <IonSpinner color="primary" />}
                 </>
               )}
-              <div className="h-2" />
-              {renderNewFields()}
-              <div className="grid items-center w-full grid-cols-5 gap-2 pt-4">
-                <input
-                  className="col-span-4 p-3 my-2 border-4 border-gray-800 border-dotted rounded focus:outline-none focus:ring-2"
-                  placeholder="Add custom field"
-                  type="text"
-                  value={newField}
-                  onChange={(e) => setNewField(e.target.value)}
-                />
-                <IonButton
-                  onClick={addCustomField}
-                  className="h-12 col-span-1 px-2"
-                >
-                  <IonIcon icon={add} />
-                </IonButton>
-              </div>
-              {error && <IonText color="danger">{error}</IonText>}
-              {!isSubmitting && (
-                <IonButton
-                  size="large"
-                  className="h-12 col-span-1 px-2 mt-5"
-                  onClick={onSubmit}
-                >
-                  <IonIcon icon={hammer} slot="end" />
-                  <div className="w-full p-6 font-bold">Mint NFT</div>
-                </IonButton>
+              {transactionId && wallet.status === Status.Enabled && (
+                <>
+                  <DisplayTransaction
+                    isMainnet={wallet.state.network === MAINNET}
+                    transactionId={transactionId}
+                  />
+                  <IonButton
+                    size="large"
+                    className="h-12 col-span-1 px-2 mt-5"
+                    onClick={() => setTransactionId("")}
+                  >
+                    <IonIcon icon={hammer} slot="end" />
+                    <div className="w-full p-6 font-bold">Mint Another NFT</div>
+                  </IonButton>
+                </>
               )}
-              {isSubmitting && <IonSpinner color="primary" />}
             </div>
           </div>
         </div>

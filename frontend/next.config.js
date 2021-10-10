@@ -14,7 +14,5 @@ module.exports = withBundleAnalyzer({
   env: {
     testnetApi: process.env.TESTNET_API,
     mainnetApi: process.env.MAINNET_API,
-    pinataApiKey: process.env.PINATA_API_KEY,
-    pinataSecret: process.env.PINATA_SECRET,
   },
 });
