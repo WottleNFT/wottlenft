@@ -1,10 +1,10 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy backend
+name: Deploy to dev
 
 on:
   push:
-    branches: [main, deploy]
+    branches: [ main ]
 
   workflow_dispatch:
 
@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy backend on remote server
+      - name: Deploy to production
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEPLOYMENT_HOST }}
@@ -21,15 +21,19 @@ jobs:
           port: ${{ secrets.DEPLOYMENT_PORT }}
           script_stop: true
           script: |
-            cd ~/wottlenft
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            cd ~/dev/wottlenft
             git checkout main
             git fetch --all
             git reset --hard origin/main
             cd backend
             /home/deploy/.cargo/bin/cargo build --release
-            sudo /bin/systemctl stop testnet-backend.service
-            cp ./target/release/backend ~/testnet/backend
-            sudo /bin/systemctl start testnet-backend.service
-            ssh prod 'sudo /bin/systemctl stop mainnet-backend.service'
-            scp ~/testnet/backend prod:~/mainnet/backend
-            ssh prod 'sudo systemctl start mainnet-backend.service'
+            sudo /bin/systemctl stop dev-backend.service
+            cp ./target/release/backend ~/dev/testnet/backend
+            sudo /bin/systemctl start dev-backend.service
+            cd ~/dev/wottlenft/frontend
+            npm install
+            export NODE_ENV=production
+            npm run build
+            pm2 restart dev --update-env
