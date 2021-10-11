@@ -46,6 +46,11 @@ module.exports = {
           default: '#FAC748',
         },
       },
+      backgroundImage: {
+        'background-seascape': "url('/assets/background-seascape.png')",
+        'angry-thermometer': "url('/assets/angry-thermometer.png')",
+        'about-background': "url('/assets/about-background.png')",
+      },
     },
   },
   variants: {},
