@@ -3,7 +3,7 @@ use crate::{
     Result,
 };
 use actix_web::{post, web, HttpResponse, Scope};
-use cardano_serialization_lib::{address::Address, Transaction, TransactionWitnessSet};
+use cardano_serialization_lib::{Transaction, TransactionWitnessSet};
 use serde::Deserialize;
 use serde_json::json;
 
@@ -26,6 +26,7 @@ async fn create_nft_transaction(
     let utxos = data.cli.query_utxo(&address)?;
     let block_info = data.cli.query_block_information()?;
     let params = data.cli.query_parameters()?;
+
     let nft_tx_builder =
         NftTransactionBuilder::new(data.minter.clone(), create_nft.nft, block_info, params)?;
 

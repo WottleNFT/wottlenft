@@ -18,10 +18,15 @@
     "@ionic/core": "^5.8.2",
     "@ionic/react": "^5.8.1",
     "@ionic/react-router": "^5.8.1",
+    "@pinata/sdk": "^1.1.23",
     "@reduxjs/toolkit": "^1.6.2",
+    "axios": "^0.22.0",
     "cbor": "^8.0.2",
+    "form-data": "^4.0.0",
     "ionicons": "^5.5.3",
+    "multiparty": "^4.2.2",
     "next": "^11.1.2",
+    "next-http-proxy-middleware": "^1.1.1",
     "next-seo": "^4.28.1",
     "nft.storage": "^3.3.0",
     "react": "^17.0.2",
@@ -33,6 +38,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^11.1.2",
+    "@types/multiparty": "^0.0.33",
     "@types/node": "^16.10.1",
     "@types/react": "^17.0.24",
     "@types/react-router-dom": "^5.3.0",
@@ -59,12 +65,6 @@
     "rimraf": "^3.0.2",
     "tailwindcss": "^2.2.16",
     "typescript": "^4.4.3"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write",
-      "eslint --fix src/"
-    ]
   },
   "license": "ISC"
 }

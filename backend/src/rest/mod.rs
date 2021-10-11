@@ -34,6 +34,7 @@ pub async fn start_server(config: Config) -> Result<()> {
     let minter = WottleNftMinter::from_keys(
         &config.nft_signing_key_path,
         &config.nft_verification_key_path,
+        &config.nft_bech32_tax_address,
     )?;
     let address = format!("127.0.0.1:{}", config.port);
     println!("Starting server on {}", address);

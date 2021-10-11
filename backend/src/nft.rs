@@ -3,33 +3,32 @@ use std::convert::TryFrom;
 use cardano_serialization_lib::{
     address::Address,
     crypto::{PrivateKey, PublicKey, ScriptHash, TransactionHash, Vkeywitnesses},
-    fees::{min_fee, LinearFee},
     metadata::{AuxiliaryData, GeneralTransactionMetadata, MetadataMap, TransactionMetadatum},
-    tx_builder::TransactionBuilder,
-    utils::{hash_transaction, make_vkey_witness, min_ada_required, to_bignum, BigNum, Int, Value},
+    utils::{hash_transaction, make_vkey_witness, min_ada_required, to_bignum, Int, Value},
     AssetName, Assets, Mint, MintAssets, MultiAsset, NativeScript, NativeScripts, ScriptAll,
     ScriptHashNamespace, ScriptPubkey, TimelockExpiry, Transaction, TransactionOutput,
     TransactionWitnessSet,
 };
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
+use crate::coin::TransactionWitnessSetParams;
+use crate::error::Error::Js;
 use crate::{
-    cli::{
-        protocol::{BlockInformation, ProtocolParams, MIN_UTXO_VALUE},
-        utxo::Utxo,
-    },
-    coin::{CoinSelectionInput, CoinSelector, LargestFirst},
+    cli::protocol::{BlockInformation, ProtocolParams},
     decode_private_key, decode_public_key,
     error::Error,
-    transaction::{build_transaction, start_transaction},
     Result,
 };
+use cardano_serialization_lib::utils::TransactionUnspentOutput;
+use std::collections::HashMap;
 
-#[derive(Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct WottleNftMetadata {
     name: String,
     description: String,
     image: String,
+    #[serde(flatten)]
+    pub rest: HashMap<String, serde_json::Value>,
 }
 
 impl WottleNftMetadata {
@@ -38,6 +37,7 @@ impl WottleNftMetadata {
             name,
             description,
             image,
+            rest: HashMap::new(),
         }
     }
 }
@@ -47,6 +47,37 @@ impl std::convert::TryFrom<&WottleNftMetadata> for MetadataMap {
 
     fn try_from(value: &WottleNftMetadata) -> Result<Self> {
         let mut nft_metadata_map = MetadataMap::new();
+        use serde_json::Value::*;
+        for (k, v) in &value.rest {
+            let key = TransactionMetadatum::new_text(k.to_string())?;
+            let value = match v {
+                Bool(bool) => TransactionMetadatum::new_text(format!("{}", bool))?,
+                Number(n) => {
+                    if n.is_i64() {
+                        TransactionMetadatum::new_int(&Int::new_i32(
+                            n.as_i64()
+                                .ok_or(Error::Message("Failed to convert to i32".to_string()))?
+                                as i32,
+                        ))
+                    } else if n.is_u64() {
+                        TransactionMetadatum::new_int(&Int::new(&to_bignum(
+                            n.as_u64()
+                                .ok_or(Error::Message("Failed to convert to u64".to_string()))?,
+                        )))
+                    } else {
+                        TransactionMetadatum::new_text(
+                            n.as_f64()
+                                .ok_or(Error::Message("Failed to convert to u64".to_string()))?
+                                .to_string(),
+                        )?
+                    }
+                }
+                String(s) => TransactionMetadatum::new_text(s.to_string())?,
+                _ => continue,
+            };
+
+            nft_metadata_map.insert(&key, &value);
+        }
 
         nft_metadata_map.insert(
             &TransactionMetadatum::new_text("name".to_string())?,
@@ -75,6 +106,7 @@ impl std::convert::TryFrom<&WottleNftMetadata> for MetadataMap {
 pub struct WottleNftMinter {
     skey: PrivateKey,
     vkey: PublicKey,
+    address: Option<Address>,
 }
 
 impl Clone for WottleNftMinter {
@@ -82,6 +114,7 @@ impl Clone for WottleNftMinter {
         Self {
             skey: PrivateKey::from_normal_bytes(&self.skey.as_bytes()).unwrap(),
             vkey: self.vkey.clone(),
+            address: self.address.clone(),
         }
     }
 }
@@ -92,10 +125,22 @@ pub struct Policy {
 }
 
 impl WottleNftMinter {
-    pub fn from_keys(skey_path: &str, vkey_path: &str) -> Result<WottleNftMinter> {
+    pub fn from_keys(
+        skey_path: &str,
+        vkey_path: &str,
+        nft_tax_address: &Option<String>,
+    ) -> Result<WottleNftMinter> {
+        let address = match nft_tax_address {
+            Some(s) => match Address::from_bech32(&s) {
+                Ok(addr) => Some(addr),
+                Err(err) => return Err(Js(err)),
+            },
+            None => None,
+        };
         Ok(Self {
             skey: decode_private_key(skey_path)?,
             vkey: decode_public_key(vkey_path)?,
+            address,
         })
     }
 
@@ -137,7 +182,8 @@ impl NftTransactionBuilder {
         params: ProtocolParams,
     ) -> Result<Self> {
         let policy = minter.generate_policy(block_info.slot as u32 + EXPIRY_IN_SECONDS)?;
-        let (asset_value, asset_name) = Self::generate_asset_and_value(&policy, &nft)?;
+        let (asset_value, asset_name) =
+            Self::generate_asset_and_value(&policy, &nft, params.min_utxo_value)?;
         let metadata = Self::build_metadata(&policy, &nft)?;
 
         Ok(Self {
@@ -158,8 +204,9 @@ impl NftTransactionBuilder {
     fn generate_asset_and_value(
         policy: &Policy,
         nft: &WottleNftMetadata,
+        min_utxo_value: u64,
     ) -> Result<(Value, AssetName)> {
-        let mut value = Value::new(&to_bignum(MIN_UTXO_VALUE));
+        let mut value = Value::new(&to_bignum(min_utxo_value));
         let mut assets = Assets::new();
         let asset_name = AssetName::new(Self::str_to_asset_name(&nft.name).as_bytes().to_vec())?;
         assets.insert(&asset_name, &to_bignum(1));
@@ -167,7 +214,7 @@ impl NftTransactionBuilder {
         multi_asset.insert(&policy.hash, &assets);
         value.set_multiasset(&multi_asset);
 
-        let min = min_ada_required(&value, &to_bignum(MIN_UTXO_VALUE));
+        let min = min_ada_required(&value, &to_bignum(min_utxo_value));
         value.set_coin(&min);
 
         Ok((value, asset_name))
@@ -201,40 +248,37 @@ impl NftTransactionBuilder {
         })
     }
 
-    pub fn start_transaction(&self) -> TransactionBuilder {
-        let mut tx_builder = start_transaction(&self.params, self.block_info.slot);
-        tx_builder.set_auxiliary_data(&self.create_auxiliary_data());
-        tx_builder
-    }
+    pub fn create_transaction(
+        &self,
+        receiver: &Address,
+        utxos: Vec<TransactionUnspentOutput>,
+    ) -> Result<Transaction> {
+        let mut tx_outputs = vec![TransactionOutput::new(receiver, &self.asset_value)];
 
-    pub fn create_transaction(&self, receiver: &Address, utxos: Vec<Utxo>) -> Result<Transaction> {
-        let fee = self.calculate_fee(receiver, utxos.clone())?;
-        let mut tx_builder = self.start_transaction();
-        let tx_output = TransactionOutput::new(receiver, &self.asset_value);
+        if let Some(addr) = &self.minter.address {
+            let min_utxo_value = &to_bignum(self.params.min_utxo_value);
 
-        let coin_selection_output = LargestFirst::select_coins(CoinSelectionInput {
+            let tax_amount = min_ada_required(&Value::new(&min_utxo_value), &min_utxo_value);
+            tx_outputs.push(TransactionOutput::new(addr, &Value::new(&tax_amount)));
+        }
+
+        let native_scripts = &self.create_native_scripts();
+        let witness_set_params: TransactionWitnessSetParams = TransactionWitnessSetParams {
+            vkey_count: 2,
+            native_scripts: Some(native_scripts),
+            ..Default::default()
+        };
+
+        let tx_body = crate::coin::build_transaction_body(
             utxos,
-            limit: 1000,
-            outputs: vec![tx_output],
-        })?;
-        build_transaction(&mut tx_builder, &coin_selection_output, receiver)?;
-
-        tx_builder.set_fee(&fee);
-        tx_builder.set_ttl(self.block_info.slot as u32 + EXPIRY_IN_SECONDS);
-        tx_builder.add_output(&TransactionOutput::new(
-            receiver,
-            &Value::new(
-                &coin_selection_output
-                    .change
-                    .get(0)
-                    .unwrap()
-                    .checked_sub(&fee)?,
-            ),
-        ))?;
-
-        let mut tx_body = tx_builder.build()?;
-        let mint = self.create_mint();
-        tx_body.set_mint(&mint);
+            tx_outputs,
+            self.block_info.slot as u32 + EXPIRY_IN_SECONDS,
+            &self.params,
+            None,
+            Some(self.create_mint()),
+            &witness_set_params,
+            Some(self.create_auxiliary_data()),
+        )?;
 
         let tx_hash = hash_transaction(&tx_body);
         let witnesses = self.get_witness_set(&tx_hash);
@@ -252,7 +296,7 @@ impl NftTransactionBuilder {
         let auxiliary_data = tx.auxiliary_data();
         let mut prev_witness_set = tx.witness_set();
 
-        let mut prev_witnesses = prev_witness_set.vkeys().ok_or_else(|| Error::Unknown)?;
+        let mut prev_witnesses = prev_witness_set.vkeys().ok_or(Error::Unknown)?;
 
         if let Some(vkeys) = witness_set.vkeys() {
             for i in 0..vkeys.len() {
@@ -262,50 +306,6 @@ impl NftTransactionBuilder {
 
         prev_witness_set.set_vkeys(&prev_witnesses);
         Ok(Transaction::new(&body, &prev_witness_set, auxiliary_data))
-    }
-
-    fn calculate_fee(&self, receiver: &Address, utxos: Vec<Utxo>) -> Result<BigNum> {
-        let mut tx_builder = self.start_transaction();
-
-        let tx_output = TransactionOutput::new(receiver, &self.asset_value);
-
-        let coin_selection_output = LargestFirst::select_coins(CoinSelectionInput {
-            utxos,
-            limit: 1000,
-            outputs: vec![tx_output],
-        })?;
-
-        build_transaction(&mut tx_builder, &coin_selection_output, receiver)?;
-        let fee = tx_builder.min_fee()?;
-        tx_builder.set_fee(&fee);
-        tx_builder.add_output(&TransactionOutput::new(
-            receiver,
-            &Value::new(
-                &coin_selection_output
-                    .change
-                    .get(0)
-                    .unwrap()
-                    .checked_sub(&fee)?,
-            ),
-        ))?;
-
-        let mut tx_body = tx_builder.build()?;
-        let mint = self.create_mint();
-        tx_body.set_mint(&mint);
-
-        let tx_hash = hash_transaction(&tx_body);
-        let witnesses = self.get_fake_witness_key_set(&tx_hash);
-        let aux_data = self.create_auxiliary_data();
-        let transaction = Transaction::new(&tx_body, &witnesses, Some(aux_data));
-        let fee = min_fee(
-            &transaction,
-            &LinearFee::new(
-                &to_bignum(self.params.tx_fee_per_byte),
-                &to_bignum(self.params.tx_fee_fixed),
-            ),
-        )?;
-
-        Ok(fee)
     }
 
     fn create_mint(&self) -> Mint {
@@ -322,44 +322,23 @@ impl NftTransactionBuilder {
         aux_data
     }
 
-    fn get_fake_witness_key_set(&self, tx_hash: &TransactionHash) -> TransactionWitnessSet {
-        let mut witnesses = TransactionWitnessSet::new();
-        let mut vkey_witnesses = self.get_vkey_witnesses(tx_hash);
-
-        // Add again to simulate two signatures
-        let vkey_witness = make_vkey_witness(tx_hash, &self.minter.skey);
-        vkey_witnesses.add(&vkey_witness);
-
-        witnesses.set_vkeys(&vkey_witnesses);
-
-        witnesses.set_native_scripts(&{
-            let mut native_scripts = NativeScripts::new();
-            native_scripts.add(&self.policy.script);
-            native_scripts
-        });
-        witnesses
+    fn create_native_scripts(&self) -> NativeScripts {
+        let mut native_scripts = NativeScripts::new();
+        native_scripts.add(&self.policy.script);
+        native_scripts
     }
 
     fn get_witness_set(&self, tx_hash: &TransactionHash) -> TransactionWitnessSet {
         let mut witnesses = TransactionWitnessSet::new();
-        let vkey_witnesses = self.get_vkey_witnesses(tx_hash);
-
-        witnesses.set_native_scripts(&{
-            let mut native_scripts = NativeScripts::new();
-            native_scripts.add(&self.policy.script);
-            native_scripts
-        });
-
-        witnesses.set_vkeys(&vkey_witnesses);
+        witnesses.set_native_scripts(&self.create_native_scripts());
+        witnesses.set_vkeys(&self.get_vkey_witnesses(tx_hash));
         witnesses
     }
 
     fn get_vkey_witnesses(&self, tx_hash: &TransactionHash) -> Vkeywitnesses {
         let mut vkey_witnesses = Vkeywitnesses::new();
-
         let vkey_witness = make_vkey_witness(tx_hash, &self.minter.skey);
         vkey_witnesses.add(&vkey_witness);
-
         vkey_witnesses
     }
 }

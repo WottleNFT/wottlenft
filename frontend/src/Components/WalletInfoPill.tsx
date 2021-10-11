@@ -1,16 +1,15 @@
-interface Props {
-  balance: number;
-  address: string;
-}
+import { WalletState } from "../features/wallet/walletSlice";
 
-const WalletInfoPill: React.FC<Props> = (props) => {
+const WalletInfoPill: React.FC<WalletState> = (props) => {
   return (
-    <div className="h-16 bg-gray-200 w-48 self-end rounded-full m-5 flex items-center justify-end px-1">
-      <p className="w-full text-center">{`₳ ${props.balance / 1000000}`}</p>
+    <div className="flex items-center self-end justify-end px-1 m-5 bg-black rounded-full shadow-md w-36">
+      <p className="w-full text-center text-white truncate">{`${
+        !props.network ? "t" : ""
+      }₳ ${props.balance / 1000000}`}</p>
       <img
         src="https://picsum.photos/200"
         alt="profile pic"
-        className="h-14 w-14 rounded-full border-2 border-gray-500"
+        className="m-2 border-2 border-gray-500 rounded-full h-7 w-7"
       />
     </div>
   );

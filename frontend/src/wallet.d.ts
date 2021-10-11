@@ -11,6 +11,17 @@ type Paginate = {
   limit: number;
 };
 
+type Subscription = {
+  remove: () => void;
+};
+
+type Testnet = 0;
+type Mainnet = 1;
+type Network = Testnet | Mainnet;
+
+type AccountChange = (addresses: [HexCborString]) => void;
+type NetworkChange = (network: Network) => void;
+
 interface NamiWallet {
   enable(): Promise<void>;
   isEnabled(): Promise<boolean>;
@@ -20,4 +31,7 @@ interface NamiWallet {
   getChangeAddress(): Promise<HexCborString>;
   signTx(tx: HexCborString, partialSign?: boolean): Promise<HexCborString>;
   submitTx(tx: HexCborString): Promise<string>;
+  getNetworkId(): Promise<Network>;
+  onAccountChange(fn: AccountChange): Subscription;
+  onNetworkChange(fn: NetworkChange): Subscription;
 }

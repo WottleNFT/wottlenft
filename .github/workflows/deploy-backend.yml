@@ -4,7 +4,7 @@ name: Deploy backend
 
 on:
   push:
-    branches: [ main, deploy ]
+    branches: [main, deploy]
 
   workflow_dispatch:
 
@@ -19,13 +19,14 @@ jobs:
           username: ${{ secrets.DEPLOYMENT_USERNAME }}
           key: ${{ secrets.DEPLOYMENT_KEY }}
           port: ${{ secrets.DEPLOYMENT_PORT }}
+          script_stop: true
           script: |
             cd ~/wottlenft
             git checkout main
             git fetch --all
             git reset --hard origin/main
             cd backend
-            cargo build --release
+            /home/deploy/.cargo/bin/cargo build --release
             sudo /bin/systemctl stop testnet-backend.service
             cp ./target/release/backend ~/testnet/backend
             sudo /bin/systemctl start testnet-backend.service

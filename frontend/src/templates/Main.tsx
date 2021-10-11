@@ -1,46 +1,60 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 
 import {
   IonButton,
   IonButtons,
   IonHeader,
-  IonIcon,
   IonPage,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import { personCircleOutline } from 'ionicons/icons';
+} from "@ionic/react";
+import { useRouter } from "next/router";
 
-import SideMenu, { MenuButton } from '../Components/SideMenu';
+import ConnectWalletButton from "../Components/ConnectWalletButton";
+import SideMenu, { MenuButton } from "../Components/SideMenu";
+import { Status } from "../features/wallet/walletSlice";
+import useWallet from "../hooks/useWallet";
 
 type IMainProps = {
   meta: ReactNode;
   children: ReactNode;
 };
 
-const Main = (props: IMainProps) => (
-  <div>
-    {props.meta}
-    <SideMenu />
-    <IonPage id="main">
-      <IonHeader className="ion-no-border h-1/6">
-        <IonToolbar color="primary" className="h-1/2">
-          <div className="flex flex-row">
-            <MenuButton />
-            <IonTitle>Wottlenft</IonTitle>
-          </div>
+const Main = (props: IMainProps) => {
+  const router = useRouter();
+  const wallet = useWallet();
+  return (
+    <div>
+      {props.meta}
+      <SideMenu />
+      <IonPage id="main">
+        <IonHeader className="h-20 ion-no-border">
+          <IonToolbar color="primary" className="h-full align-middle">
+            <div className="flex flex-row align-middle">
+              <MenuButton />
+              <img
+                className="h-14"
+                alt="Logo"
+                src={`${router.basePath}/logo.png`}
+              />
+              <IonTitle className="p-0">WottleNFT</IonTitle>
+            </div>
 
-          <IonButtons slot="end">
-            <IonButton routerLink="/about">About</IonButton>
-            <IonButton routerLink="/">
-              <IonIcon size="large" icon={personCircleOutline} />
-            </IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      {props.children}
-    </IonPage>
-  </div>
-);
+            <IonButtons slot="end" className="flex items-center">
+              <IonButton routerLink="/about">About</IonButton>
+              <IonButton routerLink="/mint-nft">Mint NFT</IonButton>
+              {wallet.status === Status.Enabled && (
+                <IonButton routerLink="/user-nfts">My NFTs</IonButton>
+              )}
+
+              <ConnectWalletButton />
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+        {props.children}
+      </IonPage>
+    </div>
+  );
+};
 
 export { Main };
