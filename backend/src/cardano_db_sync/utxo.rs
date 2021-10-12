@@ -43,7 +43,7 @@ pub async fn query_user_address_utxo(
     "#,
     )
     .bind(addr.to_bech32(None)?)
-    .fetch_all(pool)
+    .fetch(pool)
     .await?;
 
     pgtxout_to_utxo(pg_tx_out, addr)
