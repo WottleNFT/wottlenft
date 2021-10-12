@@ -26,7 +26,7 @@ pub async fn query_user_address_utxo(
     pool: &PgPool,
     addr: &Address,
 ) -> crate::Result<Vec<TransactionUnspentOutput>> {
-    let pg_tx_out = sqlx::query_as::<_, PgTxOut>(
+    let mut rows = sqlx::query_as::<_, PgTxOut>(
         r#"
     SELECT
         tx.hash,
@@ -43,10 +43,14 @@ pub async fn query_user_address_utxo(
     "#,
     )
     .bind(addr.to_bech32(None)?)
-    .fetch(pool)
-    .await?;
+    .fetch(pool);
+    use tokio_stream::StreamExt;
+    let mut pgs = vec![];
+    while let Some(pg_tx_out) = rows.try_next().await? {
+        pgs.push(pg_tx_out);
+    }
 
-    pgtxout_to_utxo(pg_tx_out, addr)
+    pgtxout_to_utxo(pgs, addr)
 }
 
 fn pgtxout_to_utxo(

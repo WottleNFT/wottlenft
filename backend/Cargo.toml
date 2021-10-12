@@ -23,3 +23,4 @@ dotenv = "0.15.0"
 lazy_static = "1.4.0"
 sqlx = { version = "0.5.6", features = ["postgres", "runtime-tokio-rustls", "bigdecimal"]}
 bigdecimal = "0.3.0"
+tokio-stream = "0.1.7"
