@@ -42,6 +42,8 @@ services:
       - postgres_db
     volumes:
       - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
     restart: on-failure
 
   cardano-node:
@@ -82,11 +84,6 @@ services:
       - db-sync-data:/var/lib/cdbsync
       - node-ipc:/node-ipc
     restart: on-failure
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "10"
 
 volumes:
   node-ipc:
