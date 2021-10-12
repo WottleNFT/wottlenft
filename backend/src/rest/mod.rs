@@ -35,7 +35,7 @@ pub async fn start_server(config: Config) -> Result<()> {
         &config.nft_bech32_tax_address,
     )?;
     let db_pool = PgPool::connect(&config.database_url).await?;
-    let address = format!("127.0.0.1:{}", config.port);
+    let address = format!("0.0.0.0:{}", config.port);
     println!("Starting server on {}", &address);
     Ok(HttpServer::new(move || {
         App::new()
