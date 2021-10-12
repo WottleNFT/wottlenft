@@ -15,9 +15,13 @@ module.exports = {
       '5xl': '3rem',
       '6xl': '4rem',
     },
+    minWidth: {
+      1200: '1200px',
+    },
     extend: {
       width: {
         500: '500px',
+        1000: '1000px',
       },
       height: {
         '90vh': '90%',
