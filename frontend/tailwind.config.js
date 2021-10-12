@@ -19,6 +19,9 @@ module.exports = {
       width: {
         500: '500px',
       },
+      height: {
+        '90vh': '90%',
+      },
       colors: {
         gray: {
           100: '#f7fafc',

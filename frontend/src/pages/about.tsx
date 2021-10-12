@@ -3,17 +3,30 @@ import Image from "next/image";
 
 import coolWottle from "../../public/assets/cool-wottle.png";
 import dogWottle from "../../public/assets/dog-wottle.png";
+import { Meta } from "../layout/Meta";
+import { Main } from "../templates/Main";
 
 const About = () => {
   // Long paragraph contents
-  const ourStory = `Here at WottleNFT, we aim to bring out the true value behind each Cardano NFT by providing a space for the Creators to share their stories. 
-    It is also important to give back, especially with the outbreak of the Covid-19 Pandemic. 
-    That is why, WottleNFT will be aligning its business model with the United Nation Sustainable Development Goals (SDGs) to support Social Enterprises worldwide.`;
+  const ourStory = (
+    <p className="text-xl">
+      Here at WottleNFT, we aim to bring out the <b>true value</b> behind each
+      Cardano NFT by providing a space for the Creators to share their stories.
+      It is also important to give back, especially with the outbreak of the{" "}
+      <b>Covid-19 Pandemic</b>. That is why, WottleNFT will be aligning its
+      business model with the United Nation Sustainable Development Goals (
+      <b>SDGs</b>) to support Social Enterprises worldwide.
+    </p>
+  );
 
-  const ourFocus = `WottleNFT’s auctions-only focus works together with our focus on storytelling to allow more transparent pricing. 
-    Interested bidders collectively decide where and how far prices should go. 
-    No more unilateral pricing decisions conducted by creators in obscure blackboxes. 
-    Everyone has a say in what price best reflects an NFT’s value. Cardano NFT auctions, done right.`;
+  const ourFocus = (
+    <p className="text-xl">
+      WottleNFT aims to focus on storytelling to allow more transparent pricing.
+      Interested collectors collectively decide where and how far prices should
+      go. No more unilateral pricing decisions conducted by creators in obscure
+      blackboxes. Everyone has a say in what price best reflects an NFT’s value.
+    </p>
+  );
 
   const howItWorks = (
     <p className="text-xl">
@@ -58,66 +71,80 @@ const About = () => {
   );
 
   return (
-    <IonContent>
-      <div className="h-screen bg-primary-default bg-about-background bg-no-repeat bg-contain bg-bottom flex justify-between">
-        <div className="w-2/5 ml-56 mt-44">
-          <p className="text-6xl font-bold leading-snug mb-6">
-            TO CREATE <br />
-            A GLOBAL <br />
-            INTERCONNECTED <br />
-            ECOSYSTEM
-          </p>
-          <p className="text-3xl font-bold leading-tight mb-10">
-            BETWEEN CARDANO NFTS <br />
-            AND SOCIAL ENTERPRISES
-          </p>
-          <p className="text-2xl font-bold  leading-tight">
-            WHILE SHARING THE STORIES BEHIND EACH <br />
-            CARDANO NFT.
-          </p>
-        </div>
-      </div>
-      <div className="mx-56 my-48">
-        <p className="text-6xl font-bold mb-11">OUR STORY</p>
-        <p className="text-xl">{ourStory}</p>
-        <div className="flex justify-between py-5">
-          <Image
-            src={dogWottle}
-            alt="dog wottle"
-            height={400}
-            width={400}
-            className="object-contain"
-          />
-          <div className="w-1/2 flex flex-col justify-center">
-            <p className="text-4xl font-bold mb-11">Our Focus</p>
-            <p className="text-xl">{ourFocus}</p>
+    <Main meta={<Meta title="About | WottleNFT" description="about us" />}>
+      <IonContent>
+        <div className="bg-primary-default bg-about-background bg-no-repeat bg-cover bg-bottom flex justify-between">
+          <div className="w-2/5 ml-56 my-44">
+            <p className="text-6xl font-bold leading-snug mb-6">
+              CREATING A GLOBAL <br />
+              INTERCONNECTED <br />
+              ECOSYSTEM
+            </p>
+            <p className="text-3xl font-bold leading-tight mb-10">
+              BETWEEN CARDANO NFTS <br />
+              AND SOCIAL ENTERPRISES
+            </p>
+            <p className="text-2xl font-bold  leading-tight">
+              WHILE SHARING THE STORIES BEHIND EACH CARDANO <br />
+              NFT.
+            </p>
           </div>
         </div>
-        <p className="text-6xl font-bold mb-11">How it works</p>
-        {howItWorks}
-        <div className="flex justify-between py-5">
-          <div className="w-1/2 flex flex-col justify-center">
-            <p className="text-4xl font-bold mb-11">Staking Pool</p>
-            {stakingPool}
+        <div className="mx-56 my-20">
+          <p className="text-5xl font-bold mb-11">OUR STORY</p>
+          {ourStory}
+          <div className="flex justify-between py-5">
+            <Image
+              src={dogWottle}
+              alt="dog wottle"
+              height={400}
+              width={400}
+              className="object-contain"
+            />
+            <div className="w-1/2 flex flex-col justify-center">
+              <p className="text-5xl font-bold mb-11">Our Focus</p>
+              {ourFocus}
+            </div>
           </div>
-          <Image
-            src={coolWottle}
-            alt="cool wottle"
-            height={400}
-            width={400}
-            className="object-contain"
-          />
+          <div className="flex justify-between py-5">
+            <div className="w-1/2 flex flex-col justify-center">
+              <p className="text-5xl font-bold mb-11">Marketplace</p>
+              {stakingPool}
+            </div>
+            <Image
+              src={coolWottle}
+              alt="cool wottle"
+              height={400}
+              width={400}
+              className="object-contain"
+            />
+          </div>
+          <p className="text-6xl font-bold mb-11">How it works</p>
+          {howItWorks}
+          <div className="flex justify-between py-5">
+            <div className="w-1/2 flex flex-col justify-center">
+              <p className="text-4xl font-bold mb-11">Staking Pool</p>
+              {stakingPool}
+            </div>
+            <Image
+              src={coolWottle}
+              alt="cool wottle"
+              height={400}
+              width={400}
+              className="object-contain"
+            />
+          </div>
+          <p className="text-6xl font-bold mb-11">NFT Minter</p>
+          {nftMinter}
+          <div className="py-5">
+            <p className="text-6xl font-bold mb-11">RoadMap</p>
+          </div>
+          <div className="py-5">
+            <p className="text-6xl font-bold mb-11">Meet the Founders</p>
+          </div>
         </div>
-        <p className="text-6xl font-bold mb-11">NFT Minter</p>
-        {nftMinter}
-        <div className="py-5">
-          <p className="text-6xl font-bold mb-11">RoadMap</p>
-        </div>
-        <div className="py-5">
-          <p className="text-6xl font-bold mb-11">Meet the Founders</p>
-        </div>
-      </div>
-    </IonContent>
+      </IonContent>
+    </Main>
   );
 };
 export default About;
