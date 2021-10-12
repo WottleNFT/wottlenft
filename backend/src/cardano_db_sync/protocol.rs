@@ -22,6 +22,7 @@ pub struct ProtocolParams {
     pub coins_per_utxo_word: Coin,
 }
 
+#[derive(sqlx::FromRow)]
 struct PgProtocolParams {
     min_fee_a: i32,
     min_fee_b: i32,
@@ -34,14 +35,13 @@ struct PgProtocolParams {
 }
 
 pub async fn get_protocol_params(pool: &PgPool) -> Result<ProtocolParams, sqlx::Error> {
-    let rec: PgProtocolParams = sqlx::query_as!(
-        PgProtocolParams,
+    let rec: PgProtocolParams = sqlx::query_as::<_, PgProtocolParams>(
         r#"
     SELECT min_fee_a, min_fee_b, max_tx_size, key_deposit,
             pool_deposit, max_val_size, coins_per_utxo_word, min_utxo_value
     FROM epoch_param 
     ORDER BY epoch_no DESC LIMIT 1
-    "#
+    "#,
     )
     .fetch_one(pool)
     .await?;
@@ -67,14 +67,19 @@ pub async fn get_protocol_params(pool: &PgPool) -> Result<ProtocolParams, sqlx::
     })
 }
 
+#[derive(sqlx::FromRow)]
+struct Slot {
+    slot_no: i32,
+}
+
 pub async fn get_slot_number(pool: &PgPool) -> Result<u32, sqlx::Error> {
-    let rec = sqlx::query!(
+    let rec = sqlx::query_as::<_, Slot>(
         r#"
-        SELECT MAX(slot_no) AS "slot!" FROM block
-        "#
+        SELECT MAX(slot_no) AS slot_no FROM block
+        "#,
     )
     .fetch_one(pool)
     .await?;
 
-    Ok(rec.slot as u32)
+    Ok(rec.slot_no as u32)
 }

@@ -1,3 +1,5 @@
+/// Schema for the database can be found at
+/// https://github.com/input-output-hk/cardano-db-sync/blob/master/doc/schema.md
 mod protocol;
 mod utxo;
 

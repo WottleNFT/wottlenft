@@ -11,7 +11,7 @@ use sqlx::types::BigDecimal;
 use sqlx::PgPool;
 use std::collections::HashMap;
 
-#[derive(Debug)]
+#[derive(Debug, sqlx::FromRow)]
 pub struct PgTxOut {
     hash: Vec<u8>,
     index: i16,
@@ -26,24 +26,23 @@ pub async fn query_user_address_utxo(
     pool: &PgPool,
     addr: &Address,
 ) -> crate::Result<Vec<TransactionUnspentOutput>> {
-    let pg_tx_out: Vec<PgTxOut> = sqlx::query_as!(
-        PgTxOut,
+    let pg_tx_out = sqlx::query_as::<_, PgTxOut>(
         r#"
     SELECT
         tx.hash,
         tx_out.index,
         tx_out.value,
         tx_out.data_hash,
-        ma_tx_out.policy as "policy?",
-        ma_tx_out.name as "name?",
-        ma_tx_out.quantity as "quantity?"
+        ma_tx_out.policy,
+        ma_tx_out.name,
+        ma_tx_out.quantity
     FROM tx_out
     JOIN tx ON tx_out.tx_id = tx.id
     LEFT JOIN ma_tx_out ON tx_out.id = ma_tx_out.tx_out_id
     WHERE address = $1
     "#,
-        addr.to_bech32(None)?
     )
+    .bind(addr.to_bech32(None)?)
     .fetch_all(pool)
     .await?;
 
