@@ -15,9 +15,16 @@ module.exports = {
       '5xl': '3rem',
       '6xl': '4rem',
     },
+    minWidth: {
+      1200: '1200px',
+    },
     extend: {
       width: {
         500: '500px',
+        1000: '1000px',
+      },
+      height: {
+        '90vh': '90%',
       },
       colors: {
         gray: {
@@ -45,6 +52,11 @@ module.exports = {
         primary: {
           default: '#FAC748',
         },
+      },
+      backgroundImage: {
+        'background-seascape': "url('/assets/background-seascape.png')",
+        'angry-thermometer': "url('/assets/angry-thermometer.png')",
+        'about-background': "url('/assets/about-background.png')",
       },
     },
   },
