@@ -2,7 +2,10 @@ import { IonContent } from "@ionic/react";
 import Image from "next/image";
 
 import coolWottle from "../../public/assets/cool-wottle.png";
-import dogWottle from "../../public/assets/dog-wottle.png";
+import dogWottle from "../../public/assets/dog-wottle-green.png";
+import heartWottle from "../../public/assets/heart-wottle.png";
+import studiousWottle from "../../public/assets/studious-wottle.png";
+import ButtonPill from "../Components/About/ButtonPill";
 import { Meta } from "../layout/Meta";
 import { Main } from "../templates/Main";
 
@@ -28,11 +31,20 @@ const About = () => {
     </p>
   );
 
-  const howItWorks = (
+  const marketPlace = (
     <p className="text-xl">
-      WottleNFT adopts an English Auction format. Creators are charged a gas fee
-      for listing an auction. At the end of an auction, WottleNFT’s smart
-      contract facilitates the transaction between creators and successful
+      WottleNFT will be utilising Cardano Smart Contracts to build the
+      marketplace. We will be charging a fee of <b>3%</b>, with a minimum of{" "}
+      <b>5 Ada</b> for each transaction. This fee comprises: Service Fees{" "}
+      <b>(2.5%)</b> and Social Donations <b>(0.5%)</b>.
+    </p>
+  );
+
+  const auction = (
+    <p className="text-xl">
+      WottleNFT will be adopting an English Auction format. Creators are charged
+      a gas fee for listing an auction. At the end of an auction, WottleNFT’s
+      smart contract facilitates the transaction between creators and successful
       bidders, with a fee of 15%. This 15% fee comprises:{" "}
       <b>Service Fees (11%)</b>, <b>Royalty Fees (2.5%)</b> and{" "}
       <b>Social Donations (1.5%)</b>. Successful bidders are given an option to
@@ -43,37 +55,37 @@ const About = () => {
     </p>
   );
 
+  const nftMinter = (
+    <p className="text-xl">
+      WottleNFT wants to make Cardano NFT accessible to everyone. As such, we
+      have implemented our smart contracts that enable us to offer the community
+      the lowest minting service fee in the market.
+      <b>Mint 1 Cardano NFT for 1 ADA in just under 1 Minute</b> with our very
+      own smart contract enabled nft-minter.
+    </p>
+  );
+
   const stakingPool = (
     <p className="text-xl">
       <p className="mb-5">
         WottleNFT is running a sustainable staking pool <b>[WOT]</b> built on
         multi-Raspberry Pi system. By supporting WottleNFT, you are supporting
-        Social Enterprises as 10% of [WOT]’s rewards will be channeled towards
-        Social Enterprises.
+        Social Enterprises as <b>10%</b> of <b>[WOT]</b>’s rewards will be
+        channeled towards Social Enterprises.
       </p>
       <p>
-        Furthermore, we are offering 0% fees! As a reward, delegators who stake
-        a minimum of 1000 ADA will receive our very first,{" "}
+        Furthermore, we are offering <b>0% fees</b>! As a reward, delegators who
+        stake a minimum of <b>1000 ADA</b> will receive our very first,{" "}
         <b>exclusive utility NFT drop</b> by the end of the year! More
         information will be released soon.
       </p>
     </p>
   );
 
-  const nftMinter = (
-    <p className="text-xl">
-      WottleNFT wants to make Cardano NFT accessible to everyone. As such, we
-      have implemented our smart contracts that enable us to offer the community
-      the lowest minting service fee in the market.
-      <b> Mint 1 Cardano NFT for 1 ADA in just under 1 Minute</b> with our very
-      own smart contract enabled nft-minter.
-    </p>
-  );
-
   return (
     <Main meta={<Meta title="About | WottleNFT" description="about us" />}>
       <IonContent>
-        <div className="bg-primary-default bg-about-background bg-no-repeat bg-cover bg-bottom flex justify-between">
+        <div className="h-full bg-primary-default bg-about-background bg-no-repeat bg-cover bg-bottom flex justify-between">
           <div className="w-2/5 ml-56 my-44">
             <p className="text-6xl font-bold leading-snug mb-6">
               CREATING A GLOBAL <br />
@@ -95,8 +107,8 @@ const About = () => {
           {ourStory}
           <div className="flex justify-between py-5">
             <Image
-              src={dogWottle}
-              alt="dog wottle"
+              src={heartWottle}
+              alt="heart wottle"
               height={400}
               width={400}
               className="object-contain"
@@ -109,7 +121,12 @@ const About = () => {
           <div className="flex justify-between py-5">
             <div className="w-1/2 flex flex-col justify-center">
               <p className="text-5xl font-bold mb-11">Marketplace</p>
-              {stakingPool}
+              {marketPlace}
+              <ButtonPill
+                text="View Marketplace"
+                onClick={() => {}}
+                className="my-8 self-center"
+              />
             </div>
             <Image
               src={coolWottle}
@@ -119,28 +136,50 @@ const About = () => {
               className="object-contain"
             />
           </div>
-          <p className="text-6xl font-bold mb-11">How it works</p>
-          {howItWorks}
+          <div className="flex flex-col">
+            <p className="text-5xl font-bold mb-11">Auction (Coming Soon)</p>
+            {auction}
+            <ButtonPill
+              text="View Auctions"
+              onClick={() => {}}
+              className="my-8 self-center"
+            />
+          </div>
+          <div className="flex justify-between py-5">
+            <Image
+              src={studiousWottle}
+              alt="studious wottle"
+              height={400}
+              width={400}
+              className="object-contain"
+            />
+            <div className="w-1/2 flex flex-col justify-center">
+              <p className="text-5xl font-bold mb-11">NFT Minter</p>
+              {nftMinter}
+              <ButtonPill
+                text="Mint Now"
+                onClick={() => {}}
+                className="my-8 self-center"
+              />
+            </div>
+          </div>
           <div className="flex justify-between py-5">
             <div className="w-1/2 flex flex-col justify-center">
-              <p className="text-4xl font-bold mb-11">Staking Pool</p>
+              <p className="text-5xl font-bold mb-11">Staking Pool</p>
               {stakingPool}
+              <ButtonPill
+                text="Stake Now"
+                onClick={() => {}}
+                className="my-8 self-center"
+              />
             </div>
             <Image
-              src={coolWottle}
-              alt="cool wottle"
+              src={dogWottle}
+              alt="dog wottle"
               height={400}
               width={400}
               className="object-contain"
             />
-          </div>
-          <p className="text-6xl font-bold mb-11">NFT Minter</p>
-          {nftMinter}
-          <div className="py-5">
-            <p className="text-6xl font-bold mb-11">RoadMap</p>
-          </div>
-          <div className="py-5">
-            <p className="text-6xl font-bold mb-11">Meet the Founders</p>
           </div>
         </div>
       </IonContent>
