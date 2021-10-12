@@ -1,16 +1,14 @@
 mod address;
 mod nft;
 
-use crate::{
-    cli::command::CardanoCli, config::Config, error::Error, nft::WottleNftMinter,
-    transaction::Submitter, Result,
-};
+use crate::{config::Config, error::Error, nft::WottleNftMinter, transaction::Submitter, Result};
 use actix_cors::Cors;
 use actix_web::{web::Data, App, HttpServer};
 use cardano_serialization_lib::address::Address;
+use sqlx::postgres::PgPool;
 
 struct AppState {
-    cli: CardanoCli,
+    pool: PgPool,
     submitter: Submitter,
     minter: WottleNftMinter,
 }
@@ -36,8 +34,9 @@ pub async fn start_server(config: Config) -> Result<()> {
         &config.nft_verification_key_path,
         &config.nft_bech32_tax_address,
     )?;
+    let db_pool = PgPool::connect(&config.database_url).await?;
     let address = format!("127.0.0.1:{}", config.port);
-    println!("Starting server on {}", address);
+    println!("Starting server on {}", &address);
     Ok(HttpServer::new(move || {
         App::new()
             .wrap(
@@ -47,7 +46,7 @@ pub async fn start_server(config: Config) -> Result<()> {
                     .allow_any_header(),
             )
             .app_data(Data::new(AppState {
-                cli: CardanoCli::from_config(&config),
+                pool: db_pool.clone(),
                 submitter: Submitter::for_url(&config.submit_api_base_url),
                 minter: minter.clone(),
             }))

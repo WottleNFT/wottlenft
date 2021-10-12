@@ -3,13 +3,13 @@ use actix_web::{get, web, HttpResponse, Scope};
 use cardano_serialization_lib::utils::{from_bignum, BigNum};
 use serde_json::json;
 
-use crate::cli::utxo::UtxoJson;
+use crate::cardano_db_sync::{query_user_address_utxo, UtxoJson};
 use crate::rest::AppState;
 
 #[get("/{address}/utxo")]
 async fn get_all_utxos(path: web::Path<String>, data: web::Data<AppState>) -> Result<HttpResponse> {
     let address = super::parse_address(&path.into_inner())?;
-    let utxos = data.cli.query_utxo(&address)?;
+    let utxos = query_user_address_utxo(&data.pool, &address).await?;
 
     let jsons: Vec<UtxoJson> = utxos.iter().map(UtxoJson::from).collect();
 
@@ -22,7 +22,7 @@ async fn get_address_balance(
     data: web::Data<AppState>,
 ) -> Result<HttpResponse> {
     let address = super::parse_address(&path.into_inner())?;
-    let utxos = data.cli.query_utxo(&address)?;
+    let utxos = query_user_address_utxo(&data.pool, &address).await?;
 
     let mut balance = BigNum::zero();
     for utxo in utxos {
