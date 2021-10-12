@@ -15,28 +15,16 @@ jobs:
       - name: Deploy to production
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.DEPLOYMENT_HOST }}
-          username: ${{ secrets.DEPLOYMENT_USERNAME }}
-          key: ${{ secrets.DEPLOYMENT_KEY }}
-          port: ${{ secrets.DEPLOYMENT_PORT }}
+          host: ${{ secrets.PRODUCTION_HOST }}
+          username: ${{ secrets.PRODUCTION_USERNAME }}
+          key: ${{ secrets.PRODUCTION_KEY }}
+          port: ${{ secrets.PRODUCTION_PORT }}
           script_stop: true
           script: |
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd ~/wottlenft
             git checkout deploy
             git fetch --all
             git reset --hard origin/deploy
-            cd backend
-            /home/deploy/.cargo/bin/cargo build --release
-            sudo /bin/systemctl stop testnet-backend.service
-            cp ./target/release/backend ~/testnet/backend
-            sudo /bin/systemctl start testnet-backend.service
-            ssh prod 'sudo /bin/systemctl stop mainnet-backend.service'
-            scp ~/testnet/backend prod:~/mainnet/backend
-            ssh prod 'sudo systemctl start mainnet-backend.service'
-            cd ~/wottlenft/frontend
-            npm install
-            export NODE_ENV=production
-            npm run build
-            pm2 restart wottle --update-env
+            docker-compose build backend
+            docker-compose build frontend
+            docker-compose up -d frontend backend
