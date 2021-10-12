@@ -36,6 +36,9 @@ pub enum Error {
     #[error("{}", .0)]
     Coin(#[from] CoinSelectionFailure),
 
+    #[error("sqlx: {}", .0)]
+    Sqlx(#[from] sqlx::Error),
+
     #[error("Unknown error occured")]
     Unknown,
 }

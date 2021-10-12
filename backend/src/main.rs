@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate lazy_static;
 
-mod cli;
+mod cardano_db_sync;
 mod coin;
 mod config;
 mod error;
@@ -21,7 +21,8 @@ use crate::error::Error;
 async fn main() -> Result<()> {
     dotenv::dotenv().ok();
     let config = config::Config::init_from_env().unwrap();
-    println!("{:#?}", config);
+    dbg!(&config);
+
     rest::start_server(config).await?;
 
     Ok(())

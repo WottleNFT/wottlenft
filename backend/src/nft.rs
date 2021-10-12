@@ -14,12 +14,9 @@ use serde::{Deserialize, Serialize};
 use crate::coin::TransactionWitnessSetParams;
 use crate::error::Error::Js;
 use crate::{
-    cli::protocol::{BlockInformation, ProtocolParams},
-    decode_private_key, decode_public_key,
-    error::Error,
-    Result,
+    cardano_db_sync::ProtocolParams, decode_private_key, decode_public_key, error::Error, Result,
 };
-use cardano_serialization_lib::utils::TransactionUnspentOutput;
+use cardano_serialization_lib::utils::{Coin, TransactionUnspentOutput};
 use std::collections::HashMap;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -170,7 +167,7 @@ pub struct NftTransactionBuilder {
     asset_value: Value,
     asset_name: AssetName,
     metadata: GeneralTransactionMetadata,
-    block_info: BlockInformation,
+    slot: u32,
     params: ProtocolParams,
 }
 
@@ -178,12 +175,12 @@ impl NftTransactionBuilder {
     pub fn new(
         minter: WottleNftMinter,
         nft: WottleNftMetadata,
-        block_info: BlockInformation,
+        slot: u32,
         params: ProtocolParams,
     ) -> Result<Self> {
-        let policy = minter.generate_policy(block_info.slot as u32 + EXPIRY_IN_SECONDS)?;
+        let policy = minter.generate_policy(slot + EXPIRY_IN_SECONDS)?;
         let (asset_value, asset_name) =
-            Self::generate_asset_and_value(&policy, &nft, params.min_utxo_value)?;
+            Self::generate_asset_and_value(&policy, &nft, &params.minimum_utxo_value)?;
         let metadata = Self::build_metadata(&policy, &nft)?;
 
         Ok(Self {
@@ -193,28 +190,24 @@ impl NftTransactionBuilder {
             asset_name,
             metadata,
             params,
-            block_info,
+            slot,
         })
-    }
-
-    fn str_to_asset_name(s: &str) -> String {
-        s.to_ascii_lowercase().split_whitespace().collect()
     }
 
     fn generate_asset_and_value(
         policy: &Policy,
         nft: &WottleNftMetadata,
-        min_utxo_value: u64,
+        min_utxo_value: &Coin,
     ) -> Result<(Value, AssetName)> {
-        let mut value = Value::new(&to_bignum(min_utxo_value));
+        let mut value = Value::new(min_utxo_value);
         let mut assets = Assets::new();
-        let asset_name = AssetName::new(Self::str_to_asset_name(&nft.name).as_bytes().to_vec())?;
+        let asset_name = AssetName::new(nft.name.clone().into_bytes())?;
         assets.insert(&asset_name, &to_bignum(1));
         let mut multi_asset = MultiAsset::new();
         multi_asset.insert(&policy.hash, &assets);
         value.set_multiasset(&multi_asset);
 
-        let min = min_ada_required(&value, &to_bignum(min_utxo_value));
+        let min = min_ada_required(&value, min_utxo_value);
         value.set_coin(&min);
 
         Ok((value, asset_name))
@@ -228,7 +221,7 @@ impl NftTransactionBuilder {
 
         let mut nft_asset = MetadataMap::new();
         nft_asset.insert(
-            &TransactionMetadatum::new_text(Self::str_to_asset_name(&nft.name))?,
+            &TransactionMetadatum::new_text(nft.name.clone())?,
             &TransactionMetadatum::new_map(&nft_metadata_map),
         );
 
@@ -256,7 +249,7 @@ impl NftTransactionBuilder {
         let mut tx_outputs = vec![TransactionOutput::new(receiver, &self.asset_value)];
 
         if let Some(addr) = &self.minter.address {
-            let min_utxo_value = &to_bignum(self.params.min_utxo_value);
+            let min_utxo_value = &self.params.minimum_utxo_value;
 
             let tax_amount = min_ada_required(&Value::new(&min_utxo_value), &min_utxo_value);
             tx_outputs.push(TransactionOutput::new(addr, &Value::new(&tax_amount)));
@@ -272,7 +265,7 @@ impl NftTransactionBuilder {
         let tx_body = crate::coin::build_transaction_body(
             utxos,
             tx_outputs,
-            self.block_info.slot as u32 + EXPIRY_IN_SECONDS,
+            self.slot + EXPIRY_IN_SECONDS,
             &self.params,
             None,
             Some(self.create_mint()),
