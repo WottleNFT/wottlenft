@@ -9,16 +9,10 @@ use cardano_serialization_lib::{
     ScriptHashNamespace, ScriptPubkey, TimelockExpiry, Transaction, TransactionOutput,
     TransactionWitnessSet,
 };
-use serde::{
-    ser::SerializeSeq, ser::SerializeStruct, Deserialize, Deserializer, Serialize, Serializer,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::coin::TransactionWitnessSetParams;
-use crate::error::Error::Js;
-use crate::{
-    cardano_db_sync::ProtocolParams, decode_private_key, decode_public_key, error::Error, Result,
-};
-use cardano_serialization_lib::crypto::Ed25519KeyHash;
+use crate::{cardano_db_sync::ProtocolParams, error::Error, Result};
 use cardano_serialization_lib::utils::{Coin, TransactionUnspentOutput};
 use std::collections::HashMap;
 
@@ -58,19 +52,22 @@ impl std::convert::TryFrom<&WottleNftMetadata> for MetadataMap {
                 Number(n) => {
                     if n.is_i64() {
                         TransactionMetadatum::new_int(&Int::new_i32(
-                            n.as_i64()
-                                .ok_or(Error::Message("Failed to convert to i32".to_string()))?
-                                as i32,
+                            n.as_i64().ok_or_else(|| {
+                                Error::Message("Failed to convert to i32".to_string())
+                            })? as i32,
                         ))
                     } else if n.is_u64() {
                         TransactionMetadatum::new_int(&Int::new(&to_bignum(
-                            n.as_u64()
-                                .ok_or(Error::Message("Failed to convert to u64".to_string()))?,
+                            n.as_u64().ok_or_else(|| {
+                                Error::Message("Failed to convert to u64".to_string())
+                            })?,
                         )))
                     } else {
                         TransactionMetadatum::new_text(
                             n.as_f64()
-                                .ok_or(Error::Message("Failed to convert to u64".to_string()))?
+                                .ok_or_else(|| {
+                                    Error::Message("Failed to convert to u64".to_string())
+                                })?
                                 .to_string(),
                         )?
                     }
@@ -240,7 +237,7 @@ impl NftTransactionBuilder {
         let mut tx_outputs = vec![TransactionOutput::new(receiver, &self.asset_value)];
 
         let min_utxo_value = &self.params.minimum_utxo_value;
-        let tax_amount = min_ada_required(&Value::new(&min_utxo_value), &min_utxo_value);
+        let tax_amount = min_ada_required(&Value::new(min_utxo_value), min_utxo_value);
         tx_outputs.push(TransactionOutput::new(
             tax_address,
             &Value::new(&tax_amount),

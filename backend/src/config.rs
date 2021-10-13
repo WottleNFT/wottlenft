@@ -8,12 +8,6 @@ pub struct Config {
     #[envconfig(from = "SUBMIT_API_BASE_URL")]
     pub submit_api_base_url: String,
 
-    #[envconfig(from = "NFT_POLICY_VERIFICATION_KEY_PATH")]
-    pub nft_verification_key_path: String,
-
-    #[envconfig(from = "NFT_POLICY_SIGNING_KEY_PATH")]
-    pub nft_signing_key_path: String,
-
     #[envconfig(from = "PORT")]
     pub port: u32,
 
