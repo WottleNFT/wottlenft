@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  IonButton,
-  IonContent,
-  IonLabel,
-  IonRouterLink,
-  IonSlide,
-  IonSlides,
-} from "@ionic/react";
+import { IonButton, IonContent, IonLabel, IonRouterLink } from "@ionic/react";
 import Link from "next/link";
 
 import AuctionCard from "../Components/Auctions/AuctionCard";
@@ -57,6 +50,7 @@ const Index = () => {
                   <IonLabel>Littleholder97</IonLabel>
                   <IonButton
                     size="small"
+                    shape="round"
                     routerLink={`/auctions/${auctions[0].id}`}
                   >
                     Read Story
@@ -75,34 +69,27 @@ const Index = () => {
                 View All
               </IonRouterLink>
             </div>
-            {auctions.length ? (
-              <IonSlides
-                className="w-full h-full"
-                scrollbar={true}
-                options={{ slidesPerView: "auto" }}
-              >
-                {auctions.map((auction) => {
+            <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+              {auctions.length ? (
+                auctions.map((auction, idx) => {
                   return (
-                    <IonSlide
-                      key={auction.id}
-                      className="p-3 sm:w-1/3 lg:w-1/4"
-                    >
+                    <div key={idx} className="h-full">
                       <Link href={`/auctions/${auction.id}`} passHref>
                         <a>
                           <AuctionCard auction={auction} />
                         </a>
                       </Link>
-                    </IonSlide>
+                    </div>
                   );
-                })}
-              </IonSlides>
-            ) : (
-              <div className="flex items-center justify-center w-full h-full">
-                <IonLabel className="text-lg text-gray-400">
-                  No Live Auctions Right Now
-                </IonLabel>
-              </div>
-            )}
+                })
+              ) : (
+                <div className="flex items-center justify-center w-full h-full">
+                  <IonLabel className="text-lg text-gray-400">
+                    No Live Auctions Right Now
+                  </IonLabel>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </IonContent>
