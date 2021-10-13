@@ -5,5 +5,6 @@ RUN mkdir src
 RUN echo "fn main() {}" > ./src/main.rs
 RUN cargo build --release
 COPY . .
+RUN touch -a -m ./src/main.rs
 RUN cargo build --release
-ENTRYPOINT [ "/app/target/release/backend" ]
+ENTRYPOINT [ "bash" ]
