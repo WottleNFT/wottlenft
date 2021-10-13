@@ -8,9 +8,11 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import ConnectWalletButton from "../Components/ConnectWalletButton";
+import Footer from "../Components/Footer";
 import SideMenu, { MenuButton } from "../Components/SideMenu";
 import { Status } from "../features/wallet/walletSlice";
 import useWallet from "../hooks/useWallet";
@@ -40,17 +42,21 @@ const Main = (props: IMainProps) => {
       <IonPage id="main">
         <IonHeader className="h-20 ion-no-border">
           <IonToolbar color="primary" className="h-full align-middle">
-            <div className="flex flex-row align-middle">
-              {windowWidth === -1 && typeof window !== "undefined"
-                ? setWidth(window.innerWidth)
-                : windowWidth < windowBreakpoint && <MenuButton />}
-              <img
-                className="h-14 md:ml-3"
-                alt="Logo"
-                src={`${router.basePath}/logo.png`}
-              />
-              <IonTitle className="p-0">WottleNFT</IonTitle>
-            </div>
+            <Link href="/" passHref>
+              <a>
+                <div className="flex flex-row align-middle">
+                  {windowWidth === -1 && typeof window !== "undefined"
+                    ? setWidth(window.innerWidth)
+                    : windowWidth < windowBreakpoint && <MenuButton />}
+                  <img
+                    className="h-14 md:ml-3"
+                    alt="Logo"
+                    src={`${router.basePath}/logo.png`}
+                  />
+                  <IonTitle className="p-0 text-black">WottleNFT</IonTitle>
+                </div>
+              </a>
+            </Link>
 
             <IonButtons slot="end" className="flex items-center">
               {windowWidth > windowBreakpoint && (
@@ -68,6 +74,7 @@ const Main = (props: IMainProps) => {
           </IonToolbar>
         </IonHeader>
         {props.children}
+        <Footer />
       </IonPage>
     </div>
   );

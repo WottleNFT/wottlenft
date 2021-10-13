@@ -27,7 +27,7 @@ const Index = () => {
     >
       <IonContent fullscreen={true} scrollEvents={true}>
         {auctions[0] && (
-          <div className="flex py-4 px-16 text-center truncate h-1/2 place-items-center">
+          <div className="flex py-4 px-16 text-center truncate h-full place-items-center">
             <img
               className="object-cover w-1/2 h-full p-2 rounded-2xl"
               alt="Auction"
@@ -38,7 +38,10 @@ const Index = () => {
                 {auctions[0].nft.asset_name}
               </IonLabel>
               <IonLabel className="text-lg">Time Left:</IonLabel>
-              <CountdownTimer countdownTimestamp={auctions[0].endingTime} />
+              <CountdownTimer
+                className="text-lg"
+                countdownTimestamp={auctions[0].endingTime}
+              />
               <div className="flex">
                 <div className="flex flex-col w-1/2 gap-3">
                   <IonLabel>Current Bid</IonLabel>
