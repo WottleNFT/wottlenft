@@ -19,22 +19,26 @@ function SideMenu() {
     <IonMenu menuId="side-menu" contentId="main">
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Menu</IonTitle>
+          <IonTitle className="text-black font-serif">Menu</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         <IonList>
           <IonMenuToggle>
             <IonItem routerLink="/">
-              <IonIcon icon={home} slot="start" />
+              <IonIcon color="primary" icon={home} slot="start" />
               <IonLabel>Home</IonLabel>
             </IonItem>
             <IonItem routerLink="/auctions">
-              <IonIcon icon={searchOutline} slot="start" />
+              <IonIcon color="primary" icon={searchOutline} slot="start" />
               <IonLabel>Explore Auctions</IonLabel>
             </IonItem>
             <IonItem routerLink="/">
-              <IonIcon icon={personCircleOutline} slot="start" />
+              <IonIcon
+                color="primary"
+                icon={personCircleOutline}
+                slot="start"
+              />
               <IonLabel>Profile</IonLabel>
             </IonItem>
           </IonMenuToggle>

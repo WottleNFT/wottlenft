@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 
 import {
   IonButton,
@@ -23,6 +23,16 @@ type IMainProps = {
 const Main = (props: IMainProps) => {
   const router = useRouter();
   const wallet = useWallet();
+  const [windowWidth, setWidth] = useState(-1);
+  const windowBreakpoint = 640;
+
+  useEffect(() => {
+    const handleWindowResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
+
   return (
     <div>
       {props.meta}
@@ -31,9 +41,11 @@ const Main = (props: IMainProps) => {
         <IonHeader className="h-20 ion-no-border">
           <IonToolbar color="primary" className="h-full align-middle">
             <div className="flex flex-row align-middle">
-              <MenuButton />
+              {windowWidth === -1 && typeof window !== "undefined"
+                ? setWidth(window.innerWidth)
+                : windowWidth < windowBreakpoint && <MenuButton />}
               <img
-                className="h-14"
+                className="h-14 md:ml-3"
                 alt="Logo"
                 src={`${router.basePath}/logo.png`}
               />
@@ -41,10 +53,14 @@ const Main = (props: IMainProps) => {
             </div>
 
             <IonButtons slot="end" className="flex items-center">
-              <IonButton routerLink="/about">About</IonButton>
-              <IonButton routerLink="/mint-nft">Mint NFT</IonButton>
-              {wallet.status === Status.Enabled && (
-                <IonButton routerLink="/user-nfts">My NFTs</IonButton>
+              {windowWidth > windowBreakpoint && (
+                <>
+                  <IonButton routerLink="/about">About</IonButton>
+                  <IonButton routerLink="/mint-nft">Mint NFT</IonButton>
+                  {wallet.status === Status.Enabled && (
+                    <IonButton routerLink="/user-nfts">My NFTs</IonButton>
+                  )}
+                </>
               )}
 
               <ConnectWalletButton />
