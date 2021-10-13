@@ -28,13 +28,16 @@ async fn create_nft_transaction(
     let slot = get_slot_number(&data.pool).await?;
     let params = get_protocol_params(&data.pool).await?;
 
-    let nft_tx_builder =
-        NftTransactionBuilder::new(data.minter.clone(), create_nft.nft, slot, params)?;
+    let nft_tx_builder = NftTransactionBuilder::new(create_nft.nft, slot, params)?;
 
-    let tx = nft_tx_builder.create_transaction(&address, utxos)?;
+    let tx = nft_tx_builder.create_transaction(&address, &data.tax_address, utxos)?;
 
     Ok(HttpResponse::Ok().json(json!({
-        "transaction": hex::encode(tx.to_bytes())
+        "transaction": hex::encode(tx.to_bytes()),
+        "policy": {
+            "id": nft_tx_builder.policy_id(),
+            "json": nft_tx_builder.policy_json()
+        }
     })))
 }
 

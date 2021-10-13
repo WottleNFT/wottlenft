@@ -1,7 +1,7 @@
 mod address;
 mod nft;
 
-use crate::{config::Config, error::Error, nft::WottleNftMinter, transaction::Submitter, Result};
+use crate::{config::Config, error::Error, transaction::Submitter, Result};
 use actix_cors::Cors;
 use actix_web::{web::Data, App, HttpServer};
 use cardano_serialization_lib::address::Address;
@@ -10,7 +10,7 @@ use sqlx::postgres::PgPool;
 struct AppState {
     pool: PgPool,
     submitter: Submitter,
-    minter: WottleNftMinter,
+    tax_address: Address,
 }
 
 pub fn parse_address(address: &str) -> Result<Address> {
@@ -29,11 +29,7 @@ pub fn parse_address(address: &str) -> Result<Address> {
 }
 
 pub async fn start_server(config: Config) -> Result<()> {
-    let minter = WottleNftMinter::from_keys(
-        &config.nft_signing_key_path,
-        &config.nft_verification_key_path,
-        &config.nft_bech32_tax_address,
-    )?;
+    let tax_address = Address::from_bech32(&config.nft_bech32_tax_address)?;
     let db_pool = PgPool::connect(&config.database_url).await?;
     let address = format!("0.0.0.0:{}", config.port);
     println!("Starting server on {}", &address);
@@ -48,7 +44,7 @@ pub async fn start_server(config: Config) -> Result<()> {
             .app_data(Data::new(AppState {
                 pool: db_pool.clone(),
                 submitter: Submitter::for_url(&config.submit_api_base_url),
-                minter: minter.clone(),
+                tax_address: tax_address.clone(),
             }))
             .service(address::create_address_service())
             .service(nft::create_nft_service())

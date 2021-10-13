@@ -39,7 +39,9 @@ pub async fn query_user_address_utxo(
     FROM tx_out
     JOIN tx ON tx_out.tx_id = tx.id
     LEFT JOIN ma_tx_out ON tx_out.id = ma_tx_out.tx_out_id
-    WHERE address = $1
+    LEFT JOIN tx_in ON tx_out.tx_id = tx_in.tx_out_id AND tx_out.index = tx_in.tx_out_index
+	WHERE address = $1
+	AND tx_in.id IS NULL
     "#,
     )
     .bind(addr.to_bech32(None)?)
@@ -62,24 +64,21 @@ fn pgtxout_to_utxo(
     for pg in &pgs {
         let multiasset = multiassets_map
             .entry((&pg.hash, &pg.index, &pg.value, &pg.data_hash))
-            .or_insert(MultiAsset::new());
+            .or_insert_with(|| MultiAsset::new());
 
-        match (&pg.policy, &pg.name, &pg.quantity) {
-            (Some(policy), Some(name), Some(bd_quantity)) => {
-                if let Some(number) = bd_quantity.to_u64() {
-                    let policy_id = PolicyID::from_bytes(policy.clone())?;
-                    let mut assets = multiasset.get(&policy_id).unwrap_or(Assets::new());
+        if let (Some(policy), Some(name), Some(bd_quantity)) = (&pg.policy, &pg.name, &pg.quantity)
+        {
+            if let Some(number) = bd_quantity.to_u64() {
+                let policy_id = PolicyID::from_bytes(policy.clone())?;
+                let mut assets = multiasset.get(&policy_id).unwrap_or_else(|| Assets::new());
 
-                    let asset_name = AssetName::new(name.clone())?;
-                    if assets.get(&asset_name).is_none() {
-                        assets.insert(&asset_name, &to_bignum(number));
-                    }
-                    multiasset.insert(&policy_id, &assets);
+                let asset_name = AssetName::new(name.clone())?;
+                if assets.get(&asset_name).is_none() {
+                    assets.insert(&asset_name, &to_bignum(number));
                 }
+                multiasset.insert(&policy_id, &assets);
             }
-            // one of these fields are missing, we cannot form an asset.
-            _ => {}
-        };
+        }
     }
 
     let mut utxos = Vec::with_capacity(multiassets_map.len());
@@ -125,7 +124,7 @@ impl<'a> Serialize for UtxoJson<'a> {
     where
         S: Serializer,
     {
-        let utxo = &self.0;
+        let utxo = self.0;
         let tx_input = utxo.input();
         let mut serialize_struct = serializer.serialize_struct("Utxo", 4)?;
         serialize_struct.serialize_field(
