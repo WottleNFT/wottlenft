@@ -1,6 +1,7 @@
 import * as express from "express";
 import { json, urlencoded } from "body-parser";
-import { registerUser } from "./routes/userRoutes";
+import { getUserInfo, registerUser, userLogin } from "./routes/userRoutes";
+import { extractJWT } from "./ultility/passwordHandler";
 const routes = express.Router();
 routes.use(json())
 
@@ -13,4 +14,6 @@ function index(req: express.Request, res: express.Response) {
 
 routes.get('/', index)
 routes.post('/register', registerUser)
+routes.post('/login', userLogin)
+routes.get('/userinfo', extractJWT, getUserInfo)
 export default routes;
