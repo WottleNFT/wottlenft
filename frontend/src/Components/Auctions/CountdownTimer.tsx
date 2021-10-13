@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import { IonCardSubtitle } from "@ionic/react";
+
 import { defaultRemainingTime } from "../../types/CountdownTime";
 import { getRemainingTimeUntilTimestamp } from "./CountdownTimerUtils";
 
@@ -22,16 +24,9 @@ const CountdownTimer = ({
   }
 
   return (
-    <div className="countdown-timer">
-      <span>{remainingTime.days}</span>
-      <span>days</span>
-      <span className="two-numbers">{remainingTime.hours}</span>
-      <span>hours</span>
-      <span className="two-numbers">{remainingTime.minutes}</span>
-      <span>minutes</span>
-      <span className="two-numbers">{remainingTime.seconds}</span>
-      <span>seconds</span>
-    </div>
+    <IonCardSubtitle>
+      {`${remainingTime.days}d-${remainingTime.hours}h-${remainingTime.minutes}m-${remainingTime.seconds}s`}
+    </IonCardSubtitle>
   );
 };
 

@@ -10,6 +10,7 @@ import { Meta } from "../../layout/Meta";
 import { Main } from "../../templates/Main";
 import { Auction } from "../../types/Auction";
 import { Category } from "../../types/Category";
+import { testAuctions, testCategories } from "../../types/testData";
 
 function ExploreAuctions() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -56,7 +57,7 @@ function ExploreAuctions() {
   function auctionsInSelectedCategories() {
     if (selectedCategories.length > 0) {
       return auctions.filter((auction) =>
-        selectedCategories.includes(auction.category.id)
+        selectedCategories.includes(auction.categories[0]!.id)
       );
     }
     return auctions;
@@ -99,22 +100,25 @@ function ExploreAuctions() {
                       <img
                         className="object-cover w-full p-2 rounded-2xl"
                         alt="Auction"
-                        src={auction.imgUrl}
+                        src={auction.nft.imgUrl}
                       />
                     </div>
 
                     <div className="w-2/3 h-full p-3">
                       <div className="flex items-center h-1/2">
                         <p className="text-lg font-bold line-clamp-2">
-                          {auction.title}
+                          {auction.nft.asset_name}
                         </p>
                       </div>
                       <div className="flex items-center p-0 h-1/2">
-                        <CategoryTag
-                          color="primary"
-                          label={auction.category.name}
-                          className="m-0"
-                        />
+                        {auction.categories.map((category, id) => (
+                          <CategoryTag
+                            color="primary"
+                            label={category.name}
+                            className="m-0"
+                            key={id}
+                          />
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -145,65 +149,3 @@ function ExploreAuctions() {
 }
 
 export default ExploreAuctions;
-
-const testCategories: Category[] = [
-  {
-    id: 1,
-    name: "Art",
-  },
-  {
-    id: 2,
-    name: "Trading Cards",
-  },
-  {
-    id: 3,
-    name: "Collectibles",
-  },
-  {
-    id: 4,
-    name: "Sports",
-  },
-  {
-    id: 5,
-    name: "Utility",
-  },
-];
-
-const testAuctions: Auction[] = [
-  {
-    id: 1,
-    title: "Auction 1",
-    category: testCategories[1]!,
-    imgUrl: "https://picsum.photos/200",
-  },
-  {
-    id: 2,
-    title: "Auction 2",
-    category: testCategories[2]!,
-    imgUrl: "https://picsum.photos/200",
-  },
-  {
-    id: 3,
-    title: "Auction 3",
-    category: testCategories[0]!,
-    imgUrl: "https://picsum.photos/200",
-  },
-  {
-    id: 4,
-    title: "Auction 4",
-    category: testCategories[1]!,
-    imgUrl: "https://picsum.photos/200",
-  },
-  {
-    id: 5,
-    title: "Auction 5",
-    category: testCategories[3]!,
-    imgUrl: "https://picsum.photos/200",
-  },
-  {
-    id: 6,
-    title: "Auction 6",
-    category: testCategories[1]!,
-    imgUrl: "https://picsum.photos/200",
-  },
-];
