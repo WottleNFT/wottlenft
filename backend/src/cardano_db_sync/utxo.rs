@@ -39,7 +39,9 @@ pub async fn query_user_address_utxo(
     FROM tx_out
     JOIN tx ON tx_out.tx_id = tx.id
     LEFT JOIN ma_tx_out ON tx_out.id = ma_tx_out.tx_out_id
-    WHERE address = $1
+    LEFT JOIN tx_in ON tx_out.tx_id = tx_in.tx_out_id AND tx_out.index = tx_in.tx_out_index
+	WHERE address = $1
+	AND tx_in.id IS NULL
     "#,
     )
     .bind(addr.to_bech32(None)?)
@@ -125,7 +127,7 @@ impl<'a> Serialize for UtxoJson<'a> {
     where
         S: Serializer,
     {
-        let utxo = &self.0;
+        let utxo = self.0;
         let tx_input = utxo.input();
         let mut serialize_struct = serializer.serialize_struct("Utxo", 4)?;
         serialize_struct.serialize_field(

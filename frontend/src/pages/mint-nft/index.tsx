@@ -27,8 +27,14 @@ type Metadata = {
   [key: string]: string;
 };
 
+type Policy = {
+  id: string;
+  json: JSON;
+};
+
 type TransactionResponse = {
   transaction: HexCborString;
+  policy: Policy;
 };
 
 type SignTransaction = {
@@ -50,7 +56,6 @@ type PinataResponse = {
 type CustomFields = Record<string, string | number>;
 
 const MintNftPage = () => {
-  // const { register, handleSubmit, watch } = useForm<Inputs>();
   const [name, setName, resetName] = useTextInput();
   const [description, setDescription, resetDescription] = useTextInput();
   const [image, setImage] = useState<File | undefined>(undefined);
@@ -59,6 +64,8 @@ const MintNftPage = () => {
   const [customFields, setCustomFields] = useState<CustomFields>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [transactionId, setTransactionId] = useState("");
+  const [policyId, setPolicyId] = useState("");
+  const [policyJson, setPolicyJson] = useState<JSON>(JSON.parse(`{}`));
   const [error, setError] = useState("");
 
   const addCustomField = () => {
@@ -220,7 +227,7 @@ const MintNftPage = () => {
         AxiosResponse<TransactionResponse>
       >(`${backendApi}/nft/create`, nftMetadata);
 
-      const { transaction } = createNftRes.data;
+      const { transaction, policy } = createNftRes.data;
 
       const signature = await cardano.signTx(transaction, true);
       const signResponse = await axios.post<
@@ -230,7 +237,8 @@ const MintNftPage = () => {
         signature,
         transaction,
       });
-
+      setPolicyId(policy.id);
+      setPolicyJson(policy.json);
       setTransactionId(signResponse.data.tx_id);
       window.scrollTo(0, 0);
     } catch (e) {
@@ -338,6 +346,8 @@ const MintNftPage = () => {
                   <DisplayTransaction
                     isMainnet={wallet.state.network === MAINNET}
                     transactionId={transactionId}
+                    policyId={policyId}
+                    policyJson={policyJson}
                   />
                   <IonButton
                     size="large"

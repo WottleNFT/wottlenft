@@ -18,7 +18,7 @@ pub struct Config {
     pub port: u32,
 
     #[envconfig(from = "NFT_BECH32_TAXATION_ADDRESS")]
-    pub nft_bech32_tax_address: Option<String>,
+    pub nft_bech32_tax_address: String,
 
     #[envconfig(from = "DATABASE_URL")]
     pub database_url: String,

@@ -22,7 +22,7 @@ pub struct ProtocolParams {
     pub coins_per_utxo_word: Coin,
 }
 
-#[derive(sqlx::FromRow)]
+#[derive(sqlx::FromRow, Debug)]
 struct PgProtocolParams {
     min_fee_a: i32,
     min_fee_b: i32,
@@ -45,13 +45,24 @@ pub async fn get_protocol_params(pool: &PgPool) -> Result<ProtocolParams, sqlx::
     )
     .fetch_one(pool)
     .await?;
+    let min_utxo_value = match rec.min_utxo_value.to_u64() {
+        Some(0) => MIN_UTXO_VALUE,
+        Some(v) => v,
+        _ => MIN_UTXO_VALUE,
+    };
+
+    let coins_per_utxo_word = match rec.coins_per_utxo_word.and_then(|bd| bd.to_u64()) {
+        Some(0) => COINS_PER_UTXO_WORD,
+        Some(v) => v,
+        _ => COINS_PER_UTXO_WORD,
+    };
 
     Ok(ProtocolParams {
         linear_fee: LinearFee::new(
             &to_bignum(rec.min_fee_a as u64),
             &to_bignum(rec.min_fee_b as u64),
         ),
-        minimum_utxo_value: to_bignum(rec.min_utxo_value.to_u64().unwrap_or(MIN_UTXO_VALUE)),
+        minimum_utxo_value: to_bignum(min_utxo_value),
         pool_deposit: to_bignum(rec.pool_deposit.to_u64().unwrap_or(POOL_DEPOSIT)),
         key_deposit: to_bignum(rec.key_deposit.to_u64().unwrap_or(KEY_DEPOSIT)),
         max_tx_size: rec.max_tx_size as u32,
@@ -59,11 +70,7 @@ pub async fn get_protocol_params(pool: &PgPool) -> Result<ProtocolParams, sqlx::
             .max_val_size
             .and_then(|bd| bd.to_u32())
             .unwrap_or(MAX_VAL_SIZE),
-        coins_per_utxo_word: to_bignum(
-            rec.coins_per_utxo_word
-                .and_then(|bd| bd.to_u64())
-                .unwrap_or(COINS_PER_UTXO_WORD),
-        ),
+        coins_per_utxo_word: to_bignum(coins_per_utxo_word),
     })
 }
 
