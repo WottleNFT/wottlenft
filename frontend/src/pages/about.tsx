@@ -102,7 +102,7 @@ const About = () => {
             </p>
           </div>
         </div>
-        <div className="w-full px-56 py-20 min-w-1200">
+        <div className="w-full px-56 py-20 bg-white min-w-1200">
           <p className="text-5xl font-bold mb-11">OUR STORY</p>
           {ourStory}
           <div className="flex justify-between py-5">

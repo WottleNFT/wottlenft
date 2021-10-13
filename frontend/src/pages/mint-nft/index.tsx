@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 import {
   IonButton,
@@ -8,7 +8,7 @@ import {
   IonText,
 } from "@ionic/react";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { add, camera, hammer, trash } from "ionicons/icons";
+import { add, hammer, trash } from "ionicons/icons";
 
 import DisplayTransaction from "../../Components/MintNfts/DisplayTransaction";
 import { MAINNET, Status } from "../../features/wallet/walletSlice";
@@ -52,6 +52,7 @@ type CustomFields = Record<string, string | number>;
 const MintNftPage = () => {
   // const { register, handleSubmit, watch } = useForm<Inputs>();
   const [name, setName, resetName] = useTextInput();
+  const [creator, setCreator, resetCreator] = useTextInput();
   const [description, setDescription, resetDescription] = useTextInput();
   const [image, setImage] = useState<File | undefined>(undefined);
   const wallet = useWallet();
@@ -81,13 +82,13 @@ const MintNftPage = () => {
   };
 
   const renderNewFields = () => {
-    return Object.keys(customFields).map((key) => (
-      <label key={key} className="w-full">
-        {key}
+    return Object.keys(customFields).map((key, idx) => (
+      <label key={key} className="w-full pt-2">
+        {`Metadata ${idx + 1}: ${key}`}
         <div className="grid items-center w-full grid-cols-5 gap-2">
           <input
             className="col-span-4 p-3 my-2 border rounded focus:outline-none focus:ring-2"
-            placeholder={`Enter the value for ${key}`}
+            placeholder={`Value of Metadata (${key})`}
             type="text"
             value={customFields[key]}
             onChange={(e) => {
@@ -117,6 +118,7 @@ const MintNftPage = () => {
     setTransactionId("");
     setCustomFields({});
     resetName();
+    resetCreator();
     resetDescription();
     setImage(undefined);
     setNewField("");
@@ -151,10 +153,16 @@ const MintNftPage = () => {
       return false;
     }
 
+    if (description.length > 60) {
+      setError("NFT description cannot be more than 60 chars");
+      return false;
+    }
+
     const toValidate: Record<string, string> = {
       ...customFields,
       name,
       description,
+      creator,
     };
 
     let err: string = "";
@@ -247,109 +255,142 @@ const MintNftPage = () => {
     }
   };
 
+  useEffect(() => {
+    setTransactionId("1234");
+  }, []);
   return (
     <Main meta={<Meta title="Mint-NFT" description="Page to create an NFT" />}>
-      <IonContent fullscreen>
-        <div className="flex flex-col items-center flex-1 w-screen h-auto min-h-screen pb-20 bg-primary-default">
-          <div className="w-full p-10 bg-gray-200 border shadow-xl lg:w-1/2 rounded-xl">
-            <div className="flex flex-col items-center h-full">
-              {!transactionId && (
-                <>
-                  <p className="my-2 text-lg font-semibold text-center">
-                    Create your NFT here!
-                  </p>
-                  <label className="w-full">
-                    NFT name
-                    <input
-                      className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
-                      placeholder="Enter a name for your NFT"
-                      type="text"
-                      value={name}
-                      onChange={setName}
-                    />
-                  </label>
-                  <label className="w-full">
-                    Description
-                    <input
-                      className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
-                      placeholder="Enter a short description for your NFT"
-                      type="text"
-                      value={description}
-                      onChange={setDescription}
-                    />
-                  </label>
-                  {image && (
-                    <div className="w-full">
-                      <p className="pb-2">Image</p>
-                      <img
-                        className="object-cover"
-                        src={URL.createObjectURL(image)}
-                      />
-                      <IonButton
-                        onClick={() => setImage(undefined)}
-                        expand="full"
-                      >
-                        Remove Image
-                      </IonButton>
-                    </div>
-                  )}
-                  {!image && (
-                    <>
-                      <label className="w-full pb-2">Upload Image</label>
-                      <label className="flex flex-row items-center justify-center w-full h-20 align-middle border-4 border-gray-700 border-dashed ">
-                        <IonIcon icon={camera} />
-                        <input hidden type="file" onChange={onImageChange} />
-                      </label>
-                    </>
-                  )}
-                  <div className="h-2" />
-                  {renderNewFields()}
-                  <div className="grid items-center w-full grid-cols-5 gap-2 pt-4">
-                    <input
-                      className="col-span-4 p-3 my-2 border-4 border-gray-800 border-dotted rounded focus:outline-none focus:ring-2"
-                      placeholder="Add custom field"
-                      type="text"
-                      value={newField}
-                      onChange={(e) => setNewField(e.target.value)}
+      <IonContent className="ion-background-primary">
+        <div className="mb-3 text-center">
+          <p className="text-4xl font-medium">Mint your Cardano NFT here!</p>
+          <p className="mb-3 text-gray-900">
+            Mint your <b>1 CNFT</b> for just <b>1 ADA</b> under <b>1 MINUTE</b>
+          </p>
+          <p className="text-sm text-gray-900">
+            <b className="text-red-500">Caution!</b> WottleNFT is only able to
+            support Nami Wallet.
+          </p>
+          <p className="text-sm text-gray-900">
+            Please note that your Cardano NFT will be uploaded <br /> onto the
+            IPFS server with a timelock of an hour.
+          </p>
+        </div>
+        <div className="p-10 mx-auto mb-10 bg-gray-200 border rounded-md shadow-xl w-450">
+          <div className="flex flex-col items-center h-full">
+            {!transactionId && (
+              <>
+                <label className="w-full">
+                  NFT name
+                  <input
+                    className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
+                    placeholder="Name of masterpiece"
+                    type="text"
+                    value={name}
+                    onChange={setName}
+                  />
+                </label>
+                <label className="w-full">
+                  Creator [Recommended]
+                  <input
+                    className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
+                    placeholder="Name of creator"
+                    type="text"
+                    value={creator}
+                    onChange={setCreator}
+                  />
+                </label>
+                <label className="w-full">
+                  Description [Recommended]
+                  <input
+                    className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
+                    placeholder="Short story of Masterpiece (max 60 chars)"
+                    type="text"
+                    value={description}
+                    onChange={setDescription}
+                  />
+                </label>
+                {image && (
+                  <div className="w-full">
+                    <p className="pb-2">Image</p>
+                    <img
+                      className="object-cover"
+                      src={URL.createObjectURL(image)}
                     />
                     <IonButton
-                      onClick={addCustomField}
-                      className="h-12 col-span-1 px-2"
+                      onClick={() => setImage(undefined)}
+                      expand="block"
+                      strong
                     >
-                      <IonIcon icon={add} />
+                      Remove Image
                     </IonButton>
                   </div>
-                  {error && <IonText color="danger">{error}</IonText>}
-                  {!isSubmitting && (
-                    <IonButton
-                      size="large"
-                      className="h-12 col-span-1 px-2 mt-5"
-                      onClick={onSubmit}
-                    >
-                      <IonIcon icon={hammer} slot="end" />
-                      <div className="w-full p-6 font-bold">Mint NFT</div>
-                    </IonButton>
-                  )}
-                  {isSubmitting && <IonSpinner color="primary" />}
-                </>
-              )}
-              {transactionId && wallet.status === Status.Enabled && (
-                <>
-                  <DisplayTransaction
-                    isMainnet={wallet.state.network === MAINNET}
-                    transactionId={transactionId}
+                )}
+                {!image && (
+                  <>
+                    <label className="w-full pb-2">
+                      Upload File (Max 15MB)
+                    </label>
+                    <label className="flex flex-row items-center justify-center w-full h-20 align-middle bg-gray-400 rounded-lg cursor-pointer">
+                      Click here to upload!
+                      <input
+                        hidden
+                        type="file"
+                        onChange={onImageChange}
+                        placeholder="Click here to upload"
+                      />
+                    </label>
+                  </>
+                )}
+                <div className="h-2" />
+                <label className="w-full">
+                  Add extra metadata fields [Optional]
+                </label>
+                {renderNewFields()}
+                <div className="grid items-center w-full grid-cols-5 gap-2">
+                  <input
+                    className="col-span-4 p-3 my-2 border-gray-800 rounded focus:outline-none focus:ring-2"
+                    placeholder="Name of Metadata"
+                    type="text"
+                    value={newField}
+                    onChange={(e) => setNewField(e.target.value)}
                   />
+                  <IonButton
+                    onClick={addCustomField}
+                    className="h-12 col-span-1 px-2"
+                  >
+                    <IonIcon icon={add} />
+                  </IonButton>
+                </div>
+                {error && <IonText color="danger">{error}</IonText>}
+                {!isSubmitting && (
                   <IonButton
                     size="large"
                     className="h-12 col-span-1 px-2 mt-5"
-                    onClick={restart}
+                    onClick={onSubmit}
                   >
                     <IonIcon icon={hammer} slot="end" />
-                    <div className="w-full p-6 font-bold">Mint Another NFT</div>
+                    <div className="w-full p-6 font-bold">Mint NFT</div>
                   </IonButton>
-                </>
-              )}
-            </div>
+                )}
+                {isSubmitting && <IonSpinner color="primary" />}
+              </>
+            )}
+            {transactionId && wallet.status === Status.Enabled && (
+              <>
+                <DisplayTransaction
+                  isMainnet={wallet.state.network === MAINNET}
+                  transactionId={transactionId}
+                />
+                <IonButton
+                  size="large"
+                  className="h-12 col-span-1 px-2 mt-5"
+                  onClick={restart}
+                >
+                  <IonIcon icon={hammer} slot="end" />
+                  <div className="w-full p-6 font-bold">Mint Another NFT</div>
+                </IonButton>
+              </>
+            )}
           </div>
         </div>
       </IonContent>
