@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -34,14 +30,12 @@
     "noEmit": true,
     "isolatedModules": true
   },
-  "exclude": [
-    "./out/**/*",
-    "./node_modules/**/*"
-  ],
+  "exclude": ["./out/**/*", "./node_modules/**/*"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/pages/auctions/[id].js"
+    "src/pages/auctions/[id].js",
+    "src/Components/Auctions/CountdownTimerUtils.js"
   ]
 }

@@ -61,5 +61,6 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [],
+  // eslint-disable-next-line global-require
+  plugins: [require('@tailwindcss/line-clamp')],
 };
