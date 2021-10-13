@@ -46,8 +46,7 @@ const DisplayTransaction = ({
           Remember to also register your policy on{" "}
           <a target="_blank" href={poolPmUrl} rel="noreferrer">
             pool.pm
-          </a>{" "}
-          (Only on mainnet)
+          </a>
         </p>
       </section>
     </>

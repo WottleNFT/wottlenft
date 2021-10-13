@@ -70,8 +70,11 @@ const MintNftPage = () => {
   const [error, setError] = useState("");
 
   const addCustomField = () => {
+    if (newField === "") {
+      setError("Please provide a name for your metadata field");
+      return;
+    }
     if (
-      newField === "" ||
       newField === "name" ||
       newField === "description" ||
       newField === "image" ||
@@ -269,7 +272,7 @@ const MintNftPage = () => {
         <div className="mb-3 text-center">
           <p className="text-4xl font-medium">Mint your Cardano NFT here!</p>
           <p className="mb-3 text-gray-900">
-            Mint your <b>1 CNFT</b> for just <b>1 ADA</b> under <b>1 MINUTE</b>
+            Mint <b>1 CNFT</b> for just <b>1 ADA</b> under <b>1 MINUTE</b>
           </p>
           <p className="text-sm text-gray-900">
             <b className="text-red-500">Caution!</b> WottleNFT is only able to
