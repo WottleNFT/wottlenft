@@ -35,6 +35,9 @@ export type WalletState = {
 
 type WalletStatus = NoExtension | Loading | NotEnabled | Enabled;
 
+export const MAINNET = 1;
+export const TESTNET = 0;
+
 const getBackendApi = (network: Network) => {
   return network === 1
     ? (process.env.mainnetApi as string)
@@ -118,6 +121,9 @@ export const walletSlice = createSlice<WalletStatus, typeof reducers, "Wallet">(
     initialState,
     reducers,
     extraReducers: (builder) => {
+      builder.addCase(initializeWallet.pending, (state, _) => {
+        state.status = Status.Loading;
+      });
       builder.addCase(initializeWallet.fulfilled, (_, action) => {
         return action.payload;
       });

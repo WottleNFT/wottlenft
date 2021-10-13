@@ -3,6 +3,10 @@ name = "backend"
 version = "0.1.0"
 edition = "2018"
 
+[[bin]]
+name = "backend"
+path = "src/main.rs"
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
@@ -21,3 +25,6 @@ chrono = "0.4"
 reqwest = "0.11.4"
 dotenv = "0.15.0"
 lazy_static = "1.4.0"
+sqlx = { version = "0.5.6", features = ["postgres", "runtime-tokio-rustls", "bigdecimal"]}
+bigdecimal = "0.3.0"
+tokio-stream = "0.1.7"

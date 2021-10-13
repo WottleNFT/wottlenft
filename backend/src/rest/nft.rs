@@ -1,4 +1,5 @@
 use crate::{
+    cardano_db_sync::{get_protocol_params, get_slot_number, query_user_address_utxo},
     nft::{NftTransactionBuilder, WottleNftMetadata},
     Result,
 };
@@ -23,16 +24,20 @@ async fn create_nft_transaction(
 ) -> Result<HttpResponse> {
     let create_nft = create_nft.into_inner();
     let address = super::parse_address(&create_nft.address)?;
-    let utxos = data.cli.query_utxo(&address)?;
-    let block_info = data.cli.query_block_information()?;
-    let params = data.cli.query_parameters()?;
-    let nft_tx_builder =
-        NftTransactionBuilder::new(data.minter.clone(), create_nft.nft, block_info, params)?;
+    let utxos = query_user_address_utxo(&data.pool, &address).await?;
+    let slot = get_slot_number(&data.pool).await?;
+    let params = get_protocol_params(&data.pool).await?;
 
-    let tx = nft_tx_builder.create_transaction(&address, utxos)?;
+    let nft_tx_builder = NftTransactionBuilder::new(create_nft.nft, slot, params)?;
+
+    let tx = nft_tx_builder.create_transaction(&address, &data.tax_address, utxos)?;
 
     Ok(HttpResponse::Ok().json(json!({
-        "transaction": hex::encode(tx.to_bytes())
+        "transaction": hex::encode(tx.to_bytes()),
+        "policy": {
+            "id": nft_tx_builder.policy_id(),
+            "json": nft_tx_builder.policy_json()
+        }
     })))
 }
 

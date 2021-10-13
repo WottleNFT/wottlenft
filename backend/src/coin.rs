@@ -4,18 +4,17 @@ use cardano_serialization_lib::{
     Mint, NativeScripts, Transaction, TransactionBody, TransactionOutput, TransactionWitnessSet,
 };
 
-use crate::cli::protocol::ProtocolParams;
+use crate::cardano_db_sync::ProtocolParams;
 use crate::Result;
 use cardano_serialization_lib::crypto::{
     BootstrapWitnesses, PrivateKey, TransactionHash, Vkeywitnesses,
 };
-use cardano_serialization_lib::fees::{min_fee, LinearFee};
+use cardano_serialization_lib::fees::min_fee;
 use cardano_serialization_lib::metadata::AuxiliaryData;
 use cardano_serialization_lib::plutus::{PlutusList, PlutusScripts, Redeemers};
 use cardano_serialization_lib::tx_builder::TransactionBuilder;
 use cardano_serialization_lib::utils::{
-    hash_transaction, make_vkey_witness, min_ada_required, to_bignum, TransactionUnspentOutput,
-    Value,
+    hash_transaction, make_vkey_witness, min_ada_required, TransactionUnspentOutput, Value,
 };
 
 lazy_static! {
@@ -110,10 +109,7 @@ fn create_dummy_tx_witness_set(
 }
 
 pub fn calculate_maximum_fees(protocol_params: &ProtocolParams) -> Coin {
-    to_bignum(
-        protocol_params.tx_fee_fixed
-            + protocol_params.max_tx_size as u64 * protocol_params.tx_fee_per_byte,
-    )
+    protocol_params.linear_fee.coefficient()
 }
 
 pub fn build_transaction_body(
@@ -150,13 +146,7 @@ pub fn build_transaction_body(
         let witness_set = create_dummy_tx_witness_set(witness_params, &hash_transaction(&tx_body));
         let tx = Transaction::new(&tx_body, &witness_set, auxiliary_data.clone());
 
-        let calculated_fees = min_fee(
-            &tx,
-            &calc_linear_fee(
-                protocol_params.tx_fee_per_byte,
-                protocol_params.tx_fee_fixed,
-            ),
-        )?;
+        let calculated_fees = min_fee(&tx, &protocol_params.linear_fee)?;
 
         if calculated_fees.eq(&fees) {
             return Ok(tx_body);
@@ -175,10 +165,10 @@ fn largest_first_coin_selection(
     params: &ProtocolParams,
     ttl: u32,
 ) -> Result<TransactionBuilder> {
-    let min_utxo_value = to_bignum(params.min_utxo_value);
     utxos.sort_by_key(|utxo| utxo.output().amount().coin());
 
-    let (outputs, total_output_amount) = calculate_output_amount(outputs, fees, &min_utxo_value)?;
+    let (outputs, total_output_amount) =
+        calculate_output_amount(outputs, fees, &params.minimum_utxo_value)?;
 
     let mut tx_builder = start_transaction(params, ttl);
     tx_builder.set_fee(&fees);
@@ -190,7 +180,7 @@ fn largest_first_coin_selection(
         let amt = utxo.output().amount();
         if amt.multiasset().is_some() {
             // Has asset so we leave a minimum amount inside to preserve the assets
-            let min_amount = min_ada_required(&amt, &min_utxo_value);
+            let min_amount = min_ada_required(&amt, &params.minimum_utxo_value);
             let extracted_amount = amt
                 .coin()
                 .checked_sub(&min_amount)
@@ -209,7 +199,10 @@ fn largest_first_coin_selection(
         );
 
         if selected_amount.ge(&total_output_amount) {
-            let change_amount = min_ada_required(&Value::new(&min_utxo_value), &min_utxo_value);
+            let change_amount = min_ada_required(
+                &Value::new(&params.minimum_utxo_value),
+                &params.minimum_utxo_value,
+            );
             if selected_amount
                 .checked_sub(&total_output_amount)?
                 .lt(&change_amount)
@@ -226,16 +219,12 @@ fn largest_first_coin_selection(
     Err(CoinSelectionFailure::BalanceInsufficient.into())
 }
 
-fn calc_linear_fee(tx_fee_per_byte: u64, tx_fee_fixed: u64) -> LinearFee {
-    LinearFee::new(&to_bignum(tx_fee_per_byte), &to_bignum(tx_fee_fixed))
-}
-
 fn start_transaction(params: &ProtocolParams, ttl: u32) -> TransactionBuilder {
     let mut tx_builder = TransactionBuilder::new(
-        &calc_linear_fee(params.tx_fee_per_byte, params.tx_fee_fixed),
-        &to_bignum(params.min_utxo_value),
-        &to_bignum(params.stake_pool_deposit),
-        &to_bignum(params.stake_address_deposit),
+        &params.linear_fee,
+        &params.minimum_utxo_value,
+        &params.pool_deposit,
+        &params.key_deposit,
         params.max_value_size,
         params.max_tx_size,
     );

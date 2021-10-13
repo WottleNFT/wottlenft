@@ -1,0 +1,30 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy to dev
+
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEVELOPMENT_HOST }}
+          username: ${{ secrets.DEVELOPMENT_USERNAME }}
+          key: ${{ secrets.DEVELOPMENT_KEY }}
+          port: ${{ secrets.DEVELOPMENT_PORT }}
+          script_stop: true
+          script: |
+            cd ~/wottlenft
+            git checkout main
+            git fetch --all
+            git reset --hard origin/main
+            docker-compose build backend
+            docker-compose build frontend
+            docker-compose up -d frontend backend

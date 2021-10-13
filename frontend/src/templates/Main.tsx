@@ -29,8 +29,8 @@ const Main = (props: IMainProps) => {
       <SideMenu />
       <IonPage id="main">
         <IonHeader className="h-20 ion-no-border">
-          <IonToolbar color="primary" className="h-full">
-            <div className="flex flex-row">
+          <IonToolbar color="primary" className="h-full align-middle">
+            <div className="flex flex-row align-middle">
               <MenuButton />
               <img
                 className="h-14"

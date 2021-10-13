@@ -9,23 +9,23 @@ use cardano_serialization_lib::{
     ScriptHashNamespace, ScriptPubkey, TimelockExpiry, Transaction, TransactionOutput,
     TransactionWitnessSet,
 };
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::coin::TransactionWitnessSetParams;
-use crate::error::Error::Js;
-use crate::{
-    cli::protocol::{BlockInformation, ProtocolParams},
-    decode_private_key, decode_public_key,
-    error::Error,
-    Result,
-};
-use cardano_serialization_lib::utils::TransactionUnspentOutput;
+use crate::{cardano_db_sync::ProtocolParams, error::Error, Result};
+use cardano_serialization_lib::utils::{Coin, TransactionUnspentOutput};
+use std::collections::HashMap;
 
-#[derive(Deserialize)]
+const EXPIRY_IN_SECONDS: u32 = 3600;
+const NFT_STANDARD_LABEL: u64 = 721;
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct WottleNftMetadata {
     name: String,
     description: String,
     image: String,
+    #[serde(flatten)]
+    pub rest: HashMap<String, serde_json::Value>,
 }
 
 impl WottleNftMetadata {
@@ -34,6 +34,7 @@ impl WottleNftMetadata {
             name,
             description,
             image,
+            rest: HashMap::new(),
         }
     }
 }
@@ -43,6 +44,40 @@ impl std::convert::TryFrom<&WottleNftMetadata> for MetadataMap {
 
     fn try_from(value: &WottleNftMetadata) -> Result<Self> {
         let mut nft_metadata_map = MetadataMap::new();
+        use serde_json::Value::*;
+        for (k, v) in &value.rest {
+            let key = TransactionMetadatum::new_text(k.to_string())?;
+            let value = match v {
+                Bool(bool) => TransactionMetadatum::new_text(format!("{}", bool))?,
+                Number(n) => {
+                    if n.is_i64() {
+                        TransactionMetadatum::new_int(&Int::new_i32(
+                            n.as_i64().ok_or_else(|| {
+                                Error::Message("Failed to convert to i32".to_string())
+                            })? as i32,
+                        ))
+                    } else if n.is_u64() {
+                        TransactionMetadatum::new_int(&Int::new(&to_bignum(
+                            n.as_u64().ok_or_else(|| {
+                                Error::Message("Failed to convert to u64".to_string())
+                            })?,
+                        )))
+                    } else {
+                        TransactionMetadatum::new_text(
+                            n.as_f64()
+                                .ok_or_else(|| {
+                                    Error::Message("Failed to convert to u64".to_string())
+                                })?
+                                .to_string(),
+                        )?
+                    }
+                }
+                String(s) => TransactionMetadatum::new_text(s.to_string())?,
+                _ => continue,
+            };
+
+            nft_metadata_map.insert(&key, &value);
+        }
 
         nft_metadata_map.insert(
             &TransactionMetadatum::new_text("name".to_string())?,
@@ -68,49 +103,21 @@ impl std::convert::TryFrom<&WottleNftMetadata> for MetadataMap {
     }
 }
 
-pub struct WottleNftMinter {
-    skey: PrivateKey,
-    vkey: PublicKey,
-    address: Option<Address>,
-}
-
-impl Clone for WottleNftMinter {
-    fn clone(&self) -> Self {
-        Self {
-            skey: PrivateKey::from_normal_bytes(&self.skey.as_bytes()).unwrap(),
-            vkey: self.vkey.clone(),
-            address: self.address.clone(),
-        }
-    }
-}
-
-pub struct Policy {
+pub struct NftPolicy {
+    pub skey: PrivateKey,
+    pub vkey: PublicKey,
+    pub ttl: u32,
     pub script: NativeScript,
     pub hash: ScriptHash,
 }
 
-impl WottleNftMinter {
-    pub fn from_keys(
-        skey_path: &str,
-        vkey_path: &str,
-        nft_tax_address: &Option<String>,
-    ) -> Result<WottleNftMinter> {
-        let address = match nft_tax_address {
-            Some(s) => match Address::from_bech32(&s) {
-                Ok(addr) => Some(addr),
-                Err(err) => return Err(Js(err)),
-            },
-            None => None,
-        };
-        Ok(Self {
-            skey: decode_private_key(skey_path)?,
-            vkey: decode_public_key(vkey_path)?,
-            address,
-        })
-    }
+impl NftPolicy {
+    pub fn new(slot: u32) -> Result<Self> {
+        let skey = PrivateKey::generate_ed25519()?;
+        let vkey = skey.to_public();
+        let expiry_slot = slot + EXPIRY_IN_SECONDS;
 
-    pub fn generate_policy(&self, expiry_slot: u32) -> Result<Policy> {
-        let pub_key_script = NativeScript::new_script_pubkey(&ScriptPubkey::new(&self.vkey.hash()));
+        let pub_key_script = NativeScript::new_script_pubkey(&ScriptPubkey::new(&vkey.hash()));
         let time_expiry_script =
             NativeScript::new_timelock_expiry(&TimelockExpiry::new(expiry_slot));
 
@@ -122,78 +129,86 @@ impl WottleNftMinter {
         let hash =
             ScriptHash::from_bytes(script.hash(ScriptHashNamespace::NativeScript).to_bytes())?;
 
-        Ok(Policy { script, hash })
+        Ok(Self {
+            skey,
+            vkey,
+            ttl: expiry_slot,
+            script,
+            hash,
+        })
+    }
+
+    pub fn to_json(&self) -> serde_json::Value {
+        serde_json::json!({
+        "type": "all",
+        "scripts": [
+            {
+                "type": "before",
+                "slot": self.ttl,
+            },
+            {
+                "type": "sig",
+                "keyHash": hex::encode(self.vkey.hash().to_bytes())
+            }
+        ]
+        })
     }
 }
 
-const EXPIRY_IN_SECONDS: u32 = 3600;
-const NFT_STANDARD_LABEL: u64 = 721;
-
 pub struct NftTransactionBuilder {
-    minter: WottleNftMinter,
-    policy: Policy,
+    policy: NftPolicy,
     asset_value: Value,
     asset_name: AssetName,
     metadata: GeneralTransactionMetadata,
-    block_info: BlockInformation,
+    slot: u32,
     params: ProtocolParams,
 }
 
 impl NftTransactionBuilder {
-    pub fn new(
-        minter: WottleNftMinter,
-        nft: WottleNftMetadata,
-        block_info: BlockInformation,
-        params: ProtocolParams,
-    ) -> Result<Self> {
-        let policy = minter.generate_policy(block_info.slot as u32 + EXPIRY_IN_SECONDS)?;
+    pub fn new(nft: WottleNftMetadata, slot: u32, params: ProtocolParams) -> Result<Self> {
+        let policy = NftPolicy::new(slot)?;
         let (asset_value, asset_name) =
-            Self::generate_asset_and_value(&policy, &nft, params.min_utxo_value)?;
+            Self::generate_asset_and_value(&policy, &nft, &params.minimum_utxo_value)?;
         let metadata = Self::build_metadata(&policy, &nft)?;
 
         Ok(Self {
-            minter,
             policy,
             asset_value,
             asset_name,
             metadata,
             params,
-            block_info,
+            slot,
         })
     }
 
-    fn str_to_asset_name(s: &str) -> String {
-        s.to_ascii_lowercase().split_whitespace().collect()
-    }
-
     fn generate_asset_and_value(
-        policy: &Policy,
+        policy: &NftPolicy,
         nft: &WottleNftMetadata,
-        min_utxo_value: u64,
+        min_utxo_value: &Coin,
     ) -> Result<(Value, AssetName)> {
-        let mut value = Value::new(&to_bignum(min_utxo_value));
+        let mut value = Value::new(min_utxo_value);
         let mut assets = Assets::new();
-        let asset_name = AssetName::new(Self::str_to_asset_name(&nft.name).as_bytes().to_vec())?;
+        let asset_name = AssetName::new(nft.name.clone().into_bytes())?;
         assets.insert(&asset_name, &to_bignum(1));
         let mut multi_asset = MultiAsset::new();
         multi_asset.insert(&policy.hash, &assets);
         value.set_multiasset(&multi_asset);
 
-        let min = min_ada_required(&value, &to_bignum(min_utxo_value));
+        let min = min_ada_required(&value, min_utxo_value);
         value.set_coin(&min);
 
         Ok((value, asset_name))
     }
 
     fn build_metadata(
-        policy: &Policy,
+        policy: &NftPolicy,
         nft: &WottleNftMetadata,
     ) -> Result<GeneralTransactionMetadata> {
         let nft_metadata_map = MetadataMap::try_from(nft)?;
 
         let mut nft_asset = MetadataMap::new();
         nft_asset.insert(
-            &TransactionMetadatum::new_text(Self::str_to_asset_name(&nft.name))?,
+            &TransactionMetadatum::new_text(nft.name.clone())?,
             &TransactionMetadatum::new_map(&nft_metadata_map),
         );
 
@@ -216,16 +231,17 @@ impl NftTransactionBuilder {
     pub fn create_transaction(
         &self,
         receiver: &Address,
+        tax_address: &Address,
         utxos: Vec<TransactionUnspentOutput>,
     ) -> Result<Transaction> {
         let mut tx_outputs = vec![TransactionOutput::new(receiver, &self.asset_value)];
 
-        if let Some(addr) = &self.minter.address {
-            let min_utxo_value = &to_bignum(self.params.min_utxo_value);
-
-            let tax_amount = min_ada_required(&Value::new(&min_utxo_value), &min_utxo_value);
-            tx_outputs.push(TransactionOutput::new(addr, &Value::new(&tax_amount)));
-        }
+        let min_utxo_value = &self.params.minimum_utxo_value;
+        let tax_amount = min_ada_required(&Value::new(min_utxo_value), min_utxo_value);
+        tx_outputs.push(TransactionOutput::new(
+            tax_address,
+            &Value::new(&tax_amount),
+        ));
 
         let native_scripts = &self.create_native_scripts();
         let witness_set_params: TransactionWitnessSetParams = TransactionWitnessSetParams {
@@ -237,7 +253,7 @@ impl NftTransactionBuilder {
         let tx_body = crate::coin::build_transaction_body(
             utxos,
             tx_outputs,
-            self.block_info.slot as u32 + EXPIRY_IN_SECONDS,
+            self.slot + EXPIRY_IN_SECONDS,
             &self.params,
             None,
             Some(self.create_mint()),
@@ -251,6 +267,14 @@ impl NftTransactionBuilder {
         aux_data.set_metadata(&self.metadata);
         let transaction = Transaction::new(&tx_body, &witnesses, Some(aux_data));
         Ok(transaction)
+    }
+
+    pub fn policy_json(&self) -> serde_json::Value {
+        self.policy.to_json()
+    }
+
+    pub fn policy_id(&self) -> String {
+        hex::encode(self.policy.hash.to_bytes())
     }
 
     pub fn combine_witness_set(
@@ -302,7 +326,7 @@ impl NftTransactionBuilder {
 
     fn get_vkey_witnesses(&self, tx_hash: &TransactionHash) -> Vkeywitnesses {
         let mut vkey_witnesses = Vkeywitnesses::new();
-        let vkey_witness = make_vkey_witness(tx_hash, &self.minter.skey);
+        let vkey_witness = make_vkey_witness(tx_hash, &self.policy.skey);
         vkey_witnesses.add(&vkey_witness);
         vkey_witnesses
     }

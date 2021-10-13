@@ -35,3 +35,4 @@ local
 .vercel
 
 .env.production
+.env.development

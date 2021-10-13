@@ -26,6 +26,14 @@ const useWallet = (): Present | NotPresent => {
     dispatch(initializeWallet());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (wallet.status === Status.Enabled) {
+      window.cardano!.onAccountChange(() => {
+        dispatch(initializeWallet());
+      });
+    }
+  });
+
   if (wallet.status === Status.Loading)
     return {
       status: Status.Loading,
