@@ -23,7 +23,7 @@ const DisplayTransaction = ({
   return (
     <>
       <h1 className="text-4xl font-bold">Congratulations!</h1>
-      <p>Your transaction has successfully been submitted!</p>
+      <p>You have minted a Cardano Masterpiece.</p>
 
       <section className="mt-4">
         Remember, transactions can take a while before they appear on the
@@ -46,8 +46,7 @@ const DisplayTransaction = ({
           Remember to also register your policy on{" "}
           <a target="_blank" href={poolPmUrl} rel="noreferrer">
             pool.pm
-          </a>{" "}
-          (Only on mainnet)
+          </a>
         </p>
       </section>
     </>
