@@ -22,6 +22,7 @@
     "@reduxjs/toolkit": "^1.6.2",
     "axios": "^0.22.0",
     "cbor": "^8.0.2",
+    "dayjs": "^1.10.7",
     "form-data": "^4.0.0",
     "ionicons": "^5.5.3",
     "multiparty": "^4.2.2",

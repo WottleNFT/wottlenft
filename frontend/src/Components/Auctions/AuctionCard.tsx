@@ -1,6 +1,6 @@
 import { IonCard, IonCardHeader, IonCardTitle } from "@ionic/react";
 
-import { Auction } from "../types/Auction";
+import { Auction } from "../../types/Auction";
 
 function AuctionCard({ auction }: { auction: Auction }) {
   return (

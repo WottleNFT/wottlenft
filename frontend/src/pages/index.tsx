@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import Link from "next/link";
 
-import AuctionCard from "../Components/AuctionCard";
+import AuctionCard from "../Components/Auctions/AuctionCard";
 import { Meta } from "../layout/Meta";
 import { Main } from "../templates/Main";
 import { Auction } from "../types/Auction";
