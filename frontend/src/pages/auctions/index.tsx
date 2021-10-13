@@ -63,7 +63,7 @@ function ExploreAuctions() {
   }
 
   return (
-    <Main meta={<Meta title="Explore" description="Explore all auctions." />}>
+    <Main meta={<Meta title="WottleNFT" description="Cardano NFT Auctions" />}>
       <IonList>
         <div>
           <SearchBar onSearch={searchAuctions} />

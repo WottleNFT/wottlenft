@@ -40,14 +40,7 @@ const UserNfts = () => {
     return nfts;
   }
   return (
-    <Main
-      meta={
-        <Meta
-          title="Wottlenft"
-          description="Wottlenft is your next NFT auction site."
-        />
-      }
-    >
+    <Main meta={<Meta title="Wottlenft" description="Cardano NFT Minter" />}>
       <IonContent>
         {wallet.status !== Status.Enabled ? (
           <p className="w-full p-4 font-mono text-2xl text-center">

@@ -58,6 +58,10 @@ const Meta = (props: IMetaProps) => {
           locale: AppConfig.locale,
           site_name: AppConfig.site_name,
         }}
+        twitter={{
+          handle: "@wottlenft",
+          site: "@wottlenft",
+        }}
       />
     </>
   );

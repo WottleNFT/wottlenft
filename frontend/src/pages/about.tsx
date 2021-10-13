@@ -83,7 +83,7 @@ const About = () => {
   );
 
   return (
-    <Main meta={<Meta title="About | WottleNFT" description="about us" />}>
+    <Main meta={<Meta title="WottleNFT" description="About Us" />}>
       <IonContent scrollX>
         <div className="flex justify-between w-full h-full bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-about-background">
           <div className="w-2/5 ml-56 my-44">
