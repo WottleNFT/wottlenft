@@ -7,4 +7,4 @@ RUN cargo build --release
 COPY . .
 RUN touch -a -m ./src/main.rs
 RUN cargo build --release
-ENTRYPOINT [ "bash" ]
+ENTRYPOINT [ "/app/target/release/backend" ]
