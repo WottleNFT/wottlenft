@@ -3,6 +3,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import {
   IonButton,
   IonButtons,
+  IonContent,
   IonHeader,
   IonPage,
   IonTitle,
@@ -73,8 +74,10 @@ const Main = (props: IMainProps) => {
             </IonButtons>
           </IonToolbar>
         </IonHeader>
-        {props.children}
-        <Footer />
+        <IonContent>
+          {props.children}
+          <Footer />
+        </IonContent>
       </IonPage>
     </div>
   );
