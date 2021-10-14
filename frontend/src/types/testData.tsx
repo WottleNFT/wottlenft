@@ -56,7 +56,7 @@ export const testNfts: Asset[] = [
     policy_id: "5769875302",
     asset_name: "Golf Ball",
     qty: 1,
-    imgUrl: "https://picsum.photos/420",
+    imgUrl: "https://picsum.photos/400",
     description: "description for Golf Ball",
   },
 ];
@@ -71,7 +71,7 @@ export const testProfiles: Profile[] = [
     profileImgUrl: "https://picsum.photos/400",
   },
   {
-    username: "BEAST",
+    username: "BEAST VERY LONG USERNAME",
     profileImgUrl: "https://picsum.photos/230",
   },
   {

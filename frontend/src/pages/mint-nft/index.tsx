@@ -1,12 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 
-import {
-  IonButton,
-  IonContent,
-  IonIcon,
-  IonSpinner,
-  IonText,
-} from "@ionic/react";
+import { IonButton, IonIcon, IonSpinner, IonText } from "@ionic/react";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { add, hammer, trash } from "ionicons/icons";
 
@@ -78,6 +72,7 @@ const MintNftPage = () => {
       newField === "name" ||
       newField === "description" ||
       newField === "image" ||
+      newField === "creator" ||
       newField === "address"
     ) {
       setError(`Cannot set ${newField} as field name`);
@@ -92,9 +87,9 @@ const MintNftPage = () => {
   };
 
   const renderNewFields = () => {
-    return Object.keys(customFields).map((key, idx) => (
+    return Object.keys(customFields).map((key) => (
       <label key={key} className="w-full pt-2">
-        {`Metadata ${idx + 1}: ${key}`}
+        Metadata Name: <span className="font-bold">{key}</span>
         <div className="grid items-center w-full grid-cols-5 gap-2">
           <input
             className="col-span-4 p-3 my-2 border rounded focus:outline-none focus:ring-2"
@@ -154,17 +149,16 @@ const MintNftPage = () => {
     }
 
     if (!name) {
-      setError("NFT name must not be empty");
+      setError("NFT Name must not be empty");
       return false;
+    }
+
+    if (!creator) {
+      setError("Creator must not be empty");
     }
 
     if (!description) {
       setError("NFT description must not be empty");
-      return false;
-    }
-
-    if (description.length > 60) {
-      setError("NFT description cannot be more than 60 chars");
       return false;
     }
 
@@ -202,7 +196,6 @@ const MintNftPage = () => {
     const formData = new FormData();
     formData.append("file", image as File);
     try {
-      console.log(formData);
       const response = await axios.post<
         FormData,
         AxiosResponse<PinataResponse>
@@ -268,27 +261,25 @@ const MintNftPage = () => {
 
   return (
     <Main meta={<Meta title="Mint-NFT" description="Page to create an NFT" />}>
-      <IonContent className="ion-background-primary">
+      <div className="py-10 bg-primary-default">
         <div className="mb-3 text-center">
-          <p className="text-4xl font-medium">Mint your Cardano NFT here!</p>
-          <p className="mb-3 text-gray-900">
+          <p className="text-4xl font-bold">Mint your Cardano NFT here!</p>
+          <p className="mb-3 text-xl text-gray-900">
             Mint <b>1 CNFT</b> for just <b>1 ADA</b> under <b>1 MINUTE</b>
           </p>
+
           <p className="text-sm text-gray-900">
-            <b className="text-red-500">Caution!</b> WottleNFT is only able to
-            support Nami Wallet.
-          </p>
-          <p className="text-sm text-gray-900">
-            Please note that your Cardano NFT will be uploaded <br /> onto the
-            IPFS server with a timelock of an hour.
+            WottleNFT generates a <b>unique</b> key to mint your NFT to
+            guarantee that they are unique! <br />
+            We will provide you the script afterwards for verification.
           </p>
         </div>
-        <div className="p-10 mx-auto mb-10 bg-gray-200 border rounded-md shadow-xl w-450">
+        <div className="w-10/12 p-10 mx-auto bg-gray-200 border rounded-md shadow-xl md:w-500">
           <div className="flex flex-col items-center h-full">
             {!transactionId && (
               <>
-                <label className="w-full">
-                  NFT name
+                <label className="w-full font-bold">
+                  NFT Name
                   <input
                     className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
                     placeholder="Name of masterpiece"
@@ -297,8 +288,8 @@ const MintNftPage = () => {
                     onChange={setName}
                   />
                 </label>
-                <label className="w-full">
-                  Creator [Recommended]
+                <label className="w-full font-bold">
+                  Creator
                   <input
                     className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
                     placeholder="Name of creator"
@@ -307,11 +298,11 @@ const MintNftPage = () => {
                     onChange={setCreator}
                   />
                 </label>
-                <label className="w-full">
-                  Description [Recommended]
+                <label className="w-full font-bold">
+                  Description
                   <input
                     className="w-full p-3 my-2 border rounded focus:outline-none focus:ring-2"
-                    placeholder="Short story of Masterpiece (max 60 chars)"
+                    placeholder="Short story of Masterpiece (max 64 chars)"
                     type="text"
                     value={description}
                     onChange={setDescription}
@@ -319,9 +310,9 @@ const MintNftPage = () => {
                 </label>
                 {image && (
                   <div className="w-full">
-                    <p className="pb-2">Image</p>
+                    <p className="pb-2 font-bold">Image</p>
                     <img
-                      className="object-cover"
+                      className="object-cover m-auto"
                       src={URL.createObjectURL(image)}
                     />
                     <IonButton
@@ -335,10 +326,10 @@ const MintNftPage = () => {
                 )}
                 {!image && (
                   <>
-                    <label className="w-full pb-2">
+                    <label className="w-full pb-2 font-bold">
                       Upload File (Max 15MB)
                     </label>
-                    <label className="flex flex-row items-center justify-center w-full h-20 align-middle bg-gray-400 rounded-lg cursor-pointer">
+                    <label className="flex flex-row items-center justify-center w-full h-20 align-middle bg-gray-400 rounded-lg cursor-pointer hover:bg-gray-500">
                       Click here to upload!
                       <input
                         hidden
@@ -349,11 +340,12 @@ const MintNftPage = () => {
                     </label>
                   </>
                 )}
+                {renderNewFields()}
                 <div className="h-2" />
                 <label className="w-full">
                   Add extra metadata fields [Optional]
                 </label>
-                {renderNewFields()}
+
                 <div className="grid items-center w-full grid-cols-5 gap-2">
                   <input
                     className="col-span-4 p-3 my-2 border-gray-800 rounded focus:outline-none focus:ring-2"
@@ -403,7 +395,7 @@ const MintNftPage = () => {
             )}
           </div>
         </div>
-      </IonContent>
+      </div>
     </Main>
   );
 };

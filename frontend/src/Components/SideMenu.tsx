@@ -12,29 +12,33 @@ import {
   IonMenuButton,
   IonMenuToggle,
 } from "@ionic/react";
-import { home, personCircleOutline, searchOutline } from "ionicons/icons";
+import { home, personCircle, search, construct } from "ionicons/icons";
 
 function SideMenu() {
   return (
-    <IonMenu menuId="side-menu" contentId="main">
+    <IonMenu menuId="side-menu" contentId="main" side="end">
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Menu</IonTitle>
+          <IonTitle className="text-black font-serif">Menu</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         <IonList>
           <IonMenuToggle>
             <IonItem routerLink="/">
-              <IonIcon icon={home} slot="start" />
+              <IonIcon color="primary" icon={home} slot="start" />
               <IonLabel>Home</IonLabel>
             </IonItem>
             <IonItem routerLink="/auctions">
-              <IonIcon icon={searchOutline} slot="start" />
+              <IonIcon color="primary" icon={search} slot="start" />
               <IonLabel>Explore Auctions</IonLabel>
             </IonItem>
             <IonItem routerLink="/">
-              <IonIcon icon={personCircleOutline} slot="start" />
+              <IonIcon color="primary" icon={personCircle} slot="start" />
+              <IonLabel>Profile</IonLabel>
+            </IonItem>
+            <IonItem routerLink="/mint-nft">
+              <IonIcon color="primary" icon={construct} slot="start" />
               <IonLabel>Profile</IonLabel>
             </IonItem>
           </IonMenuToggle>
@@ -46,7 +50,7 @@ function SideMenu() {
 
 export const MenuButton = ({ ...props }) => (
   <IonButtons {...props}>
-    <IonMenuButton slot="start" />
+    <IonMenuButton slot="end" />
   </IonButtons>
 );
 

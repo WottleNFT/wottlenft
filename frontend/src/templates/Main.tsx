@@ -1,11 +1,12 @@
 import React, { ReactNode } from "react";
 
-import { IonHeader, IonPage, IonTitle } from "@ionic/react";
+import { IonContent, IonHeader, IonPage, IonTitle } from "@ionic/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
 import wottleLogo from "../../public/logo.png";
 import ConnectWalletButton from "../Components/ConnectWalletButton";
+import Footer from "../Components/Footer";
 import NavSearchBar from "../Components/Navbar/NavSearchBar";
 import navbarStyles from "../styles/navbar.module.css";
 
@@ -79,7 +80,10 @@ const Main = (props: IMainProps) => {
             </div>
           </div>
         </IonHeader>
-        {props.children}
+        <IonContent>
+          {props.children}
+          <Footer />
+        </IonContent>
       </IonPage>
     </div>
   );

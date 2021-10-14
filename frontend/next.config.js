@@ -15,4 +15,19 @@ module.exports = withBundleAnalyzer({
     testnetApi: process.env.TESTNET_API,
     mainnetApi: process.env.MAINNET_API,
   },
+  // TODO: delete this after marketplace is done
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/landing',
+        permanent: true,
+      },
+      {
+        source: '/auctions',
+        destination: '/coming-soon',
+        permanent: true,
+      },
+    ];
+  },
 });

@@ -1,32 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { IonList } from "@ionic/react";
 
-import { Asset } from "../../types/Asset";
-import SearchBar from "../SearchBar";
+import { useGetUserNftsQuery } from "../../app/nft";
+import DisplayMessage from "./DisplayMessage";
 import NftCard from "./NftCard";
 
-const NftList = ({ nfts }: { nfts: Asset[] }) => {
-  const [displayedNfts, setDisplayedNfts] = useState<Asset[]>([]);
-  useEffect(() => {
-    setDisplayedNfts(nfts);
-  }, [nfts]);
+type Props = {
+  baseUrl: string;
+  address: string;
+};
 
-  function searchEvents(text: string) {
-    setDisplayedNfts(
-      nfts.filter((nft) => Object.values(nft).join(" ").includes(text))
-    );
-  }
+const NftList = ({ baseUrl, address }: Props) => {
+  const { data, error, isLoading } = useGetUserNftsQuery({
+    url: baseUrl,
+    address,
+  });
+
+  if (isLoading) return <DisplayMessage text="Loading your NFTs" />;
+
+  if (error || !data) return <DisplayMessage text="Error fetching your NFTs" />;
+
   return (
     <>
-      <IonList>
-        <SearchBar slot="fixed" onSearch={searchEvents} />
-      </IonList>
-      <div>
-        {displayedNfts.map((nft, idx) => {
-          return <NftCard nft={nft} key={idx} />;
+      <IonList className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {data.map((nft) => {
+          return <NftCard key={nft.policyId} nft={nft} />;
         })}
-      </div>
+      </IonList>
     </>
   );
 };

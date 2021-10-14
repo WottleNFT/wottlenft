@@ -10,6 +10,7 @@ use serde::{Serialize, Serializer};
 use sqlx::types::BigDecimal;
 use sqlx::PgPool;
 use std::collections::HashMap;
+use tokio_stream::StreamExt;
 
 #[derive(Debug, sqlx::FromRow)]
 pub struct PgTxOut {
@@ -46,7 +47,7 @@ pub async fn query_user_address_utxo(
     )
     .bind(addr.to_bech32(None)?)
     .fetch(pool);
-    use tokio_stream::StreamExt;
+
     let mut pgs = vec![];
     while let Some(pg_tx_out) = rows.try_next().await? {
         pgs.push(pg_tx_out);

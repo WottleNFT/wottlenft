@@ -19,9 +19,13 @@ module.exports = {
       1200: '1200px',
     },
     extend: {
+      zIndex: {
+        '-10': '-10',
+      },
       width: {
         450: '450px',
         500: '500px',
+        600: '600px',
         1000: '1000px',
       },
       height: {
