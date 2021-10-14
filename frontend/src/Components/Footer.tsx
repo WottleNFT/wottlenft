@@ -56,7 +56,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="grid p-8 pl-12 md:pl-0 gap-5 grid-cols-4 justify-self-center">
+        <div className="grid p-8 pl-12 md:pl-0 gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-self-center">
           <div className="flex flex-col">
             <span className="text-primary-default">Marketplace</span>
             <Link href="/coming-soon" passHref>
@@ -70,7 +70,7 @@ const Footer = () => {
             </Link>
           </div>
           <div className="flex flex-col">
-            <span className="text-primary-default">Creators</span>
+            <span className="text-primary-default">Creator</span>
             <Link href="/coming-soon" passHref>
               <a className="text-white">Profiles</a>
             </Link>

@@ -16,7 +16,7 @@ import { home, personCircle, search, construct } from "ionicons/icons";
 
 function SideMenu() {
   return (
-    <IonMenu menuId="side-menu" contentId="main">
+    <IonMenu menuId="side-menu" contentId="main" side="end">
       <IonHeader>
         <IonToolbar>
           <IonTitle className="text-black font-serif">Menu</IonTitle>
@@ -50,7 +50,7 @@ function SideMenu() {
 
 export const MenuButton = ({ ...props }) => (
   <IonButtons {...props}>
-    <IonMenuButton slot="start" />
+    <IonMenuButton slot="end" />
   </IonButtons>
 );
 

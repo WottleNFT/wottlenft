@@ -34,8 +34,8 @@ const Main = (props: IMainProps) => {
 
   return (
     <div>
-      {props.meta}
       <SideMenu />
+      {props.meta}
       <IonPage id="main">
         <IonHeader className="h-20 ion-no-border">
           <IonToolbar color="primary" className="h-full align-middle">
@@ -43,9 +43,6 @@ const Main = (props: IMainProps) => {
             <Link href="/landing" passHref>
               <a>
                 <div className="flex flex-row align-middle">
-                  {windowWidth === -1 && typeof window !== "undefined"
-                    ? setWidth(window.innerWidth)
-                    : windowWidth < windowBreakpoint && <MenuButton />}
                   <img
                     className="h-14 md:ml-3"
                     alt="Logo"
@@ -57,24 +54,27 @@ const Main = (props: IMainProps) => {
             </Link>
 
             <IonButtons slot="end" className="flex items-center">
-              {windowWidth > windowBreakpoint && (
-                <div className="flex flex-row gap-4">
-                  <Link href="/coming-soon">
-                    <a>Marketplace</a>
-                  </Link>
-                  <Link href="/auctions">
-                    <a>Auction</a>
-                  </Link>
-                  <Link href="/coming-soon">
-                    <a>Creator</a>
-                  </Link>
-                  <Link href="/coming-soon">
-                    <a>Impact</a>
-                  </Link>
-                </div>
-              )}
+              {windowWidth === -1 && typeof window !== "undefined"
+                ? setWidth(window.innerWidth)
+                : windowWidth > windowBreakpoint && (
+                    <div className="flex flex-row items-center gap-4">
+                      <Link href="/coming-soon">
+                        <a>Marketplace</a>
+                      </Link>
+                      <Link href="/auctions">
+                        <a>Auction</a>
+                      </Link>
+                      <Link href="/coming-soon">
+                        <a>Creator</a>
+                      </Link>
+                      <Link href="/mint-nft">
+                        <a>Mint Now</a>
+                      </Link>
+                      <ConnectWalletButton />
+                    </div>
+                  )}
 
-              <ConnectWalletButton />
+              {windowWidth < windowBreakpoint && <MenuButton />}
             </IonButtons>
           </IonToolbar>
         </IonHeader>
