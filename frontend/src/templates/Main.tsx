@@ -1,60 +1,158 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 
-import {
-  IonButton,
-  IonButtons,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonContent, IonHeader, IonPage, IonTitle } from "@ionic/react";
+import { NextSeo, NextSeoProps } from "next-seo";
+import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 
+import wottleLogo from "../../public/logo.png";
 import ConnectWalletButton from "../Components/ConnectWalletButton";
+import Footer from "../Components/Footer";
+import NavSearchBar from "../Components/Navbar/NavSearchBar";
 import SideMenu, { MenuButton } from "../Components/SideMenu";
-import { Status } from "../features/wallet/walletSlice";
-import useWallet from "../hooks/useWallet";
+import navbarStyles from "../styles/navbar.module.css";
 
 type IMainProps = {
-  meta: ReactNode;
   children: ReactNode;
-};
+} & NextSeoProps;
 
 const Main = (props: IMainProps) => {
   const router = useRouter();
-  const wallet = useWallet();
+  const [windowWidth, setWidth] = useState(-1);
+  const { children, ...nextSeo } = props;
+  const windowBreakpoint = 768;
+
+  useEffect(() => {
+    const handleWindowResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
+
   return (
     <div>
-      {props.meta}
       <SideMenu />
+      <Head>
+        <meta charSet="UTF-8" key="charset" />
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1"
+          key="viewport"
+        />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" key="apple" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+          key="icon32"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+          key="icon16"
+        />
+        <link rel="icon" href="/favicon.ico" key="favicon" />
+      </Head>
+      <NextSeo
+        openGraph={{
+          type: "website",
+          url: "https://wottlenft.io",
+          title: "WottleNFT | A sustainable Cardano NFT Marketplace",
+          description:
+            "WottleNFT is a sustainable NFT Marketplace built upon the Cardano blockchain.",
+          images: [
+            {
+              url: "/logo.png",
+              width: 600,
+              height: 600,
+              alt: "WottleNFT Logo",
+              type: "image/png",
+            },
+          ],
+        }}
+        {...nextSeo}
+      />
       <IonPage id="main">
-        <IonHeader className="h-20 ion-no-border">
-          <IonToolbar color="primary" className="h-full align-middle">
-            <div className="flex flex-row align-middle">
-              <MenuButton />
-              <img
-                className="h-14"
-                alt="Logo"
-                src={`${router.basePath}/logo.png`}
-              />
-              <IonTitle className="p-0">WottleNFT</IonTitle>
+        <IonHeader className="ion-no-border">
+          <div className="flex justify-between px-4 md:px-12 2xl:px-52 bg-primary-default">
+            <div className="flex items-center content-center flex-grow">
+              <div
+                onClick={() => router.push("/")}
+                className="flex flex-row cursor-pointer"
+              >
+                <Image
+                  height={60}
+                  width={60}
+                  layout="fixed"
+                  alt="Wottle Logo"
+                  src={wottleLogo}
+                />
+                <IonTitle className="p-0 font-bold">WottleNFT</IonTitle>
+              </div>
+              <NavSearchBar />
             </div>
+            {windowWidth === -1 && typeof window !== "undefined"
+              ? setWidth(window.innerWidth)
+              : windowWidth > windowBreakpoint && (
+                  <div className="flex">
+                    <div className={navbarStyles.container}>
+                      {navInfo.map((nav) => {
+                        return (
+                          <a
+                            key={nav.name}
+                            href={nav.tempRoute}
+                            className={
+                              nav.route === router.pathname
+                                ? navbarStyles.selected
+                                : ""
+                            }
+                          >
+                            {nav.name}
+                          </a>
+                        );
+                      })}
+                    </div>
+                    <ConnectWalletButton />
+                  </div>
+                )}
 
-            <IonButtons slot="end" className="flex items-center">
-              <IonButton routerLink="/about">About</IonButton>
-              <IonButton routerLink="/mint-nft">Mint NFT</IonButton>
-              {wallet.status === Status.Enabled && (
-                <IonButton routerLink="/user-nfts">My NFTs</IonButton>
-              )}
-
-              <ConnectWalletButton />
-            </IonButtons>
-          </IonToolbar>
+            {windowWidth < windowBreakpoint && <MenuButton className="" />}
+          </div>
         </IonHeader>
-        {props.children}
+        <IonContent>
+          {children}
+          <Footer />
+        </IonContent>
       </IonPage>
     </div>
   );
 };
 
 export { Main };
+
+const navInfo = [
+  {
+    name: "Marketplace",
+    route: "/marketplace",
+    tempRoute: "/coming-soon",
+  },
+  {
+    name: "Auction",
+    route: "/auction",
+    tempRoute: "/coming-soon",
+  },
+  {
+    name: "Creator",
+    route: "/creaters",
+    tempRoute: "/coming-soon",
+  },
+  {
+    name: "Mint Now",
+    route: "/mint-nft",
+    tempRoute: "/mint-nft",
+  },
+];

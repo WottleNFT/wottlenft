@@ -21,10 +21,8 @@ use crate::error::Error;
 async fn main() -> Result<()> {
     dotenv::dotenv().ok();
     let config = config::Config::init_from_env().unwrap();
-    dbg!(&config);
 
     rest::start_server(config).await?;
-
     Ok(())
 }
 

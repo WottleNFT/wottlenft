@@ -23,7 +23,7 @@ const DisplayTransaction = ({
   return (
     <>
       <h1 className="text-4xl font-bold">Congratulations!</h1>
-      <p>Your transaction has successfully been submitted!</p>
+      <p>You have minted a Cardano Masterpiece.</p>
 
       <section className="mt-4">
         Remember, transactions can take a while before they appear on the
@@ -36,7 +36,12 @@ const DisplayTransaction = ({
       <section className="w-full mt-8 ">
         <p>
           Alternatively, you can check the progress{" "}
-          <a target="_blank" href={url} rel="noreferrer">
+          <a
+            className="text-primary-default"
+            target="_blank"
+            href={url}
+            rel="noreferrer"
+          >
             here
           </a>
         </p>
@@ -44,10 +49,14 @@ const DisplayTransaction = ({
       <section className="w-full mt-8 ">
         <p>
           Remember to also register your policy on{" "}
-          <a target="_blank" href={poolPmUrl} rel="noreferrer">
+          <a
+            className="text-primary-default"
+            target="_blank"
+            href={poolPmUrl}
+            rel="noreferrer"
+          >
             pool.pm
-          </a>{" "}
-          (Only on mainnet)
+          </a>
         </p>
       </section>
     </>

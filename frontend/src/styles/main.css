@@ -1,15 +1,5 @@
 @tailwind base;
-
-a {
-  @apply text-blue-700;
-}
-
-a:hover {
-  @apply border-b-2 border-blue-700;
-}
-
 @tailwind components;
-
 @tailwind utilities;
 
 .content p {
@@ -18,6 +8,10 @@ a:hover {
 
 .content ul {
   @apply my-6;
+}
+
+input:focus {
+  outline: none;
 }
 
 :root {
@@ -34,6 +28,7 @@ a:hover {
   --ion-color-white-contrast-rgb: 0, 0, 0;
   --ion-color-white-shade: #e0e0e0;
   --ion-color-white-tint: #ffffff;
+
 }
 
 .ion-color-primary {
@@ -52,6 +47,10 @@ a:hover {
   --ion-color-contrast-rgb: var(--ion-color-white-contrast-rgb);
   --ion-color-shade: var(--ion-color-white-shade);
   --ion-color-tint: var(--ion-color-white-tint);
+}
+
+.ion-background-primary {
+	--ion-background-color: #fac748;
 }
 
 ion-textarea {
