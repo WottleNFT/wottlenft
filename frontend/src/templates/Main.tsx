@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/router";
 
 import ConnectWalletButton from "../Components/ConnectWalletButton";
-import SideMenu, { MenuButton } from "../Components/SideMenu";
+import NavSearchBar from "../Components/Navbar/NavSearchBar";
 import { Status } from "../features/wallet/walletSlice";
 import useWallet from "../hooks/useWallet";
 
@@ -26,18 +26,22 @@ const Main = (props: IMainProps) => {
   return (
     <div>
       {props.meta}
-      <SideMenu />
       <IonPage id="main">
         <IonHeader className="h-20 ion-no-border">
-          <IonToolbar color="primary" className="h-full align-middle">
-            <div className="flex flex-row align-middle">
-              <MenuButton />
-              <img
-                className="h-14"
-                alt="Logo"
-                src={`${router.basePath}/logo.png`}
-              />
-              <IonTitle className="p-0">WottleNFT</IonTitle>
+          <IonToolbar color="primary" className="px-48">
+            <div className="flex items-center content-center">
+              <div
+                onClick={() => router.push("/")}
+                className="flex content-center cursor-pointer"
+              >
+                <img
+                  className="h-14"
+                  alt="Logo"
+                  src={`${router.basePath}/logo.png`}
+                />
+                <IonTitle className="p-0 font-bold">WottleNFT</IonTitle>
+              </div>
+              <NavSearchBar />
             </div>
 
             <IonButtons slot="end" className="flex items-center">
