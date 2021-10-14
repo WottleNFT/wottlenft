@@ -6,7 +6,6 @@ import Link from "next/link";
 
 import CategoryTag from "../../Components/CategoryTag";
 import SearchBar from "../../Components/SearchBar";
-import { Meta } from "../../layout/Meta";
 import { Main } from "../../templates/Main";
 import { Auction } from "../../types/Auction";
 import { Category } from "../../types/Category";
@@ -64,7 +63,7 @@ function ExploreAuctions() {
   }
 
   return (
-    <Main meta={<Meta title="Explore" description="Explore all auctions." />}>
+    <Main>
       <IonList>
         <div>
           <SearchBar onSearch={searchAuctions} />

@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import AuctionCard from "../Components/Auctions/AuctionCard";
 import CountdownTimer from "../Components/Auctions/CountdownTimer";
-import { Meta } from "../layout/Meta";
 import { Main } from "../templates/Main";
 import { Auction } from "../types/Auction";
 import { testAuctions } from "../types/testData";
@@ -17,16 +16,9 @@ const Index = () => {
   }, []);
 
   return (
-    <Main
-      meta={
-        <Meta
-          title="Wottlenft"
-          description="Wottlenft is your next NFT auction site."
-        />
-      }
-    >
+    <Main>
       {auctions[0] && (
-        <div className="flex py-4 px-16 text-center truncate h-1/2 place-items-center">
+        <div className="flex px-16 py-4 text-center truncate h-1/2 place-items-center">
           <img
             className="object-cover w-1/2 h-full p-2 rounded-2xl"
             alt="Auction"

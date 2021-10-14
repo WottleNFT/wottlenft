@@ -8,6 +8,8 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { NextSeo, NextSeoProps } from "next-seo";
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -16,15 +18,14 @@ import Footer from "../Components/Footer";
 import SideMenu, { MenuButton } from "../Components/SideMenu";
 
 type IMainProps = {
-  meta: ReactNode;
   children: ReactNode;
-};
+} & NextSeoProps;
 
 const Main = (props: IMainProps) => {
   const router = useRouter();
   const [windowWidth, setWidth] = useState(-1);
   const windowBreakpoint = 640;
-
+  const { children, ...nextSeo } = props;
   useEffect(() => {
     const handleWindowResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handleWindowResize);
@@ -35,7 +36,49 @@ const Main = (props: IMainProps) => {
   return (
     <div>
       <SideMenu />
-      {props.meta}
+      <Head>
+        <meta charSet="UTF-8" key="charset" />
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1"
+          key="viewport"
+        />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" key="apple" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+          key="icon32"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+          key="icon16"
+        />
+        <link rel="icon" href="/favicon.ico" key="favicon" />
+      </Head>
+      <NextSeo
+        openGraph={{
+          type: "website",
+          url: "https://wottlenft.io",
+          title: "WottleNFT | A sustainable Cardano NFT Marketplace",
+          description:
+            "WottleNFT is a sustainable NFT Marketplace built upon the Cardano blockchain.",
+          images: [
+            {
+              url: "/logo.png",
+              width: 600,
+              height: 600,
+              alt: "WottleNFT Logo",
+              type: "image/png",
+            },
+          ],
+        }}
+        {...nextSeo}
+      />
       <IonPage id="main">
         <IonHeader className="h-20 ion-no-border">
           <IonToolbar
@@ -83,7 +126,7 @@ const Main = (props: IMainProps) => {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          {props.children}
+          {children}
           <Footer />
         </IonContent>
       </IonPage>

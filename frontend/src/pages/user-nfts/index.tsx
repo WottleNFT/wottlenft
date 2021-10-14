@@ -6,21 +6,13 @@ import DisplayMessage from "../../Components/UserNfts/DisplayMessage";
 import NftList from "../../Components/UserNfts/NftList";
 import WalletSwitch from "../../Components/WalletSwitch";
 import useWallet from "../../hooks/useWallet";
-import { Meta } from "../../layout/Meta";
 import { Main } from "../../templates/Main";
 
 const UserNfts = () => {
   const wallet = useWallet();
 
   return (
-    <Main
-      meta={
-        <Meta
-          title="Wottlenft"
-          description="Wottlenft is your next NFT auction site."
-        />
-      }
-    >
+    <Main>
       <IonContent>
         <WalletSwitch
           wallet={wallet}
