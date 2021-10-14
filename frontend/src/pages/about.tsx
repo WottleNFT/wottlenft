@@ -85,19 +85,18 @@ const About = () => {
   return (
     <Main meta={<Meta title="About | WottleNFT" description="about us" />}>
       <div className="flex justify-between w-full h-full bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-about-background">
-        <div className="w-2/5 ml-56 my-44">
-          <p className="mb-6 text-6xl font-bold leading-snug">
+        <div className="w-2/5 ml-3 sm:ml-56 my-44">
+          <p className="mb-6 text-4xl font-bold leading-snug md:text-5xl lg:text-6xl">
             CREATING A GLOBAL <br />
             INTERCONNECTED <br />
             ECOSYSTEM
           </p>
-          <p className="mb-10 text-3xl font-bold leading-tight">
+          <p className="mb-10 text-2xl font-bold leading-tight lg:text-3xl">
             BETWEEN CARDANO NFTS <br />
             AND SOCIAL ENTERPRISES
           </p>
-          <p className="text-2xl font-bold leading-tight">
-            WHILE SHARING THE STORIES BEHIND EACH CARDANO <br />
-            NFT.
+          <p className="text-lg font-bold leading-tight md:text-xl">
+            WHILE SHARING THE STORIES BEHIND EACH CARDANO NFT.
           </p>
         </div>
       </div>
