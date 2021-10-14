@@ -11,6 +11,7 @@
   cursor: pointer;
   text-decoration: none !important;
   border: none;
+	white-space: nowrap;
   @apply mx-1 xl:mx-4;
 }
 
