@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { IonButton, IonLabel, IonRouterLink } from "@ionic/react";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 
 import AuctionCard from "../Components/Auctions/AuctionCard";
@@ -8,6 +9,15 @@ import CountdownTimer from "../Components/Auctions/CountdownTimer";
 import { Main } from "../templates/Main";
 import { Auction } from "../types/Auction";
 import { testAuctions } from "../types/testData";
+
+export const getServerSideProps: GetServerSideProps = async (_) => {
+  return {
+    redirect: {
+      destination: "/landing",
+      permanent: false,
+    },
+  };
+};
 
 const Index = () => {
   const [auctions, setAuctions] = useState<Auction[]>([]);

@@ -46,7 +46,7 @@ const ConnectWalletButton: React.FC = () => {
   if (wallet.status === Status.Loading)
     return (
       <div className="flex h-20 place-items-center">
-        <IonSpinner name="crescent" />;
+        <IonSpinner name="crescent" />
       </div>
     );
 
