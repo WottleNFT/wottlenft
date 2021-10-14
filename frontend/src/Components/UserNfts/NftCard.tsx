@@ -7,25 +7,35 @@ import {
   IonCardTitle,
 } from "@ionic/react";
 
-import { Asset } from "../../types/Asset";
+import { Nft } from "../../types/Nft";
 
-const NftCard = ({ nft }: { nft: Asset }) => {
+type Props = {
+  nft: Nft;
+};
+
+const NftCard = ({ nft }: Props) => {
+  const { assetName, policyId, metadata, quantity } = nft;
+  const { description, image } = metadata;
+
+  const imageHash = image.replace("ipfs://", "");
+  const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
   return (
-    <IonCard className="rounded-2xl w-full h-full p-2">
+    <IonCard className="w-full h-full p-2 rounded-2xl">
       <div className="flex flex-col">
-        <div className="h-2/3 w-full">
-          {/* <img
-            className="p-2 w-auto h-full object-cover rounded-2xl"
+        <div className="w-full h-2/3">
+          <img
+            className="object-cover w-auto h-full p-2 rounded-2xl"
             alt="Event"
-            src={nftPlaceholder}
-          /> */}
+            src={imageUrl}
+          />
         </div>
-        <IonCardHeader className="text-left px-2 py-0 truncate">
-          <IonCardTitle className="truncate text-base">
-            {`Policy Id: ${nft.policy_id}`}
+        <IonCardHeader className="px-2 py-0 text-left truncate">
+          <IonCardTitle className="text-base truncate">
+            {`Policy Id: ${policyId}`}
           </IonCardTitle>
-          <IonCardSubtitle>{`Asset name: ${nft.asset_name}`}</IonCardSubtitle>
-          <IonCardSubtitle>{`Qty: ${nft.qty}`}</IonCardSubtitle>
+          <IonCardSubtitle>{`Asset name: ${assetName}`}</IonCardSubtitle>
+          <IonCardSubtitle>{`Qty: ${quantity}`}</IonCardSubtitle>
+          <IonCardSubtitle>{description}</IonCardSubtitle>
         </IonCardHeader>
       </div>
     </IonCard>
