@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
 
 import { IonButton, IonLabel, IonRouterLink } from "@ionic/react";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 
 import AuctionCard from "../Components/Auctions/AuctionCard";
 import CountdownTimer from "../Components/Auctions/CountdownTimer";
-import { Meta } from "../layout/Meta";
 import { Main } from "../templates/Main";
 import { Auction } from "../types/Auction";
 import { testAuctions } from "../types/testData";
+
+export const getServerSideProps: GetServerSideProps = async (_) => {
+  return {
+    redirect: {
+      destination: "/landing",
+      permanent: false,
+    },
+  };
+};
 
 const Index = () => {
   const [auctions, setAuctions] = useState<Auction[]>([]);
@@ -17,14 +26,7 @@ const Index = () => {
   }, []);
 
   return (
-    <Main
-      meta={
-        <Meta
-          title="Wottlenft"
-          description="Wottlenft is your next NFT auction site."
-        />
-      }
-    >
+    <Main>
       {auctions[0] && (
         <div className="flex px-16 py-4 text-center truncate h-1/2 place-items-center">
           <img

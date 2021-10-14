@@ -6,7 +6,6 @@ import dogWottle from "../../public/assets/dog-wottle-green.png";
 import heartWottle from "../../public/assets/heart-wottle.png";
 import studiousWottle from "../../public/assets/studious-wottle.png";
 import ButtonPill from "../Components/About/ButtonPill";
-import { Meta } from "../layout/Meta";
 import { Main } from "../templates/Main";
 
 const About = () => {
@@ -83,7 +82,7 @@ const About = () => {
   );
 
   return (
-    <Main meta={<Meta title="About | WottleNFT" description="about us" />}>
+    <Main title="About Us">
       <div className="flex justify-between w-full h-full bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-about-background">
         <div className="w-2/5 ml-3 sm:ml-20 lg:ml-56 my-44">
           <p className="mb-6 text-4xl font-bold leading-snug md:text-5xl lg:text-6xl">
