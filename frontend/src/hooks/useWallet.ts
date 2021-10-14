@@ -15,10 +15,13 @@ type HasExtension = {
   cardano: NamiWallet;
 };
 
-type Present = (HasExtension & Enabled) | (HasExtension & NotEnabled);
+export type WottleEnabled = HasExtension & Enabled;
+type Present = WottleEnabled | (HasExtension & NotEnabled);
 type NotPresent = NoExtension | Loading;
 
-const useWallet = (): Present | NotPresent => {
+export type WottleWalletState = Present | NotPresent;
+
+const useWallet = (): WottleWalletState => {
   const wallet = useAppSelector((state) => state.wallet);
   const dispatch = useAppDispatch();
 

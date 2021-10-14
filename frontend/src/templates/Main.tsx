@@ -38,11 +38,15 @@ const Main = (props: IMainProps) => {
       {props.meta}
       <IonPage id="main">
         <IonHeader className="h-20 ion-no-border">
-          <IonToolbar color="primary" className="h-full align-middle">
+          <IonToolbar
+            color="primary"
+            className="flex flex-row h-full align-middle"
+          >
             {/* TODO: change to href="/" */}
-            <Link href="/landing" passHref>
-              <a>
-                <div className="flex flex-row align-middle">
+
+            <div className="flex flex-row align-middle">
+              <Link href="/landing" passHref>
+                <div className="flex flex-row cursor-pointer">
                   <img
                     className="h-14 md:ml-3"
                     alt="Logo"
@@ -50,8 +54,8 @@ const Main = (props: IMainProps) => {
                   />
                   <IonTitle className="p-0 text-black">WottleNFT</IonTitle>
                 </div>
-              </a>
-            </Link>
+              </Link>
+            </div>
 
             <IonButtons slot="end" className="flex items-center">
               {windowWidth === -1 && typeof window !== "undefined"
@@ -61,7 +65,7 @@ const Main = (props: IMainProps) => {
                       <Link href="/coming-soon">
                         <a>Marketplace</a>
                       </Link>
-                      <Link href="/auctions">
+                      <Link href="/coming-soon">
                         <a>Auction</a>
                       </Link>
                       <Link href="/coming-soon">

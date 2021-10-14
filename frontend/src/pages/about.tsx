@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import coolWottle from "../../public/assets/cool-wottle.png";
 import dogWottle from "../../public/assets/dog-wottle-green.png";
@@ -120,11 +121,13 @@ const About = () => {
           <div className="flex flex-col justify-center w-1/2">
             <p className="text-5xl font-bold mb-11">Marketplace</p>
             {marketPlace}
-            <ButtonPill
-              text="View Marketplace"
-              onClick={() => {}}
-              className="self-center my-8"
-            />
+            <Link href="/coming-soon" passHref>
+              <ButtonPill
+                text="View Marketplace"
+                onClick={() => {}}
+                className="self-center my-8 hover:scale-105"
+              />
+            </Link>
           </div>
           <Image
             src={coolWottle}
@@ -135,13 +138,15 @@ const About = () => {
           />
         </div>
         <div className="flex flex-col">
-          <p className="text-5xl font-bold mb-11">Auction (Coming Soon)</p>
+          <p className="text-5xl font-bold mb-11">Auction</p>
           {auction}
-          <ButtonPill
-            text="View Auctions"
-            onClick={() => {}}
-            className="self-center my-8"
-          />
+          <Link href="/coming-soon" passHref>
+            <ButtonPill
+              text="View Auctions"
+              onClick={() => {}}
+              className="self-center my-8 hover:scale-105"
+            />
+          </Link>
         </div>
         <div className="flex justify-between py-5">
           <Image
@@ -154,22 +159,26 @@ const About = () => {
           <div className="flex flex-col justify-center w-1/2">
             <p className="text-5xl font-bold mb-11">NFT Minter</p>
             {nftMinter}
-            <ButtonPill
-              text="Mint Now"
-              onClick={() => {}}
-              className="self-center my-8"
-            />
+            <Link href="/mint-nft" passHref>
+              <ButtonPill
+                text="Mint Now"
+                onClick={() => {}}
+                className="self-center my-8 hover:scale-105"
+              />
+            </Link>
           </div>
         </div>
         <div className="flex justify-between py-5">
           <div className="flex flex-col justify-center w-1/2">
             <p className="text-5xl font-bold mb-11">Staking Pool</p>
             {stakingPool}
-            <ButtonPill
-              text="Stake Now"
-              onClick={() => {}}
-              className="self-center my-8"
-            />
+            <Link href="/coming-soon" passHref>
+              <ButtonPill
+                text="Stake Now"
+                onClick={() => {}}
+                className="self-center my-8 hover:scale-105"
+              />
+            </Link>
           </div>
           <Image
             src={dogWottle}
