@@ -62,7 +62,7 @@ const Main = (props: IMainProps) => {
             <IonButtons slot="end" className="flex items-center">
               {windowWidth > windowBreakpoint && (
                 <>
-                  <IonButton routerLink="/about">About</IonButton>
+                  <IonButton routerLink="/marketplace">Marketplace</IonButton>
                   <IonButton routerLink="/mint-nft">Mint NFT</IonButton>
                   {wallet.status === Status.Enabled && (
                     <IonButton routerLink="/user-nfts">My NFTs</IonButton>

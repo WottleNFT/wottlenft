@@ -26,7 +26,7 @@ const CountdownTimer: React.FC<Props> = ({ countdownTimestamp, ...props }) => {
 
   return (
     <IonCardSubtitle {...props}>
-      {`${remainingTime.days}d-${remainingTime.hours}h-${remainingTime.minutes}m-${remainingTime.seconds}s`}
+      {`${remainingTime.days}D-${remainingTime.hours}H-${remainingTime.minutes}M-${remainingTime.seconds}S`}
     </IonCardSubtitle>
   );
 };

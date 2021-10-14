@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { IonInput, IonButton } from "@ionic/react";
+import { IonButton } from "@ionic/react";
 import Link from "next/link";
 import { BsTwitter, BsInstagram } from "react-icons/bs";
 import { FaDiscord } from "react-icons/fa";
@@ -42,15 +42,15 @@ const Footer = () => {
           <p>
             Subscribe to our newsletter to receive <br /> the latest updates
           </p>
-          <div className="flex felx-row h-8 gap-4 items-center mt-7">
+          <div className="flex felx-row gap-4 items-center mt-7">
             <div className="bg-white rounded-full px-3">
-              <IonInput
+              <input
+                type="text"
                 value={email}
                 placeholder="Your Email"
-                onIonChange={(e) => setEmail(e.detail.value!)}
-                clearInput
-                className="text-black"
-              ></IonInput>
+                onChange={(e) => setEmail(e.target.value)}
+                className="text-black h-9 rounded-full"
+              ></input>
             </div>
             <IonButton shape="round">Join us</IonButton>
           </div>
@@ -80,7 +80,7 @@ const Footer = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Company</span>
-            <Link href={`/`} passHref>
+            <Link href={`/about `} passHref>
               <a className="text-white">About Us</a>
             </Link>
             <Link href={`/`} passHref>

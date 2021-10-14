@@ -10,6 +10,10 @@
   @apply my-6;
 }
 
+input:focus {
+  outline: none;
+}
+
 :root {
   --ion-color-primary: #fac748;
   --ion-color-primary-rgb: 250, 199, 72;
