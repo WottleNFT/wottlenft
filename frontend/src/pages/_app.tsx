@@ -20,7 +20,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
         additionalMetaTags={[
           {
             property: "keywords",
-            content: "cardano, nft, marketplace, sustainable, singapore",
+            content:
+              "cardano, nft, marketplace, sustainable, auction, nft minter, lowest minting fee, singapore",
           },
         ]}
         twitter={{

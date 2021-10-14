@@ -13,7 +13,7 @@ const UserNfts = () => {
 
   return (
     <Main>
-      <IonContent>
+      <IonContent className="ion-background-primary">
         <WalletSwitch
           wallet={wallet}
           loading={<DisplayMessage text="Loading your wallet..." />}
