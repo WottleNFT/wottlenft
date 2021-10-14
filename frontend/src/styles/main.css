@@ -48,6 +48,10 @@ input:focus {
   --ion-color-tint: var(--ion-color-white-tint);
 }
 
+.ion-background-primary {
+	--ion-background-color: #fac748;
+}
+
 ion-textarea {
   --padding-top: 0 !important;
   --padding-bottom: 0 !important;

@@ -99,21 +99,39 @@ const About = () => {
             NFT.
           </p>
         </div>
-      </div>
-      <div className="w-full px-56 py-20 min-w-1200">
-        <p className="text-5xl font-bold mb-11">OUR STORY</p>
-        {ourStory}
-        <div className="flex justify-between py-5">
-          <Image
-            src={heartWottle}
-            alt="heart wottle"
-            height={400}
-            width={400}
-            className="object-contain"
-          />
-          <div className="flex flex-col justify-center w-1/2">
-            <p className="text-5xl font-bold mb-11">Our Focus</p>
-            {ourFocus}
+        <div className="w-full px-56 py-20 bg-white min-w-1200">
+          <p className="text-5xl font-bold mb-11">OUR STORY</p>
+          {ourStory}
+          <div className="flex justify-between py-5">
+            <Image
+              src={heartWottle}
+              alt="heart wottle"
+              height={400}
+              width={400}
+              className="object-contain"
+            />
+            <div className="flex flex-col justify-center w-1/2">
+              <p className="text-5xl font-bold mb-11">Our Focus</p>
+              {ourFocus}
+            </div>
+          </div>
+          <div className="flex justify-between py-5">
+            <div className="flex flex-col justify-center w-1/2">
+              <p className="text-5xl font-bold mb-11">Marketplace</p>
+              {marketPlace}
+              <ButtonPill
+                text="View Marketplace"
+                onClick={() => {}}
+                className="self-center my-8"
+              />
+            </div>
+            <Image
+              src={coolWottle}
+              alt="cool wottle"
+              height={400}
+              width={400}
+              className="object-contain"
+            />
           </div>
         </div>
         <div className="flex justify-between py-5">
