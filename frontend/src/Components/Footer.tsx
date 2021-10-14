@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <div className="w-full h-auto bg-gray-700 truncate">
       <div className="flex flex-col md:flex-row place-content-around">
-        <div className="flex flex-col gap-5 pt-12 text-white px-8 md:px-12 md:pl-4">
+        <div className="flex flex-col gap-5 pt-12 text-white px-8 md:px-12">
           <div className="flex flex-row">
             <span>
               <b>Keeping up with</b>
@@ -58,7 +58,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="grid p-8 px-8 md:px-12 md:pl-0 gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-self-center">
+        <div className="grid p-8 px-8 md:px-12 md:pl-0 gap-5 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-self-center">
           <div className="flex flex-col">
             <span className="text-primary-default">Marketplace</span>
             <Link href="/coming-soon" passHref>

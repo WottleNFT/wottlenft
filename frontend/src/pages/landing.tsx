@@ -20,17 +20,17 @@ const Landing = () => {
         <img
           src={`${router.basePath}/assets/angry-thermometer.png`}
           alt="angry thermometer"
-          className="z-0 object-cover absolute bottom-0 left-0 h-1/3 lg:h-3/5 xl:h-4/5"
+          className="z-0 object-cover absolute bottom-0 left-0 h-1/3 lg:h-3/5 xl:h-2/3 2xl:h-4/5"
         />
         <img
           src={`${router.basePath}/assets/corn.png`}
           alt="corn"
-          className="z-0 object-cover absolute bottom-0 right-0 h-1/4 lg:h-1/2 xl:h-2/3"
+          className="z-0 object-cover absolute bottom-0 right-0 h-1/3 lg:h-3/5 xl:h-2/3 2xl:h-4/5"
         />
         <img
           src={`${router.basePath}/assets/thinker.png`}
           alt="thinker"
-          className="z-0 object-cover absolute bottom-0 right-0 h-1/6 lg:h-1/4 xl:h-2/5"
+          className="z-0 object-cover absolute bottom-0 right-0 h-1/6 lg:h-1/4 xl:h-2/5 2xl:h-1/2"
         />
         <div className="z-10 flex flex-col m-auto text-center items-center w-full py-20">
           <IonCardTitle className="text-5xl font-bold">
@@ -42,8 +42,10 @@ const Landing = () => {
           <IonCardTitle className="text-xl py-5">
             with a sustainable mission
           </IonCardTitle>
-          <IonCardTitle className="text-3xl font-bold">Live on</IonCardTitle>
-          <IonCardTitle className="text-2xl font-serif font-light">
+          <IonCardTitle className="text-3xl font-bold text-white">
+            Live on
+          </IonCardTitle>
+          <IonCardTitle className="text-2xl text-white">
             1.11.2021 - 11 a.m. UTC
           </IonCardTitle>
           <CountdownTimer
