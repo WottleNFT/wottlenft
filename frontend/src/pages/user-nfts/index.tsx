@@ -32,7 +32,7 @@ const UserNfts = () => {
               baseUrl={enabledWallet.state.backendApi}
             />
           )}
-          noExtension={<DisplayMessage text="Please get Nami Wallet" />}
+          fallback={<DisplayMessage text="Please get Nami Wallet" />}
         />
       </IonContent>
     </Main>

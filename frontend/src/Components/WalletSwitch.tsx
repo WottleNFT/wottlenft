@@ -1,11 +1,13 @@
-import { Enabled, Status, WalletStatus } from "../features/wallet/walletSlice";
+import { Status } from "../features/wallet/walletSlice";
+import { WottleEnabled, WottleWalletState } from "../hooks/useWallet";
 
 type Props = {
-  wallet: WalletStatus;
-  loading: JSX.Element;
-  notEnabled: JSX.Element;
-  noExtension: JSX.Element;
-  enabled: (wallet: Enabled) => JSX.Element;
+  wallet: WottleWalletState;
+  loading?: JSX.Element;
+  notEnabled?: JSX.Element;
+  noExtension?: JSX.Element;
+  enabled?: (wallet: WottleEnabled) => JSX.Element;
+  fallback: JSX.Element;
 };
 
 const WalletSwitch = ({
@@ -14,17 +16,14 @@ const WalletSwitch = ({
   noExtension,
   notEnabled,
   enabled,
+  fallback,
 }: Props) => {
-  switch (wallet.status) {
-    case Status.Enabled:
-      return enabled(wallet);
-    case Status.Loading:
-      return loading;
-    case Status.NoExtension:
-      return noExtension;
-    default:
-      return notEnabled;
-  }
+  if (wallet.status === Status.Enabled && enabled) return enabled(wallet);
+  if (wallet.status === Status.Loading && loading) return loading;
+  if (wallet.status === Status.NotEnabled && notEnabled) return notEnabled;
+  if (wallet.status === Status.NoExtension && noExtension) return noExtension;
+
+  return fallback;
 };
 
 export default WalletSwitch;
