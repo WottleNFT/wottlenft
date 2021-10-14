@@ -1,11 +1,10 @@
 import { IonCardTitle, IonButton } from "@ionic/react";
 import { useRouter } from "next/router";
 
-import CountdownTimer from "../Components/Auctions/CountdownTimer";
 import { Meta } from "../layout/Meta";
 import { Main } from "../templates/Main";
 
-const Marketplace = () => {
+const ComingSoon = () => {
   const router = useRouter();
   return (
     <Main
@@ -27,24 +26,10 @@ const Marketplace = () => {
           alt="thinker"
           className="z-0 object-cover absolute bottom-0 right-0 h-1/6 md:h-1/2"
         />
-        <div className="z-10 flex flex-col text-center items-center w-full py-20">
-          <IonCardTitle className="text-5xl font-bold">
-            Cardano NFT
+        <div className="z-10 flex flex-col text-center items-center w-full py-20 gap-5">
+          <IonCardTitle className="text-6xl font-bold">
+            COMING SOON
           </IonCardTitle>
-          <IonCardTitle className="text-5xl font-bold">
-            Marketplace
-          </IonCardTitle>
-          <IonCardTitle className="text-xl py-5">
-            with a sustainable mission
-          </IonCardTitle>
-          <IonCardTitle className="text-3xl font-bold">Live on</IonCardTitle>
-          <IonCardTitle className="text-2xl font-serif font-light">
-            1.11.2021 - 11 a.m. UTC
-          </IonCardTitle>
-          <CountdownTimer
-            countdownTimestamp={1635764400}
-            className="text-5xl text-black"
-          />
           <IonButton
             shape="round"
             color="dark"
@@ -58,4 +43,4 @@ const Marketplace = () => {
     </Main>
   );
 };
-export default Marketplace;
+export default ComingSoon;

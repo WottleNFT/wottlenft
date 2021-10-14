@@ -49,7 +49,7 @@ const Footer = () => {
                 value={email}
                 placeholder="Your Email"
                 onChange={(e) => setEmail(e.target.value)}
-                className="text-black h-9 rounded-full"
+                className="text-black h-9 rounded-lg"
               ></input>
             </div>
             <IonButton shape="round">Join us</IonButton>
@@ -59,67 +59,67 @@ const Footer = () => {
         <div className="grid p-8 pl-12 md:pl-0 gap-5 grid-cols-4 justify-self-center">
           <div className="flex flex-col">
             <span className="text-primary-default">Marketplace</span>
-            <Link href={`/marketplace`} passHref>
+            <Link href="/coming-soon" passHref>
               <a className="text-white">Browse</a>
             </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">NFT Minter</span>
-            <Link href={`/mint-nft`} passHref>
+            <Link href="/mint-nft" passHref>
               <a className="text-white">Mint Now</a>
             </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Creators</span>
-            <Link href={`/`} passHref>
+            <Link href="/coming-soon" passHref>
               <a className="text-white">Profiles</a>
             </Link>
-            <Link href={`/`} passHref>
+            <Link href="/coming-soon" passHref>
               <a className="text-white">Artworks</a>
             </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Company</span>
-            <Link href={`/about `} passHref>
+            <Link href="/about " passHref>
               <a className="text-white">About Us</a>
             </Link>
-            <Link href={`/`} passHref>
+            <Link href="https://twitter.com/wottlenft" passHref>
               <a className="text-white">Twitter</a>
             </Link>
-            <Link href={`/`} passHref>
+            <Link href="https://discord.gg/GcDPbqvcGn" passHref>
               <a className="text-white">Discord</a>
             </Link>
-            <Link href={`/`} passHref>
+            <Link href="https://www.instagram.com/wottlenft/" passHref>
               <a className="text-white">Instagram</a>
             </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Auction</span>
-            <Link href={`/`} passHref>
+            <Link href="/coming-soon" passHref>
               <a className="text-white">Live</a>
             </Link>
-            <Link href={`/`} passHref>
+            <Link href="/coming-soon" passHref>
               <a className="text-white">Upcoming</a>
             </Link>
-            <Link href={`/`} passHref>
+            <Link href="/coming-soon" passHref>
               <a className="text-white">Browse</a>
             </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Staking Pool</span>
-            <Link href={`/`} passHref>
+            <Link href="/coming-soon" passHref>
               <a className="text-white">Stake Now</a>
             </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Impact</span>
-            <Link href={`/`} passHref>
+            <Link href="/coming-soon" passHref>
               <a className="text-white">UN Goals</a>
             </Link>
-            <Link href={`/`} passHref>
+            <Link href="/coming-soon" passHref>
               <a className="text-white">Social Enterprises</a>
             </Link>
-            <Link href={`/`} passHref>
+            <Link href="/coming-soon" passHref>
               <a className="text-white">Projects</a>
             </Link>
           </div>

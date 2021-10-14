@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 
 import {
-  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -15,8 +14,6 @@ import { useRouter } from "next/router";
 import ConnectWalletButton from "../Components/ConnectWalletButton";
 import Footer from "../Components/Footer";
 import SideMenu, { MenuButton } from "../Components/SideMenu";
-import { Status } from "../features/wallet/walletSlice";
-import useWallet from "../hooks/useWallet";
 
 type IMainProps = {
   meta: ReactNode;
@@ -25,7 +22,6 @@ type IMainProps = {
 
 const Main = (props: IMainProps) => {
   const router = useRouter();
-  const wallet = useWallet();
   const [windowWidth, setWidth] = useState(-1);
   const windowBreakpoint = 640;
 
@@ -43,7 +39,8 @@ const Main = (props: IMainProps) => {
       <IonPage id="main">
         <IonHeader className="h-20 ion-no-border">
           <IonToolbar color="primary" className="h-full align-middle">
-            <Link href="/" passHref>
+            {/* TODO: change to href="/" */}
+            <Link href="/landing" passHref>
               <a>
                 <div className="flex flex-row align-middle">
                   {windowWidth === -1 && typeof window !== "undefined"
@@ -61,13 +58,20 @@ const Main = (props: IMainProps) => {
 
             <IonButtons slot="end" className="flex items-center">
               {windowWidth > windowBreakpoint && (
-                <>
-                  <IonButton routerLink="/marketplace">Marketplace</IonButton>
-                  <IonButton routerLink="/mint-nft">Mint NFT</IonButton>
-                  {wallet.status === Status.Enabled && (
-                    <IonButton routerLink="/user-nfts">My NFTs</IonButton>
-                  )}
-                </>
+                <div className="flex flex-row gap-4">
+                  <Link href="/coming-soon">
+                    <a>Marketplace</a>
+                  </Link>
+                  <Link href="/auctions">
+                    <a>Auction</a>
+                  </Link>
+                  <Link href="/coming-soon">
+                    <a>Creator</a>
+                  </Link>
+                  <Link href="/coming-soon">
+                    <a>Impact</a>
+                  </Link>
+                </div>
               )}
 
               <ConnectWalletButton />
