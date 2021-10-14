@@ -33,7 +33,7 @@ export type WalletState = {
   backendApi: string;
 };
 
-type WalletStatus = NoExtension | Loading | NotEnabled | Enabled;
+export type WalletStatus = NoExtension | Loading | NotEnabled | Enabled;
 
 export const MAINNET = 1;
 export const TESTNET = 0;

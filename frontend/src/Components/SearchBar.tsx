@@ -24,6 +24,7 @@ function SearchBar({ onSearch, ...others }: SearchBarProps) {
       value={value}
       onIonChange={changeSearchText}
       clearIcon={closeCircleOutline}
+      showClearButton="never"
       {...others}
     ></IonSearchbar>
   );

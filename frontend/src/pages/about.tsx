@@ -1,12 +1,11 @@
-import { IonContent } from "@ionic/react";
 import Image from "next/image";
+import Link from "next/link";
 
 import coolWottle from "../../public/assets/cool-wottle.png";
 import dogWottle from "../../public/assets/dog-wottle-green.png";
 import heartWottle from "../../public/assets/heart-wottle.png";
 import studiousWottle from "../../public/assets/studious-wottle.png";
 import ButtonPill from "../Components/About/ButtonPill";
-import { Meta } from "../layout/Meta";
 import { Main } from "../templates/Main";
 
 const About = () => {
@@ -59,7 +58,7 @@ const About = () => {
     <p className="text-xl">
       WottleNFT wants to make Cardano NFT accessible to everyone. As such, we
       have implemented our smart contracts that enable us to offer the community
-      the lowest minting service fee in the market.
+      the lowest minting service fee in the market.{" "}
       <b>Mint 1 Cardano NFT for 1 ADA in just under 1 Minute</b> with our very
       own smart contract enabled nft-minter.
     </p>
@@ -83,106 +82,111 @@ const About = () => {
   );
 
   return (
-    <Main meta={<Meta title="About | WottleNFT" description="about us" />}>
-      <IonContent scrollX>
-        <div className="flex justify-between w-full h-full bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-about-background">
-          <div className="w-2/5 ml-56 my-44">
-            <p className="mb-6 text-6xl font-bold leading-snug">
-              CREATING A GLOBAL <br />
-              INTERCONNECTED <br />
-              ECOSYSTEM
-            </p>
-            <p className="mb-10 text-3xl font-bold leading-tight">
-              BETWEEN CARDANO NFTS <br />
-              AND SOCIAL ENTERPRISES
-            </p>
-            <p className="text-2xl font-bold leading-tight">
-              WHILE SHARING THE STORIES BEHIND EACH CARDANO <br />
-              NFT.
-            </p>
+    <Main title="About Us">
+      <div className="flex justify-between w-full h-full bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-about-background">
+        <div className="w-2/5 ml-3 sm:ml-20 lg:ml-56 my-44">
+          <p className="mb-6 text-4xl font-bold leading-snug md:text-5xl lg:text-6xl">
+            CREATING A GLOBAL <br />
+            INTERCONNECTED <br />
+            ECOSYSTEM
+          </p>
+          <p className="mb-10 text-xl font-bold leading-tight lg:text-3xl">
+            BETWEEN CARDANO NFTS <br />
+            AND SOCIAL ENTERPRISES
+          </p>
+          <p className="text-lg font-bold leading-tight md:text-xl">
+            WHILE SHARING THE STORIES BEHIND EACH CARDANO NFT.
+          </p>
+        </div>
+      </div>
+      <div className="w-full px-3 py-20 sm:px-20 lg:px-56 2xl:max-w-maxBody 2xl:m-auto">
+        <p className="text-5xl font-bold mb-11">OUR STORY</p>
+        {ourStory}
+        <div className="flex flex-wrap justify-center py-5 lg:justify-between lg:flex-nowrap">
+          <Image
+            src={heartWottle}
+            alt="heart wottle"
+            height={400}
+            width={400}
+            className="object-contain"
+          />
+          <div className="flex flex-col justify-center w-full lg:w-1/2">
+            <p className="text-5xl font-bold mb-11">Our Focus</p>
+            {ourFocus}
           </div>
         </div>
-        <div className="w-full px-56 py-20 min-w-1200">
-          <p className="text-5xl font-bold mb-11">OUR STORY</p>
-          {ourStory}
-          <div className="flex justify-between py-5">
-            <Image
-              src={heartWottle}
-              alt="heart wottle"
-              height={400}
-              width={400}
-              className="object-contain"
-            />
-            <div className="flex flex-col justify-center w-1/2">
-              <p className="text-5xl font-bold mb-11">Our Focus</p>
-              {ourFocus}
-            </div>
-          </div>
-          <div className="flex justify-between py-5">
-            <div className="flex flex-col justify-center w-1/2">
-              <p className="text-5xl font-bold mb-11">Marketplace</p>
-              {marketPlace}
+        <div className="flex flex-wrap-reverse justify-center py-5 lg:justify-between lg:flex-nowrap">
+          <div className="flex flex-col justify-center w-full lg:w-1/2">
+            <p className="text-5xl font-bold mb-11">Marketplace</p>
+            {marketPlace}
+            <Link href="/coming-soon" passHref>
               <ButtonPill
                 text="View Marketplace"
                 onClick={() => {}}
-                className="self-center my-8"
+                className="self-center my-8 hover:scale-105"
               />
-            </div>
-            <Image
-              src={coolWottle}
-              alt="cool wottle"
-              height={400}
-              width={400}
-              className="object-contain"
-            />
+            </Link>
           </div>
-          <div className="flex flex-col">
-            <p className="text-5xl font-bold mb-11">Auction (Coming Soon)</p>
-            {auction}
+          <Image
+            src={coolWottle}
+            alt="cool wottle"
+            height={400}
+            width={400}
+            className="object-contain"
+          />
+        </div>
+        <div className="flex flex-col">
+          <p className="text-5xl font-bold mb-11">Auction</p>
+          {auction}
+          <Link href="/coming-soon" passHref>
             <ButtonPill
               text="View Auctions"
               onClick={() => {}}
-              className="self-center my-8"
+              className="self-center my-8 hover:scale-105"
             />
-          </div>
-          <div className="flex justify-between py-5">
-            <Image
-              src={studiousWottle}
-              alt="studious wottle"
-              height={400}
-              width={400}
-              className="object-contain"
-            />
-            <div className="flex flex-col justify-center w-1/2">
-              <p className="text-5xl font-bold mb-11">NFT Minter</p>
-              {nftMinter}
+          </Link>
+        </div>
+        <div className="flex flex-wrap justify-center py-5 lg:flex-nowrap lg:justify-between">
+          <Image
+            src={studiousWottle}
+            alt="studious wottle"
+            height={400}
+            width={400}
+            className="object-contain"
+          />
+          <div className="flex flex-col justify-center w-full lg:w-1/2">
+            <p className="text-5xl font-bold mb-11">NFT Minter</p>
+            {nftMinter}
+            <Link href="/mint-nft" passHref>
               <ButtonPill
                 text="Mint Now"
                 onClick={() => {}}
-                className="self-center my-8"
+                className="self-center my-8 hover:scale-105"
               />
-            </div>
+            </Link>
           </div>
-          <div className="flex justify-between py-5">
-            <div className="flex flex-col justify-center w-1/2">
-              <p className="text-5xl font-bold mb-11">Staking Pool</p>
-              {stakingPool}
+        </div>
+        <div className="flex flex-wrap-reverse justify-center py-5 lg:flex-nowrap lg:justify-between">
+          <div className="flex flex-col justify-center w-full lg:w-1/2">
+            <p className="text-5xl font-bold mb-11">Staking Pool</p>
+            {stakingPool}
+            <Link href="/coming-soon" passHref>
               <ButtonPill
                 text="Stake Now"
                 onClick={() => {}}
-                className="self-center my-8"
+                className="self-center my-8 hover:scale-105"
               />
-            </div>
-            <Image
-              src={dogWottle}
-              alt="dog wottle"
-              height={400}
-              width={400}
-              className="object-contain"
-            />
+            </Link>
           </div>
+          <Image
+            src={dogWottle}
+            alt="dog wottle"
+            height={400}
+            width={400}
+            className="object-contain"
+          />
         </div>
-      </IonContent>
+      </div>
     </Main>
   );
 };

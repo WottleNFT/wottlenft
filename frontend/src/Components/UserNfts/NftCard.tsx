@@ -1,34 +1,33 @@
 import React from "react";
 
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-} from "@ionic/react";
+import { Nft } from "../../types/Nft";
 
-import { Asset } from "../../types/Asset";
+type Props = {
+  nft: Nft;
+};
 
-const NftCard = ({ nft }: { nft: Asset }) => {
+const NftCard = ({ nft }: Props) => {
+  const { assetName, metadata } = nft;
+  const { description, image } = metadata;
+
+  const imageHash = image.replace("ipfs://", "");
+  const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
+
   return (
-    <IonCard className="rounded-2xl w-full h-full p-2">
-      <div className="flex flex-col">
-        <div className="h-2/3 w-full">
-          {/* <img
-            className="p-2 w-auto h-full object-cover rounded-2xl"
-            alt="Event"
-            src={nftPlaceholder}
-          /> */}
-        </div>
-        <IonCardHeader className="text-left px-2 py-0 truncate">
-          <IonCardTitle className="truncate text-base">
-            {`Policy Id: ${nft.policy_id}`}
-          </IonCardTitle>
-          <IonCardSubtitle>{`Asset name: ${nft.asset_name}`}</IonCardSubtitle>
-          <IonCardSubtitle>{`Qty: ${nft.qty}`}</IonCardSubtitle>
-        </IonCardHeader>
+    <div
+      style={{ height: 500, width: 400 }}
+      className="flex flex-col w-px h-px m-8 transition-all rounded-md bg-gray-50 drop-shadow-md hover:drop-shadow-2xl hover:scale-110"
+    >
+      <img
+        className="object-contain p-2 h-4/5 rounded-xl"
+        alt="Event"
+        src={imageUrl}
+      />
+      <div className="p-2">
+        <p className="text-2xl font-bold">{assetName}</p>
+        <p className="text-gray-800">{description}</p>
       </div>
-    </IonCard>
+    </div>
   );
 };
 
