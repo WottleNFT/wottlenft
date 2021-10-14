@@ -1,4 +1,3 @@
-import { IonContent } from "@ionic/react";
 import Image from "next/image";
 
 import coolWottle from "../../public/assets/cool-wottle.png";
@@ -84,23 +83,21 @@ const About = () => {
 
   return (
     <Main meta={<Meta title="About | WottleNFT" description="about us" />}>
-      <IonContent scrollX>
-        <div className="flex justify-between w-full h-full bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-about-background">
-          <div className="w-2/5 ml-56 my-44">
-            <p className="mb-6 text-6xl font-bold leading-snug">
-              CREATING A GLOBAL <br />
-              INTERCONNECTED <br />
-              ECOSYSTEM
-            </p>
-            <p className="mb-10 text-3xl font-bold leading-tight">
-              BETWEEN CARDANO NFTS <br />
-              AND SOCIAL ENTERPRISES
-            </p>
-            <p className="text-2xl font-bold leading-tight">
-              WHILE SHARING THE STORIES BEHIND EACH CARDANO <br />
-              NFT.
-            </p>
-          </div>
+      <div className="flex justify-between w-full h-full bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-about-background">
+        <div className="w-2/5 ml-56 my-44">
+          <p className="mb-6 text-6xl font-bold leading-snug">
+            CREATING A GLOBAL <br />
+            INTERCONNECTED <br />
+            ECOSYSTEM
+          </p>
+          <p className="mb-10 text-3xl font-bold leading-tight">
+            BETWEEN CARDANO NFTS <br />
+            AND SOCIAL ENTERPRISES
+          </p>
+          <p className="text-2xl font-bold leading-tight">
+            WHILE SHARING THE STORIES BEHIND EACH CARDANO <br />
+            NFT.
+          </p>
         </div>
         <div className="w-full px-56 py-20 bg-white min-w-1200">
           <p className="text-5xl font-bold mb-11">OUR STORY</p>
@@ -136,53 +133,71 @@ const About = () => {
               className="object-contain"
             />
           </div>
-          <div className="flex flex-col">
-            <p className="text-5xl font-bold mb-11">Auction (Coming Soon)</p>
-            {auction}
+        </div>
+        <div className="flex justify-between py-5">
+          <div className="flex flex-col justify-center w-1/2">
+            <p className="text-5xl font-bold mb-11">Marketplace</p>
+            {marketPlace}
             <ButtonPill
-              text="View Auctions"
+              text="View Marketplace"
               onClick={() => {}}
               className="self-center my-8"
             />
           </div>
-          <div className="flex justify-between py-5">
-            <Image
-              src={studiousWottle}
-              alt="studious wottle"
-              height={400}
-              width={400}
-              className="object-contain"
-            />
-            <div className="flex flex-col justify-center w-1/2">
-              <p className="text-5xl font-bold mb-11">NFT Minter</p>
-              {nftMinter}
-              <ButtonPill
-                text="Mint Now"
-                onClick={() => {}}
-                className="self-center my-8"
-              />
-            </div>
-          </div>
-          <div className="flex justify-between py-5">
-            <div className="flex flex-col justify-center w-1/2">
-              <p className="text-5xl font-bold mb-11">Staking Pool</p>
-              {stakingPool}
-              <ButtonPill
-                text="Stake Now"
-                onClick={() => {}}
-                className="self-center my-8"
-              />
-            </div>
-            <Image
-              src={dogWottle}
-              alt="dog wottle"
-              height={400}
-              width={400}
-              className="object-contain"
+          <Image
+            src={coolWottle}
+            alt="cool wottle"
+            height={400}
+            width={400}
+            className="object-contain"
+          />
+        </div>
+        <div className="flex flex-col">
+          <p className="text-5xl font-bold mb-11">Auction (Coming Soon)</p>
+          {auction}
+          <ButtonPill
+            text="View Auctions"
+            onClick={() => {}}
+            className="self-center my-8"
+          />
+        </div>
+        <div className="flex justify-between py-5">
+          <Image
+            src={studiousWottle}
+            alt="studious wottle"
+            height={400}
+            width={400}
+            className="object-contain"
+          />
+          <div className="flex flex-col justify-center w-1/2">
+            <p className="text-5xl font-bold mb-11">NFT Minter</p>
+            {nftMinter}
+            <ButtonPill
+              text="Mint Now"
+              onClick={() => {}}
+              className="self-center my-8"
             />
           </div>
         </div>
-      </IonContent>
+        <div className="flex justify-between py-5">
+          <div className="flex flex-col justify-center w-1/2">
+            <p className="text-5xl font-bold mb-11">Staking Pool</p>
+            {stakingPool}
+            <ButtonPill
+              text="Stake Now"
+              onClick={() => {}}
+              className="self-center my-8"
+            />
+          </div>
+          <Image
+            src={dogWottle}
+            alt="dog wottle"
+            height={400}
+            width={400}
+            className="object-contain"
+          />
+        </div>
+      </div>
     </Main>
   );
 };
