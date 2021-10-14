@@ -1,10 +1,11 @@
 import {Pool, Client} from "pg"
-import {databaseconnection} from "../config/config"
+import * as config from "../config/config"
 const pool = new Pool({
-    connectionString: databaseconnection,
-    ssl: {
-        rejectUnauthorized: false
-    }
+    user: config.dbuser,
+    host: config.dbhost,
+    database: 'wottleprofiledb',
+    password: config.dbpassword,
+    port: config.dbport as number,
 });
 pool.connect();
 

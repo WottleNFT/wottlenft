@@ -1,7 +1,9 @@
 import { compare } from "bcrypt";
 import { Request, Response } from "express";
-import { json } from "stream/consumers";
-import { getUserByEmail, insertUser } from "../database/userQueries";
+import { access } from "fs";
+import * as jwt from "jsonwebtoken"
+import { TOKEN_SECRET } from "../config/config";
+import { getUserByEmail, getUserById, insertUser } from "../database/userQueries";
 import { hashPassword } from "../ultility/passwordHandler";
 
 export async function registerUser(req: Request, res: Response) {
@@ -10,16 +12,18 @@ export async function registerUser(req: Request, res: Response) {
         await insertUser({
             email: req.body.email,
             password: password,
-            id: null
+            account_id: null
         })
 
     } catch (error) {
+        console.log(error)
+        console.log("err");
         return res.status(404).json({
             err: error
         })
     }
     return res.status(200).json({
-        message: "login successful!"
+        message: "registration successful!"
     })
 }
 
@@ -39,9 +43,31 @@ export async function userLogin(req: Request, res: Response) {
             })
         }
         const id = {
-            user_id: user.id
+            user_id: user.account_id
         }
         const accessToken = jwt.sign(id, TOKEN_SECRET);
-        return 
+        return res.status(200).json({
+            accessToken: accessToken
+        })
+    } catch (err) {
+        return res.status(400).json({
+            error: err
+        })
+    }
+}
+
+export async function getUserInfo(req: Request, res: Response) {
+    try {
+        let user = await getUserById(res.locals.jwt.user_id)
+        if (user == null) {
+            throw Error("Cant find user");
+        }
+        res.status(200).json({
+            user: user
+        })
+    } catch (err) {
+        return res.status(404).json({
+            err: err
+        })
     }
 }

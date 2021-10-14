@@ -13,10 +13,13 @@ export async function checkPassword(password: string, hashed: string): Promise<B
 export function extractJWT(req: Request, res: Response, next: NextFunction) {
   
   console.log("extracting token");
-  let token = req.headers.authorization?.split(' ')[0]
+  console.log(req.headers.authorization)
+  let token = req.headers.authorization?.split(' ')[1]
+  console.log(token);
   if (token) {
     verify(token, TOKEN_SECRET, (error, decoded) => {
       if (error) {
+        console.log("error!");
         return res.status(404).json({
           message: error.message,
           error
@@ -24,6 +27,7 @@ export function extractJWT(req: Request, res: Response, next: NextFunction) {
       } 
       else 
       {
+        console.log("decoded!");
         res.locals.jwt = decoded;
         next()
       }

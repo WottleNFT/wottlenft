@@ -1,11 +1,11 @@
-DROP DATABASE IF EXISTS WottleProfileDB;
-CREATE DATABASE WottleProfileDB;
-\c WottleProfileDB;
-DROP TABLE IF EXISTS User;
+DROP DATABASE IF EXISTS wottleprofiledb;
+CREATE DATABASE wottleprofiledb;
+\c wottleprofiledb;
+DROP TABLE IF EXISTS accounts;
 
-CREATE TABLE User(
-    user_id SERIAL PRIMARY KEY,
-    password VARCHAR NOT NULL,
-    email VARCHAR NOT NULL,
-    UNIQUE(email)
+CREATE TABLE accounts(
+  account_id SERIAL PRIMARY KEY,
+  password VARCHAR NOT NULL,
+  email VARCHAR NOT NULL,
+  UNIQUE(email)
 );

@@ -1,6 +1,6 @@
 import * as express from "express";
 import { json, urlencoded } from "body-parser";
-import { getUserInfo, registerUser, userLogin } from "./routes/userRoutes";
+import { getUserInfo, registerUser, userLogin } from "./routes/accountsRoutes";
 import { extractJWT } from "./ultility/passwordHandler";
 const routes = express.Router();
 routes.use(json())
