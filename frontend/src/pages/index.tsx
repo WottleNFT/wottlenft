@@ -32,9 +32,9 @@ const Index = () => {
         />
       }
     >
-      <IonContent fullscreen={true} scrollEvents={true}>
+      <IonContent scrollEvents={true}>
         {auctions[0] && (
-          <div className="flex py-4 px-16 text-center truncate h-1/2 place-items-center">
+          <div className="flex px-16 py-4 text-center truncate h-1/2 place-items-center">
             <img
               className="object-cover w-1/2 h-full p-2 rounded-2xl"
               alt="Auction"

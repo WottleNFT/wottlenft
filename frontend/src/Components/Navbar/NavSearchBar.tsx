@@ -1,9 +1,20 @@
+import { useRouter } from "next/router";
+
 const NavSearchBar = () => {
+  const router = useRouter();
+
+  const handleEnterKey = (event: any) => {
+    if (event.key === "Enter") {
+      router.push("/coming-soon");
+    }
+  };
+
   return (
     <input
-      className="w-1/2 h-12 max-w-2xl px-5 transition duration-150 rounded-full shadow-md drop-shadow-md mx-7 focus:outline-none focus:ring-2"
+      className="hidden w-full h-12 max-w-lg px-5 transition duration-150 rounded-full shadow-md xl:block drop-shadow-md mx-7 focus:outline-none focus:ring-2"
       type="text"
       placeholder="Search for an NFT"
+      onKeyPress={handleEnterKey}
     />
   );
 };
