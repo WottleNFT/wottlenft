@@ -48,7 +48,7 @@ const Landing = () => {
           </IonCardTitle>
           <CountdownTimer
             countdownTimestamp={1635764400}
-            className="text-3xl md:text-5xl text-black"
+            className="text-3xl md:text-5xl text-black mt-3"
           />
           <IonButton
             shape="round"
