@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 
+import { IonInput, IonButton } from "@ionic/react";
 import Link from "next/link";
 import { BsTwitter, BsInstagram } from "react-icons/bs";
 import { FaDiscord } from "react-icons/fa";
 
 const Footer = () => {
+  const [email, setEmail] = useState<string>();
   return (
     <div className="w-full h-auto bg-gray-700 truncate">
       <div className="flex flex-col md:flex-row place-content-around">
@@ -40,7 +42,20 @@ const Footer = () => {
           <p>
             Subscribe to our newsletter to receive <br /> the latest updates
           </p>
+          <div className="flex felx-row h-8 gap-4 items-center mt-7">
+            <div className="bg-white rounded-full px-3">
+              <IonInput
+                value={email}
+                placeholder="Your Email"
+                onIonChange={(e) => setEmail(e.detail.value!)}
+                clearInput
+                className="text-black"
+              ></IonInput>
+            </div>
+            <IonButton shape="round">Join us</IonButton>
+          </div>
         </div>
+
         <div className="grid p-8 pl-12 md:pl-0 gap-5 grid-cols-4 justify-self-center">
           <div className="flex flex-col">
             <span className="text-primary-default">Marketplace</span>
