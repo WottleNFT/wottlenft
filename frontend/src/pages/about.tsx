@@ -100,7 +100,7 @@ const About = () => {
           </p>
         </div>
       </div>
-      <div className="w-full px-20 py-20 lg:px-56 2xl:max-w-maxBody 2xl:m-auto">
+      <div className="w-full px-3 py-20 sm:px-20 lg:px-56 2xl:max-w-maxBody 2xl:m-auto">
         <p className="text-5xl font-bold mb-11">OUR STORY</p>
         {ourStory}
         <div className="flex flex-wrap justify-center py-5 lg:justify-between lg:flex-nowrap">
