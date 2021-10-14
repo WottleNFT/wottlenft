@@ -1,19 +1,14 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode } from "react";
 
-import {
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
-import Link from "next/link";
+import { IonContent, IonHeader, IonPage, IonTitle } from "@ionic/react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 
+import wottleLogo from "../../public/logo.png";
 import ConnectWalletButton from "../Components/ConnectWalletButton";
 import Footer from "../Components/Footer";
-import SideMenu, { MenuButton } from "../Components/SideMenu";
+import NavSearchBar from "../Components/Navbar/NavSearchBar";
+import navbarStyles from "../styles/navbar.module.css";
 
 type IMainProps = {
   meta: ReactNode;
@@ -22,65 +17,68 @@ type IMainProps = {
 
 const Main = (props: IMainProps) => {
   const router = useRouter();
-  const [windowWidth, setWidth] = useState(-1);
-  const windowBreakpoint = 640;
 
-  useEffect(() => {
-    const handleWindowResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => window.removeEventListener("resize", handleWindowResize);
-  }, []);
+  const navInfo = [
+    {
+      name: "Marketplace",
+      route: "/marketplace",
+      tempRoute: "/coming-soon",
+    },
+    {
+      name: "Auction",
+      route: "/auction",
+      tempRoute: "/coming-soon",
+    },
+    {
+      name: "Mint NFT",
+      route: "/mint-nft",
+      tempRoute: "/mint-nft",
+    },
+  ];
 
   return (
     <div>
-      <SideMenu />
       {props.meta}
       <IonPage id="main">
         <IonHeader className="h-20 ion-no-border">
-          <IonToolbar
-            color="primary"
-            className="flex flex-row h-full align-middle"
-          >
-            {/* TODO: change to href="/" */}
-
-            <div className="flex flex-row align-middle">
-              <Link href="/landing" passHref>
-                <div className="flex flex-row cursor-pointer">
-                  <img
-                    className="h-14 md:ml-3"
-                    alt="Logo"
-                    src={`${router.basePath}/logo.png`}
-                  />
-                  <IonTitle className="p-0 text-black">WottleNFT</IonTitle>
-                </div>
-              </Link>
+          <div className="flex justify-between px-10 xl:px-40 bg-primary-default">
+            <div className="flex items-center content-center flex-grow">
+              <div
+                onClick={() => router.push("/")}
+                className="flex flex-row cursor-pointer"
+              >
+                <Image
+                  height={60}
+                  width={60}
+                  layout="fixed"
+                  alt="Wottle Logo"
+                  src={wottleLogo}
+                />
+                <IonTitle className="p-0 font-bold">WottleNFT</IonTitle>
+              </div>
+              <NavSearchBar />
             </div>
-
-            <IonButtons slot="end" className="flex items-center">
-              {windowWidth === -1 && typeof window !== "undefined"
-                ? setWidth(window.innerWidth)
-                : windowWidth > windowBreakpoint && (
-                    <div className="flex flex-row items-center gap-4">
-                      <Link href="/coming-soon">
-                        <a>Marketplace</a>
-                      </Link>
-                      <Link href="/coming-soon">
-                        <a>Auction</a>
-                      </Link>
-                      <Link href="/coming-soon">
-                        <a>Creator</a>
-                      </Link>
-                      <Link href="/mint-nft">
-                        <a>Mint Now</a>
-                      </Link>
-                      <ConnectWalletButton />
-                    </div>
-                  )}
-
-              {windowWidth < windowBreakpoint && <MenuButton />}
-            </IonButtons>
-          </IonToolbar>
+            <div className="flex">
+              <div className={navbarStyles.container}>
+                {navInfo.map((nav) => {
+                  return (
+                    <a
+                      key={nav.name}
+                      href={nav.tempRoute}
+                      className={
+                        nav.route === router.pathname
+                          ? navbarStyles.selected
+                          : ""
+                      }
+                    >
+                      {nav.name}
+                    </a>
+                  );
+                })}
+              </div>
+              <ConnectWalletButton />
+            </div>
+          </div>
         </IonHeader>
         <IonContent>
           {props.children}

@@ -274,7 +274,7 @@ const Minting = ({ wallet }: Props) => {
           We will provide you the script afterwards for verification.
         </p>
       </div>
-      <div className="w-full p-10 mx-auto mb-10 bg-gray-200 border rounded-md shadow-xl md:w-10/12 lg:w-9/12 xl:w-7/12 2xl:w-1/2">
+      <div className="w-10/12 p-10 mx-auto mb-10 bg-gray-200 border rounded-md shadow-xl md:w-500">
         <div className="flex flex-col items-center h-full">
           {!transactionId && (
             <>

@@ -1,7 +1,5 @@
 import React from "react";
 
-import { IonContent } from "@ionic/react";
-
 import HowToMint from "../../Components/MintNfts/HowToMint";
 import Minting from "../../Components/MintNfts/Minting";
 import WalletSwitch from "../../Components/WalletSwitch";
@@ -14,7 +12,7 @@ const MintNftPage = () => {
 
   return (
     <Main meta={<Meta title="Mint-NFT" description="Page to create an NFT" />}>
-      <IonContent className="ion-background-primary">
+      <div className="bg-primary-default">
         <WalletSwitch
           wallet={wallet}
           enabled={(enabledWallet) => <Minting wallet={enabledWallet} />}
@@ -22,7 +20,7 @@ const MintNftPage = () => {
         />
         <HowToMint />
         <div className="p-10" />
-      </IonContent>
+      </div>
     </Main>
   );
 };
