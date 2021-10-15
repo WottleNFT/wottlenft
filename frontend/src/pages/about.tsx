@@ -87,8 +87,8 @@ const About = () => {
   return (
     <Main title="About Us">
       <div className="flex justify-between w-full min-h-full overflow-hidden bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-background-seascape">
-        <div className="z-10 w-2/5 ml-3 sm:ml-20 lg:ml-56 my-44 max-w-maxScreen">
-          <p className="mb-16 text-4xl font-bold leading-snug md:text-5xl lg:text-6xl">
+        <div className="z-10 w-2/5 pl-3 pr-3 sm:ml-20 lg:ml-56 my-44 max-w-maxScreen">
+          <p className="mb-16 text-4xl font-bold leading-snug break-words sm:break-normal md:text-5xl lg:text-6xl">
             CREATING A GLOBAL <br />
             INTERCONNECTED <br />
             ECOSYSTEM
