@@ -87,7 +87,7 @@ const About = () => {
   return (
     <Main title="About Us">
       <div className="flex justify-between w-full min-h-full overflow-hidden bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-background-seascape">
-        <div className="z-10 w-2/5 pl-3 pr-3 sm:ml-20 lg:ml-56 my-44 max-w-maxScreen">
+        <div className="z-10 w-2/5 pl-8 pr-2 md:ml-14 2xl:ml-56 my-44 max-w-maxScreen">
           <p className="mb-16 text-4xl font-bold leading-snug break-words sm:break-normal md:text-5xl lg:text-6xl">
             CREATING A GLOBAL <br />
             INTERCONNECTED <br />
@@ -105,7 +105,7 @@ const About = () => {
           alt="all wottles"
         />
       </div>
-      <div className="w-full px-3 pt-20 pb-0 sm:px-20 lg:px-56 2xl:max-w-maxBody 2xl:m-auto">
+      <div className="w-full px-8 pt-20 pb-0 text-justify lg:text-left md:px-20 2xl:px-56 2xl:max-w-maxBody 2xl:m-auto">
         <p className="text-5xl font-bold mb-11">OUR STORY</p>
         {ourStory}
         <div className="flex flex-wrap justify-center py-5 lg:justify-between lg:flex-nowrap">
