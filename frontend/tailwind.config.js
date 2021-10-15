@@ -18,6 +18,9 @@ module.exports = {
     minWidth: {
       1200: '1200px',
     },
+    maxWidth: {
+      maxBody: '1730px',
+    },
     extend: {
       zIndex: {
         '-10': '-10',

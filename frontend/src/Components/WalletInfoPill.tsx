@@ -10,9 +10,9 @@ const WalletInfoPill: React.FC<WalletState> = (props) => {
           !props.network ? "t" : ""
         }₳ ${props.balance / 1000000}`}</p>
         <img
-          src="https://picsum.photos/200"
+          src="/logo.png"
           alt="profile pic"
-          className="m-2 border-2 border-gray-500 rounded-full h-7 w-7"
+          className="object-contain m-2 bg-white border-2 border-gray-500 rounded-full h-7 w-7"
         />
       </div>
     </Link>

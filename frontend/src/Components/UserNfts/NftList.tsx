@@ -1,7 +1,5 @@
 import React from "react";
 
-import { IonList } from "@ionic/react";
-
 import { useGetUserNftsQuery } from "../../app/nft";
 import DisplayMessage from "./DisplayMessage";
 import NftCard from "./NftCard";
@@ -23,11 +21,18 @@ const NftList = ({ baseUrl, address }: Props) => {
 
   return (
     <>
-      <IonList className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-1 lg:mx-20 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4xl">
         {data.map((nft) => {
-          return <NftCard key={nft.policyId} nft={nft} />;
+          return (
+            <div
+              key={nft.policyId}
+              className="flex items-center justify-center flex-grow w-full align-middle"
+            >
+              <NftCard nft={nft} />
+            </div>
+          );
         })}
-      </IonList>
+      </div>
     </>
   );
 };

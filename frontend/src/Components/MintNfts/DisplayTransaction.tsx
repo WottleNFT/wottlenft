@@ -36,7 +36,12 @@ const DisplayTransaction = ({
       <section className="w-full mt-8 ">
         <p>
           Alternatively, you can check the progress{" "}
-          <a target="_blank" href={url} rel="noreferrer">
+          <a
+            className="text-primary-default"
+            target="_blank"
+            href={url}
+            rel="noreferrer"
+          >
             here
           </a>
         </p>
@@ -44,7 +49,12 @@ const DisplayTransaction = ({
       <section className="w-full mt-8 ">
         <p>
           Remember to also register your policy on{" "}
-          <a target="_blank" href={poolPmUrl} rel="noreferrer">
+          <a
+            className="text-primary-default"
+            target="_blank"
+            href={poolPmUrl}
+            rel="noreferrer"
+          >
             pool.pm
           </a>
         </p>
