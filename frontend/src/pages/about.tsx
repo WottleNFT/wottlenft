@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import coolWottle from "../../public/assets/cool-wottle.png";
 import dogWottle from "../../public/assets/dog-wottle-green.png";
@@ -9,6 +10,8 @@ import ButtonPill from "../Components/About/ButtonPill";
 import { Main } from "../templates/Main";
 
 const About = () => {
+  const router = useRouter();
+
   // Long paragraph contents
   const ourStory = (
     <p className="text-xl">
@@ -83,19 +86,22 @@ const About = () => {
 
   return (
     <Main title="About Us">
-      <div className="flex justify-between w-full h-full bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-about-background">
-        <div className="w-2/5 ml-3 sm:ml-20 lg:ml-56 my-44">
-          <p className="mb-6 text-4xl font-bold leading-snug md:text-5xl lg:text-6xl">
+      <div className="flex justify-between w-full h-full bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-background-seascape">
+        <img
+          className="absolute bottom-0 right-0 z-0 object-cover h-2/6 lg:h-1/2 xl:h-5/6"
+          src={`${router.basePath}/assets/everyone-together.png`}
+          alt="all wottles"
+        />
+        <div className="z-10 w-2/5 ml-3 sm:ml-20 lg:ml-56 my-44">
+          <p className="mb-16 text-4xl font-bold leading-snug md:text-5xl lg:text-6xl">
             CREATING A GLOBAL <br />
             INTERCONNECTED <br />
             ECOSYSTEM
           </p>
           <p className="mb-10 text-xl font-bold leading-tight lg:text-3xl">
             BETWEEN CARDANO NFTS <br />
-            AND SOCIAL ENTERPRISES
-          </p>
-          <p className="text-lg font-bold leading-tight md:text-xl">
-            WHILE SHARING THE STORIES BEHIND EACH CARDANO NFT.
+            AND SOCIAL ENTERPRISES WHILE SHARING THE STORIES BEHIND EACH CARDANO
+            NFT.
           </p>
         </div>
       </div>
