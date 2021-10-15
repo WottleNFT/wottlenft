@@ -8,10 +8,12 @@ import { AppProps } from "next/app";
 import { Provider } from "react-redux";
 
 import { store } from "../app/store";
+import SideMenu from "../Components/SideMenu";
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
   <Provider store={store}>
     <IonApp>
+      <SideMenu />
       <DefaultSeo
         titleTemplate="WottleNFT | %s"
         defaultTitle="A sustainable Cardano NFT Marketplace"

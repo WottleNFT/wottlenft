@@ -9,10 +9,10 @@ import {
   IonIcon,
   IonLabel,
   IonButtons,
-  IonMenuButton,
   IonMenuToggle,
 } from "@ionic/react";
 import { construct, personCircle, cash, storefront } from "ionicons/icons";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 function SideMenu() {
   return (
@@ -50,7 +50,9 @@ function SideMenu() {
 
 export const MenuButton = ({ ...props }) => (
   <IonButtons {...props}>
-    <IonMenuButton slot="end" />
+    <IonMenuToggle menu="side-menu" slot="end">
+      <GiHamburgerMenu className="text-3xl" />
+    </IonMenuToggle>
   </IonButtons>
 );
 
