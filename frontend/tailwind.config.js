@@ -20,6 +20,7 @@ module.exports = {
     },
     maxWidth: {
       maxBody: '1730px',
+      maxScreen: '100vw',
     },
     extend: {
       zIndex: {
