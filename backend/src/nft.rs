@@ -95,7 +95,7 @@ impl std::convert::TryFrom<&WottleNftMetadata> for MetadataMap {
         );
 
         nft_metadata_map.insert(
-            &TransactionMetadatum::new_text("author".to_string())?,
+            &TransactionMetadatum::new_text("Minted At".to_string())?,
             &TransactionMetadatum::new_text("© 2021 WottleNFT".to_string())?,
         );
 

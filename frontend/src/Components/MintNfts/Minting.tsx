@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 
-import { IonButton, IonIcon, IonText, IonSpinner } from "@ionic/react";
+import { IonButton, IonIcon, IonSpinner, IonText } from "@ionic/react";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { trash, add, hammer } from "ionicons/icons";
 
@@ -9,6 +9,7 @@ import useTextInput from "../../hooks/useTextInput";
 import { WottleEnabled } from "../../hooks/useWallet";
 import { NetworkError } from "../../types/NetworkError";
 import { HexCborString } from "../../wallet";
+import CopySection from "./CopySection";
 import DisplayTransaction from "./DisplayTransaction";
 
 type Metadata = {
@@ -313,6 +314,7 @@ const Minting = ({ wallet }: Props) => {
                   <p className="pb-2 font-bold">Image</p>
                   <img
                     className="object-cover"
+                    alt="uploaded image"
                     src={URL.createObjectURL(image)}
                   />
                   <IonButton
@@ -342,9 +344,7 @@ const Minting = ({ wallet }: Props) => {
               )}
               {renderNewFields()}
               <div className="h-2" />
-              <label className="w-full">
-                Add extra metadata fields [Optional]
-              </label>
+              <label className="w-full">Add extra information [Optional]</label>
 
               <div className="grid items-center w-full grid-cols-5 gap-2">
                 <input
@@ -361,6 +361,27 @@ const Minting = ({ wallet }: Props) => {
                   <IonIcon icon={add} />
                 </IonButton>
               </div>
+
+              <div className="pt-8 text-2xl font-bold">Preview</div>
+              <p>
+                This is what the information tagged to your NFT looks like on
+                the Cardano Blockchain
+              </p>
+              <CopySection
+                label="Information Preview"
+                text={JSON.stringify(
+                  {
+                    name,
+                    creator,
+                    description,
+                    image: "ipfs://{hash-after-upload}",
+                    "Minted At": "© 2021 WottleNFT",
+                    ...customFields,
+                  },
+                  null,
+                  2
+                )}
+              />
               {error && <IonText color="danger">{error}</IonText>}
               {!isSubmitting && (
                 <IonButton
@@ -382,6 +403,7 @@ const Minting = ({ wallet }: Props) => {
                 transactionId={transactionId}
                 policyJson={policyJson}
                 policyId={policyId}
+                apiUrl={wallet.state.backendApi}
               />
               <IonButton
                 size="large"
