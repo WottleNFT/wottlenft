@@ -263,7 +263,7 @@ const Minting = ({ wallet }: Props) => {
 
   return (
     <>
-      <div className="mb-3 text-center">
+      <div className="mx-6 mb-3 text-center">
         <p className="text-4xl font-bold">Mint your Cardano NFT here!</p>
         <p className="mb-3 text-xl text-gray-900">
           Mint <b>1 CNFT</b> for just <b>1 ADA</b> under <b>1 MINUTE</b>

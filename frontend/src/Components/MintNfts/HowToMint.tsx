@@ -1,6 +1,6 @@
 const HowToMint = () => {
   return (
-    <div className="flex flex-col items-center justify-center px-1">
+    <div className="flex flex-col items-center justify-center px-1 mx-5 md:mx-2 lg:mx-0">
       <h1 className="mb-20 text-3xl font-bold text-center">
         Steps to mint your own Cardano NFT
       </h1>
