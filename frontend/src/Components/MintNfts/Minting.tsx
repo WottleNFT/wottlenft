@@ -375,12 +375,12 @@ const Minting = ({ wallet }: Props) => {
                 label="Information Preview"
                 text={JSON.stringify(
                   {
+                    ...customFields,
                     name,
                     creator,
                     description,
                     image: "ipfs://{hash-after-upload}",
                     "Minted At": "© 2021 WottleNFT",
-                    ...customFields,
                   },
                   null,
                   2
