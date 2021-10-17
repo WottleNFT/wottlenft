@@ -95,7 +95,7 @@ impl std::convert::TryFrom<&WottleNftMetadata> for MetadataMap {
         );
 
         nft_metadata_map.insert(
-            &TransactionMetadatum::new_text("author".to_string())?,
+            &TransactionMetadatum::new_text("Minted At".to_string())?,
             &TransactionMetadatum::new_text("© 2021 WottleNFT".to_string())?,
         );
 
@@ -122,8 +122,8 @@ impl NftPolicy {
             NativeScript::new_timelock_expiry(&TimelockExpiry::new(expiry_slot));
 
         let mut native_scripts = NativeScripts::new();
-        native_scripts.add(&pub_key_script);
         native_scripts.add(&time_expiry_script);
+        native_scripts.add(&pub_key_script);
 
         let script = NativeScript::new_script_all(&ScriptAll::new(&native_scripts));
         let hash =

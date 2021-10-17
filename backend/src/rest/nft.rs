@@ -3,12 +3,29 @@ use crate::{
     nft::{NftTransactionBuilder, WottleNftMetadata},
     Result,
 };
-use actix_web::{post, web, HttpResponse, Scope};
+use actix_web::{get, post, web, HttpResponse, Scope};
 use cardano_serialization_lib::{Transaction, TransactionWitnessSet};
 use serde::Deserialize;
 use serde_json::json;
 
+use crate::cardano_db_sync::query_if_nft_minted;
 use crate::rest::AppState;
+use cardano_serialization_lib::crypto::TransactionHash;
+
+#[derive(Deserialize)]
+struct TransactionHashQuery {
+    hash: String,
+}
+
+#[get("/exists")]
+async fn check_nft_exists(
+    query: web::Query<TransactionHashQuery>,
+    data: web::Data<AppState>,
+) -> Result<HttpResponse> {
+    let tx_hash = TransactionHash::from_bytes(hex::decode(query.hash.clone())?)?;
+    let exists = query_if_nft_minted(&data.pool, &tx_hash).await?;
+    Ok(HttpResponse::Ok().json(json!({ "result": exists })))
+}
 
 #[derive(Deserialize)]
 struct CreateNft {
@@ -69,4 +86,5 @@ pub fn create_nft_service() -> Scope {
     web::scope("/nft")
         .service(create_nft_transaction)
         .service(sign_nft_transaction)
+        .service(check_nft_exists)
 }

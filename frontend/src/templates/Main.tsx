@@ -77,7 +77,7 @@ const Main = (props: IMainProps) => {
       />
       <IonPage id="main">
         <IonHeader className="ion-no-border">
-          <div className="flex justify-between items-center pl-4 md:pl-12 2xl:pl-52 bg-primary-default">
+          <div className="flex items-center justify-between pl-4 md:pl-12 2xl:pl-52 bg-primary-default">
             <div className="flex items-center content-center flex-grow">
               <div
                 onClick={() => router.push("/landing")}
@@ -90,7 +90,7 @@ const Main = (props: IMainProps) => {
                   alt="Wottle Logo"
                   src={wottleLogo}
                 />
-                <span className="p-0 font-bold text-xl">WottleNFT</span>
+                <span className="p-0 text-xl font-bold">WottleNFT</span>
               </div>
               <NavSearchBar />
             </div>
@@ -139,9 +139,9 @@ const navInfo = [
     tempRoute: "/coming-soon",
   },
   {
-    name: "Auction",
-    route: "/auction",
-    tempRoute: "/coming-soon",
+    name: "About Us",
+    route: "/about",
+    tempRoute: "/about",
   },
   {
     name: "Creator",
