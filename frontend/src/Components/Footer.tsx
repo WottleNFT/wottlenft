@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { IonButton } from "@ionic/react";
 import Link from "next/link";
 import { BsTwitter, BsInstagram } from "react-icons/bs";
 import { FaDiscord } from "react-icons/fa";
 
 const Footer = () => {
-  const [email, setEmail] = useState<string>();
+  // const [email, setEmail] = useState<string>();
   return (
     <div className="w-full h-auto truncate bg-gray-700">
       <div className="flex flex-col md:flex-row place-content-around">
@@ -20,29 +19,35 @@ const Footer = () => {
             </span>
             <div className="flex flex-row gap-3 pt-1 ml-4">
               <a
+                target="_blank"
                 className="text-primary-default"
                 href="https://twitter.com/wottlenft"
+                rel="noreferrer"
               >
                 <BsTwitter />
               </a>
               <a
+                target="_blank"
                 className="text-primary-default"
                 href="https://discord.gg/GcDPbqvcGn"
+                rel="noreferrer"
               >
                 <FaDiscord />
               </a>
               <a
                 className="text-primary-default"
+                target="_blank"
                 href="https://www.instagram.com/wottlenft/"
+                rel="noreferrer"
               >
                 <BsInstagram />
               </a>
             </div>
           </div>
           <p>
-            Subscribe to our newsletter to receive <br /> the latest updates
+            Follow us on our social media to receive <br /> the latest updates
           </p>
-          <div className="flex flex-row flex-wrap items-center gap-4 mt-7">
+          {/* <div className="flex flex-row flex-wrap items-center gap-4 mt-7">
             <div className="px-3 bg-white rounded-full">
               <input
                 type="text"
@@ -55,7 +60,7 @@ const Footer = () => {
             <IonButton shape="round" className="pr-3">
               Join us
             </IonButton>
-          </div>
+          </div> */}
         </div>
 
         <div className="grid grid-cols-2 gap-5 p-8 px-8 md:px-12 md:pl-0 lg:grid-cols-3 xl:grid-cols-4 justify-self-center">
@@ -86,13 +91,19 @@ const Footer = () => {
               <a className="text-white">About Us</a>
             </Link>
             <Link href="https://twitter.com/wottlenft" passHref>
-              <a className="text-white">Twitter</a>
+              <a target="_blank" className="text-white">
+                Twitter
+              </a>
             </Link>
             <Link href="https://discord.gg/GcDPbqvcGn" passHref>
-              <a className="text-white">Discord</a>
+              <a target="_blank" className="text-white">
+                Discord
+              </a>
             </Link>
             <Link href="https://www.instagram.com/wottlenft/" passHref>
-              <a className="text-white">Instagram</a>
+              <a target="_blank" className="text-white">
+                Instagram
+              </a>
             </Link>
           </div>
           <div className="flex flex-col">

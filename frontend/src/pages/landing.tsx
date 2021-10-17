@@ -1,5 +1,9 @@
+import React from "react";
+
 import { IonCardTitle, IonButton } from "@ionic/react";
 import { useRouter } from "next/router";
+import { BsInstagram, BsTwitter } from "react-icons/bs";
+import { FaDiscord } from "react-icons/fa";
 
 import CountdownTimer from "../Components/Auctions/CountdownTimer";
 import { Main } from "../templates/Main";
@@ -57,6 +61,32 @@ const Landing = () => {
           >
             About us
           </IonButton>
+          <div className="flex flex-row gap-3 mt-4">
+            <a
+              className="text-2xl"
+              target="_blank"
+              href="https://twitter.com/wottlenft"
+              rel="noreferrer"
+            >
+              <BsTwitter />
+            </a>
+            <a
+              className="text-2xl"
+              target="_blank"
+              href="https://discord.gg/GcDPbqvcGn"
+              rel="noreferrer"
+            >
+              <FaDiscord />
+            </a>
+            <a
+              className="text-2xl"
+              target="_blank"
+              href="https://www.instagram.com/wottlenft/"
+              rel="noreferrer"
+            >
+              <BsInstagram />
+            </a>
+          </div>
         </div>
       </div>
     </Main>

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { IonButton, IonSpinner } from "@ionic/react";
 import axios, { AxiosResponse } from "axios";
+import Link from "next/link";
 
 import useInterval from "../../hooks/useInterval";
 import CopySection from "./CopySection";
@@ -20,12 +21,15 @@ type Props = {
 
 const DisplayTransaction = ({
   transactionId,
-  isMainnet,
   policyJson,
   policyId,
   apiUrl,
 }: Props) => {
   const [confirmed, setConfirmed] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   useInterval(
     async () => {
       const response = await axios.get<
@@ -37,9 +41,9 @@ const DisplayTransaction = ({
     },
     confirmed ? null : 2000
   );
-  const url = isMainnet
-    ? `https://cardanoscan.io/transaction/${transactionId}`
-    : `https://testnet.cardanoscan.io/transaction/${transactionId}`;
+  // const url = isMainnet
+  //   ? `https://cardanoscan.io/transaction/${transactionId}`
+  //   : `https://testnet.cardanoscan.io/transaction/${transactionId}`;
 
   const poolPmUrl = `https://pool.pm/policy/${policyId}`;
 
@@ -72,16 +76,12 @@ const DisplayTransaction = ({
       {confirmed && (
         <section className="w-full mt-2">
           <p>
-            You can view your transaction information{" "}
-            <a
-              className="text-primary-default"
-              target="_blank"
-              href={url}
-              rel="noreferrer"
-            >
-              here
-            </a>
-            . Note that their site may take longer to update :)
+            You can view your NFTs{" "}
+            <Link href="/user-nfts">
+              <a className="text-primary-default" target="_blank">
+                here
+              </a>
+            </Link>
           </p>
         </section>
       )}
