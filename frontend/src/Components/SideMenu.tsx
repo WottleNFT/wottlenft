@@ -9,10 +9,15 @@ import {
   IonIcon,
   IonLabel,
   IonButtons,
-  IonMenuButton,
   IonMenuToggle,
 } from "@ionic/react";
-import { construct, personCircle, cash, storefront } from "ionicons/icons";
+import {
+  construct,
+  personCircle,
+  storefront,
+  information,
+} from "ionicons/icons";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 function SideMenu() {
   return (
@@ -29,9 +34,9 @@ function SideMenu() {
               <IonIcon color="primary" icon={storefront} slot="start" />
               <IonLabel>Market Place</IonLabel>
             </IonItem>
-            <IonItem routerLink="/coming-soon">
-              <IonIcon color="primary" icon={cash} slot="start" />
-              <IonLabel>Auction</IonLabel>
+            <IonItem routerLink="/about">
+              <IonIcon color="primary" icon={information} slot="start" />
+              <IonLabel>About Us</IonLabel>
             </IonItem>
             <IonItem routerLink="/mint-nft">
               <IonIcon color="primary" icon={construct} slot="start" />
@@ -50,7 +55,9 @@ function SideMenu() {
 
 export const MenuButton = ({ ...props }) => (
   <IonButtons {...props}>
-    <IonMenuButton slot="end" />
+    <IonMenuToggle menu="side-menu" slot="end">
+      <GiHamburgerMenu className="text-3xl" />
+    </IonMenuToggle>
   </IonButtons>
 );
 

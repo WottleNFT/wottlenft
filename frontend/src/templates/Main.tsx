@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 
-import { IonContent, IonHeader, IonPage, IonTitle } from "@ionic/react";
+import { IonContent, IonHeader, IonPage } from "@ionic/react";
 import { NextSeo, NextSeoProps } from "next-seo";
 import Head from "next/head";
 import Image from "next/image";
@@ -10,7 +10,7 @@ import wottleLogo from "../../public/logo.png";
 import ConnectWalletButton from "../Components/ConnectWalletButton";
 import Footer from "../Components/Footer";
 import NavSearchBar from "../Components/Navbar/NavSearchBar";
-import SideMenu, { MenuButton } from "../Components/SideMenu";
+import { MenuButton } from "../Components/SideMenu";
 import navbarStyles from "../styles/navbar.module.css";
 
 type IMainProps = {
@@ -32,7 +32,6 @@ const Main = (props: IMainProps) => {
 
   return (
     <div>
-      <SideMenu />
       <Head>
         <meta charSet="UTF-8" key="charset" />
         <meta
@@ -78,20 +77,20 @@ const Main = (props: IMainProps) => {
       />
       <IonPage id="main">
         <IonHeader className="ion-no-border">
-          <div className="flex justify-between px-4 md:px-12 2xl:px-52 bg-primary-default">
+          <div className="flex items-center justify-between pl-4 md:pl-12 2xl:pl-52 bg-primary-default">
             <div className="flex items-center content-center flex-grow">
               <div
-                onClick={() => router.push("/")}
-                className="flex flex-row cursor-pointer"
+                onClick={() => router.push("/landing")}
+                className="flex flex-row items-center cursor-pointer"
               >
                 <Image
-                  height={60}
-                  width={60}
+                  height={70}
+                  width={70}
                   layout="fixed"
                   alt="Wottle Logo"
                   src={wottleLogo}
                 />
-                <IonTitle className="p-0 font-bold">WottleNFT</IonTitle>
+                <span className="p-0 text-xl font-bold">WottleNFT</span>
               </div>
               <NavSearchBar />
             </div>
@@ -119,11 +118,10 @@ const Main = (props: IMainProps) => {
                     <ConnectWalletButton />
                   </div>
                 )}
-
-            {windowWidth < windowBreakpoint && <MenuButton className="" />}
+            {windowWidth < windowBreakpoint && <MenuButton className="mr-4" />}
           </div>
         </IonHeader>
-        <IonContent>
+        <IonContent id="main">
           {children}
           <Footer />
         </IonContent>
@@ -141,9 +139,9 @@ const navInfo = [
     tempRoute: "/coming-soon",
   },
   {
-    name: "Auction",
-    route: "/auction",
-    tempRoute: "/coming-soon",
+    name: "About Us",
+    route: "/about",
+    tempRoute: "/about",
   },
   {
     name: "Creator",

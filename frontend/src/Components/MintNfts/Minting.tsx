@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 
-import { IonButton, IonIcon, IonText, IonSpinner } from "@ionic/react";
+import { IonButton, IonIcon, IonSpinner, IonText } from "@ionic/react";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { trash, add, hammer } from "ionicons/icons";
 
@@ -9,6 +9,7 @@ import useTextInput from "../../hooks/useTextInput";
 import { WottleEnabled } from "../../hooks/useWallet";
 import { NetworkError } from "../../types/NetworkError";
 import { HexCborString } from "../../wallet";
+import CopySection from "./CopySection";
 import DisplayTransaction from "./DisplayTransaction";
 
 type Metadata = {
@@ -262,7 +263,7 @@ const Minting = ({ wallet }: Props) => {
 
   return (
     <>
-      <div className="mb-3 text-center">
+      <div className="mx-6 mb-3 text-center">
         <p className="text-4xl font-bold">Mint your Cardano NFT here!</p>
         <p className="mb-3 text-xl text-gray-900">
           Mint <b>1 CNFT</b> for just <b>1 ADA</b> under <b>1 MINUTE</b>
@@ -272,6 +273,10 @@ const Minting = ({ wallet }: Props) => {
           WottleNFT generates a <b>unique</b> key to mint your NFT to guarantee
           that they are unique! <br />
           We will provide you the script afterwards for verification.
+        </p>
+        <p className="text-sm text-gray-900">
+          Please make sure you have at least <b>5 ADA</b> in your wallet for a
+          successful transaction.
         </p>
       </div>
       <div className="w-10/12 p-10 mx-auto mb-10 bg-gray-200 border rounded-md shadow-xl md:w-8/12 lg:w-7/12 xl:w-5/12">
@@ -313,6 +318,7 @@ const Minting = ({ wallet }: Props) => {
                   <p className="pb-2 font-bold">Image</p>
                   <img
                     className="object-cover"
+                    alt="uploaded image"
                     src={URL.createObjectURL(image)}
                   />
                   <IonButton
@@ -342,9 +348,7 @@ const Minting = ({ wallet }: Props) => {
               )}
               {renderNewFields()}
               <div className="h-2" />
-              <label className="w-full">
-                Add extra metadata fields [Optional]
-              </label>
+              <label className="w-full">Add extra information [Optional]</label>
 
               <div className="grid items-center w-full grid-cols-5 gap-2">
                 <input
@@ -361,6 +365,27 @@ const Minting = ({ wallet }: Props) => {
                   <IonIcon icon={add} />
                 </IonButton>
               </div>
+
+              <div className="pt-8 text-2xl font-bold">Preview</div>
+              <p>
+                This is what the information tagged to your NFT looks like on
+                the Cardano Blockchain
+              </p>
+              <CopySection
+                label="Information Preview"
+                text={JSON.stringify(
+                  {
+                    ...customFields,
+                    name,
+                    creator,
+                    description,
+                    image: "ipfs://{hash-after-upload}",
+                    "Minted At": "© 2021 WottleNFT",
+                  },
+                  null,
+                  2
+                )}
+              />
               {error && <IonText color="danger">{error}</IonText>}
               {!isSubmitting && (
                 <IonButton
@@ -382,6 +407,7 @@ const Minting = ({ wallet }: Props) => {
                 transactionId={transactionId}
                 policyJson={policyJson}
                 policyId={policyId}
+                apiUrl={wallet.state.backendApi}
               />
               <IonButton
                 size="large"

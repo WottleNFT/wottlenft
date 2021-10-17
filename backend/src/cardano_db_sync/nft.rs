@@ -1,5 +1,6 @@
 use bigdecimal::ToPrimitive;
 use cardano_serialization_lib::address::Address;
+use cardano_serialization_lib::crypto::TransactionHash;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgRow;
 use sqlx::types::BigDecimal;
@@ -80,4 +81,18 @@ pub async fn query_user_address_nfts(
         }
     }
     Ok(nfts)
+}
+
+pub async fn query_if_nft_minted(pool: &PgPool, tx_hash: &TransactionHash) -> crate::Result<bool> {
+    let res = sqlx::query(
+        r#"
+        SELECT 1 
+        FROM tx
+        WHERE hash = $1
+        "#,
+    )
+    .bind(tx_hash.to_bytes())
+    .execute(pool)
+    .await?;
+    Ok(res.rows_affected() > 0)
 }
