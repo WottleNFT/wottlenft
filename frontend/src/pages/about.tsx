@@ -59,11 +59,11 @@ const About = () => {
 
   const nftMinter = (
     <p className="text-xl">
-      WottleNFT wants to make Cardano NFT accessible to everyone. As such, we
-      have implemented our smart contracts that enable us to offer the community
+      WottleNFT wants to make Cardano NFT as easy and as accessible to everyone.
+      As such, we have implemented a whole new in-browser experience that offers
       the lowest minting service fee in the market.{" "}
       <b>Mint 1 Cardano NFT for 1 ADA in just under 1 Minute</b> with our very
-      own smart contract enabled NFT-minter.
+      own Nami Wallet enabled NFT-minter.
     </p>
   );
 
