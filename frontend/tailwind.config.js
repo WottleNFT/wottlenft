@@ -66,6 +66,7 @@ module.exports = {
         'background-seascape': "url('/assets/background-seascape.png')",
         'angry-thermometer': "url('/assets/angry-thermometer.png')",
         'about-background': "url('/assets/about-background.png')",
+        'blue-sea': "url('/assets/blue-sea.png')",
       },
     },
   },
