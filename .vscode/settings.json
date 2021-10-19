@@ -1,9 +1,7 @@
 {
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
-  "eslint.workingDirectories": [
-    "frontend"
-  ],
+  "eslint.workingDirectories": ["frontend"],
   "jest.autoRun": {
     "watch": false,
     "onSave": "test-file"
@@ -25,5 +23,6 @@
   "[jsonc]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "eslint.enable": false
 }
