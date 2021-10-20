@@ -4,8 +4,9 @@ CREATE DATABASE wottleprofiledb;
 DROP TABLE IF EXISTS accounts;
 
 CREATE TABLE accounts(
-  account_id SERIAL PRIMARY KEY,
+  username VARCHAR PRIMARY KEY,
+  wallet_id VARCHAR,
   password VARCHAR NOT NULL,
   email VARCHAR NOT NULL,
-  UNIQUE(email)
+  UNIQUE(wallet_id)
 );

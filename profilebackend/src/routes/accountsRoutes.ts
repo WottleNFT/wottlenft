@@ -3,7 +3,9 @@ import { Request, Response } from "express";
 import { access } from "fs";
 import * as jwt from "jsonwebtoken"
 import { TOKEN_SECRET } from "../config/config";
-import { getUserByEmail, getUserById, insertUser } from "../database/userQueries";
+import { getUserByUsername, getUserByWalletID, insertUser } from "../database/userQueries";
+const { UNIQUE_VIOLATION, NOT_NULL_VIOLATION } = require('pg-error-constants')
+import { StatusCodes } from 'http-status-codes';
 import { hashPassword } from "../ultility/passwordHandler";
 
 export async function registerUser(req: Request, res: Response) {
@@ -12,62 +14,75 @@ export async function registerUser(req: Request, res: Response) {
         await insertUser({
             email: req.body.email,
             password: password,
-            account_id: null
+            username: req.body.username,
+            wallet_id: req.body.wallet_id
         })
 
-    } catch (error) {
-        console.log(error)
-        console.log("err");
-        return res.status(404).json({
-            err: error
+    } catch (error: any) {
+        var errorMessage = ""
+        if (error.code == UNIQUE_VIOLATION) {
+          if (error.constraint == "accounts_wallet_id_key") {
+            errorMessage = "Wallet has already been registered"
+          }
+          if (error.constrain == "accounts_pkey") {
+            errorMessage = "Username already been used"
+          }
+          return res.status(StatusCodes.OK).json({
+            errorMessage: errorMessage,
+            err: error.message
+          })
+        } 
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            err: error.message
         })
     }
-    return res.status(200).json({
+    return res.status(StatusCodes.CREATED).json({
         message: "registration successful!"
     })
 }
 
 export async function userLogin(req: Request, res: Response) {
-    const email = req.body.email
-    const password = req.body.password
+    const wallet_id = req.body.wallet_id
     try {
-        let user = await getUserByEmail(email)
+        let user = await getUserByWalletID(wallet_id)
         if (user == null) {
-            return res.status(404).json({
-                err: "User not found!"
+            return res.status(StatusCodes.NOT_FOUND).json({
+                errorMessage: "No such user not found!"
             })
         }
         if (!await compare(req.body.password, user.password as string)) {
-            return res.status(403).json({
-                err: "Wrong password!"
+            return res.status(StatusCodes.UNAUTHORIZED).json({
+                errorMessage: "Wrong password!"
             })
         }
-        const id = {
-            user_id: user.account_id
+        const username = {
+            username: user.username
         }
-        const accessToken = jwt.sign(id, TOKEN_SECRET);
-        return res.status(200).json({
+        const accessToken = jwt.sign(username, TOKEN_SECRET);
+        return res.status(StatusCodes.OK).json({
             accessToken: accessToken
         })
-    } catch (err) {
-        return res.status(400).json({
-            error: err
+    } catch (err: any) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            error: err.message
         })
     }
 }
 
 export async function getUserInfo(req: Request, res: Response) {
     try {
-        let user = await getUserById(res.locals.jwt.user_id)
+        let user = await getUserByUsername(res.locals.jwt.username)
         if (user == null) {
-            throw Error("Cant find user");
+            return res.status(StatusCodes.NOT_FOUND).json({
+              errorMessage: "Not such username!"
+            })
         }
-        res.status(200).json({
+        return res.status(StatusCodes.OK).json({
             user: user
         })
-    } catch (err) {
-        return res.status(404).json({
-            err: err
+    } catch (err: any) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            err: err.message
         })
     }
 }
