@@ -2,35 +2,38 @@ import React from "react";
 
 import { IonButton } from "@ionic/react";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
 
 import wottleLogo from "../../../public/logo.png";
 import { Main } from "../../templates/Main";
 
+interface FormData {
+  email: string;
+  password: string;
+}
+
 const Login = () => {
-  // const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
-  // let data = {
-  //   email: email,
-  //   password: password
-  // }
-  // e.preventDefault()
-  // const response = await fetch("http://localhost:3080/login", {
-  //   method:"POST",
-  //   body: JSON.stringify(data),
-  //   headers: {
-  //    "Content-Type": "application/json"
-  //   }
-  // })
-  // if (response.status == 200) {
-  //  setSignUpMessage("Successful login")
-  //  const data = await(response.json())
-  //  console.log(data);
-  //  console.log(data.accessToken)
-  // } else {
-  //  setSignUpMessage("Error logging in")
-  //
-  //  console.log(response)
-  //  }
-  // }
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormData>();
+
+  const onSubmit = async (data: FormData) => {
+    const response = await fetch("http://localhost:3080/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      const res = await response.json();
+      console.log(res);
+      console.log(res.accessToken);
+    }
+  };
 
   return (
     <Main title="Login">
@@ -44,28 +47,34 @@ const Login = () => {
             width={150}
           />
           <p className="py-5 text-2xl font-bold">Sign in</p>
-          <form className="w-full">
+          <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
             <label className="pl-2 font-bold">
-              Username
+              Email
               <input
-                type="text"
-                className="w-full px-3 py-2 my-2 border border-gray-400 border-solid rounded focus:outline-none focus:ring-2"
-                placeholder="Enter username"
+                type="email"
+                className={`w-full px-3 py-2 my-2 border border-gray-400 border-solid rounded focus:outline-none focus:ring-2 ${
+                  errors.email ? "ring-2 ring-red-500" : ""
+                }`}
+                placeholder="Enter email"
+                {...register("email", { required: true })}
               />
             </label>
             <label className="pl-2 font-bold">
               Password
               <input
                 type="password"
-                className="w-full px-3 py-2 my-2 border border-gray-400 border-solid rounded focus:outline-none focus:ring-2"
+                className={`w-full px-3 py-2 my-2 border border-gray-400 border-solid rounded focus:outline-none focus:ring-2 ${
+                  errors.password ? "ring-2 ring-red-500" : ""
+                }`}
                 placeholder="Enter password"
+                {...register("password", { required: true })}
               />
             </label>
             <p className="text-sm text-right">
               <a>Forgot password?</a>
             </p>
             <div className="flex justify-center py-5">
-              <IonButton className="w-40 h-10 text-lg font-bold">
+              <IonButton className="w-40 h-10 text-lg font-bold" type="submit">
                 Sign in
               </IonButton>
             </div>
