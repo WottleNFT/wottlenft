@@ -7,11 +7,13 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 import wottleLogo from "../../../public/logo.png";
+import { Status } from "../../features/wallet/walletSlice";
 import useAuth from "../../hooks/useAuth";
+import useWallet from "../../hooks/useWallet";
 import { Main } from "../../templates/Main";
+import { Wallet } from "../register";
 
 interface FormData {
-  email: string;
   password: string;
 }
 
@@ -22,6 +24,7 @@ interface KeyboardEvent {
 const Login = () => {
   const { isLoading, isLoggedIn, setLogin } = useAuth();
   const router = useRouter();
+  const wallet = useWallet() as unknown as Wallet;
   const [errorMsg, setErrorMsg] = useState<string | null>();
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
@@ -67,8 +70,9 @@ const Login = () => {
   return (
     <Main title="Login">
       <div className="flex flex-col items-center justify-center min-h-full bg-cover bg-background-seascape bg-primary-default">
-        {isLoading && <IonSpinner name="crescent" />}
-        {!isLoading && !isLoggedIn && (
+        {isLoading ||
+          (wallet.status === Status.Loading && <IonSpinner name="crescent" />)}
+        {!isLoading && !isLoggedIn && wallet.status !== Status.Loading && (
           <div className="flex flex-col items-center p-10 bg-gray-200 border border-gray-500 border-solid rounded-md shadow-lg w-450 h-3/4">
             <Image
               src={wottleLogo}
@@ -83,18 +87,10 @@ const Login = () => {
               onSubmit={handleSubmit(onSubmit)}
               id="loginForm"
             >
-              <label className="pl-2 font-bold">
-                Email
-                <input
-                  type="email"
-                  className={`w-full px-3 py-2 my-2 border border-gray-400 border-solid rounded focus:outline-none focus:ring-2 ${
-                    errors.email ? "ring-2 ring-red-500" : ""
-                  }`}
-                  placeholder="Enter email"
-                  {...register("email", { required: true })}
-                  onKeyDown={(e) => handleEnterKey(e)}
-                />
-              </label>
+              <div>
+                <p className="pl-2 font-bold">Connected wallet address</p>
+                <p className="truncate">{wallet.state.address}</p>
+              </div>
               <label className="pl-2 font-bold">
                 Password
                 <input

@@ -1,5 +1,6 @@
 export interface User {
     email: string | null,
     password: string | null,
-    account_id: number | null
+    username: string | null,
+    wallet_id: string | null
 }

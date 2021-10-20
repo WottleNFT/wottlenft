@@ -7,9 +7,10 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 import wottleLogo from "../../../public/logo.png";
-import { Status } from "../../features/wallet/walletSlice";
+import { Status, WalletState } from "../../features/wallet/walletSlice";
 import useWallet from "../../hooks/useWallet";
 import { Main } from "../../templates/Main";
+import { NamiWallet } from "../../wallet";
 
 interface FormInputs {
   email: string;
@@ -18,16 +19,31 @@ interface FormInputs {
   confirm: string;
 }
 
+interface User {
+  email: string;
+  password: string;
+  username: string;
+  wallet_id: string;
+}
+
+export type Wallet = {
+  cardano: NamiWallet;
+  state: WalletState;
+  status: Status;
+};
+
 const Register = () => {
   const router = useRouter();
-  const wallet = useWallet();
+  const wallet = useWallet() as unknown as Wallet;
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+  const [overallErr, setOverallErr] = useState<string | null>();
 
   const {
     register,
     formState: { errors },
     handleSubmit,
     watch,
+    setError,
   } = useForm<FormInputs>();
   const enteredPassword = watch("password", "");
 
@@ -46,9 +62,16 @@ const Register = () => {
 
   const onSubmit = async (data: FormInputs) => {
     setSubmitLoading(true);
+    const sendData: User = {
+      email: data.email,
+      password: data.password,
+      username: data.username,
+      wallet_id: wallet.state.address,
+    };
+    console.log(sendData);
     const response = await fetch("http://localhost:3080/register", {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify(sendData),
       headers: {
         "Content-Type": "application/json",
       },
@@ -58,7 +81,19 @@ const Register = () => {
       alert("Account successfully created!");
       router.push("/login");
     }
-    setSubmitLoading(true);
+    if (response.status === 409) {
+      const err = await response.json();
+      if (err.errorMessage === "Username conflict") {
+        setError("username", {
+          type: "manual",
+          message: "Username already in use",
+        });
+      } else if (err.errorMessage === "Wallet conflict") {
+        setOverallErr("Account linked to connected wallet already exists");
+      }
+    }
+
+    setSubmitLoading(false);
   };
 
   return (
@@ -104,6 +139,11 @@ const Register = () => {
                   {...register("username", { required: true })}
                 />
               </label>
+              {errors.username?.message && (
+                <p className="text-sm text-center text-red-500">
+                  {errors.username.message}
+                </p>
+              )}
               <label className="pl-2 font-bold">
                 Password{" "}
                 <IonIcon
@@ -151,6 +191,9 @@ const Register = () => {
                 <span className="block text-sm text-red-500">
                   Passwords entered do not match
                 </span>
+              )}
+              {overallErr && (
+                <p className="text-sm text-center text-red-500">{overallErr}</p>
               )}
               <div className="flex justify-center py-5">
                 {submitLoading ? (
