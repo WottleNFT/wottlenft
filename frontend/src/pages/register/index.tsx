@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { IonButton, IonIcon, useIonPopover } from "@ionic/react";
+import { IonButton, IonIcon, IonSpinner, useIonPopover } from "@ionic/react";
 import { informationCircleOutline } from "ionicons/icons";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -21,6 +21,7 @@ interface FormInputs {
 const Register = () => {
   const router = useRouter();
   const wallet = useWallet();
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
   const {
     register,
@@ -44,6 +45,7 @@ const Register = () => {
   );
 
   const onSubmit = async (data: FormInputs) => {
+    setSubmitLoading(true);
     const response = await fetch("http://localhost:3080/register", {
       method: "POST",
       body: JSON.stringify(data),
@@ -56,6 +58,7 @@ const Register = () => {
       alert("Account successfully created!");
       router.push("/login");
     }
+    setSubmitLoading(true);
   };
 
   return (
@@ -150,9 +153,13 @@ const Register = () => {
                 </span>
               )}
               <div className="flex justify-center py-5">
-                <IonButton className="h-10 text-lg font-bold" type="submit">
-                  Create account
-                </IonButton>
+                {submitLoading ? (
+                  <IonSpinner name="crescent" />
+                ) : (
+                  <IonButton className="h-10 text-lg font-bold" type="submit">
+                    Create account
+                  </IonButton>
+                )}
               </div>
             </form>
           </div>

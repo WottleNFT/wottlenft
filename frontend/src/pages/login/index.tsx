@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { IonButton, IonSpinner } from "@ionic/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
@@ -14,9 +15,15 @@ interface FormData {
   password: string;
 }
 
+interface KeyboardEvent {
+  key: string;
+}
+
 const Login = () => {
   const { isLoading, isLoggedIn, setLogin } = useAuth();
   const router = useRouter();
+  const [errorMsg, setErrorMsg] = useState<string | null>();
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -32,6 +39,7 @@ const Login = () => {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
+    setSubmitLoading(true);
     const response = await fetch("http://localhost:3080/login", {
       method: "POST",
       body: JSON.stringify(data),
@@ -44,6 +52,15 @@ const Login = () => {
       const res = await response.json();
       setLogin(res.accessToken);
       router.push("/");
+    } else {
+      setErrorMsg("No matching wallet ID/password combination");
+    }
+    setSubmitLoading(false);
+  };
+
+  const handleEnterKey = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSubmit(onSubmit)();
     }
   };
 
@@ -61,7 +78,11 @@ const Login = () => {
               width={150}
             />
             <p className="py-5 text-2xl font-bold">Sign in</p>
-            <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+            <form
+              className="w-full"
+              onSubmit={handleSubmit(onSubmit)}
+              id="loginForm"
+            >
               <label className="pl-2 font-bold">
                 Email
                 <input
@@ -71,6 +92,7 @@ const Login = () => {
                   }`}
                   placeholder="Enter email"
                   {...register("email", { required: true })}
+                  onKeyDown={(e) => handleEnterKey(e)}
                 />
               </label>
               <label className="pl-2 font-bold">
@@ -82,24 +104,36 @@ const Login = () => {
                   }`}
                   placeholder="Enter password"
                   {...register("password", { required: true })}
+                  onKeyDown={(e) => handleEnterKey(e)}
                 />
               </label>
               <p className="text-sm text-right">
                 <a>Forgot password?</a>
               </p>
+              {errorMsg && (
+                <p className="text-sm text-center text-red-500">{errorMsg}</p>
+              )}
               <div className="flex justify-center py-5">
-                <IonButton
-                  className="w-40 h-10 text-lg font-bold"
-                  type="submit"
-                >
-                  Sign in
-                </IonButton>
+                {submitLoading ? (
+                  <IonSpinner name="crescent" />
+                ) : (
+                  <IonButton
+                    className="w-40 h-10 text-lg font-bold"
+                    type="submit"
+                  >
+                    Sign in
+                  </IonButton>
+                )}
               </div>
-              <p className="text-center">
-                Not a member?{" "}
-                <a className="font-bold">Create an account now!</a>
-              </p>
             </form>
+            <p>
+              Not a member?{" "}
+              <Link href="/register">
+                <a className="font-bold underline hover:text-blue-600">
+                  Create an account now!
+                </a>
+              </Link>
+            </p>
           </div>
         )}
       </div>
