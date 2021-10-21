@@ -21,6 +21,11 @@ interface KeyboardEvent {
   key: string;
 }
 
+interface LoginData {
+  wallet_id: string;
+  password: string;
+}
+
 const Login = () => {
   const { isLoading, isLoggedIn, setLogin } = useAuth();
   const router = useRouter();
@@ -43,9 +48,13 @@ const Login = () => {
 
   const onSubmit = async (data: FormData) => {
     setSubmitLoading(true);
+    const loginData: LoginData = {
+      wallet_id: wallet.state.address,
+      password: data.password,
+    };
     const response = await fetch("http://localhost:3080/login", {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify(loginData),
       headers: {
         "Content-Type": "application/json",
       },
@@ -72,7 +81,14 @@ const Login = () => {
       <div className="flex flex-col items-center justify-center min-h-full bg-cover bg-background-seascape bg-primary-default">
         {isLoading ||
           (wallet.status === Status.Loading && <IonSpinner name="crescent" />)}
-        {!isLoading && !isLoggedIn && wallet.status !== Status.Loading && (
+        {!isLoading &&
+          (wallet.status === Status.NotEnabled ||
+            wallet.status === Status.NoExtension) && (
+            <p className="text-xl font-bold">
+              Connect Nami Wallet first before logging in
+            </p>
+          )}
+        {!isLoading && !isLoggedIn && wallet.status === Status.Enabled && (
           <div className="flex flex-col items-center p-10 bg-gray-200 border border-gray-500 border-solid rounded-md shadow-lg w-450 h-3/4">
             <Image
               src={wottleLogo}

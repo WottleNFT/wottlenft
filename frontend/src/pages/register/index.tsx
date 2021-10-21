@@ -68,7 +68,6 @@ const Register = () => {
       username: data.username,
       wallet_id: wallet.state.address,
     };
-    console.log(sendData);
     const response = await fetch("http://localhost:3080/register", {
       method: "POST",
       body: JSON.stringify(sendData),
@@ -77,7 +76,8 @@ const Register = () => {
       },
     });
 
-    if (response.status === 200) {
+    setSubmitLoading(false);
+    if (response.status === 200 || response.status === 201) {
       alert("Account successfully created!");
       router.push("/login");
     }
@@ -92,8 +92,6 @@ const Register = () => {
         setOverallErr("Account linked to connected wallet already exists");
       }
     }
-
-    setSubmitLoading(false);
   };
 
   return (

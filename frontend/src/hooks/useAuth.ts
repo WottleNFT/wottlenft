@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 
+import { Status } from "../features/wallet/walletSlice";
+import useWallet from "./useWallet";
+
 const loggedInKey = "isLoggedIn";
 const tokenKey = "accessToken";
 
 const useAuth = () => {
+  const wallet = useWallet();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>();
 
@@ -13,6 +17,17 @@ const useAuth = () => {
     setIsLoggedIn(loggedIn);
     setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (
+      wallet.status === Status.NoExtension ||
+      wallet.status === Status.NotEnabled
+    ) {
+      localStorage.removeItem(loggedInKey);
+      localStorage.removeItem(tokenKey);
+      setIsLoggedIn(false);
+    }
+  }, [wallet.status]);
 
   // Store login information
   const setLogin = (accessToken: string) => {
