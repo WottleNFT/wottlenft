@@ -8,5 +8,6 @@ CREATE TABLE accounts(
   wallet_id VARCHAR,
   password VARCHAR NOT NULL,
   email VARCHAR NOT NULL,
+  bio TEXT,
   UNIQUE(wallet_id)
 );

@@ -1,12 +1,11 @@
 import { compare } from "bcrypt";
 import { Request, Response } from "express";
-import { access } from "fs";
 import * as jwt from "jsonwebtoken"
-import { TOKEN_SECRET } from "../config/config";
-import { getUserByUsername, getUserByWalletID, insertUser } from "../database/userQueries";
-const { UNIQUE_VIOLATION, NOT_NULL_VIOLATION } = require('pg-error-constants')
+import { TOKEN_EXPIRY_TIME, TOKEN_SECRET } from "../../config/config";
+import { getUserByUsername, getUserByWalletID, insertUser } from "../../database/userQueries";
+const { UNIQUE_VIOLATION } = require('pg-error-constants')
 import { StatusCodes } from 'http-status-codes';
-import { hashPassword } from "../ultility/passwordHandler";
+import { hashPassword } from "../../ultility/passwordHandler";
 
 export async function registerUser(req: Request, res: Response) {
     try {
@@ -15,7 +14,8 @@ export async function registerUser(req: Request, res: Response) {
             email: req.body.email,
             password: password,
             username: req.body.username,
-            wallet_id: req.body.wallet_id
+            wallet_id: req.body.wallet_id,
+            bio: null
         })
 
     } catch (error: any) {
@@ -58,7 +58,7 @@ export async function userLogin(req: Request, res: Response) {
         const username = {
             username: user.username
         }
-        const accessToken = jwt.sign(username, TOKEN_SECRET);
+        const accessToken = jwt.sign(username, TOKEN_SECRET, {expiresIn: TOKEN_EXPIRY_TIME});
         return res.status(StatusCodes.OK).json({
             accessToken: accessToken
         })
@@ -77,6 +77,7 @@ export async function getUserInfo(req: Request, res: Response) {
               errorMessage: "Not such username!"
             })
         }
+        user.password = null
         return res.status(StatusCodes.OK).json({
             user: user
         })
