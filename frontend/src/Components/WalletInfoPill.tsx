@@ -4,7 +4,7 @@ import { WalletState } from "../features/wallet/walletSlice";
 
 const WalletInfoPill: React.FC<WalletState> = (props) => {
   return (
-    <Link href="/user-nfts" passHref>
+    <Link href="/profile" passHref>
       <div className="flex items-center self-end justify-end px-1 m-5 bg-black rounded-full shadow-md cursor-pointer w-36">
         <p className="w-full text-center text-white truncate">{`${
           !props.network ? "t" : ""

@@ -22,12 +22,12 @@ export async function registerUser(req: Request, res: Response) {
         var errorMessage = ""
         if (error.code == UNIQUE_VIOLATION) {
           if (error.constraint == "accounts_wallet_id_key") {
-            errorMessage = "Wallet has already been registered"
+            errorMessage = "Wallet conflict"
           }
-          if (error.constrain == "accounts_pkey") {
-            errorMessage = "Username already been used"
+          if (error.constraint == "accounts_pkey") {
+            errorMessage = "Username conflict"
           }
-          return res.status(StatusCodes.OK).json({
+          return res.status(StatusCodes.CONFLICT).json({
             errorMessage: errorMessage,
             err: error.message
           })
