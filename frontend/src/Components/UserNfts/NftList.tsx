@@ -21,7 +21,7 @@ const NftList = ({ baseUrl, address }: Props) => {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:mx-20 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4xl">
         {data.map((nft) => {
           return (
             <div
