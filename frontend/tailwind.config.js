@@ -22,6 +22,16 @@ module.exports = {
       maxBody: '1730px',
       maxScreen: '100vw',
     },
+    minHeight: {
+      0: '0',
+      240: '240px',
+      320: '320px',
+      640: '640px',
+      '1/4': '25%',
+      '1/2': '50%',
+      '3/4': '75%',
+      full: '100%',
+    },
     extend: {
       zIndex: {
         '-10': '-10',

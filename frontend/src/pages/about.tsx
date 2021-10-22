@@ -237,6 +237,7 @@ const About = () => {
           <div className="flex justify-center w-full md:w-3/4">
             <Image
               src={roadmap}
+              alt="roadmap"
               className="object-contain bg-primary-default"
             />
           </div>
