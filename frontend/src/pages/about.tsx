@@ -8,6 +8,7 @@ import heartWottle from "../../public/assets/heart-wottle.png";
 import roadmap from "../../public/assets/roadmap.png";
 import studiousWottle from "../../public/assets/studious-wottle.png";
 import ButtonPill from "../Components/About/ButtonPill";
+import FounderProfile from "../Components/About/FounderProfile";
 import { Main } from "../templates/Main";
 
 const About = () => {
@@ -193,8 +194,52 @@ const About = () => {
             className="object-contain"
           />
         </div>
-        <div className="flex flex-col pb-5">
-          <Image src={roadmap} className="object-contain" />
+        <p className="text-5xl font-bold text-left mb-11">Meet the Founders</p>
+        <div className="flex flex-col pt-5 pb-8">
+          <div className="flex flex-wrap justify-around">
+            <FounderProfile
+              name="Elton"
+              title="CEO"
+              imgSrc="/assets/founders/tay.jpg"
+              imgAlt="Elton"
+              wottleImgSrc="/assets/founders/wottle_ig_tay_2.png"
+              wottleImgAlt="Elton Wottle"
+            />
+            <FounderProfile
+              name="KANG LIANG"
+              title="CTO"
+              imgSrc="/assets/founders/kang.jpg"
+              imgAlt="Kang"
+              wottleImgSrc="/assets/founders/wottle_ig_kang.png"
+              wottleImgAlt="Kang Wottle"
+            />
+          </div>
+          <div className="flex flex-wrap justify-around">
+            <FounderProfile
+              name="SEAN CHUA"
+              title="CDO"
+              imgSrc="/assets/founders/sean.jpg"
+              imgAlt="Sean"
+              wottleImgSrc="/assets/founders/wottle_ig_wota.png"
+              wottleImgAlt="Sean Wottle"
+            />
+            <FounderProfile
+              name="LUNDY PANG"
+              title="CMO"
+              imgSrc="/assets/founders/lundy.jpg"
+              imgAlt="Lundy"
+              wottleImgSrc="/assets/founders/wottle_ig_lundy.png"
+              wottleImgAlt="Lundy Wottle"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col items-center pb-5 mb-5">
+          <div className="flex justify-center w-full md:w-3/4">
+            <Image
+              src={roadmap}
+              className="object-contain bg-primary-default"
+            />
+          </div>
         </div>
       </div>
     </Main>
