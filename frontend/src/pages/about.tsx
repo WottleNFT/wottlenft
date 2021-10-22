@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import coolWottle from "../../public/assets/cool-wottle.png";
 import dogWottle from "../../public/assets/dog-wottle-green.png";
 import heartWottle from "../../public/assets/heart-wottle.png";
+import roadmap from "../../public/assets/roadmap.png";
 import studiousWottle from "../../public/assets/studious-wottle.png";
 import ButtonPill from "../Components/About/ButtonPill";
 import { Main } from "../templates/Main";
@@ -191,6 +192,9 @@ const About = () => {
             width={400}
             className="object-contain"
           />
+        </div>
+        <div className="flex flex-col pb-5">
+          <Image src={roadmap} className="object-contain" />
         </div>
       </div>
     </Main>
