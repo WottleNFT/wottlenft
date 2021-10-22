@@ -1,4 +1,4 @@
-import {Pool, Client} from "pg"
+import {Pool} from "pg"
 import * as config from "../config/config"
 const pool = new Pool({
     user: config.dbuser,
