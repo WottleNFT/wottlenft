@@ -22,13 +22,13 @@ const Marketplace = () => {
   return (
     <Main>
       {auctions[0] && (
-        <div className="flex px-16 py-4 truncate h-1/2 min-h-320 items-center">
+        <div className="flex px-16 py-4 truncate items-center flex-col md:flex-row">
           <img
-            className="object-cover w-2/3 h-full p-2 rounded-2xl"
+            className="rounded-3xl object-contain h-80 p-2 mb-3"
             alt="Auction"
             src={auctions[0].nft.imgUrl}
           />
-          <div className="flex flex-col h-full w-1/3 gap-4 px-12 justify-around text-left">
+          <div className="flex flex-col h-full gap-4 px-12 justify-around text-left">
             <p className="w-full text-2xl whitespace-normal truncate line-clamp-2 font-bold">
               {auctions[0].nft.asset_name}
             </p>
@@ -37,7 +37,7 @@ const Marketplace = () => {
             </p>
             <div className="flex items-end justify-between">
               <div className="flex flex-col w-1/2 items-start">
-                <IonCardSubtitle className="text-sm font-light">
+                <IonCardSubtitle className="text-sm font-norma">
                   Price:
                 </IonCardSubtitle>
                 <IonLabel className="text-2xl text-primary-default">
@@ -58,7 +58,7 @@ const Marketplace = () => {
         </div>
       )}
 
-      <div className="p-10">
+      <div className="px-10 pb-10">
         <div className="flex flex-col">
           <div className="flex justify-between h-12 p-3">
             <span className="text-xl">Marketplace</span>
