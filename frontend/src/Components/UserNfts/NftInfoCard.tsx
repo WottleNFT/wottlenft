@@ -17,7 +17,7 @@ const NftInfoCard = ({ nft }: Props) => {
 
   const [selectedSegment, setSelectedSegment] = useState("details");
   return (
-    <IonCard className="rounded-2xl w-full h-full m-0 pt-3">
+    <IonCard className="rounded-2xl m-0 pt-3">
       <IonSegment
         mode="ios"
         className="w-1/2 mx-auto my-2 px-2"
@@ -36,16 +36,16 @@ const NftInfoCard = ({ nft }: Props) => {
         {selectedSegment === "details" && (
           <div className="flex flex-col gap-4">
             <div className="flex flex-col">
-              <span className="font-bold truncate">Policy ID</span>
-              <p>{policy_id}</p>
+              <span className="font-bold">Policy ID</span>
+              <p className="break-all">{policy_id}</p>
             </div>
-            <div className="flex flex-row space">
+            <div className="flex flex-row">
               <div className="w-1/2 flex flex-col">
-                <span className="font-bold truncate">Quantity</span>
+                <span className="font-bold">Quantity</span>
                 <p>{`1/${qty}`}</p>
               </div>
               <div className="w-1/2 flex flex-col">
-                <span className="font-bold truncate">Minted</span>
+                <span className="font-bold">Minted</span>
                 <p>26 May 2021</p>
               </div>
             </div>

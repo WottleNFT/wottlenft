@@ -20,7 +20,7 @@ const Sample = (props: Props) => {
   const { description, asset_name } = props.nft;
   return (
     <Main>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center px-2 md:px-10">
         <img
           className="object-contain h-3/4 min-h-320 p-4 rounded-2xl"
           alt="Auction"
@@ -36,9 +36,7 @@ const Sample = (props: Props) => {
                 Owned By{" "}
                 <span className="text-primary-default">@CollectorUsername</span>
               </span>
-              <p className="mt-4 w-full text-base whitespace-normal truncate">
-                {description}
-              </p>
+              <p className="mt-4 text-base whitespace-normal">{description}</p>
             </div>
           </div>
           <div className="w-full md:w-2/5">
