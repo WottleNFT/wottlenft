@@ -9,5 +9,6 @@ CREATE TABLE accounts(
   password VARCHAR NOT NULL,
   email VARCHAR NOT NULL,
   bio TEXT,
+  profile_picture_hash VARCHAR,
   UNIQUE(wallet_id)
 );

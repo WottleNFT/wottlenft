@@ -15,7 +15,8 @@ export async function registerUser(req: Request, res: Response) {
             password: password,
             username: req.body.username,
             wallet_id: req.body.wallet_id,
-            bio: null
+            bio: null,
+            profile_picture_hash: null
         })
 
     } catch (error: any) {
