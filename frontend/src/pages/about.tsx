@@ -198,7 +198,7 @@ const About = () => {
         <div className="flex flex-col pt-5 pb-8">
           <div className="flex flex-wrap justify-around">
             <FounderProfile
-              name="Elton"
+              name="ELTON TAY"
               title="CEO"
               imgSrc="/assets/founders/tay.jpg"
               imgAlt="Elton"
