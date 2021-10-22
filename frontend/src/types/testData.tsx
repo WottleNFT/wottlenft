@@ -32,7 +32,7 @@ export const testNfts: Asset[] = [
   },
   {
     policy_id: "92837459827",
-    asset_name: "Banana",
+    asset_name: "The Bacon and Egg Human Sandwich (1/1)",
     qty: 1,
     imgUrl: "https://picsum.photos/600",
     description:
