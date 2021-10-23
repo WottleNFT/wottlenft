@@ -69,6 +69,7 @@ module.exports = {
           900: '#2a4365',
         },
         primary: {
+					light: 'rgba(255, 223, 133, 0.3)',
           default: '#FAC748',
         },
       },

@@ -6,9 +6,11 @@ import Link from "next/link";
 import DisplayMessage from "../../Components/UserNfts/DisplayMessage";
 import NftList from "../../Components/UserNfts/NftList";
 import WalletSwitch from "../../Components/WalletSwitch";
+import StatsBar from "../../Components/Profile/StatsBar";
 import useAuth from "../../hooks/useAuth";
 import useWallet from "../../hooks/useWallet";
 import { Main } from "../../templates/Main";
+import Tabs from "../../Components/Profile/Tabs";
 
 const Profile = () => {
   const wallet = useWallet();
@@ -16,7 +18,7 @@ const Profile = () => {
 
   return (
     <Main title="Profile">
-      <div className="flex flex-col w-full min-h-full px-20">
+      <div className="flex flex-col w-full min-h-full px-56">
         {isLoading && <IonSpinner name="crescent" className="self-center" />}
         {!isLoading && !isLoggedIn && (
           <p className="self-center text-3xl font-bold mt-52">
@@ -37,7 +39,7 @@ const Profile = () => {
               Logout
             </IonButton>
 						<div className="flex flex-col items-center h-4/5">
-							<div className="relative w-full mb-40 bg-purple-400 rounded-3xl h-80">
+							<div className="relative w-full bg-purple-400 rounded-3xl h-80">
 								<img
 									src="https://picsum.photos/1000"
 									className="object-cover w-full h-full rounded-3xl"
@@ -51,8 +53,16 @@ const Profile = () => {
 									/>
 								</div>
 							</div>
-							<p className="self-start text-3xl font-bold ml-14">@USERNAME</p>
-							<p className="self-start ml-24 text-blue-400 underline">addr1vosiadjasdi023...</p>
+							<StatsBar collection={1} activity={2} contribution={3} />
+							<div className="flex flex-col self-start mt-5 ml-11">
+								<p className="text-4xl font-bold">@USERNAME</p>
+								<p className="ml-10 text-blue-400 underline">addr1vosiadjasdi023...</p>
+								<div className="flex items-center self-start h-8 px-4 mt-3 rounded-2xl bg-primary-light">
+									<p className="font-semibold text-primary-default">UN Goal</p>
+								</div>
+								<p className="mt-4 text-3xl font-bold">I like fruits especially applies that are red and juicy.</p>
+							</div>
+							<Tabs />
 						</div>
           </>
         )}
