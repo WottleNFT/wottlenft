@@ -5,8 +5,10 @@ import { useRouter } from "next/router";
 import coolWottle from "../../public/assets/cool-wottle.png";
 import dogWottle from "../../public/assets/dog-wottle-green.png";
 import heartWottle from "../../public/assets/heart-wottle.png";
+import roadmap from "../../public/assets/roadmap.png";
 import studiousWottle from "../../public/assets/studious-wottle.png";
 import ButtonPill from "../Components/About/ButtonPill";
+import FounderProfile from "../Components/About/FounderProfile";
 import { Main } from "../templates/Main";
 
 const About = () => {
@@ -59,11 +61,11 @@ const About = () => {
 
   const nftMinter = (
     <p className="text-xl">
-      WottleNFT wants to make Cardano NFT accessible to everyone. As such, we
-      have implemented our smart contracts that enable us to offer the community
+      WottleNFT wants to make Cardano NFT as easy and as accessible to everyone.
+      As such, we have implemented a whole new in-browser experience that offers
       the lowest minting service fee in the market.{" "}
       <b>Mint 1 Cardano NFT for 1 ADA in just under 1 Minute</b> with our very
-      own smart contract enabled NFT-minter.
+      own Nami Wallet enabled NFT-minter.
     </p>
   );
 
@@ -191,6 +193,54 @@ const About = () => {
             width={400}
             className="object-contain"
           />
+        </div>
+        <p className="text-5xl font-bold text-left mb-11">Meet the Founders</p>
+        <div className="flex flex-col pt-5 pb-8">
+          <div className="flex flex-wrap justify-around">
+            <FounderProfile
+              name="ELTON TAY"
+              title="CEO"
+              imgSrc="/assets/founders/tay.jpg"
+              imgAlt="Elton"
+              wottleImgSrc="/assets/founders/wottle_ig_tay_2.png"
+              wottleImgAlt="Elton Wottle"
+            />
+            <FounderProfile
+              name="KANG LIANG"
+              title="CTO"
+              imgSrc="/assets/founders/kang.jpg"
+              imgAlt="Kang"
+              wottleImgSrc="/assets/founders/wottle_ig_kang.png"
+              wottleImgAlt="Kang Wottle"
+            />
+          </div>
+          <div className="flex flex-wrap justify-around">
+            <FounderProfile
+              name="SEAN CHUA"
+              title="CDO"
+              imgSrc="/assets/founders/sean.jpg"
+              imgAlt="Sean"
+              wottleImgSrc="/assets/founders/wottle_ig_wota.png"
+              wottleImgAlt="Sean Wottle"
+            />
+            <FounderProfile
+              name="LUNDY PANG"
+              title="CMO"
+              imgSrc="/assets/founders/lundy.jpg"
+              imgAlt="Lundy"
+              wottleImgSrc="/assets/founders/wottle_ig_lundy.png"
+              wottleImgAlt="Lundy Wottle"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col items-center pb-5 mb-5">
+          <div className="flex justify-center w-full md:w-3/4">
+            <Image
+              src={roadmap}
+              alt="roadmap"
+              className="object-contain bg-primary-default"
+            />
+          </div>
         </div>
       </div>
     </Main>

@@ -184,7 +184,7 @@ const Minting = ({ wallet }: Props) => {
 
   const onSubmit = async () => {
     if (wallet.status !== Status.Enabled) {
-      alert("Error connecting to wallet");
+      // alert("Error connecting to wallet");
       return;
     }
 
@@ -226,7 +226,7 @@ const Minting = ({ wallet }: Props) => {
         image: ipfsNativeUrl,
         ...customFields,
       };
-      console.log(JSON.stringify(nftMetadata));
+      // console.log(JSON.stringify(nftMetadata));
 
       const createNftRes = await axios.post<
         Metadata,
@@ -248,7 +248,7 @@ const Minting = ({ wallet }: Props) => {
       setTransactionId(signResponse.data.tx_id);
       window.scrollTo(0, 0);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       if (axios.isAxiosError(e)) {
         const err = e as AxiosError<NetworkError>;
 

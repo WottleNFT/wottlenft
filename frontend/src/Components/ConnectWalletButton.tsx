@@ -41,6 +41,7 @@ const ConnectWalletButton: React.FC = () => {
       if (sub1) sub1.remove();
       if (sub2) sub2.remove();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet.status, dispatch]);
 
   if (wallet.status === Status.Loading)

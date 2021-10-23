@@ -78,7 +78,7 @@ const Register = () => {
 
     setSubmitLoading(false);
     if (response.status === 200 || response.status === 201) {
-      alert("Account successfully created!");
+      // alert("Account successfully created!");
       router.push("/login");
     }
     if (response.status === 409) {
