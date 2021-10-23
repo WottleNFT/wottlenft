@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 
 import { IonContent, IonHeader, IonPage } from "@ionic/react";
-import { NextSeo, NextSeoProps } from "next-seo";
+import { DefaultSeo, NextSeoProps } from "next-seo";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -56,7 +56,7 @@ const Main = (props: IMainProps) => {
         />
         <link rel="icon" href="/favicon.ico" key="favicon" />
       </Head>
-      <NextSeo
+      <DefaultSeo
         openGraph={{
           type: "website",
           url: "https://wottlenft.io",
@@ -136,7 +136,7 @@ const navInfo = [
   {
     name: "Marketplace",
     route: "/marketplace",
-    tempRoute: "/coming-soon",
+    tempRoute: "/marketplace",
   },
   {
     name: "About Us",
