@@ -111,6 +111,9 @@ pub async fn query_single_nft(
         ON ma_tx_mint.tx_id = tx_metadata.tx_id
         WHERE encode(ma_tx_mint.policy, 'hex') = $1
         AND convert_from(ma_tx_mint.name, 'utf-8') = $2
+        AND tx_metadata.key = 721
+        ORDER BY ma_tx_mint.tx_id DESC
+        LIMIT 1
         "#,
     )
     .bind(policy_id)
