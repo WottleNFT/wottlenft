@@ -6,9 +6,9 @@ use crate::{
 use actix_web::{get, post, web, HttpResponse, Scope};
 use cardano_serialization_lib::{Transaction, TransactionWitnessSet};
 use serde::Deserialize;
-use serde_json::json;
+use serde_json::{json, Value};
 
-use crate::cardano_db_sync::query_if_nft_minted;
+use crate::cardano_db_sync::{query_if_nft_minted, query_single_nft};
 use crate::rest::AppState;
 use cardano_serialization_lib::crypto::TransactionHash;
 
@@ -82,9 +82,26 @@ async fn sign_nft_transaction(
     Ok(HttpResponse::Ok().json(json!({ "tx_id": tx_id })))
 }
 
+#[derive(Deserialize)]
+struct NftDetails {
+    policy_id: String,
+    asset_name: String,
+}
+
+#[get("/single/{policy_id}/{asset_name}")]
+async fn get_single_nft(
+    details: web::Path<NftDetails>,
+    data: web::Data<AppState>,
+) -> Result<HttpResponse> {
+    let details = details.into_inner();
+    let json = query_single_nft(&data.pool, &details.policy_id, &details.asset_name).await?;
+    Ok(HttpResponse::Ok().json(json))
+}
+
 pub fn create_nft_service() -> Scope {
     web::scope("/nft")
         .service(create_nft_transaction)
         .service(sign_nft_transaction)
         .service(check_nft_exists)
+        .service(get_single_nft)
 }
