@@ -66,7 +66,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 gap-5 p-8 px-8 md:px-12 md:pl-0 lg:grid-cols-3 xl:grid-cols-4 justify-self-center">
           <div className="flex flex-col">
             <span className="text-primary-default">Marketplace</span>
-            <Link href="/coming-soon" passHref>
+            <Link href="/marketplace" passHref>
               <a className="text-white">Browse</a>
             </Link>
           </div>
@@ -87,8 +87,11 @@ const Footer = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Company</span>
-            <Link href="/about " passHref>
+            <Link href="/about" passHref>
               <a className="text-white">About Us</a>
+            </Link>
+            <Link href="/partners" passHref>
+              <a className="text-white">Partners</a>
             </Link>
             <Link href="https://twitter.com/wottlenft" passHref>
               <a target="_blank" className="text-white">
@@ -129,7 +132,7 @@ const Footer = () => {
             <Link href="/coming-soon" passHref>
               <a className="text-white">UN Goals</a>
             </Link>
-            <Link href="/coming-soon" passHref>
+            <Link href="/social-enterprises" passHref>
               <a className="text-white">Social Enterprises</a>
             </Link>
             <Link href="/coming-soon" passHref>

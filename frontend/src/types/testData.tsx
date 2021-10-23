@@ -1,6 +1,7 @@
 import { Asset } from "./Asset";
 import { Auction } from "./Auction";
 import { Category } from "./Category";
+import { Partner } from "./Partner";
 import { Profile } from "./Profile";
 
 export const testCategories: Category[] = [
@@ -37,7 +38,7 @@ export const testNfts: Asset[] = [
     qty: 1,
     imgUrl: "https://picsum.photos/600",
     description:
-      "description for Banana, this is a long description, this is a long description, this is a long description, this is a long description, this is a long description, this is a long description, this is a long description, this is a long description",
+      "this is a 64 character description of this story such as this lo",
   },
   {
     policy_id: "23049580398",
@@ -123,4 +124,37 @@ export const testAuctions: Auction[] = [
     creater: testProfiles[2]!,
     nft: testNfts[2]!,
   },
+];
+
+const trcl: Partner = {
+  name: "TRCL",
+  websiteUrl: "https://www.therice.sg/",
+  imgUrl:
+    "https://user-images.githubusercontent.com/57287843/138369181-d1e1b3bc-7e7c-4b1f-b289-191c242e7f73.png",
+};
+
+const nus: Partner = {
+  name: "NUS",
+  websiteUrl: "https://www.nus.edu.sg",
+  imgUrl:
+    "https://user-images.githubusercontent.com/61874388/138554947-a5c4e18e-1423-4500-9e76-9739df671c08.png",
+};
+
+const testPartner: Partner = {
+  name: "Partner",
+  websiteUrl: "https://wottlenft.io/",
+  imgUrl: "https://picsum.photos/200",
+};
+
+export const testPartners: Partner[] = [
+  nus,
+  testPartner,
+  testPartner,
+  testPartner,
+];
+export const testSocialEnterprises: Partner[] = [
+  trcl,
+  testPartner,
+  testPartner,
+  testPartner,
 ];
