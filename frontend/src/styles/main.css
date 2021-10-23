@@ -91,3 +91,21 @@ ion-button {
   --background: #000000 !important;
   --color: var(--ion-color-primary) !important;
 }
+
+.tab-enter {
+  opacity: 0.01;
+}
+
+.tab-enter.tab-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.tab-leave {
+  opacity: 1;
+}
+
+.tab-leave.tab-leave-active {
+  opacity: 0.01;
+  transition: opacity 200ms ease-in;
+}
