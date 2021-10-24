@@ -81,9 +81,6 @@ const Footer = () => {
             <Link href="/coming-soon" passHref>
               <a className="text-white">Profiles</a>
             </Link>
-            <Link href="/coming-soon" passHref>
-              <a className="text-white">Artworks</a>
-            </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Company</span>
@@ -112,13 +109,7 @@ const Footer = () => {
           <div className="flex flex-col">
             <span className="text-primary-default">Auction</span>
             <Link href="/coming-soon" passHref>
-              <a className="text-white">Live</a>
-            </Link>
-            <Link href="/coming-soon" passHref>
-              <a className="text-white">Upcoming</a>
-            </Link>
-            <Link href="/coming-soon" passHref>
-              <a className="text-white">Browse</a>
+              <a className="text-white">Coming Soon</a>
             </Link>
           </div>
           <div className="flex flex-col">
@@ -129,14 +120,8 @@ const Footer = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Impact</span>
-            <Link href="/coming-soon" passHref>
-              <a className="text-white">UN Goals</a>
-            </Link>
             <Link href="/social-enterprises" passHref>
               <a className="text-white">Social Enterprises</a>
-            </Link>
-            <Link href="/coming-soon" passHref>
-              <a className="text-white">Projects</a>
             </Link>
           </div>
         </div>

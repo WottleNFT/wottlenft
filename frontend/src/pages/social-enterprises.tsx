@@ -33,7 +33,9 @@ const SocialEnterprises = (props: Props) => {
             <br />
             Follow the instructions{" "}
             <a href="https://github.com/WottleNFT/wottlenft/files/7393352/Beneficiary.Application.pdf">
-              <b>here</b>
+              <u>
+                <b>here</b>
+              </u>
             </a>{" "}
             and email us at <b>contact@wottlenft.io</b>
           </p>
