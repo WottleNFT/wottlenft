@@ -2,11 +2,21 @@ use crate::error::Error;
 use crate::marketplace::un_goals::UnGoal;
 use crate::rest::{parse_address, AppState};
 use crate::Result;
-use actix_web::{post, web, HttpResponse, Scope};
+use actix_web::{get, post, web, HttpResponse, Scope};
 use cardano_serialization_lib::utils::{from_bignum, BigNum};
 use cardano_serialization_lib::{AssetName, PolicyID};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
+
+#[get("")]
+async fn get_all_sales(data: web::Data<AppState>) -> Result<HttpResponse> {
+    let sales = data
+        .marketplace
+        .holder
+        .get_nfts_for_sale(&data.pool)
+        .await?;
+    Ok(HttpResponse::Ok().json(sales))
+}
 
 #[derive(Deserialize, Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -49,5 +59,7 @@ async fn sell_nft(
 }
 
 pub fn create_marketplace_service() -> Scope {
-    web::scope("/marketplace").service(sell_nft)
+    web::scope("/marketplace")
+        .service(sell_nft)
+        .service(get_all_sales)
 }

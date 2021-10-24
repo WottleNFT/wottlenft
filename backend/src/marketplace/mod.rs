@@ -1,5 +1,5 @@
 use crate::coin::TransactionWitnessSetParams;
-use crate::marketplace::holder::MarketplaceHolder;
+use crate::marketplace::holder::{MarketplaceHolder, SellMetadata};
 use crate::marketplace::un_goals::UnGoal;
 use crate::{
     cardano_db_sync::{get_protocol_params, get_slot_number, query_user_address_utxo},
@@ -20,17 +20,10 @@ pub mod holder;
 pub mod un_goals;
 
 const ONE_HOUR: u32 = 3600;
-const MARKETPLACE_METADATA_LABEL_KEY: u64 = 888;
 
 #[derive(Clone)]
 pub struct Marketplace {
     pub(crate) holder: MarketplaceHolder,
-}
-
-pub struct SellMetadata {
-    pub seller_address: Address,
-    pub price: u64,
-    pub un_goal: UnGoal,
 }
 
 impl Marketplace {
@@ -75,7 +68,7 @@ impl Marketplace {
             price,
             un_goal,
         };
-        let auxiliary_data = Some(create_sell_nft_metadata(seller_metadata)?);
+        let auxiliary_data = Some(seller_metadata.create_sell_nft_metadata()?);
         let tx_body = build_transaction_body(
             seller_utxos,
             vec![nft_utxo.clone()],
@@ -94,55 +87,6 @@ impl Marketplace {
             auxiliary_data,
         ))
     }
-}
-
-fn create_sell_nft_metadata(sell_metadata: SellMetadata) -> Result<AuxiliaryData> {
-    let SellMetadata {
-        seller_address,
-        un_goal,
-        price,
-    } = sell_metadata;
-    let un_goal_serialized = serde_json::to_value(&un_goal)?
-        .as_str()
-        .unwrap()
-        .to_string();
-    let mut auxiliary_data = AuxiliaryData::new();
-    let mut general_tx_data = GeneralTransactionMetadata::new();
-
-    let tx_metadata = TransactionMetadatum::new_map(&{
-        let mut map = MetadataMap::new();
-        map.insert_str(
-            "price",
-            &TransactionMetadatum::new_int(&Int::new(&to_bignum(price))),
-        )?;
-        map.insert_str(
-            "un_goal",
-            &TransactionMetadatum::new_text(un_goal_serialized)?,
-        )?;
-
-        let addr_string = seller_address.to_bech32(None)?;
-        let addr_string_list: Vec<String> = addr_string
-            .chars()
-            .collect::<Vec<char>>()
-            .chunks(64)
-            .map(|c| c.iter().collect::<String>())
-            .collect();
-        let mut addr_list = MetadataList::new();
-
-        for s in addr_string_list {
-            addr_list.add(&TransactionMetadatum::new_text(s)?);
-        }
-
-        map.insert_str(
-            "seller_address",
-            &TransactionMetadatum::new_list(&addr_list),
-        )?;
-        map
-    });
-
-    general_tx_data.insert(&to_bignum(MARKETPLACE_METADATA_LABEL_KEY), &tx_metadata);
-    auxiliary_data.set_metadata(&general_tx_data);
-    Ok(auxiliary_data)
 }
 
 fn create_value_with_single_nft(policy_id: &PolicyID, asset_name: &AssetName) -> Value {
