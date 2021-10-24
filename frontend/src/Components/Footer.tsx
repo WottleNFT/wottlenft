@@ -66,7 +66,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 gap-5 p-8 px-8 md:px-12 md:pl-0 lg:grid-cols-3 xl:grid-cols-4 justify-self-center">
           <div className="flex flex-col">
             <span className="text-primary-default">Marketplace</span>
-            <Link href="/marketplace" passHref>
+            <Link href="/coming-soon" passHref>
               <a className="text-white">Browse</a>
             </Link>
           </div>

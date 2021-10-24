@@ -136,7 +136,7 @@ const navInfo = [
   {
     name: "Marketplace",
     route: "/marketplace",
-    tempRoute: "/marketplace",
+    tempRoute: "/coming-soon",
   },
   {
     name: "About Us",
