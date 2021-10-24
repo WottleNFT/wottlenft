@@ -16,4 +16,7 @@ pub struct Config {
 
     #[envconfig(from = "DATABASE_URL")]
     pub database_url: String,
+
+    #[envconfig(from = "MARKETPLACE_PRIVATE_KEY_FILE")]
+    pub marketplace_private_key_file: String,
 }

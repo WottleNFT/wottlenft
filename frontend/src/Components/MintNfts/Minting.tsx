@@ -7,6 +7,7 @@ import { trash, add, hammer } from "ionicons/icons";
 import { Status, MAINNET } from "../../features/wallet/walletSlice";
 import useTextInput from "../../hooks/useTextInput";
 import { WottleEnabled } from "../../hooks/useWallet";
+import { signTransaction } from "../../lib/transactionApi";
 import { NetworkError } from "../../types/NetworkError";
 import { HexCborString } from "../../wallet";
 import CopySection from "./CopySection";
@@ -28,15 +29,6 @@ type Policy = {
 type TransactionResponse = {
   transaction: HexCborString;
   policy: Policy;
-};
-
-type SignTransaction = {
-  transaction: HexCborString;
-  signature: HexCborString;
-};
-
-type SignTransactionResponse = {
-  tx_id: string;
 };
 
 type PinataResponse = {
@@ -236,16 +228,14 @@ const Minting = ({ wallet }: Props) => {
       const { transaction, policy } = createNftRes.data;
 
       const signature = await cardano.signTx(transaction, true);
-      const signResponse = await axios.post<
-        SignTransaction,
-        AxiosResponse<SignTransactionResponse>
-      >(`${backendApi}/nft/sign`, {
-        signature,
+      const signResponse = await signTransaction(
+        backendApi,
         transaction,
-      });
+        signature
+      );
       setPolicyId(policy.id);
       setPolicyJson(policy.json);
-      setTransactionId(signResponse.data.tx_id);
+      setTransactionId(signResponse.tx_id);
       window.scrollTo(0, 0);
     } catch (e) {
       // console.log(e);
