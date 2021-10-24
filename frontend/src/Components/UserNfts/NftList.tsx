@@ -20,20 +20,13 @@ const NftList = ({ baseUrl, address }: Props) => {
   if (error || !data) return <DisplayMessage text="Error fetching your NFTs" />;
 
   return (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4xl">
-        {data.map((nft) => {
-          return (
-            <div
-              key={nft.policyId}
-              className="flex items-center justify-center flex-grow w-full align-middle"
-            >
-              <NftCard nft={nft} />
-            </div>
-          );
-        })}
-      </div>
-    </>
+		<div className="flex flex-wrap justify-center">
+			{data.map((nft) => {
+				return (
+					<NftCard nft={nft} />
+				);
+			})}
+		</div>
   );
 };
 
