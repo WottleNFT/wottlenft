@@ -123,8 +123,6 @@ impl MarketplaceHolder {
         })
     }
 
-    pub async fn get_nft_sell_data(&self, pool: &PgPool) -> Result<Option<SellData>>
-
     pub async fn get_nfts_for_sale(&self, pool: &PgPool) -> Result<Vec<SellData>> {
         let mut rows = sqlx::query_as::<_, PgSellData>(
             r#"
