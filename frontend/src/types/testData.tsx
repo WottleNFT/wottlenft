@@ -137,24 +137,14 @@ const nus: Partner = {
   name: "NUS",
   websiteUrl: "https://www.nus.edu.sg",
   imgUrl:
-    "https://user-images.githubusercontent.com/61874388/138554947-a5c4e18e-1423-4500-9e76-9739df671c08.png",
+    "https://user-images.githubusercontent.com/61874388/138596221-16e8ec88-d251-4e24-a42a-162b7c28e259.png",
 };
 
-const testPartner: Partner = {
-  name: "Partner",
-  websiteUrl: "https://wottlenft.io/",
-  imgUrl: "https://picsum.photos/200",
-};
+// const testPartner: Partner = {
+//   name: "Partner",
+//   websiteUrl: "https://wottlenft.io/",
+//   imgUrl: "https://picsum.photos/200",
+// };
 
-export const testPartners: Partner[] = [
-  nus,
-  testPartner,
-  testPartner,
-  testPartner,
-];
-export const testSocialEnterprises: Partner[] = [
-  trcl,
-  testPartner,
-  testPartner,
-  testPartner,
-];
+export const testPartners: Partner[] = [nus];
+export const testSocialEnterprises: Partner[] = [trcl];
