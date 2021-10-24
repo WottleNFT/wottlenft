@@ -3,7 +3,6 @@ export type Nft = {
   assetName: string;
   quantity: number;
   metadata: {
-    author: string;
     description: string;
     image: string;
     name: string;

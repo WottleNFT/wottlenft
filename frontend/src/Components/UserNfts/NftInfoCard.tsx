@@ -2,18 +2,18 @@ import React, { useState } from "react";
 
 import { IonButton, IonCard, IonSegment } from "@ionic/react";
 
-import { Asset } from "../../types/Asset";
+import { Nft } from "../../types/Nft";
 import CategoryTag from "../CategoryTag";
 import NftInfoSegmentBtn from "./NftInfoSegmentBtn";
 import styles from "./userNft.module.css";
 
 type Props = {
-  nft: Asset;
+  nft: Nft;
 };
 
 const NftInfoCard = ({ nft }: Props) => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const { policy_id, qty } = nft;
+  const { policyId, quantity } = nft;
 
   const [selectedSegment, setSelectedSegment] = useState("details");
   return (
@@ -37,12 +37,12 @@ const NftInfoCard = ({ nft }: Props) => {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col">
               <span className="font-bold">Policy ID</span>
-              <p className="break-all">{policy_id}</p>
+              <p className="break-all">{policyId}</p>
             </div>
             <div className="flex flex-row">
               <div className="w-1/2 flex flex-col">
                 <span className="font-bold">Quantity</span>
-                <p>{`1/${qty}`}</p>
+                <p>{`${quantity}/1`}</p>
               </div>
               <div className="w-1/2 flex flex-col">
                 <span className="font-bold">Minted</span>

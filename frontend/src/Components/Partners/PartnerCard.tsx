@@ -23,7 +23,7 @@ const PartnerCard = ({ partner }: Props) => {
           alt={name}
           src={imgUrl}
         />
-        <span className="text-2xl truncate">{name}</span>
+        <span className="text-2xl truncate mt-3">{name}</span>
       </a>
     </Link>
   );
