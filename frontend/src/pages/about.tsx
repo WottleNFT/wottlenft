@@ -38,10 +38,10 @@ const About = () => {
   const marketPlace = (
     <p className="text-xl">
       WottleNFT will first focus on building an amazing marketplace. Afterwhich,
-      we aim to integrate Cardano Smart Contracts by December. We will be 
-      charging a fee of <b>2.5%</b>, with a minimum of{" "} <b>5 Ada</b> for 
-      each transaction. This fee comprises: Service Fees{" "} <b>(2%)</b> and
-      Social Donations <b>(0.5%)</b>.
+      we aim to integrate Cardano Smart Contracts by December. We will be
+      charging a fee of <b>2.5%</b>, with a minimum of <b>5 Ada</b> for each
+      transaction. This fee comprises: Service Fees <b>(2%)</b> and Social
+      Donations <b>(0.5%)</b>.
     </p>
   );
 
