@@ -252,6 +252,7 @@ impl NftTransactionBuilder {
 
         let tx_body = crate::coin::build_transaction_body(
             utxos,
+            vec![],
             tx_outputs,
             self.slot + EXPIRY_IN_SECONDS,
             &self.params,
@@ -275,26 +276,6 @@ impl NftTransactionBuilder {
 
     pub fn policy_id(&self) -> String {
         hex::encode(self.policy.hash.to_bytes())
-    }
-
-    pub fn combine_witness_set(
-        tx: Transaction,
-        witness_set: TransactionWitnessSet,
-    ) -> Result<Transaction> {
-        let body = tx.body();
-        let auxiliary_data = tx.auxiliary_data();
-        let mut prev_witness_set = tx.witness_set();
-
-        let mut prev_witnesses = prev_witness_set.vkeys().ok_or(Error::Unknown)?;
-
-        if let Some(vkeys) = witness_set.vkeys() {
-            for i in 0..vkeys.len() {
-                prev_witnesses.add(&vkeys.get(i));
-            }
-        }
-
-        prev_witness_set.set_vkeys(&prev_witnesses);
-        Ok(Transaction::new(&body, &prev_witness_set, auxiliary_data))
     }
 
     fn create_mint(&self) -> Mint {

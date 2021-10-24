@@ -1,5 +1,6 @@
 use crate::{
     cardano_db_sync::{get_protocol_params, get_slot_number, query_user_address_utxo},
+    coin::combine_witness_set,
     nft::{NftTransactionBuilder, WottleNftMetadata},
     Result,
 };
@@ -59,30 +60,6 @@ async fn create_nft_transaction(
 }
 
 #[derive(Deserialize)]
-struct Signature {
-    signature: String,
-    transaction: String,
-}
-#[post("/sign")]
-async fn sign_nft_transaction(
-    signature: web::Json<Signature>,
-    data: web::Data<AppState>,
-) -> Result<HttpResponse> {
-    let Signature {
-        signature,
-        transaction,
-    } = signature.into_inner();
-
-    let transaction = Transaction::from_bytes(hex::decode(transaction)?)?;
-    let tx_witness_set = TransactionWitnessSet::from_bytes(hex::decode(signature)?)?;
-
-    let tx = NftTransactionBuilder::combine_witness_set(transaction, tx_witness_set)?;
-
-    let tx_id = data.submitter.submit_tx(&tx).await?;
-    Ok(HttpResponse::Ok().json(json!({ "tx_id": tx_id })))
-}
-
-#[derive(Deserialize)]
 struct NftDetails {
     policy_id: String,
     asset_name: String,
@@ -101,7 +78,6 @@ async fn get_single_nft(
 pub fn create_nft_service() -> Scope {
     web::scope("/nft")
         .service(create_nft_transaction)
-        .service(sign_nft_transaction)
         .service(check_nft_exists)
         .service(get_single_nft)
 }
