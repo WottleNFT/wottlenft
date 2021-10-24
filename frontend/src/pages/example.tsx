@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { IonButton } from "@ionic/react";
 
 import { useGetUserNftsQuery } from "../app/nft";
 import { Status } from "../features/wallet/walletSlice";
 import useWallet from "../hooks/useWallet";
-import { sellNft, SellNftRequest, UnGoal } from "../lib/marketplaceApi";
+import {
+  getAllNftsForSale,
+  NftForSale,
+  sellNft,
+  SellNftRequest,
+  UnGoal,
+} from "../lib/marketplaceApi";
 import { signTransaction } from "../lib/transactionApi";
 import { Nft } from "../types/Nft";
 import { NamiWallet } from "../wallet";
@@ -41,6 +47,18 @@ const Helper = ({
     url,
     address,
   });
+  const [saleNfts, setSaleNfts] = useState<NftForSale[]>([]);
+
+  useEffect(() => {
+    getSaleNfts();
+  }, []);
+
+  const getSaleNfts = async () => {
+    setSaleNfts(await getAllNftsForSale(url));
+  };
+
+  const buy = async (_: NftForSale) => {};
+
   const sell = async (nft: Nft) => {
     const request: SellNftRequest = {
       sellerAddress: address,
@@ -57,15 +75,32 @@ const Helper = ({
   console.log(address);
   if (error || isLoading || !data) return <div>Loading</div>;
   return (
-    <>
-      {data.map((nft) => (
-        <div key={nft.policyId} className="m-2">
-          {nft.policyId}
-          <br />
-          {nft.assetName}
-          <IonButton onClick={() => sell(nft)}>Sell</IonButton>
-        </div>
-      ))}
-    </>
+    <div className="grid grid-cols-2">
+      <div>
+        {data.map((nft) => (
+          <div key={nft.policyId} className="m-2">
+            {nft.policyId}
+            <br />
+            {nft.assetName}
+            <IonButton onClick={() => sell(nft)}>Sell</IonButton>
+          </div>
+        ))}
+      </div>
+      <div>
+        {saleNfts.map((sale) => (
+          <div key={sale.policyId} className="m-2">
+            {sale.policyId}
+            <br />
+            {sale.assetName}
+            <br />
+            {sale.metadata.price}
+            <br />
+            {sale.metadata.unGoal}
+            <br />
+            <IonButton onClick={() => buy(sale)}>Buy</IonButton>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
