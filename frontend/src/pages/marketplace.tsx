@@ -85,7 +85,7 @@ const MarketNftList = ({
   };
 
   return (
-    <>
+    <div className="px-4 md:px-12 2xl:px-52">
       {saleNfts[0] &&
         (saleNfts[0].metadata.namiAddress === address ? (
           <MarketNftBigCard
@@ -135,6 +135,6 @@ const MarketNftList = ({
           <DisplayMessage text="No Listed NFTs Right Now" />
         )}
       </div>
-    </>
+    </div>
   );
 };
