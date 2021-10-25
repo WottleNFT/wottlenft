@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import wottleLogo from "../../../public/logo.png";
 import { Status, WalletState } from "../../features/wallet/walletSlice";
 import useWallet from "../../hooks/useWallet";
+import { registerApi } from "../../lib/profileApi";
 import { Main } from "../../templates/Main";
 import { NamiWallet } from "../../wallet";
 
@@ -66,9 +67,9 @@ const Register = () => {
       email: data.email,
       password: data.password,
       username: data.username,
-      wallet_id: wallet.state.address,
+      wallet_id: wallet.state.bechAddr,
     };
-    const response = await fetch("http://localhost:3080/register", {
+    const response = await fetch(registerApi, {
       method: "POST",
       body: JSON.stringify(sendData),
       headers: {

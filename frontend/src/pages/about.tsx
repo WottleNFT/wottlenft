@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import coolWottle from "../../public/assets/cool-wottle.png";
-import dogWottle from "../../public/assets/dog-wottle-green.png";
-import heartWottle from "../../public/assets/heart-wottle.png";
+import nftMinted from "../../public/assets/about/minted.png";
+import poolParty from "../../public/assets/about/pool_party.png";
+import targetWottles from "../../public/assets/about/target_wottles.png";
+import wottleStand from "../../public/assets/about/wottle_stand.png";
 import roadmap from "../../public/assets/roadmap.png";
-import studiousWottle from "../../public/assets/studious-wottle.png";
 import ButtonPill from "../Components/About/ButtonPill";
 import FounderProfile from "../Components/About/FounderProfile";
 import { Main } from "../templates/Main";
@@ -22,7 +22,11 @@ const About = () => {
       It is also important to give back, especially with the outbreak of the{" "}
       <b>Covid-19 Pandemic</b>. That is why, WottleNFT will be aligning its
       business model with the United Nation Sustainable Development Goals (
-      <b>SDGs</b>) to support Social Enterprises worldwide.
+      <b>SDGs</b>) to support Social Enterprises worldwide. Furthermore, we are
+      empowering you to support them! With every transaction made on WottleNFT,
+      you get to choose which of the UN Goal to support. For now, WottleNFT is
+      focusing on 3 UN Goals : Zero Hunger, Climate Action and Quality
+      Education.
     </p>
   );
 
@@ -37,25 +41,22 @@ const About = () => {
 
   const marketPlace = (
     <p className="text-xl">
-      WottleNFT will be utilising Cardano Smart Contracts to build the
-      marketplace. We will be charging a fee of <b>2.5%</b>, with a minimum of{" "}
-      <b>5 Ada</b> for each transaction. This fee comprises: Service Fees{" "}
-      <b>(2%)</b> and Social Donations <b>(0.5%)</b>.
+      WottleNFT will first focus on building an amazing marketplace. Afterwhich,
+      we aim to integrate Cardano Smart Contracts by December. Listing is{" "}
+      <b>FREE*</b>. You just need to pay <b>~2₳</b> : <b>1₳</b> pegged to your
+      NFT and <b>~1₳</b> for transactional Fee. Upon successful sale, we charge
+      a <b>3%</b> fee, with a minimum of <b>2₳</b> for each transaction. This
+      fee comprises: Service Fees <b>(1₳,1%)</b> and Social Donations{" "}
+      <b>(1₳,1%)</b>. If you are a successful buyer/seller, head over to the
+      profile section to choose one of the 3 UN Goals to support : Zero Hunger,
+      Climate Action or Quality Education
     </p>
   );
 
   const auction = (
     <p className="text-xl">
-      WottleNFT will be adopting an English Auction format. Creators are charged
-      a gas fee for listing an auction. At the end of an auction, WottleNFT’s
-      smart contract facilitates the transaction between creators and successful
-      bidders, with a fee of 15%. This 15% fee comprises:{" "}
-      <b>Service Fees (11%)</b>, <b>Royalty Fees (2.5%)</b> and{" "}
-      <b>Social Donations (1.5%)</b>. Successful bidders are given an option to
-      dedicate their Social Donations to a social enterprise of their choosing,
-      based on an underlying United Nations Sustainable Development Goal. We
-      chose to support social enterprises, as we recognise their struggle for
-      good.
+      By Q1 2022, WottleNFT will be releasing Auctions. We will release more
+      details closer to launch date. Stay tuned!
     </p>
   );
 
@@ -80,7 +81,7 @@ const About = () => {
       <p>
         Furthermore, we are offering <b>0% fees</b>! As a reward, delegators who
         stake a minimum of <b>1000 ADA</b> will receive our very first,{" "}
-        <b>exclusive utility NFT drop</b> by the end of the year! More
+        <b>exclusive utility NFT drop</b> by the start of next year! More
         information will be released soon.
       </p>
     </p>
@@ -112,8 +113,8 @@ const About = () => {
         {ourStory}
         <div className="flex flex-wrap justify-center py-5 lg:justify-between lg:flex-nowrap">
           <Image
-            src={heartWottle}
-            alt="heart wottle"
+            src={targetWottles}
+            alt="Wottles used as target practice"
             height={400}
             width={400}
             className="object-contain"
@@ -136,15 +137,15 @@ const About = () => {
             </Link>
           </div>
           <Image
-            src={coolWottle}
-            alt="cool wottle"
+            src={wottleStand}
+            alt="Wottle marketplace"
             height={400}
             width={400}
             className="object-contain"
           />
         </div>
         <div className="flex flex-col">
-          <p className="text-5xl font-bold mb-11">Auction</p>
+          <p className="text-5xl font-bold mb-11">Auction (Coming Soon)</p>
           {auction}
           <Link href="/coming-soon" passHref>
             <ButtonPill
@@ -156,8 +157,8 @@ const About = () => {
         </div>
         <div className="flex flex-wrap justify-center py-5 lg:flex-nowrap lg:justify-between">
           <Image
-            src={studiousWottle}
-            alt="studious wottle"
+            src={nftMinted}
+            alt="NFT Minted"
             height={400}
             width={400}
             className="object-contain"
@@ -187,8 +188,8 @@ const About = () => {
             </Link>
           </div>
           <Image
-            src={dogWottle}
-            alt="dog wottle"
+            src={poolParty}
+            alt="Pool party"
             height={400}
             width={400}
             className="object-contain"

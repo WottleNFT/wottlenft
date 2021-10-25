@@ -114,6 +114,7 @@ pub fn calculate_maximum_fees(protocol_params: &ProtocolParams) -> Coin {
 
 pub fn build_transaction_body(
     utxos: Vec<TransactionUnspentOutput>,
+    inputs: Vec<TransactionUnspentOutput>,
     outputs: Vec<TransactionOutput>,
     ttl: u32,
     protocol_params: &ProtocolParams,
@@ -127,6 +128,7 @@ pub fn build_transaction_body(
     for _ in 0..MAX_TRIES {
         let mut tx_builder = largest_first_coin_selection(
             outputs.clone(),
+            inputs.clone(),
             utxos.clone(),
             fees,
             protocol_params,
@@ -160,6 +162,7 @@ pub fn build_transaction_body(
 
 fn largest_first_coin_selection(
     outputs: Vec<TransactionOutput>,
+    inputs: Vec<TransactionUnspentOutput>,
     mut utxos: Vec<TransactionUnspentOutput>,
     fees: Coin,
     params: &ProtocolParams,
@@ -171,10 +174,22 @@ fn largest_first_coin_selection(
         calculate_output_amount(outputs, fees, &params.minimum_utxo_value)?;
 
     let mut tx_builder = start_transaction(params, ttl);
+    inputs.iter().for_each(|utxo| {
+        tx_builder.add_input(
+            &utxo.output().address(),
+            &utxo.input(),
+            &utxo.output().amount(),
+        )
+    });
+
     tx_builder.set_fee(&fees);
     outputs.iter().try_for_each(|o| tx_builder.add_output(o))?;
 
     let mut selected_amount = BigNum::zero();
+
+    for utxo in inputs {
+        selected_amount = selected_amount.checked_add(&utxo.output().amount().coin())?
+    }
 
     while let Some(utxo) = utxos.pop() {
         let amt = utxo.output().amount();
@@ -219,7 +234,7 @@ fn largest_first_coin_selection(
     Err(CoinSelectionFailure::BalanceInsufficient.into())
 }
 
-fn start_transaction(params: &ProtocolParams, ttl: u32) -> TransactionBuilder {
+pub fn start_transaction(params: &ProtocolParams, ttl: u32) -> TransactionBuilder {
     let mut tx_builder = TransactionBuilder::new(
         &params.linear_fee,
         &params.minimum_utxo_value,
@@ -267,4 +282,26 @@ fn set_output_lovelace(output: &TransactionOutput, new_lovelace: &Coin) -> Trans
     }
 
     new_output
+}
+
+pub fn combine_witness_set(
+    tx: Transaction,
+    witness_set: TransactionWitnessSet,
+) -> Result<Transaction> {
+    let body = tx.body();
+    let auxiliary_data = tx.auxiliary_data();
+    let mut prev_witness_set = tx.witness_set();
+
+    let mut prev_witnesses = prev_witness_set
+        .vkeys()
+        .unwrap_or_else(|| Vkeywitnesses::new());
+
+    if let Some(vkeys) = witness_set.vkeys() {
+        for i in 0..vkeys.len() {
+            prev_witnesses.add(&vkeys.get(i));
+        }
+    }
+
+    prev_witness_set.set_vkeys(&prev_witnesses);
+    Ok(Transaction::new(&body, &prev_witness_set, auxiliary_data))
 }

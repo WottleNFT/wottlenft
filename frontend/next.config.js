@@ -16,6 +16,10 @@ module.exports = withBundleAnalyzer({
     mainnetApi: process.env.MAINNET_API,
     profileApi: process.env.PROFILE_API,
   },
+  experiments: {
+    asyncWebAssembly: true,
+    importAsync: true,
+  },
   // TODO: delete this after marketplace is done
   async redirects() {
     return [

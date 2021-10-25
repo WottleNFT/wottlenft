@@ -1,5 +1,6 @@
-import { IonButton, IonIcon, useIonModal } from "@ionic/react";
 import React from "react";
+
+import { IonButton, useIonModal } from "@ionic/react";
 
 import { Nft } from "../../types/Nft";
 import ListNftModal from "../Profile/ListNftModal";
@@ -15,19 +16,19 @@ const NftCard = ({ nft }: Props) => {
   const imageHash = image.replace("ipfs://", "");
   const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
 
-	const [present, dismiss] = useIonModal(ListNftModal, {
-		nft: nft,
-	});
+  const [present] = useIonModal(ListNftModal, {
+    nft,
+  });
 
   return (
     <div
       style={{ height: 450, width: 350 }}
       className="flex flex-col m-8 transition-all rounded-2xl bg-gray-50 drop-shadow-md hover:drop-shadow-2xl hover:scale-110"
     >
-			<div className="flex items-center my-2 h-14">
-				<div className="w-12 h-12 mx-3 bg-gray-300 rounded-full"></div>
-				<p className="font-bold">@{metadata.author}</p>
-			</div>
+      <div className="flex items-center my-2 h-14">
+        <div className="w-12 h-12 mx-3 bg-gray-300 rounded-full"></div>
+        <p className="font-bold">@{metadata.author}</p>
+      </div>
       <img
         className="object-contain p-2 h-3/5 rounded-xl"
         alt="Event"
@@ -36,7 +37,9 @@ const NftCard = ({ nft }: Props) => {
       <div className="flex flex-col px-3 py-1">
         <p className="text-lg font-bold text-center">{assetName}</p>
         <p className="text-center text-gray-600">{description}</p>
-				<IonButton className="mx-auto" onClick={() => present()}>List</IonButton>
+        <IonButton className="mx-auto" onClick={() => present()}>
+          List
+        </IonButton>
       </div>
     </div>
   );

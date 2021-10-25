@@ -30,9 +30,9 @@ function SideMenu() {
       <IonContent>
         <IonList>
           <IonMenuToggle>
-            <IonItem routerLink="/coming-soon">
+            <IonItem routerLink="/marketplace">
               <IonIcon color="primary" icon={storefront} slot="start" />
-              <IonLabel>Market Place</IonLabel>
+              <IonLabel>Marketplace</IonLabel>
             </IonItem>
             <IonItem routerLink="/about">
               <IonIcon color="primary" icon={information} slot="start" />
@@ -42,7 +42,7 @@ function SideMenu() {
               <IonIcon color="primary" icon={construct} slot="start" />
               <IonLabel>Mint NFTs</IonLabel>
             </IonItem>
-            <IonItem routerLink="/user-nfts">
+            <IonItem routerLink="/coming-soon">
               <IonIcon color="primary" icon={personCircle} slot="start" />
               <IonLabel>Profile</IonLabel>
             </IonItem>

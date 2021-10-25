@@ -10,6 +10,7 @@ import wottleLogo from "../../../public/logo.png";
 import { Status } from "../../features/wallet/walletSlice";
 import useAuth from "../../hooks/useAuth";
 import useWallet from "../../hooks/useWallet";
+import { loginApi } from "../../lib/profileApi";
 import { Main } from "../../templates/Main";
 import { Wallet } from "../register";
 
@@ -49,11 +50,10 @@ const Login = () => {
   const onSubmit = async (data: FormData) => {
     setSubmitLoading(true);
     const loginData: LoginData = {
-      wallet_id: wallet.state.address,
+      wallet_id: wallet.state.bechAddr,
       password: data.password,
     };
-    // console.log(loginApi);
-    const response = await fetch("http://localhost:3080/login", {
+    const response = await fetch(loginApi, {
       method: "POST",
       body: JSON.stringify(loginData),
       headers: {
@@ -106,7 +106,7 @@ const Login = () => {
             >
               <div>
                 <p className="pl-2 font-bold">Connected wallet address</p>
-                <p className="truncate">{wallet.state.address}</p>
+                <p className="truncate">{wallet.state.bechAddr}</p>
               </div>
               <label className="pl-2 font-bold">
                 Password
