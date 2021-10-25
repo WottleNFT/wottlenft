@@ -24,15 +24,16 @@ export const testCategories: Category[] = [
 
 export const testNfts: Asset[] = [
   {
-    policy_id: "120391029301930",
-    asset_name: "Apple",
+    policy_id: "6ecee816357c3d8210b77c5504b2aa2ba23f94194bc6c759cdf7af3f",
+    asset_name: "The Bacon and Egg Human Sandwich (1/1)",
     qty: 1,
     imgUrl: "https://picsum.photos/800",
-    description: "description for Apple",
+    description:
+      "description for The Bacon and Egg Human Sandwich (1/1), this is a long description, this is a long description, this is a long description, this is a long description, this is a long description, this is a long description, this is a long description, this is a long description",
   },
   {
     policy_id: "92837459827",
-    asset_name: "Banana",
+    asset_name: "The Bacon and Egg Human Sandwich (1/1)",
     qty: 1,
     imgUrl: "https://picsum.photos/600",
     description:

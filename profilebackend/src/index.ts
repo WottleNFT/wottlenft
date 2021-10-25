@@ -1,5 +1,5 @@
 import express from "express";
-import routes from "./routes";
+import routes from "./routes/index";
 import { port } from "./config/config";
 
 const morgan = require('morgan');

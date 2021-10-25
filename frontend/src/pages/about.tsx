@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import coolWottle from "../../public/assets/cool-wottle.png";
-import dogWottle from "../../public/assets/dog-wottle-green.png";
-import heartWottle from "../../public/assets/heart-wottle.png";
+import nftMinted from "../../public/assets/about/minted.png";
+import poolParty from "../../public/assets/about/pool_party.png";
+import targetWottles from "../../public/assets/about/target_wottles.png";
+import wottleStand from "../../public/assets/about/wottle_stand.png";
 import roadmap from "../../public/assets/roadmap.png";
-import studiousWottle from "../../public/assets/studious-wottle.png";
 import ButtonPill from "../Components/About/ButtonPill";
 import FounderProfile from "../Components/About/FounderProfile";
 import { Main } from "../templates/Main";
@@ -112,8 +112,8 @@ const About = () => {
         {ourStory}
         <div className="flex flex-wrap justify-center py-5 lg:justify-between lg:flex-nowrap">
           <Image
-            src={heartWottle}
-            alt="heart wottle"
+            src={targetWottles}
+            alt="Wottles used as target practice"
             height={400}
             width={400}
             className="object-contain"
@@ -136,15 +136,15 @@ const About = () => {
             </Link>
           </div>
           <Image
-            src={coolWottle}
-            alt="cool wottle"
+            src={wottleStand}
+            alt="Wottle marketplace"
             height={400}
             width={400}
             className="object-contain"
           />
         </div>
         <div className="flex flex-col">
-          <p className="text-5xl font-bold mb-11">Auction</p>
+          <p className="text-5xl font-bold mb-11">Auction (Coming Soon)</p>
           {auction}
           <Link href="/coming-soon" passHref>
             <ButtonPill
@@ -156,8 +156,8 @@ const About = () => {
         </div>
         <div className="flex flex-wrap justify-center py-5 lg:flex-nowrap lg:justify-between">
           <Image
-            src={studiousWottle}
-            alt="studious wottle"
+            src={nftMinted}
+            alt="NFT Minted"
             height={400}
             width={400}
             className="object-contain"
@@ -187,8 +187,8 @@ const About = () => {
             </Link>
           </div>
           <Image
-            src={dogWottle}
-            alt="dog wottle"
+            src={poolParty}
+            alt="Pool party"
             height={400}
             width={400}
             className="object-contain"
@@ -237,6 +237,7 @@ const About = () => {
           <div className="flex justify-center w-full md:w-3/4">
             <Image
               src={roadmap}
+              alt="roadmap"
               className="object-contain bg-primary-default"
             />
           </div>
