@@ -22,7 +22,11 @@ const About = () => {
       It is also important to give back, especially with the outbreak of the{" "}
       <b>Covid-19 Pandemic</b>. That is why, WottleNFT will be aligning its
       business model with the United Nation Sustainable Development Goals (
-      <b>SDGs</b>) to support Social Enterprises worldwide.
+      <b>SDGs</b>) to support Social Enterprises worldwide. Furthermore, we are
+      empowering you to support them! With every transaction made on WottleNFT,
+      you get to choose which of the UN Goal to support. For now, WottleNFT is
+      focusing on 3 UN Goals : Zero Hunger, Climate Action and Quality
+      Education.
     </p>
   );
 
@@ -38,19 +42,22 @@ const About = () => {
   const marketPlace = (
     <p className="text-xl">
       WottleNFT will first focus on building an amazing marketplace. Afterwhich,
-      we aim to integrate Cardano Smart Contracts by December. We will be
-      charging a fee of <b>2.5%</b>, with a minimum of <b>5 Ada</b> for each
-      transaction. This fee comprises: Service Fees <b>(2%)</b> and Social
-      Donations <b>(0.5%)</b>.
+      we aim to integrate Cardano Smart Contracts by December. Listing is{" "}
+      <b>FREE*</b> but costs ~2₳ : 1₳ pegged to your NFT and ~1₳ Transactional
+      Fee. Upon successful sale, we charge a <b>3%</b> fee, with a minimum of{" "}
+      <b>2₳</b> for each transaction. This fee comprises: Service Fees{" "}
+      <b>(1₳,1%)</b> and Social Donations <b>(1₳,1%)</b>. If you are a
+      successful buyer, head over to the profile section to choose one of the 3
+      UN Goals to support : Zero Hunger, Climate Action or Quality Education
     </p>
   );
 
   const auction = (
     <p className="text-xl">
-      WottleNFT will be adopting an English Auction format. Creators are charged
-      a gas fee for listing an auction. At the end of an auction, WottleNFT’s
-      smart contract facilitates the transaction between creators and successful
-      bidders, with a fee of 15%. This 15% fee comprises:{" "}
+      By Q1 2022, WottleNFT will be releasing Auctions. We will release more
+      details closer to launch date! Stay tuned. At the end of an auction,
+      WottleNFT’s smart contract facilitates the transaction between creators
+      and successful bidders, with a fee of 15%. This 15% fee comprises:{" "}
       <b>Service Fees (11%)</b>, <b>Royalty Fees (2.5%)</b> and{" "}
       <b>Social Donations (1.5%)</b>. Successful bidders are given an option to
       dedicate their Social Donations to a social enterprise of their choosing,
