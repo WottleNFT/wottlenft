@@ -27,4 +27,5 @@ jobs:
             git reset --hard origin/main
             docker-compose build backend
             docker-compose build frontend
-            docker-compose up -d frontend backend
+            docker-compose build profile-backend
+            docker-compose up -d frontend backend profile-backend
