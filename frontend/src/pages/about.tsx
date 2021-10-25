@@ -43,27 +43,20 @@ const About = () => {
     <p className="text-xl">
       WottleNFT will first focus on building an amazing marketplace. Afterwhich,
       we aim to integrate Cardano Smart Contracts by December. Listing is{" "}
-      <b>FREE*</b> but costs ~2₳ : 1₳ pegged to your NFT and ~1₳ Transactional
-      Fee. Upon successful sale, we charge a <b>3%</b> fee, with a minimum of{" "}
-      <b>2₳</b> for each transaction. This fee comprises: Service Fees{" "}
-      <b>(1₳,1%)</b> and Social Donations <b>(1₳,1%)</b>. If you are a
-      successful buyer, head over to the profile section to choose one of the 3
-      UN Goals to support : Zero Hunger, Climate Action or Quality Education
+      <b>FREE*</b>. You just need to pay <b>~2₳</b> : <b>1₳</b> pegged to your
+      NFT and <b>~1₳</b> for transactional Fee. Upon successful sale, we charge
+      a <b>3%</b> fee, with a minimum of <b>2₳</b> for each transaction. This
+      fee comprises: Service Fees <b>(1₳,1%)</b> and Social Donations{" "}
+      <b>(1₳,1%)</b>. If you are a successful buyer/seller, head over to the
+      profile section to choose one of the 3 UN Goals to support : Zero Hunger,
+      Climate Action or Quality Education
     </p>
   );
 
   const auction = (
     <p className="text-xl">
       By Q1 2022, WottleNFT will be releasing Auctions. We will release more
-      details closer to launch date! Stay tuned. At the end of an auction,
-      WottleNFT’s smart contract facilitates the transaction between creators
-      and successful bidders, with a fee of 15%. This 15% fee comprises:{" "}
-      <b>Service Fees (11%)</b>, <b>Royalty Fees (2.5%)</b> and{" "}
-      <b>Social Donations (1.5%)</b>. Successful bidders are given an option to
-      dedicate their Social Donations to a social enterprise of their choosing,
-      based on an underlying United Nations Sustainable Development Goal. We
-      chose to support social enterprises, as we recognise their struggle for
-      good.
+      details closer to launch date. Stay tuned!
     </p>
   );
 
@@ -88,7 +81,7 @@ const About = () => {
       <p>
         Furthermore, we are offering <b>0% fees</b>! As a reward, delegators who
         stake a minimum of <b>1000 ADA</b> will receive our very first,{" "}
-        <b>exclusive utility NFT drop</b> by the end of the year! More
+        <b>exclusive utility NFT drop</b> by the start of next year! More
         information will be released soon.
       </p>
     </p>

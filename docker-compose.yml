@@ -7,6 +7,7 @@ services:
       args:
         - TESTNET_API=$TESTNET_API
         - MAINNET_API=$MAINNET_API
+        - PROFILE_API=$PROFILE_API
     ports:
       - 3000:3000
     environment:
@@ -33,6 +34,17 @@ services:
       - QUALITY_EDUCATION_ADDRESS=addr1qyejyjgh979q2hh7p0dspzvytkqvnddg4np4utf93eykdsa6tl3wfrn2283m8yqwydt4zrgupen2lnnaxdrqtvzvffkq3z4y36
 
     restart: on-failure
+  profile-backend:
+    build:
+      context: ./profilebackend
+    ports:
+      - 3002:3002
+    environment:
+      - PORT=3002
+      - TOKEN_SECRET=$TOKEN_SECRET
+      - DBHOST=postgres
+      - DBUSER=$DBUSER
+      - DBPASSWORD=$DBPASSWORD
   postgres:
     image: postgres:11.5-alpine
     environment:
