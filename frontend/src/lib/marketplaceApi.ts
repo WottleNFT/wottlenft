@@ -38,6 +38,7 @@ export type SaleMetadata = {
   sellerAddress: string;
   price: number;
   unGoal: UnGoal;
+  namiAddress: string;
 };
 
 export const getAllNftsForSale = async (
@@ -59,11 +60,28 @@ export const buyNft = async (
   baseUrl: string,
   request: BuyNftRequest
 ): Promise<TransactionResponse> => {
-  console.log(request);
   const response = await axios.post<
     BuyNftRequest,
     AxiosResponse<TransactionResponse>
   >(`${baseUrl}/marketplace/buy`, request);
+
+  return response.data;
+};
+
+export type CancelNftRequest = {
+  sellerAddress: string;
+  policyId: string;
+  assetName: string;
+};
+
+export const cancelNft = async (
+  baseUrl: string,
+  request: CancelNftRequest
+): Promise<TransactionResponse> => {
+  const response = await axios.post<
+    CancelNftRequest,
+    AxiosResponse<TransactionResponse>
+  >(`${baseUrl}/marketplace/cancel`, request);
 
   return response.data;
 };

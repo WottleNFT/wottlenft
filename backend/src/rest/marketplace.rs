@@ -3,10 +3,8 @@ use crate::marketplace::un_goals::UnGoal;
 use crate::rest::{parse_address, respond_with_transaction, AppState};
 use crate::Result;
 use actix_web::{get, post, web, HttpResponse, Scope};
-use cardano_serialization_lib::utils::{from_bignum, BigNum};
 use cardano_serialization_lib::{AssetName, PolicyID};
 use serde::{Deserialize, Serialize};
-use serde_json::json;
 
 #[get("")]
 async fn get_all_sales(data: web::Data<AppState>) -> Result<HttpResponse> {
@@ -79,9 +77,36 @@ async fn buy_nft(buy_details: web::Json<Buy>, data: web::Data<AppState>) -> Resu
     Ok(respond_with_transaction(&tx))
 }
 
+#[derive(Deserialize, Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct Cancel {
+    seller_address: String,
+    policy_id: String,
+    asset_name: String,
+}
+
+#[post("/cancel")]
+async fn cancel_nft(
+    cancel_details: web::Json<Cancel>,
+    data: web::Data<AppState>,
+) -> Result<HttpResponse> {
+    let cancel_details = cancel_details.into_inner();
+
+    let seller_address = parse_address(&cancel_details.seller_address)?;
+    let policy_id = PolicyID::from_bytes(hex::decode(cancel_details.policy_id)?)?;
+    let asset_name = AssetName::new(cancel_details.asset_name.into_bytes())?;
+
+    let tx = data
+        .marketplace
+        .cancel(seller_address, policy_id, asset_name, &data.pool)
+        .await?;
+    Ok(respond_with_transaction(&tx))
+}
+
 pub fn create_marketplace_service() -> Scope {
     web::scope("/marketplace")
         .service(sell_nft)
         .service(buy_nft)
+        .service(cancel_nft)
         .service(get_all_sales)
 }

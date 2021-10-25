@@ -1,6 +1,5 @@
 use crate::{config::Config, Result};
 use cardano_serialization_lib::address::{Address, BaseAddress, NetworkInfo};
-use cardano_serialization_lib::NetworkId;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]

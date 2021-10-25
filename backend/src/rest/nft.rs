@@ -1,13 +1,11 @@
 use crate::{
     cardano_db_sync::{get_protocol_params, get_slot_number, query_user_address_utxo},
-    coin::combine_witness_set,
     nft::{NftTransactionBuilder, WottleNftMetadata},
     Result,
 };
 use actix_web::{get, post, web, HttpResponse, Scope};
-use cardano_serialization_lib::{Transaction, TransactionWitnessSet};
 use serde::Deserialize;
-use serde_json::{json, Value};
+use serde_json::json;
 
 use crate::cardano_db_sync::{query_if_nft_minted, query_single_nft};
 use crate::rest::AppState;

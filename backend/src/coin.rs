@@ -1,12 +1,10 @@
 use cardano_serialization_lib::{
     error::JsError,
     utils::{BigNum, Coin},
-    Mint, NativeScripts, Transaction, TransactionBody, TransactionInput, TransactionOutput,
-    TransactionWitnessSet,
+    Mint, NativeScripts, Transaction, TransactionBody, TransactionOutput, TransactionWitnessSet,
 };
 
 use crate::cardano_db_sync::ProtocolParams;
-use crate::error::Error;
 use crate::Result;
 use cardano_serialization_lib::crypto::{
     BootstrapWitnesses, PrivateKey, TransactionHash, Vkeywitnesses,

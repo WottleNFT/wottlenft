@@ -8,6 +8,8 @@ import useWallet from "../hooks/useWallet";
 import {
   buyNft,
   BuyNftRequest,
+  cancelNft,
+  CancelNftRequest,
   getAllNftsForSale,
   NftForSale,
   sellNft,
@@ -86,6 +88,18 @@ const Helper = ({
     const signResponse = await signTransaction(url, transaction, signature);
     console.log(signResponse);
   };
+
+  const cancel = async (sellData: NftForSale) => {
+    const request: CancelNftRequest = {
+      sellerAddress: sellData.metadata.sellerAddress,
+      policyId: sellData.policyId,
+      assetName: sellData.assetName,
+    };
+    const { transaction } = await cancelNft(url, request);
+    const signature = await cardano.signTx(transaction);
+    const signResponse = await signTransaction(url, transaction, signature);
+    console.log(signResponse);
+  };
   console.log(address);
   if (error || isLoading || !data) return <div>Loading</div>;
   return (
@@ -121,6 +135,9 @@ const Helper = ({
             {sale.metadata.unGoal}
             <br />
             <IonButton onClick={() => buy(sale)}>Buy</IonButton>
+            {sale.metadata.namiAddress === address && (
+              <IonButton onClick={() => cancel(sale)}>Cancel</IonButton>
+            )}
           </div>
         ))}
       </div>

@@ -1,9 +1,7 @@
 // Wallet that holds NFTs for sale
 
 use crate::marketplace::un_goals::UnGoal;
-use crate::{
-    cardano_db_sync::query_user_address_utxo, config::Config, decode_private_key, Error, Result,
-};
+use crate::{config::Config, decode_private_key, Error, Result};
 use cardano_serialization_lib::address::{
     Address, EnterpriseAddress, NetworkInfo, StakeCredential,
 };
@@ -11,9 +9,7 @@ use cardano_serialization_lib::crypto::{PrivateKey, TransactionHash, Vkeywitness
 use cardano_serialization_lib::metadata::{
     AuxiliaryData, GeneralTransactionMetadata, MetadataList, MetadataMap, TransactionMetadatum,
 };
-use cardano_serialization_lib::utils::{
-    make_vkey_witness, to_bignum, Int, TransactionUnspentOutput,
-};
+use cardano_serialization_lib::utils::{make_vkey_witness, to_bignum, Int};
 use cardano_serialization_lib::{AssetName, PolicyID};
 use serde::ser::SerializeStruct;
 use serde::{Serialize, Serializer};
@@ -52,7 +48,7 @@ impl PgSellData {
     fn to_sell_data(self) -> Option<SellData> {
         let policy_id = PolicyID::from_bytes(self.policy);
         let asset_name = String::from_utf8(self.name)
-            .map_err(|e| Error::Message("Failed to convert asset name to string".to_string()))
+            .map_err(|_| Error::Message("Failed to convert asset name to string".to_string()))
             .and_then(|s| AssetName::new(s.into_bytes()).map_err(|e| Error::Js(e)));
         let seller_address = self
             .json
@@ -207,7 +203,7 @@ impl Serialize for SellData {
         serialize_struct.serialize_field(
             "assetName",
             &String::from_utf8(self.asset_name.name())
-                .map_err(|e| serde::ser::Error::custom("Failed to serialize asset name"))?,
+                .map_err(|_| serde::ser::Error::custom("Failed to serialize asset name"))?,
         )?;
         serialize_struct.serialize_field("metadata", &self.metadata)?;
         serialize_struct.end()
@@ -219,16 +215,18 @@ impl Serialize for SellMetadata {
     where
         S: Serializer,
     {
-        let mut serialize_struct = serializer.serialize_struct("SellMetadata", 3)?;
+        let mut serialize_struct = serializer.serialize_struct("SellMetadata", 4)?;
         serialize_struct.serialize_field(
             "sellerAddress",
             &self
                 .seller_address
                 .to_bech32(None)
-                .map_err(|e| serde::ser::Error::custom("Failed to serialize seller address"))?,
+                .map_err(|_| serde::ser::Error::custom("Failed to serialize seller address"))?,
         )?;
         serialize_struct.serialize_field("price", &self.price)?;
         serialize_struct.serialize_field("unGoal", &self.un_goal)?;
+        serialize_struct
+            .serialize_field("namiAddress", &hex::encode(&self.seller_address.to_bytes()))?;
         serialize_struct.end()
     }
 }

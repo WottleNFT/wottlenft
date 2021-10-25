@@ -3,7 +3,6 @@ mod marketplace;
 mod nft;
 
 use crate::coin::combine_witness_set;
-use crate::marketplace::holder::MarketplaceHolder;
 use crate::marketplace::Marketplace;
 use crate::{config::Config, transaction::Submitter, Error, Result};
 use actix_cors::Cors;
