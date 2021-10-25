@@ -42,8 +42,8 @@ services:
       - PORT=3002
       - TOKEN_SECRET=$TOKEN_SECRET
       - DBHOST=postgres
-      - DBUSER=/run/secrets/postgres_user
-      - DBPASSWORD=/run/secrets/postgres_db
+      - DBUSER=$DBUSER
+      - DBPASSWORD=$DBPASSWORD
   postgres:
     image: postgres:11.5-alpine
     environment:
