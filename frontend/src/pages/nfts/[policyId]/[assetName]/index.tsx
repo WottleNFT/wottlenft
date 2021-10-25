@@ -1,5 +1,4 @@
 import { GetServerSideProps } from "next";
-import { NextSeo } from "next-seo";
 
 import DisplayMessage from "../../../../Components/Nfts/DisplayMessage";
 import NftInfoCard from "../../../../Components/Nfts/NftInfoCard";
@@ -45,24 +44,23 @@ const NftDetails = (props: Props) => {
   const imageUrl = getImgUrl(image);
 
   return (
-    <Main>
-      <NextSeo
-        openGraph={{
-          type: "website",
-          url: `https://wottlenft.io/nfts/${policyId}/${assetName}`,
-          title: `WottleNFT | ${assetName}`,
-          description,
-          images: [
-            {
-              url: imageUrl,
-              width: 600,
-              height: 600,
-              alt: "NFT Image",
-              type: "image/png",
-            },
-          ],
-        }}
-      />
+    <Main
+      openGraph={{
+        type: "website",
+        url: `https://wottlenft.io/nfts/${policyId}/${assetName}`,
+        title: `WottleNFT | ${assetName}`,
+        description,
+        images: [
+          {
+            url: imageUrl,
+            width: 600,
+            height: 600,
+            alt: "NFT Image",
+            type: "image/png",
+          },
+        ],
+      }}
+    >
       <div className="flex flex-col items-center px-4 md:px-12 2xl:px-52">
         <img
           className="object-contain h-3/4 min-h-320 p-4 rounded-2xl"
