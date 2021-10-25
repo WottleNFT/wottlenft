@@ -1,6 +1,7 @@
 import React from "react";
 
-import { Nft } from "../../types/Nft";
+import { Nft } from "../../../types/Nft";
+import { getImgUrl } from "../../../utils/NftUtil";
 
 type Props = {
   nft: Nft;
@@ -10,8 +11,7 @@ const NftCard = ({ nft }: Props) => {
   const { assetName, metadata } = nft;
   const { description, image } = metadata;
 
-  const imageHash = image.replace("ipfs://", "");
-  const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
+  const imageUrl = getImgUrl(image);
 
   return (
     <div

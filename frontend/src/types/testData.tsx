@@ -1,6 +1,7 @@
 import { Asset } from "./Asset";
 import { Auction } from "./Auction";
 import { Category } from "./Category";
+import { Nft } from "./Nft";
 import { Partner } from "./Partner";
 import { Profile } from "./Profile";
 
@@ -148,3 +149,16 @@ const nus: Partner = {
 
 export const testPartners: Partner[] = [nus];
 export const testSocialEnterprises: Partner[] = [trcl];
+
+export const testNft: Nft = {
+  policyId: "9bb72d35809e1c8a93c9c7404c7aa3480483105343c38e9eb7c7b143",
+  assetName: "oct20",
+  quantity: 1,
+  metadata: {
+    description: "oct20 description",
+    image: "https://picsum.photos/200",
+    name: "oct20 name",
+    author: "WottleNFT",
+    owner: "WottleNFT",
+  },
+};

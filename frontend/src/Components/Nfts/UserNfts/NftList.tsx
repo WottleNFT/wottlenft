@@ -1,7 +1,7 @@
 import React from "react";
 
-import { useGetUserNftsQuery } from "../../app/nft";
-import DisplayMessage from "./DisplayMessage";
+import { useGetUserNftsQuery } from "../../../app/nft";
+import DisplayMessage from "../DisplayMessage";
 import NftCard from "./NftCard";
 
 type Props = {
@@ -21,7 +21,7 @@ const NftList = ({ baseUrl, address }: Props) => {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:mx-20 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4xl">
+      <div className="grid grid-cols-1 lg:mx-20 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {data.map((nft) => {
           return (
             <div
