@@ -14,10 +14,13 @@ type Props = {
 };
 
 const MarketNftCard = ({ nftForSale, btnOnClick, btnText }: Props) => {
+  const saleMetadata = nftForSale.metadata;
+  const { price } = saleMetadata;
+
   const nft = useNftFromSaleNft(nftForSale);
 
   const { assetName, metadata } = nft;
-  const { description, image, price } = metadata;
+  const { description, image } = metadata;
 
   const imageUrl = getImgUrl(image);
 
@@ -57,7 +60,9 @@ const MarketNftCard = ({ nftForSale, btnOnClick, btnText }: Props) => {
               {description}
             </p>
             <div className="flex flex-row justify-between items-end pt-2">
-              <span className="text-2xl text-primary-default">{`${price} ₳`}</span>
+              <span className="text-2xl text-primary-default">{`${
+                price / 1000000
+              } ₳`}</span>
               <IonButton size="small" shape="round" onClick={btnOnClick}>
                 {btnText}
               </IonButton>

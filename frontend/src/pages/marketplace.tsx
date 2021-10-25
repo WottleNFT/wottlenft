@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import DisplayMessage from "../Components/Nfts/DisplayMessage";
+import MarketNftBigCard from "../Components/Nfts/MarketplaceNfts/MarketNftBigCard";
 import MarketNftCard from "../Components/Nfts/MarketplaceNfts/MarketNftCard";
 import { Status } from "../features/wallet/walletSlice";
 import useWallet from "../hooks/useWallet";
@@ -28,11 +29,13 @@ const Marketplace = () => {
   }
 
   return (
-    <MarketNftList
-      address={wallet.state.address}
-      url={wallet.state.backendApi}
-      cardano={wallet.cardano}
-    />
+    <Main>
+      <MarketNftList
+        address={wallet.state.address}
+        url={wallet.state.backendApi}
+        cardano={wallet.cardano}
+      />
+    </Main>
   );
 };
 
@@ -54,7 +57,7 @@ const MarketNftList = ({
       setSaleNfts(await getAllNftsForSale(url));
     };
     getSaleNfts();
-  }, []);
+  }, [url]);
 
   const buy = async (sellDetails: NftForSale) => {
     const request: BuyNftRequest = {
@@ -82,8 +85,8 @@ const MarketNftList = ({
   };
 
   return (
-    <Main>
-      {/* {saleNfts[0] &&
+    <>
+      {saleNfts[0] &&
         (saleNfts[0].metadata.namiAddress === address ? (
           <MarketNftBigCard
             nftForSale={saleNfts[0]}
@@ -96,7 +99,7 @@ const MarketNftList = ({
             btnOnClick={() => buy(saleNfts[0]!)}
             btnText="Buy"
           />
-        ))} */}
+        ))}
 
       <div className="flex flex-col gap-3 px-4 md:px-10 pb-10">
         <div className="flex justify-between h-12 p-3">
@@ -105,9 +108,10 @@ const MarketNftList = ({
               Search All
             </IonRouterLink> */}
         </div>
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
-          {saleNfts.length ? (
-            saleNfts.map((nftForSale, idx) => {
+
+        {saleNfts.length ? (
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+            {saleNfts.map((nftForSale, idx) => {
               return (
                 <div key={idx}>
                   {nftForSale.metadata.namiAddress === address ? (
@@ -125,12 +129,12 @@ const MarketNftList = ({
                   )}
                 </div>
               );
-            })
-          ) : (
-            <DisplayMessage text="No Listed NFTs Right Now" />
-          )}
-        </div>
+            })}
+          </div>
+        ) : (
+          <DisplayMessage text="No Listed NFTs Right Now" />
+        )}
       </div>
-    </Main>
+    </>
   );
 };

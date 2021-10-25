@@ -13,30 +13,33 @@ type Props = {
   btnText: string;
 };
 
-const MarketNftCard = ({ nftForSale, btnOnClick, btnText }: Props) => {
+const MarketNftBigCard = ({ nftForSale, btnOnClick, btnText }: Props) => {
+  const saleMetadata = nftForSale.metadata;
+  const { price } = saleMetadata;
+
   const nft = useNftFromSaleNft(nftForSale);
 
   const { assetName, metadata } = nft;
-  const { description, image, price } = metadata;
+  const { description, image } = metadata;
 
   const imageUrl = getImgUrl(image);
 
   return (
-    <div className="flex px-4 md:px-16 py-4 truncate items-center flex-col md:flex-row">
+    <div className="mb-3 flex px-4 md:px-16 py-4 truncate items-center flex-col md:flex-row">
       <Link href={`/marketplace/listingId`} passHref>
         <a>
           <img
-            className="rounded-3xl object-cover w-full md:w-1/2 p-2 mb-3"
+            className="rounded-3xl object-cover w-full p-2"
             alt="NFT Image"
             src={imageUrl}
           />
         </a>
       </Link>
-      <div className="flex flex-col h-full gap-4 lg:gap-8 px-4 md:px-12 justify-between text-left">
-        <p className="w-full text-3xl whitespace-normal truncate font-bold my-auto">
+      <div className="w-full flex flex-col h-full gap-4 lg:gap-8 px-4 md:px-12 justify-between text-left">
+        <p className="text-3xl whitespace-normal truncate font-bold my-auto">
           {assetName}
         </p>
-        <p className="w-full text-xl whitespace-normal truncate line-clamp-3">
+        <p className="text-xl whitespace-normal truncate line-clamp-3">
           {description}
         </p>
         <div className="flex items-end justify-between pr-4">
@@ -45,10 +48,10 @@ const MarketNftCard = ({ nftForSale, btnOnClick, btnText }: Props) => {
               Price:
             </IonCardSubtitle>
             <IonLabel className="text-4xl text-primary-default">
-              {`${price} ₳`}
+              {`${price / 1000000} ₳`}
             </IonLabel>
           </div>
-          <div className="w-16 mb-2">
+          <div className="w-16 mb-1">
             <IonButton shape="round" onClick={btnOnClick}>
               {btnText}
             </IonButton>
@@ -59,4 +62,4 @@ const MarketNftCard = ({ nftForSale, btnOnClick, btnText }: Props) => {
   );
 };
 
-export default MarketNftCard;
+export default MarketNftBigCard;
