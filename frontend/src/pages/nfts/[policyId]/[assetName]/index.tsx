@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 
-import NftInfoCard from "../../../../Components/UserNfts/NftInfoCard";
+import NftInfoCard from "../../../../Components/Nfts/NftInfoCard";
 import { Status } from "../../../../features/wallet/walletSlice";
 import useWallet from "../../../../hooks/useWallet";
 import { Main } from "../../../../templates/Main";
@@ -62,7 +62,7 @@ const NftDetails = (props: Props) => {
               <span>
                 Owned By{" "}
                 <span className="text-primary-default">
-                  @{"author" in metadata ? metadata.author : "Unknown"}
+                  @{"owner" in metadata ? metadata.owner : "Unknown"}
                 </span>
               </span>
               <p className="mt-4 text-base whitespace-normal">{description}</p>

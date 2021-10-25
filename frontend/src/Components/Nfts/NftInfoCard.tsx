@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
-import { IonButton, IonCard, IonSegment } from "@ionic/react";
+import { IonCard, IonSegment } from "@ionic/react";
 
 import { Nft } from "../../types/Nft";
 import CategoryTag from "../CategoryTag";
 import NftInfoSegmentBtn from "./NftInfoSegmentBtn";
-import styles from "./userNft.module.css";
 
 type Props = {
   nft: Nft;
@@ -59,16 +58,6 @@ const NftInfoCard = ({ nft }: Props) => {
             <CategoryTag color="primary" label="Key4 : Value4" />
           </div>
         )}
-      </div>
-
-      <div className="p-4 w-full flex flex-row justify-between items-end bg-black">
-        <div className="flex flex-col">
-          <span className="text-sm font-light text-white">Price:</span>
-          <span className="text-3xl text-primary-default">30 ₳</span>
-        </div>
-        <IonButton size="small" shape="round" className={styles.infoCardBtn}>
-          Buy
-        </IonButton>
       </div>
     </IonCard>
   );

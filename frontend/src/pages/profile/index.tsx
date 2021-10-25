@@ -3,8 +3,8 @@ import React from "react";
 import { IonButton, IonSpinner } from "@ionic/react";
 import Link from "next/link";
 
-import DisplayMessage from "../../Components/UserNfts/DisplayMessage";
-import NftList from "../../Components/UserNfts/NftList";
+import DisplayMessage from "../../Components/Nfts/DisplayMessage";
+import NftList from "../../Components/Nfts/UserNfts/NftList";
 import WalletSwitch from "../../Components/WalletSwitch";
 import useAuth from "../../hooks/useAuth";
 import useWallet from "../../hooks/useWallet";
