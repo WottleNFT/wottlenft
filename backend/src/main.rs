@@ -5,6 +5,7 @@ mod cardano_db_sync;
 mod coin;
 mod config;
 mod error;
+mod marketplace;
 mod nft;
 mod rest;
 mod transaction;
@@ -16,12 +17,12 @@ use envconfig::Envconfig;
 use error::Result;
 
 use crate::error::Error;
+use crate::marketplace::holder::MarketplaceHolder;
 
 #[actix_web::main]
 async fn main() -> Result<()> {
     dotenv::dotenv().ok();
     let config = config::Config::init_from_env().unwrap();
-
     rest::start_server(config).await?;
     Ok(())
 }

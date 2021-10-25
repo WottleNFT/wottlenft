@@ -1,14 +1,15 @@
 use crate::{
     cardano_db_sync::{get_protocol_params, get_slot_number, query_user_address_utxo},
+    coin::combine_witness_set,
     nft::{NftTransactionBuilder, WottleNftMetadata},
     Result,
 };
 use actix_web::{get, post, web, HttpResponse, Scope};
 use cardano_serialization_lib::{Transaction, TransactionWitnessSet};
 use serde::Deserialize;
-use serde_json::json;
+use serde_json::{json, Value};
 
-use crate::cardano_db_sync::query_if_nft_minted;
+use crate::cardano_db_sync::{query_if_nft_minted, query_single_nft};
 use crate::rest::AppState;
 use cardano_serialization_lib::crypto::TransactionHash;
 
@@ -59,32 +60,24 @@ async fn create_nft_transaction(
 }
 
 #[derive(Deserialize)]
-struct Signature {
-    signature: String,
-    transaction: String,
+struct NftDetails {
+    policy_id: String,
+    asset_name: String,
 }
-#[post("/sign")]
-async fn sign_nft_transaction(
-    signature: web::Json<Signature>,
+
+#[get("/single/{policy_id}/{asset_name}")]
+async fn get_single_nft(
+    details: web::Path<NftDetails>,
     data: web::Data<AppState>,
 ) -> Result<HttpResponse> {
-    let Signature {
-        signature,
-        transaction,
-    } = signature.into_inner();
-
-    let transaction = Transaction::from_bytes(hex::decode(transaction)?)?;
-    let tx_witness_set = TransactionWitnessSet::from_bytes(hex::decode(signature)?)?;
-
-    let tx = NftTransactionBuilder::combine_witness_set(transaction, tx_witness_set)?;
-
-    let tx_id = data.submitter.submit_tx(&tx).await?;
-    Ok(HttpResponse::Ok().json(json!({ "tx_id": tx_id })))
+    let details = details.into_inner();
+    let json = query_single_nft(&data.pool, &details.policy_id, &details.asset_name).await?;
+    Ok(HttpResponse::Ok().json(json))
 }
 
 pub fn create_nft_service() -> Scope {
     web::scope("/nft")
         .service(create_nft_transaction)
-        .service(sign_nft_transaction)
         .service(check_nft_exists)
+        .service(get_single_nft)
 }

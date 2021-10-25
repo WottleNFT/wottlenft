@@ -24,29 +24,28 @@ const Marketplace = () => {
       {auctions[0] && (
         <div className="flex px-4 md:px-16 py-4 truncate items-center flex-col md:flex-row">
           <img
-            className="rounded-3xl object-contain h-80 p-2 mb-3"
+            className="rounded-3xl object-cover w-full md:w-1/2 p-2 mb-3"
             alt="Auction"
             src={auctions[0].nft.imgUrl}
           />
-          <div className="flex flex-col h-full gap-4 px-4 md:px-12 justify-around text-left">
-            <p className="w-full text-2xl whitespace-normal truncate line-clamp-2 font-bold">
+          <div className="flex flex-col h-full gap-4 lg:gap-8 px-4 md:px-12 justify-between text-left">
+            <p className="w-full text-3xl whitespace-normal truncate font-bold my-auto">
               {auctions[0].nft.asset_name}
             </p>
-            <p className="w-full text-base whitespace-normal truncate line-clamp-5">
+            <p className="w-full text-xl whitespace-normal truncate line-clamp-3">
               {auctions[0].nft.description}
             </p>
-            <div className="flex items-end justify-between pr-4">
+            <div className="flex items-end  justify-between pr-4">
               <div className="flex flex-col items-start">
-                <IonCardSubtitle className="text-sm font-light">
+                <IonCardSubtitle className="text-base font-light">
                   Price:
                 </IonCardSubtitle>
-                <IonLabel className="text-2xl text-primary-default">
+                <IonLabel className="text-4xl text-primary-default">
                   30 ₳
                 </IonLabel>
               </div>
-              <div className="w-16">
+              <div className="w-16 mb-2">
                 <IonButton
-                  size="small"
                   shape="round"
                   routerLink={`/auctions/${auctions[0].id}`}
                 >
@@ -58,35 +57,33 @@ const Marketplace = () => {
         </div>
       )}
 
-      <div className="px-4 md:px-10 pb-10">
-        <div className="flex flex-col gap-3">
-          <div className="flex justify-between h-12 p-3">
-            <span className="text-xl">Marketplace</span>
-            <IonRouterLink href="/auctions" color="primary">
-              View All
-            </IonRouterLink>
-          </div>
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
-            {auctions.length ? (
-              auctions.map((auction, idx) => {
-                return (
-                  <div key={idx}>
-                    <Link href={`/auctions/${auction.id}`} passHref>
-                      <a>
-                        <AuctionCard auction={auction} />
-                      </a>
-                    </Link>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="flex items-center justify-center w-full h-full">
-                <IonLabel className="text-lg text-gray-400">
-                  No Live Auctions Right Now
-                </IonLabel>
-              </div>
-            )}
-          </div>
+      <div className="flex flex-col gap-3 px-4 md:px-10 pb-10">
+        <div className="flex justify-between h-12 p-3">
+          <span className="text-xl">Marketplace</span>
+          <IonRouterLink href="/auctions" color="primary">
+            View All
+          </IonRouterLink>
+        </div>
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+          {auctions.length ? (
+            auctions.map((auction, idx) => {
+              return (
+                <div key={idx}>
+                  <Link href={`/auctions/${auction.id}`} passHref>
+                    <a>
+                      <AuctionCard auction={auction} />
+                    </a>
+                  </Link>
+                </div>
+              );
+            })
+          ) : (
+            <div className="flex items-center justify-center w-full h-full">
+              <IonLabel className="text-lg text-gray-400">
+                No Live Auctions Right Now
+              </IonLabel>
+            </div>
+          )}
         </div>
       </div>
     </Main>

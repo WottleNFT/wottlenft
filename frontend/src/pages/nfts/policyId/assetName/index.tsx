@@ -1,23 +1,39 @@
 import { GetServerSideProps } from "next";
 
-import NftInfoCard from "../../Components/UserNfts/NftInfoCard";
-import { Main } from "../../templates/Main";
-import { Asset } from "../../types/Asset";
-import { testNfts } from "../../types/testData";
+import NftInfoCard from "../../../../Components/UserNfts/NftInfoCard";
+import { Main } from "../../../../templates/Main";
+import { Nft } from "../../../../types/Nft";
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { policyId, assetName } = context.params!;
+  const id = policyId as string;
+  const name = assetName as string;
+
+  const res = await fetch(
+    `https://test-net.wottlenft.io/nft/single/${id}/${name}`
+  );
+
+  const nft = await res.json();
+  const metadata = nft.id.name;
+
   return {
     props: {
-      nft: testNfts[0]!,
+      nft: {
+        policyId,
+        assetName,
+        quantity: 1,
+        metadata,
+      },
     },
   };
 };
 type Props = {
-  nft: Asset;
+  nft: Nft;
 };
-const Sample = (props: Props) => {
+const NftDetails = (props: Props) => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const { description, asset_name } = props.nft;
+  const { metadata, assetName } = props.nft;
+  const { description } = metadata;
   return (
     <Main>
       <div className="flex flex-col items-center px-2 md:px-10">
@@ -30,11 +46,13 @@ const Sample = (props: Props) => {
           <div className="w-full md:w-3/5">
             <div className="flex flex-col text-left">
               <p className="w-full text-2xl whitespace-normal truncate font-bold">
-                {asset_name}
+                {assetName}
               </p>
               <span className="text-right">
                 Owned By{" "}
-                <span className="text-primary-default">@CollectorUsername</span>
+                <span className="text-primary-default">
+                  @{"author" in metadata ? metadata.author : "Unknown"}
+                </span>
               </span>
               <p className="mt-4 text-base whitespace-normal">{description}</p>
             </div>
@@ -47,4 +65,4 @@ const Sample = (props: Props) => {
     </Main>
   );
 };
-export default Sample;
+export default NftDetails;

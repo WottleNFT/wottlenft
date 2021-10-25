@@ -2,6 +2,7 @@ use bigdecimal::ToPrimitive;
 use cardano_serialization_lib::address::Address;
 use cardano_serialization_lib::crypto::TransactionHash;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use sqlx::postgres::PgRow;
 use sqlx::types::BigDecimal;
 use sqlx::{Error, PgPool, Row};
@@ -95,4 +96,31 @@ pub async fn query_if_nft_minted(pool: &PgPool, tx_hash: &TransactionHash) -> cr
     .execute(pool)
     .await?;
     Ok(res.rows_affected() > 0)
+}
+
+pub async fn query_single_nft(
+    pool: &PgPool,
+    policy_id: &str,
+    asset_name: &str,
+) -> crate::Result<Option<Value>> {
+    let res: Option<Value> = sqlx::query(
+        r#"
+        SELECT tx_metadata.json
+        FROM ma_tx_mint
+        INNER JOIN tx_metadata
+        ON ma_tx_mint.tx_id = tx_metadata.tx_id
+        WHERE encode(ma_tx_mint.policy, 'hex') = $1
+        AND convert_from(ma_tx_mint.name, 'utf-8') = $2
+        AND tx_metadata.key = 721
+        ORDER BY ma_tx_mint.tx_id DESC
+        LIMIT 1
+        "#,
+    )
+    .bind(policy_id)
+    .bind(asset_name)
+    .map(|row: PgRow| row.get("json"))
+    .fetch_optional(pool)
+    .await?;
+
+    Ok(res)
 }
