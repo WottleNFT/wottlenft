@@ -16,6 +16,8 @@ services:
   backend:
     build:
       context: ./backend
+    volumes:
+      - $MARKETPLACE_PRIVATE_KEY_DIRECTORY:/marketplace
     ports:
       - 3001:3001
     environment:
@@ -24,6 +26,7 @@ services:
       - SUBMIT_API_BASE_URL=http://cardano-submit-api:8090
       - NFT_BECH32_TAXATION_ADDRESS=$NFT_BECH32_TAXATION_ADDRESS
       - DATABASE_URL=$DATABASE_URL
+      - MARKETPLACE_PRIVATE_KEY_FILE=/marketplace/marketplace.skey
     restart: on-failure
   postgres:
     image: postgres:11.5-alpine
