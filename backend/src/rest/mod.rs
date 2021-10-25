@@ -36,6 +36,12 @@ pub fn parse_address(address: &str) -> Result<Address> {
     }
 }
 
+pub fn respond_with_transaction(tx: &Transaction) -> HttpResponse {
+    HttpResponse::Ok().json(json!({
+        "transaction": hex::encode(tx.to_bytes())
+    }))
+}
+
 #[derive(Deserialize)]
 struct Signature {
     signature: String,
@@ -64,9 +70,7 @@ pub async fn start_server(config: Config) -> Result<()> {
     let tax_address = Address::from_bech32(&config.nft_bech32_tax_address)?;
     let db_pool = PgPool::connect(&config.database_url).await?;
     let address = format!("0.0.0.0:{}", config.port);
-    let marketplace = Marketplace {
-        holder: MarketplaceHolder::from_config(&config)?,
-    };
+    let marketplace = Marketplace::from_config(&config)?;
     println!("Starting server on {}", &address);
     Ok(HttpServer::new(move || {
         App::new()

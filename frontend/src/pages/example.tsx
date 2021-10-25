@@ -6,6 +6,8 @@ import { useGetUserNftsQuery } from "../app/nft";
 import { Status } from "../features/wallet/walletSlice";
 import useWallet from "../hooks/useWallet";
 import {
+  buyNft,
+  BuyNftRequest,
   getAllNftsForSale,
   NftForSale,
   sellNft,
@@ -48,6 +50,7 @@ const Helper = ({
     address,
   });
   const [saleNfts, setSaleNfts] = useState<NftForSale[]>([]);
+  const [price, setPrice] = useState("");
 
   useEffect(() => {
     getSaleNfts();
@@ -57,7 +60,18 @@ const Helper = ({
     setSaleNfts(await getAllNftsForSale(url));
   };
 
-  const buy = async (_: NftForSale) => {};
+  const buy = async (sellDetails: NftForSale) => {
+    const request: BuyNftRequest = {
+      buyerAddress: address,
+      policyId: sellDetails.policyId,
+      assetName: sellDetails.assetName,
+    };
+
+    const { transaction } = await buyNft(url, request);
+    const signature = await cardano.signTx(transaction, true);
+    const signResponse = await signTransaction(url, transaction, signature);
+    console.log(signResponse);
+  };
 
   const sell = async (nft: Nft) => {
     const request: SellNftRequest = {
@@ -65,7 +79,7 @@ const Helper = ({
       policyId: nft.policyId,
       assetName: nft.assetName,
       unGoal: UnGoal.ZeroHunger,
-      price: 5000000,
+      price: Number.parseInt(price, 10),
     };
     const { transaction } = await sellNft(url, request);
     const signature = await cardano.signTx(transaction);
@@ -77,6 +91,15 @@ const Helper = ({
   return (
     <div className="grid grid-cols-2">
       <div>
+        Price
+        <input
+          value={price}
+          onChange={(e) => {
+            setPrice(e.target.value);
+          }}
+          className="border-2"
+          type="text"
+        />
         {data.map((nft) => (
           <div key={nft.policyId} className="m-2">
             {nft.policyId}
@@ -93,7 +116,7 @@ const Helper = ({
             <br />
             {sale.assetName}
             <br />
-            {sale.metadata.price}
+            {sale.metadata.price / 1000000} ADA
             <br />
             {sale.metadata.unGoal}
             <br />

@@ -30,9 +30,9 @@ pub struct MarketplaceHolder {
 }
 
 pub struct SellData {
-    policy_id: PolicyID,
-    asset_name: AssetName,
-    metadata: SellMetadata,
+    pub policy_id: PolicyID,
+    pub asset_name: AssetName,
+    pub metadata: SellMetadata,
 }
 
 pub struct SellMetadata {
@@ -51,7 +51,9 @@ struct PgSellData {
 impl PgSellData {
     fn to_sell_data(self) -> Option<SellData> {
         let policy_id = PolicyID::from_bytes(self.policy);
-        let asset_name = AssetName::new(self.name);
+        let asset_name = String::from_utf8(self.name)
+            .map_err(|e| Error::Message("Failed to convert asset name to string".to_string()))
+            .and_then(|s| AssetName::new(s.into_bytes()).map_err(|e| Error::Js(e)));
         let seller_address = self
             .json
             .get("seller_address")
@@ -123,6 +125,42 @@ impl MarketplaceHolder {
         })
     }
 
+    pub async fn get_nft_details(
+        &self,
+        pool: &PgPool,
+        policy_id: &PolicyID,
+        asset_name: &AssetName,
+    ) -> Result<Option<SellData>> {
+        let hex_policy = hex::encode(policy_id.to_bytes());
+        let asset_name_str = String::from_utf8(asset_name.name())
+            .map_err(|_| Error::Message("Cannot convert asset name to string".to_string()))?;
+        let pg_sell_data: Option<PgSellData> = sqlx::query_as::<_, PgSellData>(
+            r#"
+                SELECT 
+                    policy,
+                    name,
+                    json
+                FROM tx_out 
+                LEFT JOIN tx_in ON tx_out.tx_id = tx_in.tx_out_id AND tx_out.index = tx_in.tx_out_index
+                INNER JOIN tx_metadata
+                ON tx_out.tx_id = tx_metadata.tx_id AND tx_metadata.key = 888
+                INNER JOIN ma_tx_out
+                ON tx_out.id = ma_tx_out.tx_out_id
+                AND tx_in.id IS NULL
+                WHERE address = $1
+                AND encode(policy, 'hex') = $2
+                AND convert_from(name, 'utf-8') = $3
+            "#,
+        )
+        .bind(&self.address_bech32)
+        .bind(&hex_policy)
+        .bind(&asset_name_str)
+        .fetch_optional(pool)
+        .await?;
+
+        Ok(pg_sell_data.and_then(PgSellData::to_sell_data))
+    }
+
     pub async fn get_nfts_for_sale(&self, pool: &PgPool) -> Result<Vec<SellData>> {
         let mut rows = sqlx::query_as::<_, PgSellData>(
             r#"
@@ -131,10 +169,12 @@ impl MarketplaceHolder {
                     name,
                     json
                 FROM tx_out 
+                LEFT JOIN tx_in ON tx_out.tx_id = tx_in.tx_out_id AND tx_out.index = tx_in.tx_out_index
                 INNER JOIN tx_metadata
                 ON tx_out.tx_id = tx_metadata.tx_id AND tx_metadata.key = 888
                 INNER JOIN ma_tx_out
                 ON tx_out.id = ma_tx_out.tx_out_id
+                AND tx_in.id IS NULL
                 WHERE address = $1
                 "#,
         )
@@ -166,7 +206,7 @@ impl Serialize for SellData {
         serialize_struct.serialize_field("policyId", &hex::encode(self.policy_id.to_bytes()))?;
         serialize_struct.serialize_field(
             "assetName",
-            &String::from_utf8(self.asset_name.to_bytes())
+            &String::from_utf8(self.asset_name.name())
                 .map_err(|e| serde::ser::Error::custom("Failed to serialize asset name"))?,
         )?;
         serialize_struct.serialize_field("metadata", &self.metadata)?;

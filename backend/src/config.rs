@@ -19,4 +19,16 @@ pub struct Config {
 
     #[envconfig(from = "MARKETPLACE_PRIVATE_KEY_FILE")]
     pub marketplace_private_key_file: String,
+
+    #[envconfig(from = "MARKETPLACE_REVENUE_ADDRESS")]
+    pub marketplace_revenue_address: String,
+
+    #[envconfig(from = "CLIMATE_ACTION_ADDRESS")]
+    pub climate_action_address: String,
+
+    #[envconfig(from = "ZERO_HUNGER_ADDRESS")]
+    pub zero_hunger_address: String,
+
+    #[envconfig(from = "QUALITY_EDUCATION_ADDRESS")]
+    pub quality_education_address: String,
 }
