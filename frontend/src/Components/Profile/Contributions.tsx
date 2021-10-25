@@ -25,13 +25,13 @@ const contributionList: Contribution[] = [{
 
 const Contributions = () => {
 	return (
-		<table className="w-full text-lg">
+		<table className="w-full overflow-x-scroll text-lg">
 			<thead>
 				<tr className="text-left border-b-2 border-black border-solid h-14">
 					<th className="px-2">Date</th>
 					<th className="px-2">Message</th>
-					<th className="px-2">Amount</th>
-					<th className="px-2">ID</th>
+					<th className="hidden px-2 sm:table-cell">Amount</th>
+					<th className="hidden px-2 sm:table-cell">ID</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -50,10 +50,10 @@ const Contributions = () => {
 								{contributionInfo.nftPurchased}
 							</span>
 						</td>
-						<td className="px-2 text-primary-default">
+						<td className="hidden px-2 sm:table-cell text-primary-default">
 							{contributionInfo.hasContributed ? `₳${contributionInfo.amountContributed}` : <IonButton className="rounded-2xl">Contribute</IonButton>}
 						</td>
-						<td className="px-2">
+						<td className="hidden px-2 sm:table-cell">
 							{contributionInfo.id}
 						</td>
 					</tr>

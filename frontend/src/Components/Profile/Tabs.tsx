@@ -19,9 +19,9 @@ const Tabs = () => {
 
 	return(
 		<div className="self-start w-full px-6 my-20">
-			<div className="flex my-5">
-					<button onClick={() => setActiveTab(Tab.Collection)} className={`px-5 text-2xl font-bold text-center border-r-2 border-black border-solid hover:text-primary-default ${activeTab === Tab.Collection && "text-primary-default"}`}>Collection</button>
-					<button onClick={() => setActiveTab(Tab.Activity)} className={`px-5 text-2xl font-bold text-center border-r-2 border-black border-solid hover:text-primary-default ${activeTab === Tab.Activity && "text-primary-default"}`}>Activity</button>
+			<div className="flex flex-col my-5 sm:flex-row">
+					<button onClick={() => setActiveTab(Tab.Collection)} className={`px-5 text-2xl font-bold text-center border-b-2 sm:border-b-0 sm:border-r-2 border-black border-solid hover:text-primary-default ${activeTab === Tab.Collection && "text-primary-default"}`}>Collection</button>
+					<button onClick={() => setActiveTab(Tab.Activity)} className={`px-5 text-2xl font-bold text-center border-b-2 sm:border-b-0 sm:border-r-2 border-black border-solid hover:text-primary-default ${activeTab === Tab.Activity && "text-primary-default"}`}>Activity</button>
 					<button onClick={() => setActiveTab(Tab.Contribution)} className={`px-5 text-2xl font-bold text-center hover:text-primary-default ${activeTab === Tab.Contribution && "text-primary-default"}`}>Contribution</button>
 			</div>
 			<CSSTransitionGroup

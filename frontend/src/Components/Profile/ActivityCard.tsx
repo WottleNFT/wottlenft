@@ -1,4 +1,4 @@
-import { Activity } from "../../types/Activity";
+import { Activity, ActivityStatus } from "../../types/Activity";
 
 interface Props {
 	activity: Activity;
@@ -21,7 +21,7 @@ const ActivityCard = ({ activity }: Props) => {
 					src={activity.image}
 				/>
 			</div>
-      <div className="flex items-center flex-grow bg-red-500 rounded-b-2xl">
+      <div className={`flex items-center flex-grow rounded-b-2xl ${activity.status === ActivityStatus.listed || activity.status === ActivityStatus.bought ? "bg-black" : "bg-red-500"}`}>
 				<p className="w-full text-3xl font-bold text-center text-white">{activity.status}</p>
       </div>
     </div>

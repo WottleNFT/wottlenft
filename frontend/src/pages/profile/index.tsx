@@ -1,6 +1,6 @@
 import React from "react";
 
-import { IonButton, IonSpinner } from "@ionic/react";
+import { IonButton, IonIcon, IonSpinner } from "@ionic/react";
 import Link from "next/link";
 
 import DisplayMessage from "../../Components/UserNfts/DisplayMessage";
@@ -11,6 +11,7 @@ import useAuth from "../../hooks/useAuth";
 import useWallet from "../../hooks/useWallet";
 import { Main } from "../../templates/Main";
 import Tabs from "../../Components/Profile/Tabs";
+import { createOutline } from "ionicons/icons";
 
 const Profile = () => {
   const wallet = useWallet();
@@ -18,7 +19,7 @@ const Profile = () => {
 
   return (
     <Main title="Profile">
-      <div className="flex flex-col w-full min-h-full px-56">
+      <div className="flex flex-col w-full min-h-full px-0 mx-auto max-w-maxBody xl:px-56">
         {isLoading && <IonSpinner name="crescent" className="self-center" />}
         {!isLoading && !isLoggedIn && (
           <p className="self-center text-3xl font-bold mt-52">
@@ -39,10 +40,10 @@ const Profile = () => {
               Logout
             </IonButton>
 						<div className="flex flex-col items-center h-4/5">
-							<div className="relative w-full bg-purple-400 rounded-3xl h-80">
+							<div className="relative w-full rounded-none xl:rounded-3xl h-80">
 								<img
 									src="https://picsum.photos/1000"
-									className="object-cover w-full h-full rounded-3xl"
+									className="object-cover w-full h-full rounded-none xl:rounded-3xl"
 									alt="profile banner"
 								/>
 								<div className="absolute bg-pink-400 border border-4 rounded-full border-primary-default -bottom-28 w-60 h-60 left-10">
@@ -51,6 +52,12 @@ const Profile = () => {
 										alt="profile picture"
 										className="object-cover w-full h-full rounded-full"
 									/>
+								</div>
+								<div className="absolute -bottom-8 left-72">
+									<div className="flex items-end text-gray-700">
+										<IonIcon icon={createOutline} />
+										<p className="leading-tight underline">Edit profile</p>
+									</div>
 								</div>
 							</div>
 							<StatsBar collection={1} activity={2} contribution={3} />
