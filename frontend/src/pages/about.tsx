@@ -47,8 +47,8 @@ const About = () => {
       <b>~1₳</b> Transactional Fee. Upon successful sale, we charge a <b>3%</b>{" "}
       fee, with a minimum of <b>2₳</b> for each transaction. This fee comprises:
       Service Fees <b>(1₳,1%)</b> and Social Donations <b>(1₳,1%)</b>. If you
-      are a successful buyer, head over to the profile section to choose one of
-      the 3 UN Goals to support : Zero Hunger, Climate Action or Quality
+      are a successful buyer/seller, head over to the profile section to choose
+      one of the 3 UN Goals to support : Zero Hunger, Climate Action or Quality
       Education
     </p>
   );
@@ -56,7 +56,7 @@ const About = () => {
   const auction = (
     <p className="text-xl">
       By Q1 2022, WottleNFT will be releasing Auctions. We will release more
-      details closer to launch date! Stay tuned.
+      details closer to launch date. Stay tuned!
     </p>
   );
 
