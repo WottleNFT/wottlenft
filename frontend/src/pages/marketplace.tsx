@@ -1,93 +1,136 @@
 import React, { useEffect, useState } from "react";
 
+import DisplayMessage from "../Components/Nfts/DisplayMessage";
+import MarketNftCard from "../Components/Nfts/MarketplaceNfts/MarketNftCard";
+import { Status } from "../features/wallet/walletSlice";
+import useWallet from "../hooks/useWallet";
 import {
-  IonButton,
-  IonCardSubtitle,
-  IonLabel,
-  IonRouterLink,
-} from "@ionic/react";
-import Link from "next/link";
-
-import AuctionCard from "../Components/Auctions/AuctionCard";
+  buyNft,
+  BuyNftRequest,
+  cancelNft,
+  CancelNftRequest,
+  getAllNftsForSale,
+  NftForSale,
+} from "../lib/marketplaceApi";
+import { signTransaction } from "../lib/transactionApi";
 import { Main } from "../templates/Main";
-import { Auction } from "../types/Auction";
-import { testAuctions } from "../types/testData";
+import { NamiWallet } from "../wallet";
 
 const Marketplace = () => {
-  const [auctions, setAuctions] = useState<Auction[]>([]);
+  const wallet = useWallet();
+
+  if (wallet.status !== Status.Enabled) {
+    return (
+      <Main>
+        <DisplayMessage text="Loading..." />
+      </Main>
+    );
+  }
+
+  return (
+    <MarketNftList
+      address={wallet.state.address}
+      url={wallet.state.backendApi}
+      cardano={wallet.cardano}
+    />
+  );
+};
+
+export default Marketplace;
+
+const MarketNftList = ({
+  url,
+  address,
+  cardano,
+}: {
+  url: string;
+  address: string;
+  cardano: NamiWallet;
+}) => {
+  const [saleNfts, setSaleNfts] = useState<NftForSale[]>([]);
+
   useEffect(() => {
-    setAuctions(testAuctions);
+    const getSaleNfts = async () => {
+      setSaleNfts(await getAllNftsForSale(url));
+    };
+    getSaleNfts();
   }, []);
+
+  const buy = async (sellDetails: NftForSale) => {
+    const request: BuyNftRequest = {
+      buyerAddress: address,
+      policyId: sellDetails.policyId,
+      assetName: sellDetails.assetName,
+    };
+
+    const { transaction } = await buyNft(url, request);
+    const signature = await cardano.signTx(transaction, true);
+    const signResponse = await signTransaction(url, transaction, signature);
+    console.log(signResponse);
+  };
+
+  const cancel = async (sellData: NftForSale) => {
+    const request: CancelNftRequest = {
+      sellerAddress: sellData.metadata.sellerAddress,
+      policyId: sellData.policyId,
+      assetName: sellData.assetName,
+    };
+    const { transaction } = await cancelNft(url, request);
+    const signature = await cardano.signTx(transaction);
+    const signResponse = await signTransaction(url, transaction, signature);
+    console.log(signResponse);
+  };
 
   return (
     <Main>
-      {auctions[0] && (
-        <div className="flex px-4 md:px-16 py-4 truncate items-center flex-col md:flex-row">
-          <img
-            className="rounded-3xl object-cover w-full md:w-1/2 p-2 mb-3"
-            alt="Auction"
-            src={auctions[0].nft.imgUrl}
+      {/* {saleNfts[0] &&
+        (saleNfts[0].metadata.namiAddress === address ? (
+          <MarketNftBigCard
+            nftForSale={saleNfts[0]}
+            btnOnClick={() => cancel(saleNfts[0]!)}
+            btnText="Unlist"
           />
-          <div className="flex flex-col h-full gap-4 lg:gap-8 px-4 md:px-12 justify-between text-left">
-            <p className="w-full text-3xl whitespace-normal truncate font-bold my-auto">
-              {auctions[0].nft.asset_name}
-            </p>
-            <p className="w-full text-xl whitespace-normal truncate line-clamp-3">
-              {auctions[0].nft.description}
-            </p>
-            <div className="flex items-end  justify-between pr-4">
-              <div className="flex flex-col items-start">
-                <IonCardSubtitle className="text-base font-light">
-                  Price:
-                </IonCardSubtitle>
-                <IonLabel className="text-4xl text-primary-default">
-                  30 ₳
-                </IonLabel>
-              </div>
-              <div className="w-16 mb-2">
-                <IonButton
-                  shape="round"
-                  routerLink={`/auctions/${auctions[0].id}`}
-                >
-                  Buy
-                </IonButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+        ) : (
+          <MarketNftBigCard
+            nftForSale={saleNfts[0]}
+            btnOnClick={() => buy(saleNfts[0]!)}
+            btnText="Buy"
+          />
+        ))} */}
 
       <div className="flex flex-col gap-3 px-4 md:px-10 pb-10">
         <div className="flex justify-between h-12 p-3">
           <span className="text-xl">Marketplace</span>
-          <IonRouterLink href="/auctions" color="primary">
-            View All
-          </IonRouterLink>
+          {/* <IonRouterLink href="/marketplace/search" color="primary">
+              Search All
+            </IonRouterLink> */}
         </div>
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
-          {auctions.length ? (
-            auctions.map((auction, idx) => {
+          {saleNfts.length ? (
+            saleNfts.map((nftForSale, idx) => {
               return (
                 <div key={idx}>
-                  <Link href={`/auctions/${auction.id}`} passHref>
-                    <a>
-                      <AuctionCard auction={auction} />
-                    </a>
-                  </Link>
+                  {nftForSale.metadata.namiAddress === address ? (
+                    <MarketNftCard
+                      nftForSale={nftForSale}
+                      btnOnClick={() => cancel(nftForSale)}
+                      btnText="Unlist"
+                    />
+                  ) : (
+                    <MarketNftCard
+                      nftForSale={nftForSale}
+                      btnOnClick={() => buy(nftForSale)}
+                      btnText="Buy"
+                    />
+                  )}
                 </div>
               );
             })
           ) : (
-            <div className="flex items-center justify-center w-full h-full">
-              <IonLabel className="text-lg text-gray-400">
-                No Live Auctions Right Now
-              </IonLabel>
-            </div>
+            <DisplayMessage text="No Listed NFTs Right Now" />
           )}
         </div>
       </div>
     </Main>
   );
 };
-
-export default Marketplace;

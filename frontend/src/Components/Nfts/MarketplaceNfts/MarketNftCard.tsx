@@ -1,19 +1,25 @@
 import React from "react";
 
 import { IonButton, IonCard, IonCardHeader, IonCardTitle } from "@ionic/react";
+import Link from "next/link";
 
-import { Nft } from "../../../types/Nft";
+import useNftFromSaleNft from "../../../hooks/useNftFromSaleNft";
+import { NftForSale } from "../../../lib/marketplaceApi";
+import { getImgUrl } from "../../../utils/NftUtil";
 
 type Props = {
-  nft: Nft;
+  nftForSale: NftForSale;
+  btnOnClick: React.MouseEventHandler<HTMLIonButtonElement> | undefined;
+  btnText: string;
 };
 
-const MarketNftCard = ({ nft }: Props) => {
-  const { assetName, metadata } = nft;
-  const { description, image } = metadata;
+const MarketNftCard = ({ nftForSale, btnOnClick, btnText }: Props) => {
+  const nft = useNftFromSaleNft(nftForSale);
 
-  const imageHash = image.replace("ipfs://", "");
-  const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
+  const { assetName, metadata } = nft;
+  const { description, image, price } = metadata;
+
+  const imageUrl = getImgUrl(image);
 
   return (
     <IonCard className="rounded-3xl m-0 px-2 md:px-4 pt-3">
@@ -33,12 +39,15 @@ const MarketNftCard = ({ nft }: Props) => {
           </div>
         </div>
 
-        <img
-          className="p-2 w-auto h-1/2 object-cover rounded-3xl"
-          alt="nft image"
-          src={imageUrl}
-        />
-
+        <Link href={`/marketplace/listingId`} passHref>
+          <a>
+            <img
+              className="p-2 w-auto h-1/2 object-cover rounded-3xl"
+              alt="NFT Image"
+              src={imageUrl}
+            />
+          </a>
+        </Link>
         <div className="w-full h-1/3 flex flex-col justify-center">
           <IonCardHeader className="px-2 truncate">
             <IonCardTitle className="text-center truncate text-base">
@@ -48,9 +57,9 @@ const MarketNftCard = ({ nft }: Props) => {
               {description}
             </p>
             <div className="flex flex-row justify-between items-end pt-2">
-              <span className="text-2xl text-primary-default">30 ₳</span>
-              <IonButton size="small" shape="round">
-                Buy
+              <span className="text-2xl text-primary-default">{`${price} ₳`}</span>
+              <IonButton size="small" shape="round" onClick={btnOnClick}>
+                {btnText}
               </IonButton>
             </div>
           </IonCardHeader>
