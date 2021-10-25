@@ -15,7 +15,7 @@ enum Tab {
 
 const Tabs = () => {
 	const wallet = useWallet();
-	const [activeTab, setActiveTab] = useState<number>(Tab.Contribution)
+	const [activeTab, setActiveTab] = useState<number>(Tab.Collection)
 
 	return(
 		<div className="self-start w-full px-6 my-20">

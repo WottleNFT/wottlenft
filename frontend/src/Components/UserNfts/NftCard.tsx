@@ -1,7 +1,8 @@
-import { IonButton } from "@ionic/react";
+import { IonButton, IonIcon, useIonModal } from "@ionic/react";
 import React from "react";
 
 import { Nft } from "../../types/Nft";
+import ListNftModal from "../Profile/ListNftModal";
 
 type Props = {
   nft: Nft;
@@ -13,6 +14,10 @@ const NftCard = ({ nft }: Props) => {
 
   const imageHash = image.replace("ipfs://", "");
   const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
+
+	const [present, dismiss] = useIonModal(ListNftModal, {
+		nft: nft,
+	});
 
   return (
     <div
@@ -31,7 +36,7 @@ const NftCard = ({ nft }: Props) => {
       <div className="flex flex-col px-3 py-1">
         <p className="text-lg font-bold text-center">{assetName}</p>
         <p className="text-center text-gray-600">{description}</p>
-				<IonButton className="mx-auto">List</IonButton>
+				<IonButton className="mx-auto" onClick={() => present()}>List</IonButton>
       </div>
     </div>
   );

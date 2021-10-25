@@ -92,6 +92,15 @@ ion-button {
   --color: var(--ion-color-primary) !important;
 }
 
+.modal-wrapper {
+	--max-width: 800px;
+	--width: 90%;
+	--height: 90%;
+	--max-height: 800px;
+	--border-radius: 10px;
+}
+
+/* Fade-in/fade-out animations for profile tabs*/
 .tab-enter {
   opacity: 0.01;
 }
