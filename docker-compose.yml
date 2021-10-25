@@ -7,6 +7,7 @@ services:
       args:
         - TESTNET_API=$TESTNET_API
         - MAINNET_API=$MAINNET_API
+        - PROFILE_API=$PROFILE_API
     ports:
       - 3000:3000
     environment:
