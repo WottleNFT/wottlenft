@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-import useWallet, { WottleWalletState } from "../../hooks/useWallet";
+import { WottleWalletState } from "../../hooks/useWallet";
 import DisplayMessage from "../UserNfts/DisplayMessage";
 import NftList from "../UserNfts/NftList";
 import WalletSwitch from "../WalletSwitch";
@@ -15,7 +16,7 @@ enum Tab {
 }
 
 interface Props {
-	wallet: WottleWalletState;
+  wallet: WottleWalletState;
 }
 
 const Tabs = ({ wallet }: Props) => {
@@ -49,43 +50,33 @@ const Tabs = ({ wallet }: Props) => {
           Contribution
         </button>
       </div>
-      <TransitionGroup
-      >
+      <TransitionGroup>
         {activeTab === Tab.Collection && (
-					<CSSTransition
-						timeout={300}
-						classNames="tab"
-					>
-						<WalletSwitch
-							wallet={wallet}
-							loading={<DisplayMessage text="Loading your wallet..." />}
-							notEnabled={<DisplayMessage text="Please enable Nami Wallet" />}
-							enabled={(enabledWallet) => (
-								<NftList
-									address={enabledWallet.state.address}
-									baseUrl={enabledWallet.state.backendApi}
-								/>
-							)}
-							fallback={<DisplayMessage text="Please get Nami Wallet" />}
-						/>
-					</CSSTransition>
+          <CSSTransition timeout={300} classNames="tab">
+            <WalletSwitch
+              wallet={wallet}
+              loading={<DisplayMessage text="Loading your wallet..." />}
+              notEnabled={<DisplayMessage text="Please enable Nami Wallet" />}
+              enabled={(enabledWallet) => (
+                <NftList
+                  address={enabledWallet.state.address}
+                  baseUrl={enabledWallet.state.backendApi}
+                />
+              )}
+              fallback={<DisplayMessage text="Please get Nami Wallet" />}
+            />
+          </CSSTransition>
         )}
-        {activeTab === Tab.Activity && 
-					<CSSTransition
-						timeout={300}
-						classNames="tab"
-					>
-						<ActivityTab />
-					</CSSTransition>
-				}
-        {activeTab === Tab.Contribution && 
-					<CSSTransition
-						timeout={300}
-						classNames="tab"
-					>
-						<Contributions />
-					</CSSTransition>
-				}
+        {activeTab === Tab.Activity && (
+          <CSSTransition timeout={300} classNames="tab">
+            <ActivityTab />
+          </CSSTransition>
+        )}
+        {activeTab === Tab.Contribution && (
+          <CSSTransition timeout={300} classNames="tab">
+            <Contributions />
+          </CSSTransition>
+        )}
       </TransitionGroup>
     </div>
   );

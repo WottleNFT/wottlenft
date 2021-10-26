@@ -9,6 +9,7 @@ import useTextInput from "../../hooks/useTextInput";
 import { WottleEnabled } from "../../hooks/useWallet";
 import { signTransaction } from "../../lib/transactionApi";
 import { NetworkError } from "../../types/NetworkError";
+import { PinataResponse } from "../../types/PinataResponse";
 import { HexCborString } from "../../wallet";
 import CopySection from "./CopySection";
 import DisplayTransaction from "./DisplayTransaction";
@@ -29,13 +30,6 @@ type Policy = {
 type TransactionResponse = {
   transaction: HexCborString;
   policy: Policy;
-};
-
-type PinataResponse = {
-  IpfsHash: string;
-  PinSize: number;
-  Timestamp: string;
-  isDuplicate: boolean;
 };
 
 type CustomFields = Record<string, string | number>;

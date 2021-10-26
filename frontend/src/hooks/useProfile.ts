@@ -1,67 +1,106 @@
 import { useEffect, useState } from "react";
-import { editBioApi, profileInfoApi } from "../lib/profileApi";
-import useAuth from "./useAuth"
+
+import { useRouter } from "next/router";
+
+import {
+  editBioApi,
+  editProfilePictureApi,
+  profileInfoApi,
+} from "../lib/profileApi";
+import useAuth from "./useAuth";
 
 export interface ProfileData {
-	user: User;
+  user: User;
 }
 
 export interface User {
-	email: string;
-	username: string;
-	wallet_id: string;
-	bio?: string;
-	profile_picture_hash?: string;
+  email: string;
+  username: string;
+  wallet_id: string;
+  bio?: string;
+  profile_picture_hash?: string;
 }
 
 const useProfile = () => {
-	const { isLoading, isLoggedIn, getAccessToken } = useAuth();
-	const [profileData, setProfileData] = useState<ProfileData | undefined>();
-	const [profileDataReady, setProfileDataReady] = useState<boolean>(false);
+  // WARNING! This hook will redirect user back to login if access token has expired
 
-	useEffect(() => {
-		if (!isLoading && isLoggedIn) {
-			try {
-				const fetchProfileInfo = async () => {
-					const res = await fetch(profileInfoApi, {
-						method: 'GET',
-						headers: {
-							'Content-Type': 'application/json',
-							'Authorization': `Bearer ${getAccessToken()}`
-						},
-					});
-					const data = await res.json();
-					setProfileData(data);
-					setProfileDataReady(true);
-				}
-				fetchProfileInfo();
-			} catch (e) {
-				console.error(e);
-			}
-		}
-	}, [isLoading]);
+  const { isLoading, isLoggedIn, getAccessToken, setLogout } = useAuth();
+  const [profileData, setProfileData] = useState<ProfileData | undefined>();
+  const [profileDataReady, setProfileDataReady] = useState<boolean>(false);
+  const router = useRouter();
 
-	const updateBio = async (bio: string) => {
-		const payload = {
-			newBio: bio,
-		}
-		console.log(getAccessToken())
-		console.log(payload);
-		const res = await fetch(editBioApi, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${getAccessToken()}`
-			},
-			body: JSON.stringify(payload),
-		});
-		return res;
-	}
+  useEffect(() => {
+    if (!isLoading && isLoggedIn) {
+      try {
+        const fetchProfileInfo = async () => {
+          const res = await fetch(profileInfoApi, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getAccessToken()}`,
+            },
+          });
+          if (res.status === 401) {
+            setLogout();
+            router.push("/login");
+            return;
+          }
+          const data = await res.json();
+          setProfileData(data);
+          setProfileDataReady(true);
+        };
+        fetchProfileInfo();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, [isLoading]);
 
-	return {
-		profileDataReady,
-		profileData,
-		updateBio,
-	}
-}
-export default useProfile
+  const updateBio = async (bio: string) => {
+    const payload = {
+      newBio: bio,
+    };
+    const res = await fetch(editBioApi, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getAccessToken()}`,
+      },
+      body: JSON.stringify(payload),
+    });
+    if (res.status === 401) {
+      setLogout();
+      router.push("/login");
+    }
+
+    return res;
+  };
+
+  const updateProfilePic = async (imageUrl: string) => {
+    const payload = {
+      newProfilePictureHash: imageUrl,
+    };
+
+    const res = await fetch(editProfilePictureApi, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getAccessToken()}`,
+      },
+      body: JSON.stringify(payload),
+    });
+    if (res.status === 401) {
+      setLogout();
+      router.push("/login");
+    }
+    return res;
+  };
+
+  return {
+    profileDataReady,
+    profileData,
+    updateBio,
+    updateProfilePic,
+  };
+};
+export default useProfile;
