@@ -46,8 +46,8 @@ const About = () => {
       <b>FREE*</b>. You just need to pay <b>~2₳</b> : <b>1₳</b> pegged to your
       NFT and <b>~1₳</b> for transactional Fee. Upon successful sale, we charge
       a <b>3%</b> fee, with a minimum of <b>2₳</b> for each transaction. This
-      fee comprises: Service Fees <b>(1₳,1%)</b> and Social Donations{" "}
-      <b>(1₳,1%)</b>. If you are a successful buyer/seller, head over to the
+      fee comprises: Service Fees <b>(1₳,2%)</b> and Social Donations{" "}
+      <b>(1₳,1%)</b>. If you are a successful Buyer/Seller, head over to the
       profile section to choose one of the 3 UN Goals to support : Zero Hunger,
       Climate Action or Quality Education
     </p>
