@@ -1,8 +1,7 @@
 import React, { useState } from "react";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-import { CSSTransitionGroup } from "react-transition-group";
-
-import useWallet from "../../hooks/useWallet";
+import useWallet, { WottleWalletState } from "../../hooks/useWallet";
 import DisplayMessage from "../UserNfts/DisplayMessage";
 import NftList from "../UserNfts/NftList";
 import WalletSwitch from "../WalletSwitch";
@@ -15,8 +14,11 @@ enum Tab {
   Contribution,
 }
 
-const Tabs = () => {
-  const wallet = useWallet();
+interface Props {
+	wallet: WottleWalletState;
+}
+
+const Tabs = ({ wallet }: Props) => {
   const [activeTab, setActiveTab] = useState<number>(Tab.Collection);
 
   return (
@@ -32,7 +34,7 @@ const Tabs = () => {
         </button>
         <button
           onClick={() => setActiveTab(Tab.Activity)}
-          className={`px-5 text-2xl font-bold text-center border-b-2 sm:border-b-0 sm:border-r-2 border-black border-solid hover:text-primary-default ${
+          className={`px-5 text-2xl font-bold text-center border-b-2 sm:border-b-0 sm:border-r-0 border-black border-solid hover:text-primary-default ${
             activeTab === Tab.Activity && "text-primary-default"
           }`}
         >
@@ -40,35 +42,51 @@ const Tabs = () => {
         </button>
         <button
           onClick={() => setActiveTab(Tab.Contribution)}
-          className={`px-5 text-2xl font-bold text-center hover:text-primary-default ${
+          className={`px-5 text-2xl font-bold text-center hover:text-primary-default hidden ${
             activeTab === Tab.Contribution && "text-primary-default"
           }`}
         >
           Contribution
         </button>
       </div>
-      <CSSTransitionGroup
-        transitionName="tab"
-        transitionEnterTimeout={300}
-        transitionLeaveTimeout={1}
+      <TransitionGroup
       >
         {activeTab === Tab.Collection && (
-          <WalletSwitch
-            wallet={wallet}
-            loading={<DisplayMessage text="Loading your wallet..." />}
-            notEnabled={<DisplayMessage text="Please enable Nami Wallet" />}
-            enabled={(enabledWallet) => (
-              <NftList
-                address={enabledWallet.state.address}
-                baseUrl={enabledWallet.state.backendApi}
-              />
-            )}
-            fallback={<DisplayMessage text="Please get Nami Wallet" />}
-          />
+					<CSSTransition
+						timeout={300}
+						classNames="tab"
+					>
+						<WalletSwitch
+							wallet={wallet}
+							loading={<DisplayMessage text="Loading your wallet..." />}
+							notEnabled={<DisplayMessage text="Please enable Nami Wallet" />}
+							enabled={(enabledWallet) => (
+								<NftList
+									address={enabledWallet.state.address}
+									baseUrl={enabledWallet.state.backendApi}
+								/>
+							)}
+							fallback={<DisplayMessage text="Please get Nami Wallet" />}
+						/>
+					</CSSTransition>
         )}
-        {activeTab === Tab.Activity && <ActivityTab />}
-        {activeTab === Tab.Contribution && <Contributions />}
-      </CSSTransitionGroup>
+        {activeTab === Tab.Activity && 
+					<CSSTransition
+						timeout={300}
+						classNames="tab"
+					>
+						<ActivityTab />
+					</CSSTransition>
+				}
+        {activeTab === Tab.Contribution && 
+					<CSSTransition
+						timeout={300}
+						classNames="tab"
+					>
+						<Contributions />
+					</CSSTransition>
+				}
+      </TransitionGroup>
     </div>
   );
 };

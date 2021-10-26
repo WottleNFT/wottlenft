@@ -43,11 +43,17 @@ const useAuth = () => {
     setIsLoggedIn(false);
   };
 
+	// Get access token
+	const getAccessToken = () => {
+		return localStorage.getItem(tokenKey);
+	}
+
   return {
     isLoading,
     isLoggedIn,
     setLogin,
     setLogout,
+		getAccessToken,
   };
 };
 export default useAuth;

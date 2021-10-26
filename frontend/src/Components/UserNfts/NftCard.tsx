@@ -16,8 +16,13 @@ const NftCard = ({ nft }: Props) => {
   const imageHash = image.replace("ipfs://", "");
   const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
 
-  const [present] = useIonModal(ListNftModal, {
+	const handleDismiss = () => {
+		dismiss();
+	}
+
+  const [present, dismiss] = useIonModal(ListNftModal, {
     nft,
+		dismiss: handleDismiss,
   });
 
   return (
