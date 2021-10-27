@@ -1,8 +1,7 @@
-import Image from 'next/image';
+import Image from "next/image";
 
-import poolParty from '../../public/assets/about/pool_party.png';
-
-import { Main } from '../templates/Main';
+import poolParty from "../../public/assets/about/pool_party.png";
+import { Main } from "../templates/Main";
 
 const ComingSoon = () => {
   return (
