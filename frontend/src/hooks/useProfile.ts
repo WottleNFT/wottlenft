@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 
 import {
   editBioApi,
+  editPasswordApi,
   editProfilePictureApi,
   profileInfoApi,
 } from "../lib/profileApi";
@@ -96,11 +97,29 @@ const useProfile = () => {
     return res;
   };
 
+  const updatePassword = async (oldPassword: string, newPassword: string) => {
+    const payload = {
+      oldPassword,
+      newPassword,
+    };
+
+    const res = await fetch(editPasswordApi, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getAccessToken()}`,
+      },
+      body: JSON.stringify(payload),
+    });
+    return res;
+  };
+
   return {
     profileDataReady,
     profileData,
     updateBio,
     updateProfilePic,
+    updatePassword,
   };
 };
 export default useProfile;
