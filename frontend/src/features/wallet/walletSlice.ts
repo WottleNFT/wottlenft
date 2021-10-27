@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import getBechAddr from "../../lib/convertWalletAddr";
 import { HexCborString, Network } from "../../wallet";
 
 export enum Status {
@@ -31,6 +32,7 @@ export type WalletState = {
   balance: number;
   network: Network;
   backendApi: string;
+  bechAddr: string;
 };
 
 export type WalletStatus = NoExtension | Loading | NotEnabled | Enabled;
@@ -68,6 +70,7 @@ export const initializeWallet = createAsyncThunk(
     const address = await cardano.getChangeAddress();
     const res = await fetch(`${backendApi}/address/${address}/balance`);
     const balance = (await res.json()).total_value;
+    const bechAddr = await getBechAddr(address);
 
     return {
       status: Status.Enabled,
@@ -76,6 +79,7 @@ export const initializeWallet = createAsyncThunk(
         balance,
         network,
         backendApi,
+        bechAddr,
       },
     };
   }

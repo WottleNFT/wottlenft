@@ -17,6 +17,10 @@ module.exports = withBundleAnalyzer({
     profileApi: process.env.PROFILE_API,
     ssrBackendApi: process.env.SSR_BACKEND_API,
   },
+  experiments: {
+    asyncWebAssembly: true,
+    importAsync: true,
+  },
   // TODO: delete this after marketplace is done
   async redirects() {
     return [

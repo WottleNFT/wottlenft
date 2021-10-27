@@ -1,31 +1,53 @@
 import React from "react";
 
+import { IonButton, useIonModal } from "@ionic/react";
+
+import { WottleWalletState } from "../../../hooks/useWallet";
 import { Nft } from "../../../types/Nft";
 import { getImgUrl } from "../../../utils/NftUtil";
+import ListNftModal from "../../Profile/ListNftModal";
 
 type Props = {
   nft: Nft;
+  wallet: WottleWalletState;
 };
 
-const NftCard = ({ nft }: Props) => {
+const NftCard = ({ nft, wallet }: Props) => {
   const { assetName, metadata } = nft;
   const { description, image } = metadata;
 
   const imageUrl = getImgUrl(image);
 
+  const handleDismiss = () => {
+    dismiss();
+  };
+
+  const [present, dismiss] = useIonModal(ListNftModal, {
+    nft,
+    dismiss: handleDismiss,
+    wallet,
+  });
+
   return (
     <div
-      style={{ height: 500, width: 400 }}
-      className="flex flex-col w-px h-px m-8 transition-all rounded-md bg-gray-50 drop-shadow-md hover:drop-shadow-2xl hover:scale-110"
+      style={{ height: 450, width: 350 }}
+      className="flex flex-col m-8 transition-all rounded-2xl bg-gray-50 drop-shadow-md hover:drop-shadow-2xl hover:scale-110"
     >
+      <div className="flex items-center my-2 h-14">
+        <div className="w-12 h-12 mx-3 bg-gray-300 rounded-full"></div>
+        <p className="font-bold">@{metadata.author}</p>
+      </div>
       <img
-        className="object-contain p-2 h-4/5 rounded-xl"
+        className="object-contain p-2 h-3/5 rounded-xl"
         alt="Event"
         src={imageUrl}
       />
-      <div className="p-2">
-        <p className="text-2xl font-bold">{assetName}</p>
-        <p className="text-gray-800">{description}</p>
+      <div className="flex flex-col px-3 py-1">
+        <p className="text-lg font-bold text-center">{assetName}</p>
+        <p className="text-center text-gray-600">{description}</p>
+        <IonButton className="mx-auto" onClick={() => present()}>
+          List
+        </IonButton>
       </div>
     </div>
   );
