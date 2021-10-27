@@ -14,8 +14,13 @@ import { Main } from "../../templates/Main";
 
 const Profile = () => {
   const { isLoading, isLoggedIn, wallet } = useAuth();
-  const { profileDataReady, profileData, updateBio, updateProfilePic } =
-    useProfile();
+  const {
+    profileDataReady,
+    profileData,
+    updateBio,
+    updateProfilePic,
+    updatePassword,
+  } = useProfile();
 
   const handleDismiss = () => {
     dismiss();
@@ -27,6 +32,7 @@ const Profile = () => {
     profileData,
     updateBio,
     updateProfilePic,
+    updatePassword,
   });
 
   return (
