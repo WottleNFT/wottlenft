@@ -11,6 +11,7 @@ CREATE TABLE accounts(
   email VARCHAR NOT NULL,
   bio TEXT,
   profile_picture_hash VARCHAR,
+  un_goal VARCHAR,
   UNIQUE(wallet_id)
 );
 CREATE TYPE listing_status AS ENUM('completed', 'cancelled', 'listing');

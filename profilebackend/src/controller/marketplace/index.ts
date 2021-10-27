@@ -1,6 +1,7 @@
 import * as express from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { addNewListing, getAllListingsOfStatus, getListingByID } from '../../database/listingQueries'
+import { json } from 'stream/consumers'
+import { addNewListing, getAllListingsOfStatus, getListingByID, getListingOfBuyer, getListingOfSeller } from '../../database/listingQueries'
 import { ListingStatus } from '../../models/listing'
 export async function getAllCurrentListings(req: express.Request, res: express.Response) {
   try {
@@ -44,6 +45,31 @@ export async function createListing(req: express.Request, res: express.Response)
       seller_contribution: null,
       buyer_contribution: null,
       un_goal: null
+    })
+  } catch (error: any) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      errorMessage: error.message
+    })
+  }
+}
+export async function getBuyerListing(req: express.Request, res: express.Response) {
+  try{
+    let listings = await getListingOfBuyer(req.params.buyer_wallet_id)
+    return res.status(StatusCodes.OK).json({
+      listings: listings
+    })
+  } catch (error: any) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      errorMessage: error.message
+    })
+  }
+}
+
+export async function getSellerListing(req: express.Request, res: express.Response) {
+  try{
+    let listings = await getListingOfSeller(req.params.seller_wallet_id)
+    return res.status(StatusCodes.OK).json({
+      listings: listings
     })
   } catch (error: any) {
     res.status(StatusCodes.BAD_REQUEST).json({
