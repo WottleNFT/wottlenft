@@ -73,7 +73,7 @@ const Landing = () => {
             <a
               className="text-2xl"
               target="_blank"
-              href="https://discord.gg/GcDPbqvcGn"
+              href="https://discord.gg/rnEE2Unm8K"
               rel="noreferrer"
             >
               <FaDiscord />
