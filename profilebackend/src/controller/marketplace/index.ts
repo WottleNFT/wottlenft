@@ -1,8 +1,10 @@
 import * as express from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { json } from 'stream/consumers'
-import { addNewListing, getAllListingsOfStatus, getListingByID, getListingOfBuyer, getListingOfSeller } from '../../database/listingQueries'
+import { addNewListing, cancelListingOfId, completeListingOfId, getAllListingsOfStatus, getListingByID, getListingOfBuyer, getListingOfSeller } from '../../database/listingQueries'
+import { getUserByUsername } from '../../database/userQueries'
 import { ListingStatus } from '../../models/listing'
+import { checkIfWalletIdAndUserNameMatch } from '../../ultility/passwordHandler'
 export async function getAllCurrentListings(req: express.Request, res: express.Response) {
   try {
     let listings = await getAllListingsOfStatus(ListingStatus.listing)
@@ -34,6 +36,11 @@ export async function getListing(req: express.Request, res: express.Response) {
 }
 export async function createListing(req: express.Request, res: express.Response) {
   try{
+    if (! await checkIfWalletIdAndUserNameMatch(req.body.wallet_id, res.locals.jwt.username)) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        errorMessage: "Your username and wallet id does not match! You are not allowed to create listing!"
+      })
+    }
     await addNewListing({
       listing_id: null,
       nft_id: req.body.nft_id,
@@ -70,6 +77,55 @@ export async function getSellerListing(req: express.Request, res: express.Respon
     let listings = await getListingOfSeller(req.params.seller_wallet_id)
     return res.status(StatusCodes.OK).json({
       listings: listings
+    })
+  } catch (error: any) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      errorMessage: error.message
+    })
+  }
+}
+export async function cancelListing(req: express.Request, res: express.Response) {
+  try{
+    let listing_id = Number(req.params.listing_id)
+    let listing = await getListingByID(listing_id)
+    if (listing == null) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        errorMessage: "Listing does not exist!"
+      })
+    } 
+    if (!await checkIfWalletIdAndUserNameMatch(listing.seller_wallet_id as string, res.locals.jwt.username)) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        errorMessage: "You cannot cancel a listing that does not belong to you!"
+      })
+    }
+    await cancelListingOfId(listing_id)
+    return res.status(StatusCodes.ACCEPTED).json({
+      msg: "Successfully cancelled listing!"
+    })
+  } catch (error: any) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      errorMessage: error.message
+    })
+  }
+}
+
+export async function completeListing(req: express.Request, res: express.Response) {
+  try{
+    let listing_id = Number(req.params.listing_id)
+    let listing = await getListingByID(listing_id)
+    if (listing == null) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        errorMessage: "Listing does not exist!"
+      })
+    } 
+    if (!await checkIfWalletIdAndUserNameMatch(req.body.buyer_wallet_id, res.locals.jwt.username)) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        errorMessage: "Your username and wallet id does not match! You are not allowed to buy listing!"
+      })
+    }
+    await completeListingOfId(listing_id, req.body.buyer_wallet_id)
+    return res.status(StatusCodes.ACCEPTED).json({
+      msg: "Successfully bought listing!"
     })
   } catch (error: any) {
     res.status(StatusCodes.BAD_REQUEST).json({
