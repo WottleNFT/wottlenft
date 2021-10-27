@@ -15,6 +15,7 @@ module.exports = withBundleAnalyzer({
     testnetApi: process.env.TESTNET_API,
     mainnetApi: process.env.MAINNET_API,
     profileApi: process.env.PROFILE_API,
+    ssrBackendApi: process.env.SSR_BACKEND_API,
   },
   experiments: {
     asyncWebAssembly: true,

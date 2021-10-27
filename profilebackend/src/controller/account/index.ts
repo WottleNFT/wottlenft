@@ -75,7 +75,7 @@ export async function getUserInfo(req: Request, res: Response) {
         let user = await getUserByUsername(res.locals.jwt.username)
         if (user == null) {
             return res.status(StatusCodes.NOT_FOUND).json({
-              errorMessage: "Not such username!"
+              errorMessage: "No such username!"
             })
         }
         user.password = null

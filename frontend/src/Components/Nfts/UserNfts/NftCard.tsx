@@ -2,27 +2,30 @@ import React from "react";
 
 import { IonButton, useIonModal } from "@ionic/react";
 
-import { Nft } from "../../types/Nft";
-import ListNftModal from "../Profile/ListNftModal";
+import { WottleWalletState } from "../../../hooks/useWallet";
+import { Nft } from "../../../types/Nft";
+import { getImgUrl } from "../../../utils/NftUtil";
+import ListNftModal from "../../Profile/ListNftModal";
 
 type Props = {
   nft: Nft;
+  wallet: WottleWalletState;
 };
 
-const NftCard = ({ nft }: Props) => {
+const NftCard = ({ nft, wallet }: Props) => {
   const { assetName, metadata } = nft;
   const { description, image } = metadata;
 
-  const imageHash = image.replace("ipfs://", "");
-  const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
+  const imageUrl = getImgUrl(image);
 
-	const handleDismiss = () => {
-		dismiss();
-	}
+  const handleDismiss = () => {
+    dismiss();
+  };
 
   const [present, dismiss] = useIonModal(ListNftModal, {
     nft,
-		dismiss: handleDismiss,
+    dismiss: handleDismiss,
+    wallet,
   });
 
   return (

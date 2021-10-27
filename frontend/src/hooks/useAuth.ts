@@ -8,15 +8,18 @@ const tokenKey = "accessToken";
 
 const useAuth = () => {
   const wallet = useWallet();
+  // Keeps track of whether (1) wallet is ready and (2) authenticated status is ready
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>();
 
   // Retrieve information from local storage
   useEffect(() => {
-    const loggedIn = !!localStorage.getItem(loggedInKey) || false;
-    setIsLoggedIn(loggedIn);
-    setIsLoading(false);
-  }, []);
+    if (wallet.status === Status.Enabled) {
+      const loggedIn = !!localStorage.getItem(loggedInKey) || false;
+      setIsLoggedIn(loggedIn);
+      setIsLoading(false);
+    }
+  }, [wallet.status]);
 
   useEffect(() => {
     if (
@@ -43,17 +46,18 @@ const useAuth = () => {
     setIsLoggedIn(false);
   };
 
-	// Get access token
-	const getAccessToken = () => {
-		return localStorage.getItem(tokenKey);
-	}
+  // Get access token
+  const getAccessToken = () => {
+    return localStorage.getItem(tokenKey);
+  };
 
   return {
     isLoading,
     isLoggedIn,
     setLogin,
     setLogout,
-		getAccessToken,
+    getAccessToken,
+    wallet,
   };
 };
 export default useAuth;

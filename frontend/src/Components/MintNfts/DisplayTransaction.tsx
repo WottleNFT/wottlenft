@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { IonButton, IonSpinner } from "@ionic/react";
-import axios, { AxiosResponse } from "axios";
+import { IonButton } from "@ionic/react";
 import Link from "next/link";
 
-import useInterval from "../../hooks/useInterval";
+import TransactionStatus from "../Transactions/TransactionStatus";
 import CopySection from "./CopySection";
-
-type TransactionConfirmation = {
-  result: boolean;
-};
 
 type Props = {
   transactionId: string;
@@ -30,17 +25,6 @@ const DisplayTransaction = ({
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-  useInterval(
-    async () => {
-      const response = await axios.get<
-        TransactionConfirmation,
-        AxiosResponse<TransactionConfirmation>
-      >(`${apiUrl}/nft/exists?hash=${transactionId}`);
-
-      setConfirmed(response.data.result);
-    },
-    confirmed ? null : 2000
-  );
   // const url = isMainnet
   //   ? `https://cardanoscan.io/transaction/${transactionId}`
   //   : `https://testnet.cardanoscan.io/transaction/${transactionId}`;
@@ -60,24 +44,16 @@ const DisplayTransaction = ({
       </section>
 
       <CopySection label="Transaction Hash" text={transactionId} />
-      <section className="flex items-center w-full mt-4">
-        <p className="text-2xl font-bold">
-          Status:{" "}
-          {confirmed ? (
-            <span className="text-green-500">Confirmed</span>
-          ) : (
-            <>
-              <span className="text-red-500">{"Not Confirmed"}</span>
-              <IonSpinner className="ml-4" color="danger" />
-            </>
-          )}
-        </p>
-      </section>
+      <TransactionStatus
+        transactionId={transactionId}
+        apiUrl={apiUrl}
+        confirmedCallback={setConfirmed}
+      />
       {confirmed && (
         <section className="w-full mt-2">
           <p>
             You can view your NFTs{" "}
-            <Link href="/user-nfts">
+            <Link href="/profile">
               <a className="text-primary-default" target="_blank">
                 here
               </a>

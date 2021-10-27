@@ -1,15 +1,17 @@
 import React from "react";
 
-import { useGetUserNftsQuery } from "../../app/nft";
-import DisplayMessage from "./DisplayMessage";
+import { useGetUserNftsQuery } from "../../../app/nft";
+import { WottleWalletState } from "../../../hooks/useWallet";
+import DisplayMessage from "../DisplayMessage";
 import NftCard from "./NftCard";
 
 type Props = {
   baseUrl: string;
   address: string;
+  wallet: WottleWalletState;
 };
 
-const NftList = ({ baseUrl, address }: Props) => {
+const NftList = ({ baseUrl, address, wallet }: Props) => {
   const { data, error, isLoading } = useGetUserNftsQuery({
     url: baseUrl,
     address,
@@ -22,7 +24,7 @@ const NftList = ({ baseUrl, address }: Props) => {
   return (
     <div className="flex flex-wrap justify-center">
       {data.map((nft) => {
-        return <NftCard nft={nft} key={nft.policyId} />;
+        return <NftCard wallet={wallet} nft={nft} key={nft.policyId} />;
       })}
     </div>
   );

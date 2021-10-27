@@ -10,12 +10,10 @@ import Tabs from "../../Components/Profile/Tabs";
 import { Status } from "../../features/wallet/walletSlice";
 import useAuth from "../../hooks/useAuth";
 import useProfile, { ProfileData } from "../../hooks/useProfile";
-import useWallet from "../../hooks/useWallet";
 import { Main } from "../../templates/Main";
 
 const Profile = () => {
-  const wallet = useWallet();
-  const { isLoading, isLoggedIn } = useAuth();
+  const { isLoading, isLoggedIn, wallet } = useAuth();
   const { profileDataReady, profileData, updateBio, updateProfilePic } =
     useProfile();
 
@@ -57,7 +55,7 @@ const Profile = () => {
                     <img
                       src={profileData?.user.profile_picture_hash}
                       alt="profile picture"
-                      className="object-cover w-full h-full rounded-full"
+                      className="object-cover w-full h-full bg-gray-400 rounded-full"
                     />
                   ) : (
                     <img

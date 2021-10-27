@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import { WottleWalletState } from "../../hooks/useWallet";
-import DisplayMessage from "../UserNfts/DisplayMessage";
-import NftList from "../UserNfts/NftList";
+import DisplayMessage from "../Nfts/DisplayMessage";
+import NftList from "../Nfts/UserNfts/NftList";
 import WalletSwitch from "../WalletSwitch";
 import ActivityTab from "./ActivityTab";
 import Contributions from "./Contributions";
@@ -61,6 +61,7 @@ const Tabs = ({ wallet }: Props) => {
                 <NftList
                   address={enabledWallet.state.address}
                   baseUrl={enabledWallet.state.backendApi}
+                  wallet={wallet}
                 />
               )}
               fallback={<DisplayMessage text="Please get Nami Wallet" />}
