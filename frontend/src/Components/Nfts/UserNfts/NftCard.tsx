@@ -1,6 +1,7 @@
 import React from "react";
 
 import { IonButton, useIonModal } from "@ionic/react";
+import { useRouter } from "next/router";
 
 import { WottleWalletState } from "../../../hooks/useWallet";
 import { Nft } from "../../../types/Nft";
@@ -13,8 +14,9 @@ type Props = {
 };
 
 const NftCard = ({ nft, wallet }: Props) => {
-  const { assetName, metadata } = nft;
+  const { assetName, metadata, policyId } = nft;
   const { description, image } = metadata;
+  const router = useRouter();
 
   const imageUrl = getImgUrl(image);
 
@@ -28,6 +30,8 @@ const NftCard = ({ nft, wallet }: Props) => {
     wallet,
   });
 
+  console.log(`nfts/${policyId}/${assetName}`);
+
   return (
     <div
       style={{ height: 450, width: 350 }}
@@ -35,12 +39,15 @@ const NftCard = ({ nft, wallet }: Props) => {
     >
       <div className="flex items-center my-2 h-14">
         <div className="w-12 h-12 mx-3 bg-gray-300 rounded-full"></div>
-        <p className="font-bold">@{metadata.author}</p>
+        <p className="font-bold">
+          @{metadata.owner ? metadata.owner : "Unknown"}
+        </p>
       </div>
       <img
-        className="object-contain p-2 h-3/5 rounded-xl"
+        className="object-contain p-2 hover:cursor-pointer h-3/5 rounded-xl"
         alt="Event"
         src={imageUrl}
+        onClick={() => router.push(`nfts/${policyId}/${assetName}`)}
       />
       <div className="flex flex-col px-3 py-1">
         <p className="text-lg font-bold text-center">{assetName}</p>
