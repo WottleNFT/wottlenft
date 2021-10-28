@@ -31,7 +31,7 @@ function SideMenu() {
       <IonContent>
         <IonList>
           <IonMenuToggle>
-            <IonItem routerLink="/marketplace">
+            <IonItem routerLink="/coming-soon">
               <IonIcon color="primary" icon={storefront} slot="start" />
               <IonLabel>Marketplace</IonLabel>
             </IonItem>
