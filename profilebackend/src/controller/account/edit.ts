@@ -1,7 +1,7 @@
 import { compare, hash } from 'bcrypt'
 import * as express from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { changeUserBio, changeUserPassword, changeUserPictureHash, changeUserUNGoal, getUserByUsername } from '../../database/userQueries'
+import { changeUserBannerHash, changeUserBio, changeUserPassword, changeUserPictureHash, changeUserUNGoal, getUserByUsername } from '../../database/userQueries'
 import { hashPassword } from '../../ultility/passwordHandler'
 
 export async function editAccountPassword(req: express.Request, res: express.Response) {
@@ -64,7 +64,23 @@ export async function editAccountPictureHash(req: express.Request, res: express.
     })
   }
 }
-
+export async function editAccountBannerHash(req: express.Request, res: express.Response) {
+  try {
+    let results = await changeUserBannerHash(res.locals.jwt.username, req.body.newProfileBannerHash)
+    if (results.rowCount == 0) {
+      res.status(StatusCodes.NOT_FOUND).json({
+        errorMessage: "No such user!"
+      })
+    }
+    return res.status(StatusCodes.ACCEPTED).json({
+      message: "Banner change successful!"
+    })
+  } catch (error : any) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      err: error.message
+    })
+  }
+}
 export async function editAccountUNGoal(req: express.Request, res: express.Response) {
   try {
     let results = await changeUserUNGoal(res.locals.jwt.username, req.body.newUNGoal)

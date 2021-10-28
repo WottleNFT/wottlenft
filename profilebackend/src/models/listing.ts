@@ -14,5 +14,7 @@ export interface Listing {
   current_status: ListingStatus | null,
   seller_contribution: number | null,
   buyer_contribution: number | null,
+  creation_time: Date | null,
+  buy_or_cancel_time: Date | null,
   un_goal: string | null
 }

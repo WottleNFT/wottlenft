@@ -1,5 +1,5 @@
 import { getUserInfo } from "../../controller/account";
-import { editAccountBio, editAccountPassword, editAccountPictureHash, editAccountUNGoal } from "../../controller/account/edit";
+import { editAccountBannerHash, editAccountBio, editAccountPassword, editAccountPictureHash, editAccountUNGoal } from "../../controller/account/edit";
 import { extractJWT } from "../../ultility/passwordHandler";
 
 const express = require('express');
@@ -25,6 +25,12 @@ accountRouter.put('/editBio', editAccountBio)
   }
 */
 accountRouter.put('/editProfilePicture', editAccountPictureHash)
+/*
+  body {
+    newProfileBannerHash
+  }
+*/
+accountRouter.put('/editProfileBanner', editAccountBannerHash)
 /*
   body {
     newUNGoal
