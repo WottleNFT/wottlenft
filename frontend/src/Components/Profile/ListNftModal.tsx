@@ -37,17 +37,22 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
       return;
     }
 
-    const priceInAda = Number.parseInt(listPrice, 10);
+    // Convert to lovelace
+    const priceInAda = Number.parseFloat(listPrice);
+    const priceInLovelace = priceInAda * 1000000;
+
+    // Price validation: Above 5 ada and within 6 DP
     if (priceInAda < 5) {
       setError("Please enter a list price that is at least ₳5.");
+      return;
+    }
+    if (priceInLovelace !== Math.floor(priceInLovelace)) {
+      setError("Please limit your price to 6 decimal places.");
       return;
     }
 
     setIsSubmitting(true);
     try {
-      // Convert to lovelace
-      const priceInLovelace = priceInAda * 1000000;
-
       const request: SellNftRequest = {
         sellerAddress: namiWallet.state.address,
         policyId: nftInfo.policyId,
@@ -107,6 +112,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
                   className="p-2 ml-2 border border-gray-200 border-solid rounded-lg shadow-md drop-shadow-md"
                   value={listPrice}
                   min="5"
+                  step="0.000001"
                   onChange={(e) => setListPrice(e.target.value)}
                 />
               </label>
