@@ -56,11 +56,12 @@ const Tabs = ({ wallet }: Props) => {
             <WalletSwitch
               wallet={wallet}
               loading={<DisplayMessage text="Loading your wallet..." />}
-              notEnabled={<DisplayMessage text="Please enable Nami Wallet" />}
+              notEnabled={(_) => (
+                <DisplayMessage text="Please enable Nami Wallet" />
+              )}
               enabled={(enabledWallet) => (
                 <NftList
                   address={enabledWallet.state.address}
-                  baseUrl={enabledWallet.state.backendApi}
                   wallet={wallet}
                 />
               )}

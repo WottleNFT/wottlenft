@@ -12,9 +12,7 @@ module.exports = withBundleAnalyzer({
   // You can remove `basePath` if you don't need it.
   reactStrictMode: true,
   env: {
-    testnetApi: process.env.TESTNET_API,
-    mainnetApi: process.env.MAINNET_API,
-    profileApi: process.env.PROFILE_API,
+    network: process.env.NETWORK,
     ssrBackendApi: process.env.SSR_BACKEND_API,
   },
   experiments: {
@@ -32,6 +30,16 @@ module.exports = withBundleAnalyzer({
       {
         source: '/auctions',
         destination: '/coming-soon',
+        permanent: true,
+      },
+      {
+        source: '/api/blockchain/:slug*',
+        destination: `${process.env.BLOCKCHAIN_API}/:slug*`,
+        permanent: true,
+      },
+      {
+        source: '/api/profile/:slug*',
+        destination: `${process.env.PROFILE_API}/:slug*`,
         permanent: true,
       },
     ];

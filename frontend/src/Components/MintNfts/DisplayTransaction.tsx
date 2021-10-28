@@ -10,24 +10,14 @@ type Props = {
   transactionId: string;
   policyId: string;
   policyJson: JSON;
-  isMainnet: boolean;
-  apiUrl: string;
 };
 
-const DisplayTransaction = ({
-  transactionId,
-  policyJson,
-  policyId,
-  apiUrl,
-}: Props) => {
+const DisplayTransaction = ({ transactionId, policyJson, policyId }: Props) => {
   const [confirmed, setConfirmed] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-  // const url = isMainnet
-  //   ? `https://cardanoscan.io/transaction/${transactionId}`
-  //   : `https://testnet.cardanoscan.io/transaction/${transactionId}`;
 
   const poolPmUrl = `https://pool.pm/policy/${policyId}`;
 
@@ -46,7 +36,6 @@ const DisplayTransaction = ({
       <CopySection label="Transaction Hash" text={transactionId} />
       <TransactionStatus
         transactionId={transactionId}
-        apiUrl={apiUrl}
         confirmedCallback={setConfirmed}
       />
       {confirmed && (

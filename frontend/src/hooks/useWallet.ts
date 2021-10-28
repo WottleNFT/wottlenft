@@ -8,6 +8,7 @@ import {
   NoExtension,
   NotEnabled,
   Status,
+  WrongNetwork,
 } from "../features/wallet/walletSlice";
 import { NamiWallet } from "../wallet";
 
@@ -16,7 +17,9 @@ type HasExtension = {
 };
 
 export type WottleEnabled = HasExtension & Enabled;
-type Present = WottleEnabled | (HasExtension & NotEnabled);
+export type WottleNotEnabled = HasExtension & NotEnabled;
+export type WottleWrongNetwork = HasExtension & WrongNetwork;
+type Present = WottleEnabled | WottleNotEnabled | WottleWrongNetwork;
 type NotPresent = NoExtension | Loading;
 
 export type WottleWalletState = Present | NotPresent;

@@ -1,4 +1,4 @@
-export const profileBaseUrl = process.env.profileApi as string;
+export const profileBaseUrl = "/api/profile";
 
 export const loginApi = `${profileBaseUrl}/login`;
 export const registerApi = `${profileBaseUrl}/register`;

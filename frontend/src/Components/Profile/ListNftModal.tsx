@@ -21,7 +21,6 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
   const { image } = metadata;
   const namiWallet = wallet as any;
   const cardano = namiWallet.cardano as NamiWallet;
-  const url = namiWallet.state.backendApi;
 
   const imageHash = image.replace("ipfs://", "");
   const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
@@ -55,9 +54,9 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
         unGoal: UnGoal.ZeroHunger,
         price: priceInLovelace,
       };
-      const { transaction } = await sellNft(url, request);
+      const { transaction } = await sellNft(request);
       const signature = await cardano.signTx(transaction);
-      const signResponse = await signTransaction(url, transaction, signature);
+      const signResponse = await signTransaction(transaction, signature);
       console.log(signResponse);
       setListTxId(signResponse.tx_id);
     } catch (e) {
@@ -128,7 +127,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
             </div>
           </>
         )}
-        {listTxId && <ListSuccessModal transactionId={listTxId} apiUrl={url} />}
+        {listTxId && <ListSuccessModal transactionId={listTxId} />}
       </div>
     </IonContent>
   );
