@@ -45,7 +45,7 @@ const MarketNftCard = ({ nftForSale, btnOnClick, btnText }: Props) => {
         <Link href={`/marketplace/listingId`} passHref>
           <a>
             <img
-              className="p-2 w-auto h-1/2 object-cover rounded-3xl"
+              className="p-2 w-full h-48 object-contain rounded-3xl"
               alt="NFT Image"
               src={imageUrl}
             />

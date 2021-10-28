@@ -96,8 +96,8 @@ const EditProfileModal = ({
       const pinataData = response.data;
       imageUrl = `https://ipfs.io/ipfs/${pinataData.IpfsHash}`;
     } catch (e) {
-      console.error(e);
-      console.log("Error uploading to pinata");
+      // console.error(e);
+      // console.log("Error uploading to pinata");
       setSubmittingProfilePic(false);
       return;
     }
@@ -105,11 +105,11 @@ const EditProfileModal = ({
     try {
       const res = await updateProfilePic(imageUrl as string);
       if (res.status === 202) {
-        alert("Profile picture successfully changed!");
+        // alert("Profile picture successfully changed!");
       }
     } catch (e) {
-      console.error(e);
-      console.log("Error updating profile data");
+      // console.error(e);
+      // console.log("Error updating profile data");
     } finally {
       setSubmittingProfilePic(false);
     }

@@ -56,6 +56,7 @@ const Helper = ({
 
   useEffect(() => {
     getSaleNfts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getSaleNfts = async () => {
