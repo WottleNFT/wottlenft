@@ -18,7 +18,7 @@ const PartnerCard = ({ partner }: Props) => {
         className="flex flex-col items-center w-full h-full p-2"
       >
         <img
-          className="object-contain p-2 h-4/5 rounded-full border-black border-1"
+          className="object-contain p-2 h-4/5 rounded-full border-none"
           style={{ borderWidth: 1 }}
           alt={name}
           src={imgUrl}
