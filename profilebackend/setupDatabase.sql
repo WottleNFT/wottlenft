@@ -11,6 +11,7 @@ CREATE TABLE accounts(
   email VARCHAR NOT NULL,
   bio TEXT,
   profile_picture_hash VARCHAR,
+  profile_banner_hash VARCHAR,
   un_goal VARCHAR,
   UNIQUE(wallet_id)
 );
@@ -26,5 +27,7 @@ CREATE TABLE listings(
   current_status listing_status NOT NULL,
   seller_contribution DOUBLE PRECISION,
   buyer_contribution DOUBLE PRECISION,
+  creation_time TIMESTAMP,
+  buy_or_cancel_time TIMESTAMP,
   un_goal VARCHAR
 );
