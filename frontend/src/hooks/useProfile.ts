@@ -46,6 +46,11 @@ const useProfile = () => {
             router.push("/login");
             return;
           }
+          if (res.status === 404) {
+            console.error("No such profile found");
+            setLogout();
+            router.push("/login");
+          }
           const data = await res.json();
           setProfileData(data);
           setProfileDataReady(true);
