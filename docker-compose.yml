@@ -45,6 +45,7 @@ services:
       - DBHOST=postgres
       - DBUSER=$DBUSER
       - DBPASSWORD=$DBPASSWORD
+      - RESET_DB_FLAG=$RESET_DB_FLAG
   postgres:
     image: postgres:11.5-alpine
     environment:
