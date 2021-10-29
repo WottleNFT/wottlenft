@@ -1,18 +1,17 @@
-import { tokenKey } from "../hooks/useAuth";
 import { WottleEnabled } from "../hooks/useWallet";
 import { Nft, NftMetadata } from "../types/Nft";
 import { sellNft, SellNftRequest, UnGoal } from "./marketplaceApi";
 import { profileBaseUrl } from "./profileApi";
 import { signTransaction } from "./transactionApi";
 
-interface ListNftBody {
-  seller_wallet_id: string;
-  nft_id: string;
-  nft_asset_name: string;
-  price: number;
-  nft_metadata: NftMetadata;
-  un_goal: UnGoal;
-}
+// interface ListNftBody {
+//  seller_wallet_id: string;
+//  nft_id: string;
+//  nft_asset_name: string;
+//  price: number;
+//  nft_metadata: NftMetadata;
+//  un_goal: UnGoal;
+// }
 
 export enum ListingStatus {
   completed = "completed",
@@ -30,6 +29,7 @@ export interface Listing {
   seller_wallet_id: string;
   nft_asset_name: string;
   un_goal?: UnGoal;
+  nft_metadata: NftMetadata;
 }
 
 const marketplaceBaseUrl = `${profileBaseUrl}/marketplace`;
@@ -43,34 +43,34 @@ export const listNft = async (
   unGoal: UnGoal
 ) => {
   // List on profilebackend first
-  const payload: ListNftBody = {
-    seller_wallet_id: wallet.state.bechAddr,
-    nft_id: nft.policyId,
-    nft_asset_name: nft.assetName,
-    price,
-    nft_metadata: nft.metadata,
-    un_goal: unGoal,
-  };
+  // const payload: ListNftBody = {
+  //  seller_wallet_id: wallet.state.bechAddr,
+  //  nft_id: nft.policyId,
+  //  nft_asset_name: nft.assetName,
+  //  price,
+  //  nft_metadata: nft.metadata,
+  //  un_goal: unGoal,
+  // };
 
-  const res = await fetch(`${marketplaceBaseUrl}/listing`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem(tokenKey)}`,
-    },
-    body: JSON.stringify(payload),
-  });
-  if (res.status !== 200) {
-    console.log(await res.json());
-    throw new Error(await res.json());
-  }
+  // const res = await fetch(`${marketplaceBaseUrl}/listing`, {
+  //  method: "POST",
+  //  headers: {
+  //    "Content-Type": "application/json",
+  //    Authorization: `Bearer ${localStorage.getItem(tokenKey)}`,
+  //  },
+  //  body: JSON.stringify(payload),
+  // });
+  // if (res.status !== 200) {
+  //  console.log(await res.json());
+  //  throw new Error(await res.json());
+  // }
 
   // List on blockchain
   const request: SellNftRequest = {
     sellerAddress: wallet.state.address,
     policyId: nft.policyId,
     assetName: nft.assetName,
-    unGoal: UnGoal.ZeroHunger,
+    unGoal,
     price,
   };
   const { transaction } = await sellNft(request);
