@@ -4,9 +4,9 @@ import { IonButton, IonContent, IonIcon, IonSpinner } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 
 import { WottleEnabled } from "../../hooks/useWallet";
+import { listNft } from "../../lib/combinedMarketplaceEndpoints";
 import { Nft } from "../../types/Nft";
 import ListSuccessModal from "./ListSuccessModal";
-import { listNft } from "../../lib/combinedMarketplaceEndpoints";
 
 interface Props {
   nft: Nft;
@@ -17,7 +17,6 @@ interface Props {
 const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
   const { assetName, metadata } = nft;
   const { image } = metadata;
-  const url = wallet.state.backendApi;
 
   const imageHash = image.replace("ipfs://", "");
   const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
@@ -48,9 +47,15 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
     }
 
     setIsSubmitting(true);
-		const res = await listNft(wallet, nft, priceInLovelace);
-		console.log(res);
-		setIsSubmitting(false);
+    try {
+      const res = await listNft(wallet, nft, priceInLovelace);
+      setListTxId(res);
+    } catch (e) {
+      console.error(e);
+      setError("Something went wrong");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -78,7 +83,9 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
               <p>
                 You are about to list{" "}
                 <span className="font-bold">{assetName}</span>, created by{" "}
-                <span className="font-bold">@{metadata.creator ? metadata.creator : "Unknown"}</span>
+                <span className="font-bold">
+                  @{metadata.creator ? metadata.creator : "Unknown"}
+                </span>
               </p>
               <p>
                 By clicking <b>List</b>, you are agreeing to WottleNFT&apos;s
@@ -114,7 +121,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
             </div>
           </>
         )}
-        {listTxId && <ListSuccessModal transactionId={listTxId} apiUrl={url} />}
+        {listTxId && <ListSuccessModal transactionId={listTxId} />}
       </div>
     </IonContent>
   );

@@ -36,7 +36,7 @@ export async function getListing(req: express.Request, res: express.Response) {
 }
 export async function createListing(req: express.Request, res: express.Response) {
   try{
-    if (! await checkIfWalletIdAndUserNameMatch(req.body.wallet_id, res.locals.jwt.username)) {
+    if (! await checkIfWalletIdAndUserNameMatch(req.body.seller_wallet_id, res.locals.jwt.username)) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         errorMessage: "Your username and wallet id does not match! You are not allowed to create listing!"
       })
@@ -46,12 +46,17 @@ export async function createListing(req: express.Request, res: express.Response)
       nft_id: req.body.nft_id,
       nft_asset_name: req.body.nft_asset_name,
       buyer_wallet_id: null,
-      seller_wallet_id: req.body.wallet_id,
+      seller_wallet_id: req.body.seller_wallet_id,
       price: req.body.price,
       current_status: ListingStatus.listing,
       seller_contribution: null,
       buyer_contribution: null,
+      creation_time: new Date(),
+      buy_or_cancel_time: null,
       un_goal: null
+    })
+    return res.status(StatusCodes.OK).json({
+      msg: "Successful Listing!"
     })
   } catch (error: any) {
     res.status(StatusCodes.BAD_REQUEST).json({

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { blockchainApi } from "../lib/blockchainApi";
 import { NftForSale } from "../lib/marketplaceApi";
 import { Nft } from "../types/Nft";
 import { testNft } from "../types/testData";
@@ -11,7 +12,7 @@ const useNftFromSaleNft = (nftForSale: NftForSale): Nft => {
     const { policyId, assetName } = nftForSale;
 
     const fetchNftInfo = async () => {
-      const url = `${process.env.ssrBackendApi}/nft/single/${policyId}/${assetName}`;
+      const url = `${blockchainApi}/nft/single/${policyId}/${assetName}`;
       const res = await fetch(url);
       setNft(responseToNft(await res.json()));
     };

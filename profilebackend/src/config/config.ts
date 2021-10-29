@@ -7,4 +7,4 @@ export const dbpassword = process.env.DBPASSWORD || "999999a!"
 export const dbuser = process.env.DBUSER || "postgres"
 export const TOKEN_SECRET= process.env.TOKEN_SECRET || "secret"
 export const TOKEN_EXPIRY_TIME = process.env.TOKEN_EXPIRY_TIME || "3h"
-export const resetDB = process.env.RESET_DB_FLAG || true
+export const resetDB = (process.env.RESET_DB_FLAG || 'false') === 'true'

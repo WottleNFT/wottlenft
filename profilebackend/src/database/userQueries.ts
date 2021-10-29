@@ -27,6 +27,9 @@ export async function changeUserBio(username: string, newBio: string): Promise<Q
 export async function changeUserPictureHash(username: string, profile_picture_hash: string): Promise<QueryResult> {
   return pool.query('UPDATE accounts SET profile_picture_hash = $2 WHERE username = $1', [username, profile_picture_hash])
 }
+export async function changeUserBannerHash(username: string, profile_banner_hash: string): Promise<QueryResult> {
+  return pool.query('UPDATE accounts SET profile_banner_hash = $2 WHERE username = $1', [username, profile_banner_hash])
+}
 export async function getUserByUsername(username: string): Promise<User| null> {
     const data = await pool.query("SELECT * FROM accounts WHERE username = $1", [username]);
     if (data.rows.length == 0) {

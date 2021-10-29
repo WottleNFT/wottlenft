@@ -6,14 +6,12 @@ import DisplayMessage from "../DisplayMessage";
 import NftCard from "./NftCard";
 
 type Props = {
-  baseUrl: string;
   address: string;
   wallet: WottleEnabled;
 };
 
-const NftList = ({ baseUrl, address, wallet }: Props) => {
+const NftList = ({ address, wallet }: Props) => {
   const { data, error, isLoading } = useGetUserNftsQuery({
-    url: baseUrl,
     address,
   });
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-import { WottleWalletState } from "../../hooks/useWallet";
+import { WottleEnabled } from "../../hooks/useWallet";
 import DisplayMessage from "../Nfts/DisplayMessage";
 import NftList from "../Nfts/UserNfts/NftList";
 import WalletSwitch from "../WalletSwitch";
@@ -16,7 +16,7 @@ enum Tab {
 }
 
 interface Props {
-  wallet: WottleWalletState;
+  wallet: WottleEnabled;
 }
 
 const Tabs = ({ wallet }: Props) => {
@@ -56,12 +56,13 @@ const Tabs = ({ wallet }: Props) => {
             <WalletSwitch
               wallet={wallet}
               loading={<DisplayMessage text="Loading your wallet..." />}
-              notEnabled={<DisplayMessage text="Please enable Nami Wallet" />}
+              notEnabled={(_) => (
+                <DisplayMessage text="Please enable Nami Wallet" />
+              )}
               enabled={(enabledWallet) => (
                 <NftList
                   address={enabledWallet.state.address}
-                  baseUrl={enabledWallet.state.backendApi}
-                  wallet={enabledWallet}
+                  wallet={wallet}
                 />
               )}
               fallback={<DisplayMessage text="Please get Nami Wallet" />}

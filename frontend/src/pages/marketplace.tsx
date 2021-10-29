@@ -30,11 +30,7 @@ const Marketplace = () => {
 
   return (
     <Main>
-      <MarketNftList
-        address={wallet.state.address}
-        url={wallet.state.backendApi}
-        cardano={wallet.cardano}
-      />
+      <MarketNftList address={wallet.state.address} cardano={wallet.cardano} />
     </Main>
   );
 };
@@ -42,11 +38,9 @@ const Marketplace = () => {
 export default Marketplace;
 
 const MarketNftList = ({
-  url,
   address,
   cardano,
 }: {
-  url: string;
   address: string;
   cardano: NamiWallet;
 }) => {
@@ -54,10 +48,10 @@ const MarketNftList = ({
 
   useEffect(() => {
     const getSaleNfts = async () => {
-      setSaleNfts(await getAllNftsForSale(url));
+      setSaleNfts(await getAllNftsForSale());
     };
     getSaleNfts();
-  }, [url]);
+  }, []);
 
   const buy = async (sellDetails: NftForSale) => {
     const request: BuyNftRequest = {
@@ -66,9 +60,9 @@ const MarketNftList = ({
       assetName: sellDetails.assetName,
     };
 
-    const { transaction } = await buyNft(url, request);
+    const { transaction } = await buyNft(request);
     const signature = await cardano.signTx(transaction, true);
-    const signResponse = await signTransaction(url, transaction, signature);
+    const signResponse = await signTransaction(transaction, signature);
     console.log(signResponse);
   };
 
@@ -78,9 +72,9 @@ const MarketNftList = ({
       policyId: sellData.policyId,
       assetName: sellData.assetName,
     };
-    const { transaction } = await cancelNft(url, request);
+    const { transaction } = await cancelNft(request);
     const signature = await cardano.signTx(transaction);
-    const signResponse = await signTransaction(url, transaction, signature);
+    const signResponse = await signTransaction(transaction, signature);
     console.log(signResponse);
   };
 
@@ -101,7 +95,7 @@ const MarketNftList = ({
           />
         ))}
 
-      <div className="flex flex-col gap-3 px-4 md:px-10 pb-10">
+      <div className="flex flex-col gap-3 px-4 pb-10 md:px-10">
         <div className="flex justify-between h-12 p-3">
           <span className="text-xl">Marketplace</span>
           {/* <IonRouterLink href="/marketplace/search" color="primary">
@@ -110,7 +104,7 @@ const MarketNftList = ({
         </div>
 
         {saleNfts.length ? (
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
             {saleNfts.map((nftForSale, idx) => {
               return (
                 <div key={idx}>
