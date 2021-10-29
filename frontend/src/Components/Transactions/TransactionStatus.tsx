@@ -4,22 +4,18 @@ import { IonSpinner } from "@ionic/react";
 import axios, { AxiosResponse } from "axios";
 
 import useInterval from "../../hooks/useInterval";
+import { blockchainApi } from "../../lib/blockchainApi";
 
 type TransactionConfirmation = {
   result: boolean;
 };
 
 interface Props {
-  apiUrl: string;
   transactionId: string;
   confirmedCallback?: (status: boolean) => void;
 }
 
-const TransactionStatus = ({
-  apiUrl,
-  transactionId,
-  confirmedCallback,
-}: Props) => {
+const TransactionStatus = ({ transactionId, confirmedCallback }: Props) => {
   const [confirmed, setConfirmed] = useState(false);
 
   useInterval(
@@ -27,7 +23,7 @@ const TransactionStatus = ({
       const response = await axios.get<
         TransactionConfirmation,
         AxiosResponse<TransactionConfirmation>
-      >(`${apiUrl}/nft/exists?hash=${transactionId}`);
+      >(`${blockchainApi}/nft/exists?hash=${transactionId}`);
 
       setConfirmed(response.data.result);
       if (confirmedCallback) {

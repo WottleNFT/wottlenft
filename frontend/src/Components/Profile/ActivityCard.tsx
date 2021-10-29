@@ -10,16 +10,16 @@ const ActivityCard = ({ activity }: Props) => {
       style={{ height: 450, width: 350 }}
       className="flex flex-col m-8 transition-all rounded-2xl bg-gray-50 drop-shadow-md hover:drop-shadow-2xl hover:scale-110"
     >
-      <div className="flex items-center my-2 h-14">
-        <div className="w-12 h-12 mx-3 bg-gray-300 rounded-full"></div>
-        <p className="font-bold">@{activity.author}</p>
-      </div>
-      <div className="w-full mb-3 h-3/5">
+      <div className="h-4/6">
         <img
-          className="object-contain h-full p-2 mx-auto object-fit rounded-3xl"
+          className="object-contain w-full h-full pt-2"
           alt="Activity image"
           src={activity.image}
         />
+      </div>
+      <div className="flex flex-col py-2 text-center">
+        <p className="text-lg font-bold">Name</p>
+        <p>description</p>
       </div>
       <div
         className={`flex items-center flex-grow rounded-b-2xl ${

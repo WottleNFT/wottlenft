@@ -4,7 +4,7 @@ import { Status } from "../features/wallet/walletSlice";
 import useWallet from "./useWallet";
 
 const loggedInKey = "isLoggedIn";
-const tokenKey = "accessToken";
+export const tokenKey = "accessToken";
 
 const useAuth = () => {
   const wallet = useWallet();
@@ -29,6 +29,7 @@ const useAuth = () => {
       localStorage.removeItem(loggedInKey);
       localStorage.removeItem(tokenKey);
       setIsLoggedIn(false);
+      setIsLoading(false);
     }
   }, [wallet.status]);
 

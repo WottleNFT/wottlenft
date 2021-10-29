@@ -27,28 +27,19 @@ const Example = () => {
     return <div></div>;
   }
 
-  return (
-    <Helper
-      address={wallet.state.address}
-      url={wallet.state.backendApi}
-      cardano={wallet.cardano}
-    />
-  );
+  return <Helper address={wallet.state.address} cardano={wallet.cardano} />;
 };
 
 export default Example;
 
 const Helper = ({
-  url,
   address,
   cardano,
 }: {
-  url: string;
   address: string;
   cardano: NamiWallet;
 }) => {
   const { data, error, isLoading } = useGetUserNftsQuery({
-    url,
     address,
   });
   const [saleNfts, setSaleNfts] = useState<NftForSale[]>([]);
@@ -60,7 +51,7 @@ const Helper = ({
   }, []);
 
   const getSaleNfts = async () => {
-    setSaleNfts(await getAllNftsForSale(url));
+    setSaleNfts(await getAllNftsForSale());
   };
 
   const buy = async (sellDetails: NftForSale) => {
@@ -70,9 +61,9 @@ const Helper = ({
       assetName: sellDetails.assetName,
     };
 
-    const { transaction } = await buyNft(url, request);
+    const { transaction } = await buyNft(request);
     const signature = await cardano.signTx(transaction, true);
-    const signResponse = await signTransaction(url, transaction, signature);
+    const signResponse = await signTransaction(transaction, signature);
     console.log(signResponse);
   };
 
@@ -84,9 +75,9 @@ const Helper = ({
       unGoal: UnGoal.ZeroHunger,
       price: Number.parseInt(price, 10),
     };
-    const { transaction } = await sellNft(url, request);
+    const { transaction } = await sellNft(request);
     const signature = await cardano.signTx(transaction);
-    const signResponse = await signTransaction(url, transaction, signature);
+    const signResponse = await signTransaction(transaction, signature);
     console.log(signResponse);
   };
 
@@ -96,9 +87,9 @@ const Helper = ({
       policyId: sellData.policyId,
       assetName: sellData.assetName,
     };
-    const { transaction } = await cancelNft(url, request);
+    const { transaction } = await cancelNft(request);
     const signature = await cardano.signTx(transaction);
-    const signResponse = await signTransaction(url, transaction, signature);
+    const signResponse = await signTransaction(transaction, signature);
     console.log(signResponse);
   };
   console.log(address);

@@ -163,7 +163,8 @@ const Register = () => {
                   placeholder="Enter password"
                   {...register("password", {
                     required: true,
-                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+                    pattern:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*#?&]{8,}$/,
                   })}
                 />
               </label>

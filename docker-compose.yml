@@ -5,14 +5,14 @@ services:
     build:
       context: ./frontend
       args:
-        - TESTNET_API=$TESTNET_API
-        - MAINNET_API=$MAINNET_API
-        - PROFILE_API=$PROFILE_API
+        - NETWORK=$NETWORK
     ports:
       - 3000:3000
     environment:
       - PINATA_API_KEY=$PINATA_API_KEY
       - PINATA_SECRET=$PINATA_SECRET
+      - BLOCKCHAIN_API=$BLOCKCHAIN_API
+      - PROFILE_API=$PROFILE_API
     restart: on-failure
   backend:
     build:

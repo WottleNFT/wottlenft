@@ -136,17 +136,17 @@ const navInfo = [
   {
     name: "Marketplace",
     route: "/marketplace",
-    tempRoute: "/coming-soon",
+    tempRoute: "/marketplace",
   },
   {
-    name: "About Us",
-    route: "/about",
-    tempRoute: "/about",
+    name: "Guides",
+    route: "/guides",
+    tempRoute: "/guides",
   },
   {
-    name: "Creator",
-    route: "/creaters",
-    tempRoute: "/coming-soon",
+    name: "UNSDG",
+    route: "/unsdg",
+    tempRoute: "/unsdg",
   },
   {
     name: "Mint Now",

@@ -12,7 +12,6 @@ interface Props {
 const StatsBar = (props: Props) => {
   const wallet = props.wallet as any;
   const { data, isLoading } = useGetUserNftsQuery({
-    url: wallet.state.backendApi,
     address: wallet.state.address,
   });
 

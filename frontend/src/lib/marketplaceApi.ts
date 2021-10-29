@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 
 import { TransactionResponse } from "../types/Transactions";
+import { blockchainApi } from "./blockchainApi";
 
 export enum UnGoal {
   ClimateAction = "ClimateAction",
@@ -17,13 +18,12 @@ export type SellNftRequest = {
 };
 
 export const sellNft = async (
-  baseUrl: string,
   request: SellNftRequest
 ): Promise<TransactionResponse> => {
   const response = await axios.post<
     SellNftRequest,
     AxiosResponse<TransactionResponse>
-  >(`${baseUrl}/marketplace/sell`, request);
+  >(`${blockchainApi}/marketplace/sell`, request);
 
   return response.data;
 };
@@ -41,11 +41,9 @@ export type SaleMetadata = {
   namiAddress: string;
 };
 
-export const getAllNftsForSale = async (
-  baseUrl: string
-): Promise<NftForSale[]> => {
+export const getAllNftsForSale = async (): Promise<NftForSale[]> => {
   const response = await axios.get<never, AxiosResponse<NftForSale[]>>(
-    `${baseUrl}/marketplace`
+    `${blockchainApi}/marketplace`
   );
   return response.data;
 };
@@ -57,13 +55,12 @@ export type BuyNftRequest = {
 };
 
 export const buyNft = async (
-  baseUrl: string,
   request: BuyNftRequest
 ): Promise<TransactionResponse> => {
   const response = await axios.post<
     BuyNftRequest,
     AxiosResponse<TransactionResponse>
-  >(`${baseUrl}/marketplace/buy`, request);
+  >(`${blockchainApi}/marketplace/buy`, request);
 
   return response.data;
 };
@@ -75,13 +72,12 @@ export type CancelNftRequest = {
 };
 
 export const cancelNft = async (
-  baseUrl: string,
   request: CancelNftRequest
 ): Promise<TransactionResponse> => {
   const response = await axios.post<
     CancelNftRequest,
     AxiosResponse<TransactionResponse>
-  >(`${baseUrl}/marketplace/cancel`, request);
+  >(`${blockchainApi}/marketplace/cancel`, request);
 
   return response.data;
 };

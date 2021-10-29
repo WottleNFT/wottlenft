@@ -4,9 +4,10 @@ import { IonButton, IonIcon, IonSpinner, IonText } from "@ionic/react";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { trash, add, hammer } from "ionicons/icons";
 
-import { Status, MAINNET } from "../../features/wallet/walletSlice";
+import { Status } from "../../features/wallet/walletSlice";
 import useTextInput from "../../hooks/useTextInput";
 import { WottleEnabled } from "../../hooks/useWallet";
+import { blockchainApi } from "../../lib/blockchainApi";
 import { signTransaction } from "../../lib/transactionApi";
 import { NetworkError } from "../../types/NetworkError";
 import { PinataResponse } from "../../types/PinataResponse";
@@ -17,6 +18,7 @@ import DisplayTransaction from "./DisplayTransaction";
 type Metadata = {
   address: HexCborString;
   name: string;
+  creator: string;
   description: string;
   image: string;
   [key: string]: string;
@@ -177,7 +179,6 @@ const Minting = ({ wallet }: Props) => {
     if (!validate()) return;
     setIsSubmitting(true);
     const { cardano } = wallet;
-    const { backendApi } = wallet.state;
 
     // Upload to IPFS using Pinata
     const url = "/api/ipfs";
@@ -208,6 +209,7 @@ const Minting = ({ wallet }: Props) => {
       const nftMetadata: Metadata = {
         address: wallet.state.address,
         name,
+        creator,
         description,
         image: ipfsNativeUrl,
         ...customFields,
@@ -217,16 +219,12 @@ const Minting = ({ wallet }: Props) => {
       const createNftRes = await axios.post<
         Metadata,
         AxiosResponse<TransactionResponse>
-      >(`${backendApi}/nft/create`, nftMetadata);
+      >(`${blockchainApi}/nft/create`, nftMetadata);
 
       const { transaction, policy } = createNftRes.data;
 
       const signature = await cardano.signTx(transaction, true);
-      const signResponse = await signTransaction(
-        backendApi,
-        transaction,
-        signature
-      );
+      const signResponse = await signTransaction(transaction, signature);
       setPolicyId(policy.id);
       setPolicyJson(policy.json);
       setTransactionId(signResponse.tx_id);
@@ -387,11 +385,9 @@ const Minting = ({ wallet }: Props) => {
           {transactionId && wallet.status === Status.Enabled && (
             <>
               <DisplayTransaction
-                isMainnet={wallet.state.network === MAINNET}
                 transactionId={transactionId}
                 policyJson={policyJson}
                 policyId={policyId}
-                apiUrl={wallet.state.backendApi}
               />
               <IonButton
                 size="large"
