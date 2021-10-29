@@ -6,8 +6,8 @@ import { closeOutline } from "ionicons/icons";
 import { useForm } from "react-hook-form";
 
 import { ProfileData } from "../../hooks/useProfile";
-import { PinataResponse } from "../../types/PinataResponse";
 import { UnGoal } from "../../lib/marketplaceApi";
+import { PinataResponse } from "../../types/PinataResponse";
 
 interface Props {
   dismiss: () => void;
@@ -18,7 +18,7 @@ interface Props {
     oldPassword: string,
     newPassword: string
   ) => Promise<Response>;
-	updateUnGoal: (unGoal: UnGoal) => Promise<Response>;
+  updateUnGoal: (unGoal: UnGoal) => Promise<Response>;
 }
 
 interface ChangePassword {
@@ -32,23 +32,23 @@ const EditProfileModal = ({
   updateBio,
   updateProfilePic,
   updatePassword,
-	updateUnGoal,
+  updateUnGoal,
 }: Props) => {
   const [image, setImage] = useState<File | undefined>();
   const [bio, setBio] = useState<string | undefined>();
-	const [sdgGoal, setSdgGoal] = useState<UnGoal | undefined>();
+  const [sdgGoal, setSdgGoal] = useState<UnGoal | undefined>();
 
-	// Submitting status
+  // Submitting status
   const [submittingBio, setSubmittingBio] = useState<boolean>(false);
   const [submittingProfilePic, setSubmittingProfilePic] =
     useState<boolean>(false);
   const [submittingPassword, setSubmittingPassword] = useState<boolean>(false);
-	const [submittingSdg, setSubmittingSdg] = useState<boolean>(false);
+  const [submittingSdg, setSubmittingSdg] = useState<boolean>(false);
 
-	// Errors
+  // Errors
   const [changePwError, setChangePwError] = useState<string | undefined>();
-	const [profilePicError, setProfilePicError] = useState<string | undefined>();
-	const [sdgError, setSdgError] = useState<string | undefined>();
+  const [profilePicError, setProfilePicError] = useState<string | undefined>();
+  const [sdgError, setSdgError] = useState<string | undefined>();
 
   const {
     register,
@@ -75,7 +75,7 @@ const EditProfileModal = ({
       const res = await updateBio(!bio ? "" : bio);
       if (res.status === 202) {
         alert("Bio successfully changed");
-				window.location.reload();
+        window.location.reload();
       }
     } catch (e) {
       console.error(e);
@@ -109,7 +109,7 @@ const EditProfileModal = ({
       imageUrl = `https://ipfs.io/ipfs/${pinataData.IpfsHash}`;
     } catch (e) {
       // console.error(e);
-			setProfilePicError("Error uploading image");
+      setProfilePicError("Error uploading image");
       setSubmittingProfilePic(false);
       return;
     }
@@ -118,11 +118,11 @@ const EditProfileModal = ({
       const res = await updateProfilePic(imageUrl as string);
       if (res.status === 202) {
         alert("Profile picture successfully changed!");
-				window.location.reload();
+        window.location.reload();
       }
     } catch (e) {
       // console.error(e);
-			setProfilePicError("Error updating profile picture");
+      setProfilePicError("Error updating profile picture");
     } finally {
       setSubmittingProfilePic(false);
     }
@@ -146,27 +146,27 @@ const EditProfileModal = ({
     }
   };
 
-	const handleUpdateSdg = async () => {
-		if (!sdgGoal) {
-			setSdgError("Select an SDG Goal");
-			return;
-		}
-		setSubmittingSdg(true);
-		try {
-			const res = await updateUnGoal(sdgGoal);
-			if (res.status === 202) {
-				alert("SDG successfully updated!");
-				window.location.reload();
-			} else {
-				setSdgError("An error occurred");
-			}
-		} catch (e) {
-			console.error(e);
-			setSdgError("An error occurred");
-		} finally {
-			setSubmittingSdg(false);
-		}
-	}
+  const handleUpdateSdg = async () => {
+    if (!sdgGoal) {
+      setSdgError("Select an SDG Goal");
+      return;
+    }
+    setSubmittingSdg(true);
+    try {
+      const res = await updateUnGoal(sdgGoal);
+      if (res.status === 202) {
+        alert("SDG successfully updated!");
+        window.location.reload();
+      } else {
+        setSdgError("An error occurred");
+      }
+    } catch (e) {
+      console.error(e);
+      setSdgError("An error occurred");
+    } finally {
+      setSubmittingSdg(false);
+    }
+  };
 
   const getErrorMessages = () => {
     if (errors.newPassword?.type === "pattern") {
@@ -222,9 +222,11 @@ const EditProfileModal = ({
                 Update profile picture
               </IonButton>
             )}
-						{profilePicError && 
-							<span className="text-sm text-center text-red-500">{profilePicError}</span>
-						}
+            {profilePicError && (
+              <span className="text-sm text-center text-red-500">
+                {profilePicError}
+              </span>
+            )}
           </div>
         </div>
         <div className="px-5 mt-5">
@@ -243,38 +245,42 @@ const EditProfileModal = ({
             <IonButton onClick={handleUpdateBio}>Update Bio</IonButton>
           )}
         </div>
-				<div className="px-5 mt-5">
-					<p className="pl-2 text-lg font-bold">Sustainable Development Goal</p>
-					<div className="flex justify-between w-full py-3">
-						<img
-							src="/assets/un_goals/zero_hunger.png"
-							alt="Zero hunger"
-							className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${sdgGoal === UnGoal.ZeroHunger && "ring-4"}`}
-							onClick={() => setSdgGoal(UnGoal.ZeroHunger)}
-						/>
-						<img
-							src="/assets/un_goals/quality_education.png"
-							alt="Quality education"
-							className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${sdgGoal === UnGoal.QualityEducation && "ring-4"}`}
-							onClick={() => setSdgGoal(UnGoal.QualityEducation)}
-						/>
-						<img
-							src="/assets/un_goals/climate_action.png"
-							alt="Climate action"
-							className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${sdgGoal === UnGoal.ClimateAction && "ring-4"}`}
-							onClick={() => setSdgGoal(UnGoal.ClimateAction)}
-						/>
-					</div>
-					{!submittingSdg &&
-						<IonButton onClick={handleUpdateSdg}>Update SDG</IonButton>
-					}
-					{submittingSdg &&
-						<IonSpinner name="crescent" />
-					}
-					{sdgError && 
-						<span className="block text-sm text-red-500">{sdgError}</span>
-					}
-				</div>
+        <div className="px-5 mt-5">
+          <p className="pl-2 text-lg font-bold">Sustainable Development Goal</p>
+          <div className="flex justify-between w-full py-3">
+            <img
+              src="/assets/un_goals/zero_hunger.png"
+              alt="Zero hunger"
+              className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${
+                sdgGoal === UnGoal.ZeroHunger && "ring-4"
+              }`}
+              onClick={() => setSdgGoal(UnGoal.ZeroHunger)}
+            />
+            <img
+              src="/assets/un_goals/quality_education.png"
+              alt="Quality education"
+              className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${
+                sdgGoal === UnGoal.QualityEducation && "ring-4"
+              }`}
+              onClick={() => setSdgGoal(UnGoal.QualityEducation)}
+            />
+            <img
+              src="/assets/un_goals/climate_action.png"
+              alt="Climate action"
+              className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${
+                sdgGoal === UnGoal.ClimateAction && "ring-4"
+              }`}
+              onClick={() => setSdgGoal(UnGoal.ClimateAction)}
+            />
+          </div>
+          {!submittingSdg && (
+            <IonButton onClick={handleUpdateSdg}>Update SDG</IonButton>
+          )}
+          {submittingSdg && <IonSpinner name="crescent" />}
+          {sdgError && (
+            <span className="block text-sm text-red-500">{sdgError}</span>
+          )}
+        </div>
         <div className="px-5 py-5">
           <p className="pl-2 text-lg font-bold">Change password</p>
           <form
@@ -302,7 +308,8 @@ const EditProfileModal = ({
                 }`}
                 {...register("newPassword", {
                   required: true,
-                  pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+                  pattern:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*#?&]{8,}$/,
                 })}
               />
             </div>
