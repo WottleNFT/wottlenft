@@ -66,7 +66,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 gap-5 p-8 px-8 md:px-12 md:pl-0 lg:grid-cols-3 xl:grid-cols-4 justify-self-center">
           <div className="flex flex-col">
             <span className="text-primary-default">Marketplace</span>
-            <Link href="/coming-soon" passHref>
+            <Link href="/marketplacce" passHref>
               <a className="text-white">Browse</a>
             </Link>
           </div>
@@ -77,9 +77,15 @@ const Footer = () => {
             </Link>
           </div>
           <div className="flex flex-col">
-            <span className="text-primary-default">Creator</span>
-            <Link href="/coming-soon" passHref>
-              <a className="text-white">Profiles</a>
+            <span className="text-primary-default">Guides</span>
+            <Link href="/guides#get-nami-wallet" passHref>
+              <a className="text-white">Get Nami Wallet</a>
+            </Link>
+            <Link href="/guides#get-first-ada" passHref>
+              <a className="text-white">Get ADA</a>
+            </Link>
+            <Link href="/guides#mint-nft" passHref>
+              <a className="text-white">How To Mint NFTs</a>
             </Link>
           </div>
           <div className="flex flex-col">
@@ -120,6 +126,9 @@ const Footer = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Impact</span>
+            <Link href="/unsdg" passHref>
+              <a className="text-white">UNSDG</a>
+            </Link>
             <Link href="/social-enterprises" passHref>
               <a className="text-white">Social Enterprises</a>
             </Link>
