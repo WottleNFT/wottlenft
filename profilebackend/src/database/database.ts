@@ -34,6 +34,7 @@ async function  initialiseDatabase() {
     listing_id SERIAL PRIMARY KEY,
     nft_id VARCHAR NOT NULL,
     nft_asset_name VARCHAR NOT NULL,
+    nft_metadata TEXT,
     buyer_wallet_id VARCHAR REFERENCES accounts(wallet_id),
     seller_wallet_id VARCHAR NOT NULL REFERENCES accounts(wallet_id),
     price DOUBLE PRECISION NOT NULL,

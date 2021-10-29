@@ -45,6 +45,7 @@ export async function createListing(req: express.Request, res: express.Response)
       listing_id: null,
       nft_id: req.body.nft_id,
       nft_asset_name: req.body.nft_asset_name,
+      nft_metadata: req.body.nft_metadata,
       buyer_wallet_id: null,
       seller_wallet_id: req.body.seller_wallet_id,
       price: req.body.price,
