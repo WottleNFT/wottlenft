@@ -83,3 +83,9 @@ export const cancelNft = async (
 
   return response.data;
 };
+
+export const getListings = async (
+  address: string
+): Promise<MarketplaceListing[]> => {
+  return (await axios.get(`${blockchainApi}/address/${address}/listings`)).data;
+};

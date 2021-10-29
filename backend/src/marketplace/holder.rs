@@ -253,6 +253,56 @@ impl MarketplaceHolder {
         Ok(op_pg_sell_data.and_then(|sell_data| sell_data.to_sell_data()))
     }
 
+    pub async fn get_listings_from_user(
+        &self,
+        pool: &PgPool,
+        address: &Address,
+    ) -> Result<Vec<SellData>> {
+        let mut rows = sqlx::query_as::<_, PgSellData>(
+            r#"
+                SELECT 
+                    encode(tx.hash, 'hex') as hash,
+                    ma_tx_out.policy,
+                    ma_tx_out.name,
+                    sale_metadata.json AS sale_json,
+                    asset_metadata.json AS asset_json
+                   FROM tx_out 
+                   LEFT JOIN tx_in ON tx_out.tx_id = tx_in.tx_out_id AND tx_out.index = tx_in.tx_out_index
+                   INNER JOIN tx_metadata AS sale_metadata
+                   ON tx_out.tx_id = sale_metadata.tx_id AND sale_metadata.key = 888
+                   INNER JOIN tx
+                    ON tx_out.tx_id = tx.id
+                    INNER JOIN ma_tx_out
+                    ON tx_out.id = ma_tx_out.tx_out_id
+                    INNER JOIN ma_tx_mint
+                    ON ma_tx_mint.policy = ma_tx_out.policy AND ma_tx_mint.name = ma_tx_out.name
+                    INNER JOIN tx_metadata AS asset_metadata
+                    ON ma_tx_mint.tx_id = asset_metadata.tx_id AND asset_metadata.key = 721
+                    AND tx_in.id IS NULL
+                    WHERE address = $1
+                    AND EXISTS (SELECT 1 FROM tx_out
+                    INNER JOIN tx_in ON tx_out.tx_id = tx_in.tx_out_id
+                    INNER JOIN tx AS tx_inner ON tx_inner.id = tx_in.tx_in_id AND tx_in.tx_out_index = tx_out.index
+                    where tx.hash = tx_inner.hash
+                    AND tx_out.address = $2)
+                ORDER BY tx.id DESC
+                "#,
+        )
+            .bind(&self.address_bech32)
+            .bind(address.to_bech32(None)?)
+            .fetch(pool);
+
+        let mut sell_datas = vec![];
+
+        while let Some(pg_data) = rows.try_next::<PgSellData, _>().await? {
+            let pg_data: PgSellData = pg_data;
+            if let Some(sell_data) = pg_data.to_sell_data() {
+                sell_datas.push(sell_data);
+            }
+        }
+        Ok(sell_datas)
+    }
+
     pub fn sign_transaction_hash(&self, hash: &TransactionHash) -> Vkeywitness {
         make_vkey_witness(hash, &self.private_key)
     }
