@@ -17,7 +17,10 @@ const ListSuccessModal = ({ transactionId }: Props) => {
         blockchain. You can check your transaction with the transaction hash.
       </p>
       <CopySection label="Transaction hash" text={transactionId} />
-      <p>Meanwhile, we are helping you the transaction status as well...</p>
+      <p>
+        Meanwhile, we are helping you confirm the transaction status as well.
+        Please be patient, this may take awhile...
+      </p>
       <TransactionStatus
         transactionId={transactionId}
         confirmedCallback={setConfirmed}

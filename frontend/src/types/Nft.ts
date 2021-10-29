@@ -5,6 +5,7 @@ export type Nft = {
   metadata: {
     description: string;
     image: string;
+    creator: string;
     name: string;
     [key: string]: string;
   };
