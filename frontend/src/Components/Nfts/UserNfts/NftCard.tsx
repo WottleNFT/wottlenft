@@ -30,8 +30,6 @@ const NftCard = ({ nft, wallet }: Props) => {
     wallet,
   });
 
-  console.log(`nfts/${policyId}/${assetName}`);
-
   return (
     <div
       style={{ height: 450, width: 350 }}

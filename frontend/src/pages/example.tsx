@@ -97,7 +97,7 @@ const Helper = ({
       assetName: sellData.assetName,
     };
     const { transaction } = await cancelNft(url, request);
-    const signature = await cardano.signTx(transaction);
+    const signature = await cardano.signTx(transaction, true);
     const signResponse = await signTransaction(url, transaction, signature);
     console.log(signResponse);
   };

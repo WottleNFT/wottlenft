@@ -61,7 +61,7 @@ const Tabs = ({ wallet }: Props) => {
                 <NftList
                   address={enabledWallet.state.address}
                   baseUrl={enabledWallet.state.backendApi}
-                  wallet={wallet}
+                  wallet={enabledWallet}
                 />
               )}
               fallback={<DisplayMessage text="Please get Nami Wallet" />}

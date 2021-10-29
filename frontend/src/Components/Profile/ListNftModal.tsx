@@ -3,25 +3,21 @@ import { useState } from "react";
 import { IonButton, IonContent, IonIcon, IonSpinner } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 
-import { WottleWalletState } from "../../hooks/useWallet";
-import { SellNftRequest, UnGoal, sellNft } from "../../lib/marketplaceApi";
-import { signTransaction } from "../../lib/transactionApi";
+import { WottleEnabled } from "../../hooks/useWallet";
 import { Nft } from "../../types/Nft";
-import { NamiWallet } from "../../wallet";
 import ListSuccessModal from "./ListSuccessModal";
+import { listNft } from "../../lib/combinedMarketplaceEndpoints";
 
 interface Props {
   nft: Nft;
   dismiss: () => void;
-  wallet: WottleWalletState;
+  wallet: WottleEnabled;
 }
 
 const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
   const { assetName, metadata } = nft;
   const { image } = metadata;
-  const namiWallet = wallet as any;
-  const cardano = namiWallet.cardano as NamiWallet;
-  const url = namiWallet.state.backendApi;
+  const url = wallet.state.backendApi;
 
   const imageHash = image.replace("ipfs://", "");
   const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
@@ -31,7 +27,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
   const [listTxId, setListTxId] = useState<string | undefined>();
 
   // Handles listing of nft
-  const listNft = async (nftInfo: Nft) => {
+  const handleListNft = async () => {
     if (listPrice === "") {
       setError("Enter a list price!");
       return;
@@ -52,25 +48,9 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
     }
 
     setIsSubmitting(true);
-    try {
-      const request: SellNftRequest = {
-        sellerAddress: namiWallet.state.address,
-        policyId: nftInfo.policyId,
-        assetName: nftInfo.assetName,
-        unGoal: UnGoal.ZeroHunger,
-        price: priceInLovelace,
-      };
-      const { transaction } = await sellNft(url, request);
-      const signature = await cardano.signTx(transaction);
-      const signResponse = await signTransaction(url, transaction, signature);
-      console.log(signResponse);
-      setListTxId(signResponse.tx_id);
-    } catch (e) {
-      console.error(e);
-      setError("Listing failed, something went wrong...");
-    } finally {
-      setIsSubmitting(false);
-    }
+		const res = await listNft(wallet, nft, priceInLovelace);
+		console.log(res);
+		setIsSubmitting(false);
   };
 
   return (
@@ -98,7 +78,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
               <p>
                 You are about to list{" "}
                 <span className="font-bold">{assetName}</span>, created by{" "}
-                <span className="font-bold">@{metadata.author}</span>
+                <span className="font-bold">@{metadata.creator ? metadata.creator : "Unknown"}</span>
               </p>
               <p>
                 By clicking <b>List</b>, you are agreeing to WottleNFT&apos;s
@@ -123,7 +103,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
                   <IonSpinner name="crescent" />
                 ) : (
                   <IonButton
-                    onClick={() => listNft(nft)}
+                    onClick={handleListNft}
                     expand="block"
                     size="large"
                   >
