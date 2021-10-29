@@ -18,6 +18,7 @@ import DisplayTransaction from "./DisplayTransaction";
 type Metadata = {
   address: HexCborString;
   name: string;
+  creator: string;
   description: string;
   image: string;
   [key: string]: string;
@@ -208,6 +209,7 @@ const Minting = ({ wallet }: Props) => {
       const nftMetadata: Metadata = {
         address: wallet.state.address,
         name,
+        creator,
         description,
         image: ipfsNativeUrl,
         ...customFields,

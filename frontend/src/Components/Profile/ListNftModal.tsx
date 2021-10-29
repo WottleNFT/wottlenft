@@ -3,24 +3,20 @@ import { useState } from "react";
 import { IonButton, IonContent, IonIcon, IonSpinner } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 
-import { WottleWalletState } from "../../hooks/useWallet";
-import { SellNftRequest, UnGoal, sellNft } from "../../lib/marketplaceApi";
-import { signTransaction } from "../../lib/transactionApi";
+import { WottleEnabled } from "../../hooks/useWallet";
+import { listNft } from "../../lib/combinedMarketplaceEndpoints";
 import { Nft } from "../../types/Nft";
-import { NamiWallet } from "../../wallet";
 import ListSuccessModal from "./ListSuccessModal";
 
 interface Props {
   nft: Nft;
   dismiss: () => void;
-  wallet: WottleWalletState;
+  wallet: WottleEnabled;
 }
 
 const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
   const { assetName, metadata } = nft;
   const { image } = metadata;
-  const namiWallet = wallet as any;
-  const cardano = namiWallet.cardano as NamiWallet;
 
   const imageHash = image.replace("ipfs://", "");
   const imageUrl = `https://ipfs.io/ipfs/${imageHash}`;
@@ -30,38 +26,33 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
   const [listTxId, setListTxId] = useState<string | undefined>();
 
   // Handles listing of nft
-  const listNft = async (nftInfo: Nft) => {
+  const handleListNft = async () => {
     if (listPrice === "") {
       setError("Enter a list price!");
       return;
     }
 
-    const priceInAda = Number.parseInt(listPrice, 10);
+    // Convert to lovelace
+    const priceInAda = Number.parseFloat(listPrice);
+    const priceInLovelace = priceInAda * 1000000;
+
+    // Price validation: Above 5 ada and within 6 DP
     if (priceInAda < 5) {
       setError("Please enter a list price that is at least ₳5.");
+      return;
+    }
+    if (priceInLovelace !== Math.floor(priceInLovelace)) {
+      setError("Please limit your price to 6 decimal places.");
       return;
     }
 
     setIsSubmitting(true);
     try {
-      // Convert to lovelace
-      const priceInLovelace = priceInAda * 1000000;
-
-      const request: SellNftRequest = {
-        sellerAddress: namiWallet.state.address,
-        policyId: nftInfo.policyId,
-        assetName: nftInfo.assetName,
-        unGoal: UnGoal.ZeroHunger,
-        price: priceInLovelace,
-      };
-      const { transaction } = await sellNft(request);
-      const signature = await cardano.signTx(transaction);
-      const signResponse = await signTransaction(transaction, signature);
-      console.log(signResponse);
-      setListTxId(signResponse.tx_id);
+      const res = await listNft(wallet, nft, priceInLovelace);
+      setListTxId(res);
     } catch (e) {
       console.error(e);
-      setError("Listing failed, something went wrong...");
+      setError("Something went wrong");
     } finally {
       setIsSubmitting(false);
     }
@@ -92,7 +83,9 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
               <p>
                 You are about to list{" "}
                 <span className="font-bold">{assetName}</span>, created by{" "}
-                <span className="font-bold">@{metadata.author}</span>
+                <span className="font-bold">
+                  @{metadata.creator ? metadata.creator : "Unknown"}
+                </span>
               </p>
               <p>
                 By clicking <b>List</b>, you are agreeing to WottleNFT&apos;s
@@ -106,6 +99,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
                   className="p-2 ml-2 border border-gray-200 border-solid rounded-lg shadow-md drop-shadow-md"
                   value={listPrice}
                   min="5"
+                  step="0.000001"
                   onChange={(e) => setListPrice(e.target.value)}
                 />
               </label>
@@ -116,7 +110,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
                   <IonSpinner name="crescent" />
                 ) : (
                   <IonButton
-                    onClick={() => listNft(nft)}
+                    onClick={handleListNft}
                     expand="block"
                     size="large"
                   >

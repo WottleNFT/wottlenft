@@ -4,7 +4,7 @@ import { Status } from "../features/wallet/walletSlice";
 import useWallet from "./useWallet";
 
 const loggedInKey = "isLoggedIn";
-const tokenKey = "accessToken";
+export const tokenKey = "accessToken";
 
 const useAuth = () => {
   const wallet = useWallet();
