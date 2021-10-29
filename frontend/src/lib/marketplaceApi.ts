@@ -28,12 +28,6 @@ export const sellNft = async (
   return response.data;
 };
 
-export type NftForSale = {
-  policyId: string;
-  assetName: string;
-  metadata: SaleMetadata;
-};
-
 export type SaleMetadata = {
   sellerAddress: string;
   price: number;
@@ -41,8 +35,16 @@ export type SaleMetadata = {
   namiAddress: string;
 };
 
-export const getAllNftsForSale = async (): Promise<NftForSale[]> => {
-  const response = await axios.get<never, AxiosResponse<NftForSale[]>>(
+export type MarketplaceListing = {
+  transactionHash: string;
+  policyId: string;
+  assetName: string;
+  saleMetadata: SaleMetadata;
+  assetMetadata: any;
+};
+
+export const getAllNftsForSale = async (): Promise<MarketplaceListing[]> => {
+  const response = await axios.get<never, AxiosResponse<MarketplaceListing[]>>(
     `${blockchainApi}/marketplace`
   );
   return response.data;

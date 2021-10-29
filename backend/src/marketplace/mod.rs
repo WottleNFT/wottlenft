@@ -99,12 +99,12 @@ impl Marketplace {
         pool: &PgPool,
     ) -> Result<Transaction> {
         let buyer_utxos = query_user_address_utxo(pool, &buyer_address).await?;
-        let sell_details = self.get_sell_details(pool, &policy_id, &asset_name).await?;
+        let sell_metadata = self.get_sell_details(pool, &policy_id, &asset_name).await?;
 
         let holder_utxos = query_user_address_utxo(pool, &self.holder.address).await?;
         let (nft_utxo, _) = find_nft(holder_utxos, &policy_id, &asset_name)?;
 
-        let (revenue_cut, goal_cut, seller_cut) = calculate_cuts(sell_details.metadata.price);
+        let (revenue_cut, goal_cut, seller_cut) = calculate_cuts(sell_metadata.price);
 
         let revenue_output = TransactionOutput::new(
             self.addresses.get_revenue_address(),
@@ -112,12 +112,12 @@ impl Marketplace {
         );
 
         let goal_output = TransactionOutput::new(
-            self.addresses.get_un_address(sell_details.metadata.un_goal),
+            self.addresses.get_un_address(sell_metadata.un_goal),
             &Value::new(&to_bignum(goal_cut)),
         );
 
         let seller_output = TransactionOutput::new(
-            &sell_details.metadata.seller_address,
+            &sell_metadata.seller_address,
             &Value::new(&to_bignum(seller_cut)),
         );
 
@@ -163,9 +163,8 @@ impl Marketplace {
         asset_name: AssetName,
         pool: &PgPool,
     ) -> Result<Transaction> {
-        let sell_details = self.get_sell_details(pool, &policy_id, &asset_name).await?;
-        if sell_details
-            .metadata
+        let sell_metadata = self.get_sell_details(pool, &policy_id, &asset_name).await?;
+        if sell_metadata
             .seller_address
             .to_bytes()
             .ne(&seller_address.to_bytes())
@@ -179,10 +178,8 @@ impl Marketplace {
         let holder_utxos = query_user_address_utxo(pool, &self.holder.address).await?;
         let (nft_utxo, _) = find_nft(holder_utxos, &policy_id, &asset_name)?;
 
-        let nft_output = TransactionOutput::new(
-            &sell_details.metadata.seller_address,
-            &nft_utxo.output().amount(),
-        );
+        let nft_output =
+            TransactionOutput::new(&sell_metadata.seller_address, &nft_utxo.output().amount());
 
         let cancellation_output = TransactionOutput::new(
             self.addresses.get_revenue_address(),
@@ -227,7 +224,7 @@ impl Marketplace {
         pool: &PgPool,
         policy_id: &PolicyID,
         asset_name: &AssetName,
-    ) -> Result<SellData> {
+    ) -> Result<SellMetadata> {
         self.holder
             .get_nft_details(pool, &policy_id, &asset_name)
             .await?

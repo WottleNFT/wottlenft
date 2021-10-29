@@ -1,134 +1,55 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+
+import { GetServerSideProps } from "next";
 
 import DisplayMessage from "../Components/Nfts/DisplayMessage";
 import MarketNftBigCard from "../Components/Nfts/MarketplaceNfts/MarketNftBigCard";
 import MarketNftCard from "../Components/Nfts/MarketplaceNfts/MarketNftCard";
-import { Status } from "../features/wallet/walletSlice";
-import useWallet from "../hooks/useWallet";
-import {
-  buyNft,
-  BuyNftRequest,
-  cancelNft,
-  CancelNftRequest,
-  getAllNftsForSale,
-  NftForSale,
-} from "../lib/marketplaceApi";
-import { signTransaction } from "../lib/transactionApi";
+import { MarketplaceListing } from "../lib/marketplaceApi";
 import { Main } from "../templates/Main";
-import { NamiWallet } from "../wallet";
 
-const Marketplace = () => {
-  const wallet = useWallet();
+export const getServerSideProps: GetServerSideProps = async () => {
+  const res = await fetch(`${process.env.BLOCKCHAIN_API}/marketplace`);
 
-  if (wallet.status !== Status.Enabled) {
-    return (
-      <Main>
-        <DisplayMessage text="Loading..." />
-      </Main>
-    );
-  }
+  return {
+    props: {
+      listings: await res.json(),
+    },
+  };
+};
 
+type Props = {
+  listings: MarketplaceListing[];
+};
+
+const Marketplace = ({ listings }: Props) => {
   return (
-    <Main>
-      <MarketNftList address={wallet.state.address} cardano={wallet.cardano} />
+    <Main title="WottleNFT Marketplace">
+      <div className="px-4 md:px-12 2xl:px-52">
+        {listings[0] && <MarketNftBigCard marketplaceListing={listings[0]} />}
+
+        <div className="flex flex-col gap-3 px-4 pb-10 md:px-10">
+          <div className="flex justify-between h-12 p-3">
+            <span className="text-xl">Marketplace</span>
+          </div>
+
+          {listings.length ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+              {listings.map((listing, idx) => {
+                return (
+                  <div key={idx}>
+                    <MarketNftCard marketplaceListing={listing} />
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <DisplayMessage text="No Listed NFTs Right Now" />
+          )}
+        </div>
+      </div>
     </Main>
   );
 };
 
 export default Marketplace;
-
-const MarketNftList = ({
-  address,
-  cardano,
-}: {
-  address: string;
-  cardano: NamiWallet;
-}) => {
-  const [saleNfts, setSaleNfts] = useState<NftForSale[]>([]);
-
-  useEffect(() => {
-    const getSaleNfts = async () => {
-      setSaleNfts(await getAllNftsForSale());
-    };
-    getSaleNfts();
-  }, []);
-
-  const buy = async (sellDetails: NftForSale) => {
-    const request: BuyNftRequest = {
-      buyerAddress: address,
-      policyId: sellDetails.policyId,
-      assetName: sellDetails.assetName,
-    };
-
-    const { transaction } = await buyNft(request);
-    const signature = await cardano.signTx(transaction, true);
-    const signResponse = await signTransaction(transaction, signature);
-    console.log(signResponse);
-  };
-
-  const cancel = async (sellData: NftForSale) => {
-    const request: CancelNftRequest = {
-      sellerAddress: sellData.metadata.sellerAddress,
-      policyId: sellData.policyId,
-      assetName: sellData.assetName,
-    };
-    const { transaction } = await cancelNft(request);
-    const signature = await cardano.signTx(transaction);
-    const signResponse = await signTransaction(transaction, signature);
-    console.log(signResponse);
-  };
-
-  return (
-    <div className="px-4 md:px-12 2xl:px-52">
-      {saleNfts[0] &&
-        (saleNfts[0].metadata.namiAddress === address ? (
-          <MarketNftBigCard
-            nftForSale={saleNfts[0]}
-            btnOnClick={() => cancel(saleNfts[0]!)}
-            btnText="Unlist"
-          />
-        ) : (
-          <MarketNftBigCard
-            nftForSale={saleNfts[0]}
-            btnOnClick={() => buy(saleNfts[0]!)}
-            btnText="Buy"
-          />
-        ))}
-
-      <div className="flex flex-col gap-3 px-4 pb-10 md:px-10">
-        <div className="flex justify-between h-12 p-3">
-          <span className="text-xl">Marketplace</span>
-          {/* <IonRouterLink href="/marketplace/search" color="primary">
-              Search All
-            </IonRouterLink> */}
-        </div>
-
-        {saleNfts.length ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
-            {saleNfts.map((nftForSale, idx) => {
-              return (
-                <div key={idx}>
-                  {nftForSale.metadata.namiAddress === address ? (
-                    <MarketNftCard
-                      nftForSale={nftForSale}
-                      btnOnClick={() => cancel(nftForSale)}
-                      btnText="Unlist"
-                    />
-                  ) : (
-                    <MarketNftCard
-                      nftForSale={nftForSale}
-                      btnOnClick={() => buy(nftForSale)}
-                      btnText="Buy"
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <DisplayMessage text="No Listed NFTs Right Now" />
-        )}
-      </div>
-    </div>
-  );
-};

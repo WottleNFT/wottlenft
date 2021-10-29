@@ -3,68 +3,71 @@ import React from "react";
 import { IonButton, IonCard, IonCardHeader, IonCardTitle } from "@ionic/react";
 import Link from "next/link";
 
-import useNftFromSaleNft from "../../../hooks/useNftFromSaleNft";
-import { NftForSale } from "../../../lib/marketplaceApi";
+import { MarketplaceListing } from "../../../lib/marketplaceApi";
 import { getImgUrl } from "../../../utils/NftUtil";
 
 type Props = {
-  nftForSale: NftForSale;
-  btnOnClick: React.MouseEventHandler<HTMLIonButtonElement> | undefined;
-  btnText: string;
+  marketplaceListing: MarketplaceListing;
 };
 
-const MarketNftCard = ({ nftForSale, btnOnClick, btnText }: Props) => {
-  const saleMetadata = nftForSale.metadata;
+const MarketNftCard = ({ marketplaceListing }: Props) => {
+  const { saleMetadata, policyId, assetName, assetMetadata } =
+    marketplaceListing;
   const { price } = saleMetadata;
 
-  const nft = useNftFromSaleNft(nftForSale);
-
-  const { assetName, metadata } = nft;
+  const metadata = (assetMetadata[policyId] || {})[assetName];
   const { description, image } = metadata;
 
   const imageUrl = getImgUrl(image);
 
   return (
-    <IonCard className="rounded-3xl m-0 px-2 md:px-4 pt-3">
+    <IonCard className="px-2 pt-3 m-0 rounded-3xl md:px-4">
       <div className="felx felx-col">
-        <div className="h-1/6 flex felx-row items-center">
-          <div className="m-2 w-14 h-full">
+        <div className="flex items-center h-1/6 felx-row">
+          <div className="h-full m-2 w-14">
             <img
               src="https://picsum.photos/200"
               alt="nft pic"
               className="rounded-full"
             />
           </div>
-          <div className="text-left w-3/5">
+          <div className="w-3/5 text-left">
             <IonCardTitle className="text-base truncate">{`@${
               "owner" in metadata ? metadata.owner : "Unknown"
             }`}</IonCardTitle>
           </div>
         </div>
 
-        <Link href={`/marketplace/listingId`} passHref>
+        <Link
+          href={`/marketplace/${marketplaceListing.transactionHash}`}
+          passHref
+        >
           <a>
             <img
-              className="p-2 w-full h-48 object-contain rounded-3xl"
+              className="object-contain w-full h-48 p-2 rounded-3xl"
               alt="NFT Image"
               src={imageUrl}
             />
           </a>
         </Link>
-        <div className="w-full h-1/3 flex flex-col justify-center">
+        <div className="flex flex-col justify-center w-full h-1/3">
           <IonCardHeader className="px-2 truncate">
-            <IonCardTitle className="text-center truncate text-base">
+            <IonCardTitle className="text-base text-center truncate">
               {assetName}
             </IonCardTitle>
-            <p className="mt-2 h-16 text-left line-clamp-3 whitespace-normal overflow-ellipsis">
+            <p className="h-16 mt-2 text-left whitespace-normal line-clamp-3 overflow-ellipsis">
               {description}
             </p>
-            <div className="flex flex-row justify-between items-end pt-2">
+            <div className="flex flex-row items-end justify-between pt-2">
               <span className="text-2xl text-primary-default">{`${
                 price / 1000000
               } ₳`}</span>
-              <IonButton size="small" shape="round" onClick={btnOnClick}>
-                {btnText}
+              <IonButton
+                href={`/marketplace/${marketplaceListing.transactionHash}`}
+                size="small"
+                shape="round"
+              >
+                BUY
               </IonButton>
             </div>
           </IonCardHeader>

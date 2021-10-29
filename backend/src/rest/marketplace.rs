@@ -16,6 +16,20 @@ async fn get_all_sales(data: web::Data<AppState>) -> Result<HttpResponse> {
     Ok(HttpResponse::Ok().json(sales))
 }
 
+#[get("/single/{transactionHash}")]
+async fn get_single_sale(
+    path: web::Path<String>,
+    data: web::Data<AppState>,
+) -> Result<HttpResponse> {
+    let hash = path.into_inner();
+    let sell_data = data
+        .marketplace
+        .holder
+        .get_single_nft_for_sale(&data.pool, &hash)
+        .await?;
+    Ok(HttpResponse::Ok().json(sell_data))
+}
+
 #[get("/unsdg")]
 async fn get_unsdg_details(data: web::Data<AppState>) -> Result<HttpResponse> {
     Ok(HttpResponse::Ok().json(data.marketplace.addresses.get_statistics()?))
@@ -115,4 +129,5 @@ pub fn create_marketplace_service() -> Scope {
         .service(cancel_nft)
         .service(get_all_sales)
         .service(get_unsdg_details)
+        .service(get_single_sale)
 }

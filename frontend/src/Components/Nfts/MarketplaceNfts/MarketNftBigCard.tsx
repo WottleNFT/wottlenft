@@ -3,43 +3,42 @@ import React from "react";
 import { IonButton, IonCardSubtitle, IonLabel } from "@ionic/react";
 import Link from "next/link";
 
-import useNftFromSaleNft from "../../../hooks/useNftFromSaleNft";
-import { NftForSale } from "../../../lib/marketplaceApi";
+import { MarketplaceListing } from "../../../lib/marketplaceApi";
 import { getImgUrl } from "../../../utils/NftUtil";
 
 type Props = {
-  nftForSale: NftForSale;
-  btnOnClick: React.MouseEventHandler<HTMLIonButtonElement> | undefined;
-  btnText: string;
+  marketplaceListing: MarketplaceListing;
 };
 
-const MarketNftBigCard = ({ nftForSale, btnOnClick, btnText }: Props) => {
-  const saleMetadata = nftForSale.metadata;
+const MarketNftBigCard = ({ marketplaceListing }: Props) => {
+  const { saleMetadata, policyId, assetName, assetMetadata } =
+    marketplaceListing;
   const { price } = saleMetadata;
 
-  const nft = useNftFromSaleNft(nftForSale);
-
-  const { assetName, metadata } = nft;
+  const metadata = (assetMetadata[policyId] || {})[assetName];
   const { description, image } = metadata;
 
   const imageUrl = getImgUrl(image);
 
   return (
-    <div className="mb-3 flex px-4 md:px-16 py-4 truncate items-center flex-col md:flex-row">
-      <Link href={`/marketplace/listingId`} passHref>
+    <div className="flex flex-col items-center px-4 py-4 mb-3 truncate md:px-16 md:flex-row">
+      <Link
+        href={`/marketplace/${marketplaceListing.transactionHash}`}
+        passHref
+      >
         <a>
           <img
-            className="rounded-3xl object-cover w-full p-2"
+            className="object-cover w-full p-2 rounded-3xl"
             alt="NFT Image"
             src={imageUrl}
           />
         </a>
       </Link>
-      <div className="w-full flex flex-col h-full gap-4 lg:gap-8 px-4 md:px-12 justify-between text-left">
-        <p className="text-3xl whitespace-normal truncate font-bold my-auto">
+      <div className="flex flex-col justify-between w-full h-full gap-4 px-4 text-left lg:gap-8 md:px-12">
+        <p className="my-auto text-3xl font-bold truncate whitespace-normal">
           {assetName}
         </p>
-        <p className="text-xl whitespace-normal truncate line-clamp-3">
+        <p className="text-xl truncate whitespace-normal line-clamp-3">
           {description}
         </p>
         <div className="flex items-end justify-between pr-4">
@@ -52,8 +51,11 @@ const MarketNftBigCard = ({ nftForSale, btnOnClick, btnText }: Props) => {
             </IonLabel>
           </div>
           <div className="w-16 mb-1">
-            <IonButton shape="round" onClick={btnOnClick}>
-              {btnText}
+            <IonButton
+              href={`/marketplace/${marketplaceListing.transactionHash}`}
+              shape="round"
+            >
+              BUY
             </IonButton>
           </div>
         </div>

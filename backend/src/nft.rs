@@ -43,6 +43,7 @@ impl std::convert::TryFrom<&WottleNftMetadata> for MetadataMap {
     type Error = crate::Error;
 
     fn try_from(value: &WottleNftMetadata) -> Result<Self> {
+        println!("{:#?}", &value);
         let mut nft_metadata_map = MetadataMap::new();
         use serde_json::Value::*;
         for (k, v) in &value.rest {
@@ -98,7 +99,7 @@ impl std::convert::TryFrom<&WottleNftMetadata> for MetadataMap {
             &TransactionMetadatum::new_text("Minted At".to_string())?,
             &TransactionMetadatum::new_text("© 2021 WottleNFT".to_string())?,
         );
-
+        println!("{:#?}", &nft_metadata_map);
         Ok(nft_metadata_map)
     }
 }
