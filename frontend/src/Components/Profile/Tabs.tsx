@@ -34,13 +34,12 @@ const Tabs = ({ wallet }: Props) => {
   useEffect(() => {
     const getListingsInfo = async () => {
       const res = await getBoughtListings(wallet.state.bechAddr);
-      const boughtInfo = await res.json();
+      const boughtInfo = (await res.json()).listings;
       setBoughtListings(boughtInfo);
       const res2 = await getSellListings(wallet.state.bechAddr);
-      const sellInfo = await res2.json();
+      const sellInfo = (await res2.json()).listings;
       setSellListings(sellInfo);
       setTabsLoading(false);
-      console.log(boughtListings);
     };
     getListingsInfo();
   }, []);

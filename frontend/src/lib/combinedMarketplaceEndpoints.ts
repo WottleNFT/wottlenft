@@ -30,6 +30,7 @@ export interface Listing {
   seller_wallet_id: string;
   nft_asset_name: string;
   un_goal?: UnGoal;
+	nft_metadata: NftMetadata;
 }
 
 const marketplaceBaseUrl = `${profileBaseUrl}/marketplace`;
