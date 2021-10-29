@@ -12,6 +12,24 @@ interface ListNftBody {
   price: number;
 }
 
+export enum ListingStatus {
+  completed = "completed",
+  listing = "listing",
+  cancelled = "cancelled",
+}
+
+export interface Listing {
+  buyer_wallet_id?: string;
+  creation_time: string;
+  current_status: ListingStatus;
+  listing_id: number;
+  price: number;
+  nft_id: string;
+  seller_wallet_id: string;
+  nft_asset_name: string;
+  un_goal?: UnGoal;
+}
+
 const marketplaceBaseUrl = `${profileBaseUrl}/marketplace`;
 
 // Prices are in lovelace
@@ -55,4 +73,30 @@ export const listNft = async (
   const transactionId = signResponse.tx_id;
 
   return transactionId;
+};
+
+export const getBoughtListings = async (buyerWalletId: string) => {
+  const res = await fetch(
+    `${marketplaceBaseUrl}/listings/buyer/${buyerWalletId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return res;
+};
+
+export const getSellListings = async (sellerWalletId: string) => {
+  const res = await fetch(
+    `${marketplaceBaseUrl}/listings/seller/${sellerWalletId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return res;
 };

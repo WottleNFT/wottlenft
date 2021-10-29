@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
+import { IonSpinner } from "@ionic/react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import { WottleEnabled } from "../../hooks/useWallet";
+import {
+  getBoughtListings,
+  getSellListings,
+  Listing,
+} from "../../lib/combinedMarketplaceEndpoints";
 import DisplayMessage from "../Nfts/DisplayMessage";
 import NftList from "../Nfts/UserNfts/NftList";
 import WalletSwitch from "../WalletSwitch";
@@ -21,6 +27,27 @@ interface Props {
 
 const Tabs = ({ wallet }: Props) => {
   const [activeTab, setActiveTab] = useState<number>(Tab.Collection);
+  const [tabsLoading, setTabsLoading] = useState<boolean>(true);
+  const [boughtListings, setBoughtListings] = useState<Listing[] | undefined>();
+  const [sellListings, setSellListings] = useState<Listing[] | undefined>();
+
+  useEffect(() => {
+    const getListingsInfo = async () => {
+      const res = await getBoughtListings(wallet.state.bechAddr);
+      const boughtInfo = await res.json();
+      setBoughtListings(boughtInfo);
+      const res2 = await getSellListings(wallet.state.bechAddr);
+      const sellInfo = await res2.json();
+      setSellListings(sellInfo);
+      setTabsLoading(false);
+      console.log(boughtListings);
+    };
+    getListingsInfo();
+  }, []);
+
+  if (tabsLoading) {
+    return <IonSpinner name="crescent" />;
+  }
 
   return (
     <div className="self-start w-full px-6 my-20">
@@ -63,6 +90,7 @@ const Tabs = ({ wallet }: Props) => {
                 <NftList
                   address={enabledWallet.state.address}
                   wallet={wallet}
+                  sellListings={sellListings as Listing[]}
                 />
               )}
               fallback={<DisplayMessage text="Please get Nami Wallet" />}
