@@ -24,6 +24,7 @@ CREATE TABLE listings(
   buyer_wallet_id VARCHAR REFERENCES accounts(wallet_id),
   seller_wallet_id VARCHAR NOT NULL REFERENCES accounts(wallet_id),
   price DOUBLE PRECISION NOT NULL,
+  nft_metadata TEXT,
   current_status listing_status NOT NULL,
   seller_contribution DOUBLE PRECISION,
   buyer_contribution DOUBLE PRECISION,

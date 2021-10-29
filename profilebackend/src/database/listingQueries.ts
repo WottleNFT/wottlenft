@@ -22,7 +22,7 @@ export async function getListingOfBuyer(buyer_wallet_id: string): Promise<Listin
 export async function addNewListing(listing: Listing): Promise<QueryResult> {
   return pool.query("INSERT INTO listings(nft_id, nft_asset_name, nft_metadata, seller_wallet_id, price," 
     + "current_status, seller_contribution, creation_time, un_goal) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)",
-    [listing.nft_id, listing.nft_asset_name, listing.seller_wallet_id, listing.nft_metadata, listing.price, 
+    [listing.nft_id, listing.nft_asset_name, listing.nft_metadata, listing.seller_wallet_id, listing.price, 
       listing.current_status, listing.seller_contribution,listing.creation_time, listing.un_goal])
 }
 

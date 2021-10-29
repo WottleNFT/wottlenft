@@ -20,7 +20,7 @@ async function  initialiseDatabase() {
   DROP TABLE IF EXISTS accounts;
   CREATE TABLE accounts(
     username VARCHAR PRIMARY KEY,
-    wallet_id VARCHAR,
+    wallet_id VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
     bio TEXT,

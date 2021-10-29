@@ -1,6 +1,6 @@
 import { tokenKey } from "../hooks/useAuth";
 import { WottleEnabled } from "../hooks/useWallet";
-import { Nft } from "../types/Nft";
+import { Nft, NftMetadata } from "../types/Nft";
 import { sellNft, SellNftRequest, UnGoal } from "./marketplaceApi";
 import { profileBaseUrl } from "./profileApi";
 import { signTransaction } from "./transactionApi";
@@ -10,6 +10,8 @@ interface ListNftBody {
   nft_id: string;
   nft_asset_name: string;
   price: number;
+  nft_metadata: NftMetadata;
+  un_goal: UnGoal;
 }
 
 export enum ListingStatus {
@@ -37,7 +39,8 @@ const marketplaceBaseUrl = `${profileBaseUrl}/marketplace`;
 export const listNft = async (
   wallet: WottleEnabled,
   nft: Nft,
-  price: number
+  price: number,
+  unGoal: UnGoal
 ) => {
   // List on profilebackend first
   const payload: ListNftBody = {
@@ -45,6 +48,8 @@ export const listNft = async (
     nft_id: nft.policyId,
     nft_asset_name: nft.assetName,
     price,
+    nft_metadata: nft.metadata,
+    un_goal: unGoal,
   };
 
   const res = await fetch(`${marketplaceBaseUrl}/listing`, {
@@ -56,6 +61,7 @@ export const listNft = async (
     body: JSON.stringify(payload),
   });
   if (res.status !== 200) {
+    console.log(await res.json());
     throw new Error(await res.json());
   }
 

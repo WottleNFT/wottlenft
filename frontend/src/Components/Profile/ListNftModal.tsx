@@ -5,6 +5,7 @@ import { closeOutline } from "ionicons/icons";
 
 import { WottleEnabled } from "../../hooks/useWallet";
 import { listNft } from "../../lib/combinedMarketplaceEndpoints";
+import { UnGoal } from "../../lib/marketplaceApi";
 import { Nft } from "../../types/Nft";
 import ListSuccessModal from "./ListSuccessModal";
 
@@ -24,11 +25,16 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
   const [listTxId, setListTxId] = useState<string | undefined>();
+  const [sdgGoal, setSdgGoal] = useState<UnGoal | undefined>();
 
   // Handles listing of nft
   const handleListNft = async () => {
     if (listPrice === "") {
       setError("Enter a list price!");
+      return;
+    }
+    if (!sdgGoal) {
+      setError("Please select a UN Goal");
       return;
     }
 
@@ -48,7 +54,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
 
     setIsSubmitting(true);
     try {
-      const res = await listNft(wallet, nft, priceInLovelace);
+      const res = await listNft(wallet, nft, priceInLovelace, sdgGoal);
       setListTxId(res);
     } catch (e) {
       console.error(e);
@@ -104,6 +110,37 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
                 />
               </label>
               <p className="text-sm">Minimum list price: ₳5</p>
+              <div className="px-5 mt-5">
+                <p className="pl-2 text-lg font-bold text-left">
+                  Select sustainable Development Goal
+                </p>
+                <div className="flex justify-between w-full py-3">
+                  <img
+                    src="/assets/un_goals/zero_hunger.png"
+                    alt="Zero hunger"
+                    className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${
+                      sdgGoal === UnGoal.ZeroHunger && "ring-4"
+                    }`}
+                    onClick={() => setSdgGoal(UnGoal.ZeroHunger)}
+                  />
+                  <img
+                    src="/assets/un_goals/quality_education.png"
+                    alt="Quality education"
+                    className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${
+                      sdgGoal === UnGoal.QualityEducation && "ring-4"
+                    }`}
+                    onClick={() => setSdgGoal(UnGoal.QualityEducation)}
+                  />
+                  <img
+                    src="/assets/un_goals/climate_action.png"
+                    alt="Climate action"
+                    className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${
+                      sdgGoal === UnGoal.ClimateAction && "ring-4"
+                    }`}
+                    onClick={() => setSdgGoal(UnGoal.ClimateAction)}
+                  />
+                </div>
+              </div>
               {error && <p className="text-sm text-red-500">{error}</p>}
               <div className="self-center w-56 py-5">
                 {isSubmitting ? (
