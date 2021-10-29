@@ -29,6 +29,7 @@ const useAuth = () => {
       localStorage.removeItem(loggedInKey);
       localStorage.removeItem(tokenKey);
       setIsLoggedIn(false);
+      setIsLoading(false);
     }
   }, [wallet.status]);
 
