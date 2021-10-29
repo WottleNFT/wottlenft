@@ -12,9 +12,10 @@ type Props = {
   nft: Nft;
   wallet: WottleWalletState;
   listed: boolean;
+	price?: number;
 };
 
-const NftCard = ({ nft, wallet, listed }: Props) => {
+const NftCard = ({ nft, wallet, listed, price }: Props) => {
   const { assetName, metadata, policyId } = nft;
   const { description, image } = metadata;
   const router = useRouter();
@@ -30,7 +31,6 @@ const NftCard = ({ nft, wallet, listed }: Props) => {
     dismiss: handleDismiss,
     wallet,
   });
-  console.log(nft);
 
   return (
     <div
@@ -54,7 +54,10 @@ const NftCard = ({ nft, wallet, listed }: Props) => {
             List
           </IonButton>
         ) : (
-          <div className="flex"></div>
+          <div className="flex justify-between">
+						<p className="text-2xl text-primary-default">{(price as number)/1000000} ₳</p>
+						<IonButton className="">Unlist</IonButton>
+					</div>
         )}
       </div>
     </div>

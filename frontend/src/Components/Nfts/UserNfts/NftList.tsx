@@ -2,14 +2,12 @@ import React from "react";
 
 import { useGetUserNftsQuery } from "../../../app/nft";
 import { WottleEnabled } from "../../../hooks/useWallet";
-import { Listing } from "../../../lib/combinedMarketplaceEndpoints";
 import DisplayMessage from "../DisplayMessage";
 import NftCard from "./NftCard";
 
 type Props = {
   address: string;
   wallet: WottleEnabled;
-  sellListings: Listing[];
 };
 
 const NftList = ({ address, wallet }: Props) => {
