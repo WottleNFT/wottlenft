@@ -1,6 +1,7 @@
 use crate::{config::Config, Result};
 use cardano_serialization_lib::address::{Address, BaseAddress, NetworkInfo};
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum UnGoal {
@@ -60,5 +61,13 @@ impl MarketplaceAddresses {
             &base_addr.stake_cred(),
         )
         .to_address();
+    }
+
+    pub fn get_statistics(&self) -> Result<Value> {
+        Ok(serde_json::json!({
+            "zeroHunger": self.zero_hunger.to_bech32(None)?,
+            "qualityEducation": self.quality_education.to_bech32(None)?,
+            "climateAction": self.climate_action.to_bech32(None)?
+        }))
     }
 }

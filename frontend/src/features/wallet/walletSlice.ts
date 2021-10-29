@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { blockchainApi } from "../../lib/blockchainApi";
+import { getBalance } from "../../lib/blockchainApi";
 import getBechAddr from "../../lib/convertWalletAddr";
 import { HexCborString, Network } from "../../wallet";
 
@@ -86,8 +86,7 @@ export const initializeWallet = createAsyncThunk(
     }
 
     const address = await cardano.getChangeAddress();
-    const res = await fetch(`${blockchainApi}/address/${address}/balance`);
-    const balance = (await res.json()).total_value;
+    const balance = (await getBalance(address)).total_value;
     const bechAddr = await getBechAddr(address);
 
     return {

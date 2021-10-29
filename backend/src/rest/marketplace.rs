@@ -16,6 +16,11 @@ async fn get_all_sales(data: web::Data<AppState>) -> Result<HttpResponse> {
     Ok(HttpResponse::Ok().json(sales))
 }
 
+#[get("/unsdg")]
+async fn get_unsdg_details(data: web::Data<AppState>) -> Result<HttpResponse> {
+    Ok(HttpResponse::Ok().json(data.marketplace.addresses.get_statistics()?))
+}
+
 #[derive(Deserialize, Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct Sell {
@@ -109,4 +114,5 @@ pub fn create_marketplace_service() -> Scope {
         .service(buy_nft)
         .service(cancel_nft)
         .service(get_all_sales)
+        .service(get_unsdg_details)
 }

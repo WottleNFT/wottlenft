@@ -144,9 +144,9 @@ const navInfo = [
     tempRoute: "/guides",
   },
   {
-    name: "Creator",
-    route: "/creaters",
-    tempRoute: "/coming-soon",
+    name: "UNSDG",
+    route: "/unsdg",
+    tempRoute: "/unsdg",
   },
   {
     name: "Mint Now",
