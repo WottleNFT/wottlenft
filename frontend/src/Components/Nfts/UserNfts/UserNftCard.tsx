@@ -1,7 +1,6 @@
 import React from "react";
 
 import { IonButton, useIonModal } from "@ionic/react";
-import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { WottleEnabled } from "../../../hooks/useWallet";
@@ -54,10 +53,10 @@ const UserNftCard = ({ nft, wallet, listed, price }: Props) => {
       className="flex flex-col m-8 transition-all rounded-2xl bg-gray-50 drop-shadow-md hover:drop-shadow-2xl hover:scale-110"
     >
       <div className="h-4/5">
-        <Image
-          height={350}
+        <img
+          style={{ height: 350 }}
           className="object-contain w-full pt-2 hover:cursor-pointer"
-          alt="Event"
+          alt="NFT Image"
           src={imageUrl}
           onClick={() => router.push(`nfts/${policyId}/${assetName}`)}
         />

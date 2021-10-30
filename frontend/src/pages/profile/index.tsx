@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import { IonIcon, IonSpinner, useIonModal } from "@ionic/react";
 import { createOutline } from "ionicons/icons";
-import Image from "next/image";
 import { useRouter } from "next/router";
 
 import EditProfileModal from "../../Components/Profile/EditProfileModal";
@@ -91,20 +90,20 @@ const Profile = () => {
             <>
               <div className="flex flex-col items-center h-4/5">
                 <div className="relative w-full rounded-none bg- xl:rounded-b-3xl h-80">
-                  <Image
+                  <img
                     src="/assets/blue-sea.png"
                     className="object-cover w-full h-full rounded-none xl:rounded-b-3xl"
                     alt="profile banner"
                   />
                   <div className="absolute border rounded-full border-primary-default -bottom-28 w-60 h-60 left-10">
                     {(profileData as ProfileData).user.profile_picture_hash ? (
-                      <Image
+                      <img
                         src={profileData?.user.profile_picture_hash ?? ""}
                         alt="profile picture"
                         className="object-cover w-full h-full bg-gray-400 rounded-full"
                       />
                     ) : (
-                      <Image
+                      <img
                         src="/logo.png"
                         alt="placeholder"
                         className="object-cover w-full h-full bg-gray-400 rounded-full"

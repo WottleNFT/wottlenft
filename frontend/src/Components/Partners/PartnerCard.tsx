@@ -14,15 +14,15 @@ const PartnerCard = ({ partner }: Props) => {
 
   return (
     <Link href={websiteUrl}>
-      <a
-        target="_blank"
-        className="flex flex-col items-center w-full h-full p-2"
-      >
-        <Image
-          className="object-contain p-2 h-4/5 rounded-full border-black border-1"
-          alt={name}
-          src={imgUrl}
-        />
+      <a target="_blank" className="flex flex-col items-center m-2">
+        <div
+          className="w-full h-4/5 p-4 rounded-full border-black"
+          style={{ borderWidth: 1 }}
+        >
+          <div className="relative w-full h-full">
+            <Image layout="fill" objectFit="contain" alt={name} src={imgUrl} />
+          </div>
+        </div>
         <span className="text-2xl truncate mt-3">{name}</span>
       </a>
     </Link>

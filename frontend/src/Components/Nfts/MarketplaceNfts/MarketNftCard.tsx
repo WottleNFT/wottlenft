@@ -42,11 +42,15 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
 
         <Link href={`/marketplace/${marketplaceListing.transactionHash}`}>
           <a>
-            <Image
-              className="object-contain w-full h-48 p-2 rounded-3xl"
-              alt="NFT Image"
-              src={imageUrl}
-            />
+            <div className="w-full aspect-w-1 aspect-h-1 relative">
+              <Image
+                className="rounded-2xl"
+                alt="NFT Image"
+                layout="fill"
+                objectFit="cover"
+                src={imageUrl}
+              />
+            </div>
           </a>
         </Link>
 

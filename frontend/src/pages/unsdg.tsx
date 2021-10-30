@@ -102,7 +102,7 @@ const Unsdg = ({ zeroHunger, climateAction, qualityEducation }: UnsdgProps) => {
             See how the community can deliver an impact!
           </p>
         </div>
-        <Image
+        <img
           className="z-0 self-end object-contain h-2/6 lg:h-1/2 xl:h-5/6"
           src="/assets/everyone-together.png"
           alt="all wottles"

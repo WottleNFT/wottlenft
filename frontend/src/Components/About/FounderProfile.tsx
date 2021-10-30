@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 interface Props {
   name: string;
   title: string;
@@ -13,12 +11,12 @@ const FounderProfile = (props: Props) => {
   return (
     <div>
       <div className="relative rounded-full h-80 w-80 sm:h-96 sm:w-96">
-        <Image
+        <img
           src={props.imgSrc}
           alt={props.imgAlt}
           className="object-cover w-full h-full rounded-full"
         />
-        <Image
+        <img
           src={props.wottleImgSrc}
           alt={props.wottleImgAlt}
           className="absolute top-0 right-0 w-36 h-36"

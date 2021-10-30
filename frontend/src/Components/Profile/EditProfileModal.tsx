@@ -3,7 +3,6 @@ import { ChangeEvent, useState } from "react";
 import { IonButton, IonContent, IonIcon, IonSpinner } from "@ionic/react";
 import axios, { AxiosResponse } from "axios";
 import { closeOutline } from "ionicons/icons";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 import { ProfileData } from "../../hooks/useProfile";
@@ -198,7 +197,7 @@ const EditProfileModal = ({
         </div>
         <div className="flex items-center justify-between px-8 mt-5">
           {image ? (
-            <Image
+            <img
               className="object-cover w-56 h-56 border-4 border-solid rounded-full border-primary-default"
               alt="uploaded image"
               src={URL.createObjectURL(image)}
@@ -249,7 +248,7 @@ const EditProfileModal = ({
         <div className="px-5 mt-5">
           <p className="pl-2 text-lg font-bold">Sustainable Development Goal</p>
           <div className="flex justify-between w-full py-3">
-            <Image
+            <img
               src="/assets/un_goals/zero_hunger.png"
               alt="Zero hunger"
               className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${
@@ -257,7 +256,7 @@ const EditProfileModal = ({
               }`}
               onClick={() => setSdgGoal(UnGoal.ZeroHunger)}
             />
-            <Image
+            <img
               src="/assets/un_goals/quality_education.png"
               alt="Quality education"
               className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${
@@ -265,7 +264,7 @@ const EditProfileModal = ({
               }`}
               onClick={() => setSdgGoal(UnGoal.QualityEducation)}
             />
-            <Image
+            <img
               src="/assets/un_goals/climate_action.png"
               alt="Climate action"
               className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${

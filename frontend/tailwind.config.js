@@ -89,5 +89,10 @@ module.exports = {
   },
   variants: {},
   // eslint-disable-next-line global-require
-  plugins: [require('@tailwindcss/line-clamp')],
+  plugins: [
+    // eslint-disable-next-line global-require
+    require('@tailwindcss/line-clamp'),
+    // eslint-disable-next-line global-require
+    require('@tailwindcss/aspect-ratio'),
+  ],
 };

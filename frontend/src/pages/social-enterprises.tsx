@@ -1,5 +1,4 @@
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import { useRouter } from "next/router";
 
 import PartnerCard from "../Components/Partners/PartnerCard";
@@ -41,7 +40,7 @@ const SocialEnterprises = (props: Props) => {
             and email us at <b>contact@wottlenft.io</b>
           </p>
         </div>
-        <Image
+        <img
           className="z-0 self-end object-contain h-2/6 lg:h-1/2 xl:h-5/6"
           src={`${router.basePath}/assets/everyone-together.png`}
           alt="all wottles"
@@ -57,7 +56,7 @@ const SocialEnterprises = (props: Props) => {
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
           {partners.map((partner, idx) => {
             return (
-              <div key={idx}>
+              <div className="aspect-w-4 aspect-h-5" key={idx}>
                 <PartnerCard partner={partner} />
               </div>
             );

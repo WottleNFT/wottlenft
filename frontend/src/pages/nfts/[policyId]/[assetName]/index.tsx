@@ -14,9 +14,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     `${process.env.BLOCKCHAIN_API}/nft/single/${id}/${name}`
   );
 
+  const responseJson = await res.json();
+  if (responseJson === null) {
+    return {
+      redirect: {
+        destination: "/nft-not-found",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
-      nft: responseToNft(await res.json()),
+      nft: responseToNft(responseJson),
     },
   };
 };

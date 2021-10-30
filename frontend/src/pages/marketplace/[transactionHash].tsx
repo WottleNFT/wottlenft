@@ -18,9 +18,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     `${process.env.BLOCKCHAIN_API}/marketplace/single/${hash}`
   );
 
+  const listing = await res.json();
+  if (listing === null) {
+    return {
+      redirect: {
+        destination: "/nft-not-found",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
-      listing: await res.json(),
+      listing,
     },
   };
 };
