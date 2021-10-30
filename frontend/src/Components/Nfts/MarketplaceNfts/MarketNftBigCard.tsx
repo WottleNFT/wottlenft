@@ -37,7 +37,7 @@ const MarketNftBigCard = ({ marketplaceListing }: Props) => {
         </Link>
       </div>
 
-      <div className="flex flex-col items-stretch justify-between w-full md:w-1/2 h-full gap-4 px-4 text-left lg:gap-8 md:px-12">
+      <div className="flex flex-col items-stretch justify-between w-full md:w-1/3 h-full gap-4 px-4 text-left lg:gap-8 md:px-12">
         <p className="my-auto text-3xl font-bold">{assetName}</p>
         <p className="text-xl truncate whitespace-normal line-clamp-3">
           {description}
@@ -51,7 +51,7 @@ const MarketNftBigCard = ({ marketplaceListing }: Props) => {
               {`${formatPrice(price / 1000000)} ₳`}
             </IonLabel>
           </div>
-          <div className="w-16 mb-1">
+          <div className="w-16 mb-1 ml-8">
             <IonButton
               href={`/marketplace/${marketplaceListing.transactionHash}`}
               shape="round"

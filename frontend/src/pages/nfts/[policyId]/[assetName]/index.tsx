@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 
-import NftDetails from "../../../../Components/Nfts/NftDetails";
+import NftDetails from "../../../../Components/Marketplace/NftDetails";
 import { Main } from "../../../../templates/Main";
 import { Nft } from "../../../../types/Nft";
 import { getImgUrl, responseToNft } from "../../../../utils/NftUtil";

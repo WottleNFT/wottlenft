@@ -3,8 +3,8 @@ import React from "react";
 import { IonSpinner } from "@ionic/react";
 import { GetServerSideProps } from "next";
 
+import NftDetails from "../../Components/Marketplace/NftDetails";
 import MarketButton from "../../Components/Nfts/MarketplaceNfts/MarketButton";
-import NftDetails from "../../Components/Nfts/NftDetails";
 import WalletSwitch from "../../Components/WalletSwitch";
 import useWallet from "../../hooks/useWallet";
 import { MarketplaceListing } from "../../lib/marketplaceApi";

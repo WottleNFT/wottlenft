@@ -1,6 +1,6 @@
 import { Nft } from "../../types/Nft";
 import { getImgUrl } from "../../utils/NftUtil";
-import NftInfoCard from "./NftInfoCard";
+import NftInfoCard from "../Nfts/NftInfoCard";
 
 type Props = {
   nft: Nft;

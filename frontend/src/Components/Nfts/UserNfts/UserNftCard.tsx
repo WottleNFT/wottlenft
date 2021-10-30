@@ -15,7 +15,7 @@ type Props = {
   price?: number;
 };
 
-const NftCard = ({ nft, wallet, listed, price }: Props) => {
+const UserNftCard = ({ nft, wallet, listed, price }: Props) => {
   const { assetName, metadata, policyId } = nft;
   const { description, image } = metadata;
   const router = useRouter();
@@ -58,7 +58,7 @@ const NftCard = ({ nft, wallet, listed, price }: Props) => {
             <p className="text-2xl text-primary-default">
               {(price as number) / 1000000} ₳
             </p>
-            <IonButton className="">Unlist</IonButton>
+            <IonButton>Unlist</IonButton>
           </div>
         )}
       </div>
@@ -66,4 +66,4 @@ const NftCard = ({ nft, wallet, listed, price }: Props) => {
   );
 };
 
-export default NftCard;
+export default UserNftCard;

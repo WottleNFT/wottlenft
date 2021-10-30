@@ -4,7 +4,7 @@ import { useGetUserNftsQuery } from "../../../app/nft";
 import { WottleEnabled } from "../../../hooks/useWallet";
 import { MarketplaceListing } from "../../../lib/marketplaceApi";
 import DisplayMessage from "../DisplayMessage";
-import NftCard from "./NftCard";
+import UserNftCard from "./UserNftCard";
 
 type Props = {
   address: string;
@@ -25,7 +25,7 @@ const NftList = ({ address, wallet, listings }: Props) => {
     <div className="flex flex-wrap justify-center">
       {data.map((nft) => {
         return (
-          <NftCard
+          <UserNftCard
             listed={false}
             wallet={wallet}
             nft={nft}
@@ -45,7 +45,7 @@ const NftList = ({ address, wallet, listings }: Props) => {
           metadata,
         };
         return (
-          <NftCard
+          <UserNftCard
             listed={true}
             wallet={wallet}
             nft={nftInfo}
