@@ -48,6 +48,7 @@ const Profile = () => {
       }
     };
     getBlockchainListings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet.status]);
 
   // Redirect to login if not logged in, but wallet enabled
@@ -58,7 +59,7 @@ const Profile = () => {
         router.push("/login");
       }, 1000);
     }
-  }, [isLoading, isLoggedIn, wallet.status]);
+  }, [isLoading, isLoggedIn, router, wallet.status]);
 
   return (
     <Main title="Profile">
@@ -94,7 +95,7 @@ const Profile = () => {
                     className="object-cover w-full h-full rounded-none xl:rounded-b-3xl"
                     alt="profile banner"
                   />
-                  <div className="absolute border border-4 rounded-full border-primary-default -bottom-28 w-60 h-60 left-10">
+                  <div className="absolute border rounded-full border-primary-default -bottom-28 w-60 h-60 left-10">
                     {(profileData as ProfileData).user.profile_picture_hash ? (
                       <img
                         src={profileData?.user.profile_picture_hash}

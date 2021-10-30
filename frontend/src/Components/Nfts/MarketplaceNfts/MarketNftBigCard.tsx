@@ -4,7 +4,7 @@ import { IonButton, IonCardSubtitle, IonLabel } from "@ionic/react";
 import Link from "next/link";
 
 import { MarketplaceListing } from "../../../lib/marketplaceApi";
-import { getImgUrl } from "../../../utils/NftUtil";
+import { formatPrice, getImgUrl } from "../../../utils/NftUtil";
 
 type Props = {
   marketplaceListing: MarketplaceListing;
@@ -22,22 +22,23 @@ const MarketNftBigCard = ({ marketplaceListing }: Props) => {
 
   return (
     <div className="flex flex-col items-center px-4 py-4 mb-3 truncate md:px-16 md:flex-row">
-      <Link
-        href={`/marketplace/${marketplaceListing.transactionHash}`}
-        passHref
-      >
-        <a>
-          <img
-            className="object-cover w-full p-2 rounded-3xl"
-            alt="NFT Image"
-            src={imageUrl}
-          />
-        </a>
-      </Link>
-      <div className="flex flex-col justify-between w-full h-full gap-4 px-4 text-left lg:gap-8 md:px-12">
-        <p className="my-auto text-3xl font-bold truncate whitespace-normal">
-          {assetName}
-        </p>
+      <div className="w-full">
+        <Link
+          href={`/marketplace/${marketplaceListing.transactionHash}`}
+          passHref
+        >
+          <a>
+            <img
+              className="object-cover w-full p-2 rounded-3xl"
+              alt="NFT Image"
+              src={imageUrl}
+            />
+          </a>
+        </Link>
+      </div>
+
+      <div className="flex flex-col items-stretch justify-between w-full md:w-1/3 h-full gap-4 px-4 text-left lg:gap-8 md:px-12">
+        <p className="my-auto text-3xl font-bold">{assetName}</p>
         <p className="text-xl truncate whitespace-normal line-clamp-3">
           {description}
         </p>
@@ -47,7 +48,7 @@ const MarketNftBigCard = ({ marketplaceListing }: Props) => {
               Price:
             </IonCardSubtitle>
             <IonLabel className="text-4xl text-primary-default">
-              {`${price / 1000000} ₳`}
+              {`${formatPrice(price / 1000000)} ₳`}
             </IonLabel>
           </div>
           <div className="w-16 mb-1">

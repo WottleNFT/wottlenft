@@ -47,6 +47,7 @@ const MarketButton = ({ listing, wallet }: MarketButtonProps) => {
 
   return (
     <IonButton
+      shape="round"
       onClick={() => {
         if (isSeller) {
           buy(listing);

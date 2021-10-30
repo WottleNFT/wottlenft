@@ -12,7 +12,7 @@ type Props = {
   nft: Nft;
   wallet: WottleWalletState;
   listed: boolean;
-	price?: number;
+  price?: number;
 };
 
 const NftCard = ({ nft, wallet, listed, price }: Props) => {
@@ -55,9 +55,11 @@ const NftCard = ({ nft, wallet, listed, price }: Props) => {
           </IonButton>
         ) : (
           <div className="flex justify-between">
-						<p className="text-2xl text-primary-default">{(price as number)/1000000} ₳</p>
-						<IonButton className="">Unlist</IonButton>
-					</div>
+            <p className="text-2xl text-primary-default">
+              {(price as number) / 1000000} ₳
+            </p>
+            <IonButton className="">Unlist</IonButton>
+          </div>
         )}
       </div>
     </div>

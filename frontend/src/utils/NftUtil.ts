@@ -17,3 +17,7 @@ export const getImgUrl = (image: string): string => {
   const imageHash = image.replace("ipfs://", "");
   return `https://ipfs.io/ipfs/${imageHash}`;
 };
+
+export const formatPrice = (price: number): string | number => {
+  return price % 1 !== 0 ? price.toFixed(2) : price;
+};

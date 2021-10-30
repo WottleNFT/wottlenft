@@ -8,7 +8,7 @@ import WalletSwitch from "../../Components/WalletSwitch";
 import useWallet from "../../hooks/useWallet";
 import { MarketplaceListing } from "../../lib/marketplaceApi";
 import { Main } from "../../templates/Main";
-import { getImgUrl } from "../../utils/NftUtil";
+import { formatPrice, getImgUrl } from "../../utils/NftUtil";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const hash = context.params!.transactionHash;
@@ -75,7 +75,7 @@ const SingleMarketItem = ({ listing }: Props) => {
                 Price:
               </IonCardSubtitle>
               <IonLabel className="text-4xl text-primary-default">
-                {`${price / 1000000} ₳`}
+                {`${formatPrice(price / 1000000)} ₳`}
               </IonLabel>
             </div>
             <div className="w-16 mb-1">
