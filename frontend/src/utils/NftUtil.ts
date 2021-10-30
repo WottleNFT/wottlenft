@@ -27,8 +27,11 @@ export const listingToNft = (listing: MarketplaceListing): Nft => {
 };
 
 export const getImgUrl = (image: string): string => {
-  const imageHash = image.replace("ipfs://", "");
-  return `https://ipfs.io/ipfs/${imageHash}`;
+  if (image.startsWith("ipfs://")) {
+    const imageHash = image.replace("ipfs://", "");
+    return `https://ipfs.io/ipfs/${imageHash}`;
+  }
+  return image;
 };
 
 export const formatPrice = (price: number): string | number => {
