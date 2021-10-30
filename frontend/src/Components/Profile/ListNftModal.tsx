@@ -112,7 +112,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
               <p className="text-sm">Minimum list price: ₳5</p>
               <div className="px-5 mt-5">
                 <p className="pl-2 text-lg font-bold text-left">
-                  Select sustainable Development Goal
+                  Select Sustainable Development Goal
                 </p>
                 <div className="flex justify-between w-full py-3">
                   <img

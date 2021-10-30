@@ -3,16 +3,18 @@ import React from "react";
 import { IonButton, useIonModal } from "@ionic/react";
 import { useRouter } from "next/router";
 
-import { WottleWalletState } from "../../../hooks/useWallet";
+import { WottleEnabled } from "../../../hooks/useWallet";
+import { cancelNft, CancelNftRequest } from "../../../lib/marketplaceApi";
+import { signTransaction } from "../../../lib/transactionApi";
 import { Nft } from "../../../types/Nft";
 import { getImgUrl } from "../../../utils/NftUtil";
 import ListNftModal from "../../Profile/ListNftModal";
 
 type Props = {
   nft: Nft;
-  wallet: WottleWalletState;
+  wallet: WottleEnabled;
   listed: boolean;
-	price?: number;
+  price?: number;
 };
 
 const NftCard = ({ nft, wallet, listed, price }: Props) => {
@@ -31,6 +33,19 @@ const NftCard = ({ nft, wallet, listed, price }: Props) => {
     dismiss: handleDismiss,
     wallet,
   });
+
+  const handleUnlist = async () => {
+    const request: CancelNftRequest = {
+      sellerAddress: wallet.state.address,
+      policyId: nft.policyId,
+      assetName: nft.assetName,
+    };
+
+    const { transaction } = await cancelNft(request);
+    const signature = await wallet.cardano.signTx(transaction);
+    const signResponse = await signTransaction(transaction, signature);
+    console.log(signResponse);
+  };
 
   return (
     <div
@@ -55,9 +70,11 @@ const NftCard = ({ nft, wallet, listed, price }: Props) => {
           </IonButton>
         ) : (
           <div className="flex justify-between">
-						<p className="text-2xl text-primary-default">{(price as number)/1000000} ₳</p>
-						<IonButton className="">Unlist</IonButton>
-					</div>
+            <p className="text-2xl text-primary-default">
+              {(price as number) / 1000000} ₳
+            </p>
+            <IonButton onClick={handleUnlist}>Unlist</IonButton>
+          </div>
         )}
       </div>
     </div>

@@ -55,9 +55,9 @@ const SingleMarketItem = ({ listing }: Props) => {
         ],
       }}
     >
-      <div className="flex flex-col items-center px-4 py-4 mb-3 truncate md:px-16 md:flex-row">
+      <div className="flex flex-col items-center px-4 py-4 mb-3 truncate min-h-3/4 md:px-16 md:flex-row">
         <img
-          className="object-cover w-full p-2 rounded-3xl"
+          className="object-cover w-full p-2 rounded-3xl md:max-w-maxHalf"
           alt="NFT Image"
           src={imageUrl}
         />
