@@ -77,7 +77,7 @@ const Main = (props: IMainProps) => {
       />
       <IonPage id="main">
         <IonHeader className="ion-no-border">
-          <div className="flex items-center justify-between px-8 2xl:px-40 bg-primary-default">
+          <div className="flex items-center justify-between px-8 2xl:px-40 bg-clear">
             <div className="flex items-center content-center flex-grow">
               <div
                 onClick={() => router.push("/landing")}
