@@ -64,7 +64,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
             </p>
             <div className="flex flex-col items-start">
               <CategoryTag label={unGoal} color="primary" className="-ml-2" />
-              <div className="self-stretch flex flex-row items-end justify-between pt-2">
+              <div className="flex flex-row items-end self-stretch justify-between pt-2">
                 <span className="text-2xl text-primary-default">{`${formatPrice(
                   price / 1000000
                 )} ₳`}</span>

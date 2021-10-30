@@ -120,7 +120,7 @@ const Login = () => {
                   onKeyDown={(e) => handleEnterKey(e)}
                 />
               </label>
-              <p className="text-sm text-right">
+              <p className="hidden text-sm text-right">
                 <a>Forgot password?</a>
               </p>
               {errorMsg && (
