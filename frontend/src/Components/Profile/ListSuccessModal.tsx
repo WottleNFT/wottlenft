@@ -27,8 +27,14 @@ const ListSuccessModal = ({ transactionId }: Props) => {
       />
       {confirmed && (
         <p>
-          Your transaction is now confirmed on the blockchain. You can now head
-          over to the marketplace to view your listing!
+          Your transaction is now confirmed on the blockchain. Click{" "}
+          <a
+            className="text-primary-default hover:underline"
+            href={`/marketplace/${transactionId}`}
+          >
+            here
+          </a>{" "}
+          to view your transaction.
         </p>
       )}
     </div>

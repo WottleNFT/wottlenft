@@ -21,6 +21,7 @@ module.exports = {
     maxWidth: {
       maxBody: '1730px',
       maxScreen: '100vw',
+      maxHalf: '50%',
     },
     minHeight: {
       0: '0',
@@ -69,7 +70,7 @@ module.exports = {
           900: '#2a4365',
         },
         primary: {
-					light: 'rgba(255, 223, 133, 0.3)',
+          light: 'rgba(255, 223, 133, 0.3)',
           default: '#FAC748',
         },
       },
