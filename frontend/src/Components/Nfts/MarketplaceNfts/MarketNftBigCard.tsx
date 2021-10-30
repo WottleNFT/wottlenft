@@ -24,10 +24,7 @@ const MarketNftBigCard = ({ marketplaceListing }: Props) => {
   return (
     <div className="flex flex-col items-end px-4 mb-4 truncate md:px-16 md:flex-row">
       <div className="w-full">
-        <Link
-          href={`/marketplace/${marketplaceListing.transactionHash}`}
-          passHref
-        >
+        <Link href={`/marketplace/${marketplaceListing.transactionHash}`}>
           <a>
             <Image
               className="my-4 object-contain w-full rounded-3xl h-auto md:max-h-70vh min-h-0 md:min-h-320"

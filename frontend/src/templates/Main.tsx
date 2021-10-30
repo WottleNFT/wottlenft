@@ -101,7 +101,7 @@ const Main = (props: IMainProps) => {
                     <div className={navbarStyles.container}>
                       {navInfo.map((nav) => {
                         return (
-                          <Link href={nav.tempRoute} passHref key={nav.name}>
+                          <Link href={nav.tempRoute} key={nav.name}>
                             <a
                               href={nav.tempRoute}
                               className={

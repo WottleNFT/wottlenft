@@ -40,10 +40,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
           </div>
         </div> */}
 
-        <Link
-          href={`/marketplace/${marketplaceListing.transactionHash}`}
-          passHref
-        >
+        <Link href={`/marketplace/${marketplaceListing.transactionHash}`}>
           <a>
             <Image
               className="object-contain w-full h-48 p-2 rounded-3xl"
