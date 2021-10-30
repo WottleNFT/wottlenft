@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { IonIcon, IonSpinner, useIonModal } from "@ionic/react";
 import { createOutline } from "ionicons/icons";
@@ -11,6 +11,7 @@ import { Status } from "../../features/wallet/walletSlice";
 import useAuth from "../../hooks/useAuth";
 import useProfile, { ProfileData } from "../../hooks/useProfile";
 import { WottleEnabled } from "../../hooks/useWallet";
+import { getListings, MarketplaceListing } from "../../lib/marketplaceApi";
 import { Main } from "../../templates/Main";
 
 const Profile = () => {
@@ -24,6 +25,7 @@ const Profile = () => {
     updateUnGoal,
   } = useProfile();
   const router = useRouter();
+  const [listings, setListings] = useState<MarketplaceListing[] | undefined>();
 
   const handleDismiss = () => {
     dismiss();
@@ -38,6 +40,15 @@ const Profile = () => {
     updatePassword,
     updateUnGoal,
   });
+
+  useEffect(() => {
+    const getBlockchainListings = async () => {
+      if (wallet.status === Status.Enabled) {
+        setListings(await getListings(wallet.state.address));
+      }
+    };
+    getBlockchainListings();
+  }, [wallet.status]);
 
   // Redirect to login if not logged in, but wallet enabled
   useEffect(() => {
@@ -73,6 +84,7 @@ const Profile = () => {
         {!isLoading &&
           isLoggedIn &&
           profileDataReady &&
+          listings &&
           wallet.status === Status.Enabled && (
             <>
               <div className="flex flex-col items-center h-4/5">
@@ -128,7 +140,7 @@ const Profile = () => {
                       : ""}
                   </p>
                 </div>
-                <Tabs wallet={wallet as WottleEnabled} />
+                <Tabs wallet={wallet as WottleEnabled} listings={listings} />
               </div>
             </>
           )}

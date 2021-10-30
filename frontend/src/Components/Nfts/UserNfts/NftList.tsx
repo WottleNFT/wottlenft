@@ -2,15 +2,17 @@ import React from "react";
 
 import { useGetUserNftsQuery } from "../../../app/nft";
 import { WottleEnabled } from "../../../hooks/useWallet";
+import { MarketplaceListing } from "../../../lib/marketplaceApi";
 import DisplayMessage from "../DisplayMessage";
 import NftCard from "./NftCard";
 
 type Props = {
   address: string;
   wallet: WottleEnabled;
+  listings: MarketplaceListing[];
 };
 
-const NftList = ({ address, wallet }: Props) => {
+const NftList = ({ address, wallet, listings }: Props) => {
   const { data, error, isLoading } = useGetUserNftsQuery({
     address,
   });
@@ -28,6 +30,27 @@ const NftList = ({ address, wallet }: Props) => {
             wallet={wallet}
             nft={nft}
             key={nft.policyId}
+          />
+        );
+      })}
+      {listings.map((listingData) => {
+        const metadata =
+          listingData.assetMetadata[listingData.policyId][
+            listingData.assetName
+          ];
+        const nftInfo = {
+          policyId: listingData.policyId,
+          assetName: listingData.assetName,
+          quantity: 1,
+          metadata,
+        };
+        return (
+          <NftCard
+            listed={true}
+            wallet={wallet}
+            nft={nftInfo}
+            key={nftInfo.policyId}
+            price={listingData.saleMetadata.price}
           />
         );
       })}

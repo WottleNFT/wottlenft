@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import { WottleEnabled } from "../../hooks/useWallet";
+import { MarketplaceListing } from "../../lib/marketplaceApi";
 import DisplayMessage from "../Nfts/DisplayMessage";
 import NftList from "../Nfts/UserNfts/NftList";
 import WalletSwitch from "../WalletSwitch";
@@ -17,9 +18,10 @@ enum Tab {
 
 interface Props {
   wallet: WottleEnabled;
+  listings: MarketplaceListing[];
 }
 
-const Tabs = ({ wallet }: Props) => {
+const Tabs = ({ wallet, listings }: Props) => {
   const [activeTab, setActiveTab] = useState<number>(Tab.Collection);
   // const [tabsLoading, setTabsLoading] = useState<boolean>(true);
   // const [boughtListings, setBoughtListings] = useState<Listing[] | undefined>();
@@ -83,6 +85,7 @@ const Tabs = ({ wallet }: Props) => {
                 <NftList
                   address={enabledWallet.state.address}
                   wallet={wallet}
+                  listings={listings}
                 />
               )}
               fallback={<DisplayMessage text="Please get Nami Wallet" />}
