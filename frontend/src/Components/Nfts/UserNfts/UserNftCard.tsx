@@ -17,7 +17,7 @@ type Props = {
   price?: number;
 };
 
-const NftCard = ({ nft, wallet, listed, price }: Props) => {
+const UserNftCard = ({ nft, wallet, listed, price }: Props) => {
   const { assetName, metadata, policyId } = nft;
   const { description, image } = metadata;
   const router = useRouter();
@@ -81,4 +81,4 @@ const NftCard = ({ nft, wallet, listed, price }: Props) => {
   );
 };
 
-export default NftCard;
+export default UserNftCard;

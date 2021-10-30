@@ -1,6 +1,15 @@
 import { WottleEnabled } from "../hooks/useWallet";
 import { Nft, NftMetadata } from "../types/Nft";
-import { sellNft, SellNftRequest, UnGoal } from "./marketplaceApi";
+import {
+  buyNft,
+  BuyNftRequest,
+  cancelNft,
+  CancelNftRequest,
+  MarketplaceListing,
+  sellNft,
+  SellNftRequest,
+  UnGoal,
+} from "./marketplaceApi";
 import { profileBaseUrl } from "./profileApi";
 import { signTransaction } from "./transactionApi";
 
@@ -78,6 +87,41 @@ export const listNft = async (
   const signResponse = await signTransaction(transaction, signature);
   const transactionId = signResponse.tx_id;
 
+  return transactionId;
+};
+
+export const buy = async (
+  wallet: WottleEnabled,
+  listing: MarketplaceListing
+) => {
+  const request: BuyNftRequest = {
+    buyerAddress: wallet.state.address,
+    policyId: listing.policyId,
+    assetName: listing.assetName,
+  };
+
+  const { transaction } = await buyNft(request);
+  const signature = await wallet.cardano.signTx(transaction, true);
+  const signResponse = await signTransaction(transaction, signature);
+  const transactionId = signResponse.tx_id;
+  console.log(transactionId);
+  return transactionId;
+};
+
+export const delist = async (
+  wallet: WottleEnabled,
+  listing: MarketplaceListing
+) => {
+  const request: CancelNftRequest = {
+    sellerAddress: listing.saleMetadata.sellerAddress,
+    policyId: listing.policyId,
+    assetName: listing.assetName,
+  };
+  const { transaction } = await cancelNft(request);
+  const signature = await wallet.cardano.signTx(transaction, true);
+  const signResponse = await signTransaction(transaction, signature);
+  const transactionId = signResponse.tx_id;
+  console.log(transactionId);
   return transactionId;
 };
 

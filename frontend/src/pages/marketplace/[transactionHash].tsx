@@ -1,14 +1,16 @@
 import React from "react";
 
-import { IonCardSubtitle, IonLabel, IonSpinner } from "@ionic/react";
+import { IonSpinner } from "@ionic/react";
 import { GetServerSideProps } from "next";
 
+import NftDetails from "../../Components/Marketplace/NftDetails";
 import MarketButton from "../../Components/Nfts/MarketplaceNfts/MarketButton";
 import WalletSwitch from "../../Components/WalletSwitch";
 import useWallet from "../../hooks/useWallet";
 import { MarketplaceListing } from "../../lib/marketplaceApi";
+import styles from "../../styles/marketNft.module.css";
 import { Main } from "../../templates/Main";
-import { getImgUrl } from "../../utils/NftUtil";
+import { listingToNft, getImgUrl } from "../../utils/NftUtil";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const hash = context.params!.transactionHash;
@@ -34,8 +36,22 @@ const SingleMarketItem = ({ listing }: Props) => {
 
   const metadata = (assetMetadata[policyId] || {})[assetName];
   const { description, image } = metadata;
-
   const imageUrl = getImgUrl(image);
+
+  const infoCardButton = (
+    <WalletSwitch
+      wallet={wallet}
+      enabled={(enabled) => (
+        <MarketButton
+          wallet={enabled}
+          listing={listing}
+          className={styles.infoCardBtn}
+        />
+      )}
+      loading={<IonSpinner />}
+      fallback={<div>Please connect a wallet</div>}
+    />
+  );
 
   return (
     <Main
@@ -55,42 +71,11 @@ const SingleMarketItem = ({ listing }: Props) => {
         ],
       }}
     >
-      <div className="flex flex-col items-center px-4 py-4 mb-3 truncate min-h-3/4 md:px-16 md:flex-row">
-        <img
-          className="object-cover w-full p-2 rounded-3xl md:max-w-maxHalf"
-          alt="NFT Image"
-          src={imageUrl}
-        />
-
-        <div className="flex flex-col justify-between w-full h-full gap-4 px-4 text-left lg:gap-8 md:px-12">
-          <p className="my-auto text-3xl font-bold truncate whitespace-normal">
-            {assetName}
-          </p>
-          <p className="text-xl truncate whitespace-normal line-clamp-3">
-            {description}
-          </p>
-          <div className="flex items-end justify-between pr-4">
-            <div className="flex flex-col items-start">
-              <IonCardSubtitle className="text-base font-light">
-                Price:
-              </IonCardSubtitle>
-              <IonLabel className="text-4xl text-primary-default">
-                {`${price / 1000000} ₳`}
-              </IonLabel>
-            </div>
-            <div className="w-16 mb-1">
-              <WalletSwitch
-                wallet={wallet}
-                enabled={(enabled) => (
-                  <MarketButton wallet={enabled} listing={listing} />
-                )}
-                loading={<IonSpinner />}
-                fallback={<div>Please connect a wallet</div>}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <NftDetails
+        nft={listingToNft(listing)}
+        price={price}
+        button={infoCardButton}
+      />
     </Main>
   );
 };

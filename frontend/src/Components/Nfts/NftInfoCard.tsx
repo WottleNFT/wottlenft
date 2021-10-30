@@ -8,9 +8,11 @@ import NftInfoSegmentBtn from "./NftInfoSegmentBtn";
 
 type Props = {
   nft: Nft;
+  price?: number;
+  button?: JSX.Element;
 };
 
-const NftInfoCard = ({ nft }: Props) => {
+const NftInfoCard = ({ nft, price, button }: Props) => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { policyId, quantity } = nft;
 
@@ -43,10 +45,10 @@ const NftInfoCard = ({ nft }: Props) => {
                 <span className="font-bold">Quantity</span>
                 <p>{`${quantity}/1`}</p>
               </div>
-              <div className="w-1/2 flex flex-col">
+              {/* <div className="w-1/2 flex flex-col">
                 <span className="font-bold">Minted</span>
                 <p>26 May 2021</p>
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -59,6 +61,17 @@ const NftInfoCard = ({ nft }: Props) => {
           </div>
         )}
       </div>
+      {price && button && (
+        <div className="p-4 w-full flex flex-row justify-between items-end bg-black">
+          <div className="flex flex-col">
+            <span className="text-sm font-light text-white">Price:</span>
+            <span className="text-3xl text-primary-default">{`${
+              price / 1000000
+            } ₳`}</span>
+          </div>
+          {button}
+        </div>
+      )}
     </IonCard>
   );
 };
