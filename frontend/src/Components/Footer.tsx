@@ -8,8 +8,8 @@ const Footer = () => {
   // const [email, setEmail] = useState<string>();
   return (
     <div className="w-full h-auto truncate bg-gray-700">
-      <div className="flex flex-col md:flex-row place-content-around">
-        <div className="flex flex-col gap-5 px-8 pt-12 text-white md:px-12">
+      <div className="flex flex-col md:flex-row justify-start px-8 2xl:px-40">
+        <div className="w-1/2 flex flex-col gap-5 mx-4 pt-12 text-white">
           <div className="flex flex-row">
             <span>
               <b>Keeping up with</b>
@@ -63,50 +63,50 @@ const Footer = () => {
           </div> */}
         </div>
 
-        <div className="grid grid-cols-2 gap-5 p-8 px-8 md:px-12 md:pl-0 lg:grid-cols-3 xl:grid-cols-4 justify-self-center">
+        <div className="grid grid-cols-2 gap-5 my-8 mx-4 md:pl-0 lg:grid-cols-3 xl:grid-cols-4 justify-self-center">
           <div className="flex flex-col">
             <span className="text-primary-default">Marketplace</span>
-            <Link href="/marketplacce" passHref>
+            <Link href="/marketplace">
               <a className="text-white">Browse</a>
             </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">NFT Minter</span>
-            <Link href="/mint-nft" passHref>
+            <Link href="/mint-nft">
               <a className="text-white">Mint Now</a>
             </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Guides</span>
-            <Link href="/guides#get-nami-wallet" passHref>
+            <Link href="/guides#get-nami-wallet">
               <a className="text-white">Get Nami Wallet</a>
             </Link>
-            <Link href="/guides#get-first-ada" passHref>
+            <Link href="/guides#get-first-ada">
               <a className="text-white">Get ADA</a>
             </Link>
-            <Link href="/guides#mint-nft" passHref>
+            <Link href="/guides#mint-nft">
               <a className="text-white">How To Mint NFTs</a>
             </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Company</span>
-            <Link href="/about" passHref>
+            <Link href="/about">
               <a className="text-white">About Us</a>
             </Link>
-            <Link href="/partners" passHref>
+            <Link href="/partners">
               <a className="text-white">Partners</a>
             </Link>
-            <Link href="https://twitter.com/wottlenft" passHref>
+            <Link href="https://twitter.com/wottlenft">
               <a target="_blank" className="text-white">
                 Twitter
               </a>
             </Link>
-            <Link href="https://discord.gg/GcDPbqvcGn" passHref>
+            <Link href="https://discord.gg/GcDPbqvcGn">
               <a target="_blank" className="text-white">
                 Discord
               </a>
             </Link>
-            <Link href="https://www.instagram.com/wottlenft/" passHref>
+            <Link href="https://www.instagram.com/wottlenft/">
               <a target="_blank" className="text-white">
                 Instagram
               </a>
@@ -114,22 +114,22 @@ const Footer = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Auction</span>
-            <Link href="/coming-soon" passHref>
+            <Link href="/coming-soon">
               <a className="text-white">Coming Soon</a>
             </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Staking Pool</span>
-            <Link href="/coming-soon" passHref>
+            <Link href="/coming-soon">
               <a className="text-white">Stake Now</a>
             </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Impact</span>
-            <Link href="/unsdg" passHref>
+            <Link href="/unsdg">
               <a className="text-white">UNSDG</a>
             </Link>
-            <Link href="/social-enterprises" passHref>
+            <Link href="/social-enterprises">
               <a className="text-white">Social Enterprises</a>
             </Link>
           </div>

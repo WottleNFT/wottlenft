@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
+import Image from "next/image";
 
+import shakeHands from "../../public/assets/shake-hands.png";
 import PartnerCard from "../Components/Partners/PartnerCard";
 import { Main } from "../templates/Main";
 import { Partner } from "../types/Partner";
@@ -18,7 +19,6 @@ type Props = {
 };
 const Partners = (props: Props) => {
   const { partners } = props;
-  const router = useRouter();
   return (
     <Main title="Partners">
       <div className="flex justify-between w-full min-h-full overflow-hidden bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-background-seascape">
@@ -36,9 +36,9 @@ const Partners = (props: Props) => {
             <b>contact@wottlenft.io</b>
           </p>
         </div>
-        <img
+        <Image
           className="z-0 self-end object-contain invisible md:visible w-1/2"
-          src={`${router.basePath}/assets/shake-hands.png`}
+          src={shakeHands}
           alt="all wottles"
         />
       </div>
@@ -51,7 +51,7 @@ const Partners = (props: Props) => {
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
           {partners.map((partner, idx) => {
             return (
-              <div key={idx}>
+              <div className="aspect-w-4 aspect-h-5" key={idx}>
                 <PartnerCard partner={partner} />
               </div>
             );

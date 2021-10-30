@@ -1,6 +1,7 @@
 import React from "react";
 
 import { IonButton, IonCardSubtitle, IonLabel } from "@ionic/react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { MarketplaceListing } from "../../../lib/marketplaceApi";
@@ -21,23 +22,24 @@ const MarketNftBigCard = ({ marketplaceListing }: Props) => {
   const imageUrl = getImgUrl(image);
 
   return (
-    <div className="flex flex-col items-center px-4 py-4 mb-3 truncate md:px-16 md:flex-row">
+    <div className="flex flex-col items-center px-4 mb-4 truncate md:px-16 md:flex-row">
       <div className="w-full">
-        <Link
-          href={`/marketplace/${marketplaceListing.transactionHash}`}
-          passHref
-        >
+        <Link href={`/marketplace/${marketplaceListing.transactionHash}`}>
           <a>
-            <img
-              className="object-cover w-full p-2 rounded-3xl"
-              alt="NFT Image"
-              src={imageUrl}
-            />
+            <div className="relative my-4 w-full h-70vh md:max-h-70vh min-h-0 md:min-h-320">
+              <Image
+                className="rounded-2xl"
+                alt="NFT Image"
+                layout="fill"
+                objectFit="contain"
+                src={imageUrl}
+              />
+            </div>
           </a>
         </Link>
       </div>
 
-      <div className="flex flex-col items-stretch justify-between w-full md:w-1/3 h-full gap-4 px-4 text-left lg:gap-8 md:px-12">
+      <div className="flex flex-col items-stretch justify-between w-full md:w-1/3 h-full gap-4 px-2 md:px-8 text-left lg:gap-8">
         <p className="my-auto text-3xl font-bold">{assetName}</p>
         <p className="text-xl truncate whitespace-normal line-clamp-3">
           {description}
@@ -51,7 +53,7 @@ const MarketNftBigCard = ({ marketplaceListing }: Props) => {
               {`${formatPrice(price / 1000000)} ₳`}
             </IonLabel>
           </div>
-          <div className="w-16 mb-1 ml-8">
+          <div className="w-16 mb-2 ml-8">
             <IonButton
               href={`/marketplace/${marketplaceListing.transactionHash}`}
               shape="round"

@@ -98,7 +98,7 @@ const Profile = () => {
                   <div className="absolute border rounded-full border-primary-default -bottom-28 w-60 h-60 left-10">
                     {(profileData as ProfileData).user.profile_picture_hash ? (
                       <img
-                        src={profileData?.user.profile_picture_hash}
+                        src={profileData?.user.profile_picture_hash ?? ""}
                         alt="profile picture"
                         className="object-cover w-full h-full bg-gray-400 rounded-full"
                       />

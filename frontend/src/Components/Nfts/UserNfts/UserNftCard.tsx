@@ -56,7 +56,7 @@ const UserNftCard = ({ nft, wallet, listed, price }: Props) => {
         <img
           style={{ height: 350, width: 350 }}
           className="object-contain pt-2 hover:cursor-pointer"
-          alt="Event"
+          alt="NFT Image"
           src={imageUrl}
           onClick={() => router.push(`nfts/${policyId}/${assetName}`)}
         />

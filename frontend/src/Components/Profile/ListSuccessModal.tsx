@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import Link from "next/link";
+
 import CopySection from "../MintNfts/CopySection";
 import TransactionStatus from "../Transactions/TransactionStatus";
 
@@ -28,12 +30,9 @@ const ListSuccessModal = ({ transactionId }: Props) => {
       {confirmed && (
         <p>
           Your transaction is now confirmed on the blockchain. Click{" "}
-          <a
-            className="text-primary-default hover:underline"
-            href={`/marketplace/${transactionId}`}
-          >
-            here
-          </a>{" "}
+          <Link href={`/marketplace/${transactionId}`}>
+            <a className="text-primary-default hover:underline">here</a>{" "}
+          </Link>
           to view your transaction.
         </p>
       )}

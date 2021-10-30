@@ -4,12 +4,12 @@ import { IonContent, IonHeader, IonPage } from "@ionic/react";
 import { NextSeo, NextSeoProps } from "next-seo";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import wottleLogo from "../../public/logo.png";
 import ConnectWalletButton from "../Components/ConnectWalletButton";
 import Footer from "../Components/Footer";
-import NavSearchBar from "../Components/Navbar/NavSearchBar";
 import { MenuButton } from "../Components/SideMenu";
 import navbarStyles from "../styles/navbar.module.css";
 
@@ -77,7 +77,7 @@ const Main = (props: IMainProps) => {
       />
       <IonPage id="main">
         <IonHeader className="ion-no-border">
-          <div className="flex items-center justify-between pl-4 md:pl-12 2xl:pl-52 bg-primary-default">
+          <div className="flex items-center justify-between px-8 2xl:px-40 bg-clear">
             <div className="flex items-center content-center flex-grow">
               <div
                 onClick={() => router.push("/landing")}
@@ -92,7 +92,7 @@ const Main = (props: IMainProps) => {
                 />
                 <span className="p-0 text-xl font-bold">WottleNFT</span>
               </div>
-              <NavSearchBar />
+              {/* <NavSearchBar /> */}
             </div>
             {windowWidth === -1 && typeof window !== "undefined"
               ? setWidth(window.innerWidth)
@@ -101,17 +101,18 @@ const Main = (props: IMainProps) => {
                     <div className={navbarStyles.container}>
                       {navInfo.map((nav) => {
                         return (
-                          <a
-                            key={nav.name}
-                            href={nav.tempRoute}
-                            className={
-                              nav.route === router.pathname
-                                ? navbarStyles.selected
-                                : ""
-                            }
-                          >
-                            {nav.name}
-                          </a>
+                          <Link href={nav.tempRoute} key={nav.name}>
+                            <a
+                              href={nav.tempRoute}
+                              className={
+                                nav.route === router.pathname
+                                  ? navbarStyles.selected
+                                  : ""
+                              }
+                            >
+                              {nav.name}
+                            </a>
+                          </Link>
                         );
                       })}
                     </div>

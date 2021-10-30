@@ -23,6 +23,10 @@ module.exports = {
       maxScreen: '100vw',
       maxHalf: '50%',
     },
+    maxHeight: {
+      '70vh': '70vh',
+      '90vh': '90vh',
+    },
     minHeight: {
       0: '0',
       240: '240px',
@@ -44,7 +48,8 @@ module.exports = {
         1000: '1000px',
       },
       height: {
-        '90vh': '90%',
+        '70vh': '70vh',
+        '90vh': '90vh',
       },
       colors: {
         gray: {
@@ -84,5 +89,10 @@ module.exports = {
   },
   variants: {},
   // eslint-disable-next-line global-require
-  plugins: [require('@tailwindcss/line-clamp')],
+  plugins: [
+    // eslint-disable-next-line global-require
+    require('@tailwindcss/line-clamp'),
+    // eslint-disable-next-line global-require
+    require('@tailwindcss/aspect-ratio'),
+  ],
 };

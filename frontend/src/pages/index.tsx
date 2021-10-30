@@ -78,7 +78,7 @@ const Index = () => {
               auctions.map((auction, idx) => {
                 return (
                   <div key={idx} className="h-full">
-                    <Link href={`/auctions/${auction.id}`} passHref>
+                    <Link href={`/auctions/${auction.id}`}>
                       <a>
                         <AuctionCard auction={auction} />
                       </a>

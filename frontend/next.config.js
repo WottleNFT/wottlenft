@@ -4,6 +4,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 module.exports = withBundleAnalyzer({
+  images: {
+    domains: [
+      'ipfs.io',
+      'user-images.githubusercontent.com',
+      'placekitten.com',
+    ],
+  },
   poweredByHeader: false,
   trailingSlash: true,
   basePath: '',
@@ -30,6 +37,11 @@ module.exports = withBundleAnalyzer({
       {
         source: '/auctions',
         destination: '/coming-soon',
+        permanent: true,
+      },
+      {
+        source: '/nfts/:slug',
+        destination: '/nft-not-found',
         permanent: true,
       },
       {

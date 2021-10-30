@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { Nft } from "../../types/Nft";
 import { getImgUrl } from "../../utils/NftUtil";
 import NftInfoCard from "../Nfts/NftInfoCard";
@@ -16,11 +18,15 @@ const NftDetails = ({ nft, price, button }: Props) => {
 
   return (
     <div className="flex flex-col items-center px-4 md:px-12 2xl:px-52">
-      <img
-        className="object-contain p-4 h-3/4 min-h-320 rounded-2xl"
-        alt="NFT Image"
-        src={imageUrl}
-      />
+      <div className="relative m-4 w-full h-70vh min-h-320">
+        <Image
+          className="rounded-2xl"
+          alt="NFT Image"
+          layout="fill"
+          objectFit="contain"
+          src={imageUrl}
+        />
+      </div>
       <div className="flex flex-col self-stretch gap-6 p-6 md:flex-row">
         <div className="w-full">
           <div className="flex flex-col text-left">

@@ -18,6 +18,7 @@ const Landing = () => {
           alt="background seascape"
           className="absolute inset-0 z-0 object-cover w-full h-full"
         />
+
         <img
           src={`${router.basePath}/assets/angry-thermometer.png`}
           alt="angry thermometer"
