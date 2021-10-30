@@ -3,6 +3,7 @@ import React, { useState, ChangeEvent } from "react";
 import { IonButton, IonIcon, IonSpinner, IonText } from "@ionic/react";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { trash, add, hammer } from "ionicons/icons";
+import Image from "next/image";
 
 import { Status } from "../../features/wallet/walletSlice";
 import useTextInput from "../../hooks/useTextInput";
@@ -298,7 +299,7 @@ const Minting = ({ wallet }: Props) => {
               {image && (
                 <div className="w-full">
                   <p className="pb-2 font-bold">Image</p>
-                  <img
+                  <Image
                     className="object-cover"
                     alt="uploaded image"
                     src={URL.createObjectURL(image)}

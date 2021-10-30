@@ -1,6 +1,7 @@
 import React from "react";
 
 import { IonButton, IonCard, IonCardHeader, IonCardTitle } from "@ionic/react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { MarketplaceListing } from "../../../lib/marketplaceApi";
@@ -26,7 +27,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
       <div className="felx felx-col">
         {/* <div className="flex items-center h-1/6 felx-row">
           <div className="h-full m-2 w-14">
-            <img
+            <Image
               src="https://picsum.photos/200"
               alt="nft pic"
               className="rounded-full"
@@ -44,7 +45,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
           passHref
         >
           <a>
-            <img
+            <Image
               className="object-contain w-full h-48 p-2 rounded-3xl"
               alt="NFT Image"
               src={imageUrl}

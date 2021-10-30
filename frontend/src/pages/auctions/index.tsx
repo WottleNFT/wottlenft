@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { IonCard, IonChip, IonContent, IonIcon, IonList } from "@ionic/react";
 import { addOutline } from "ionicons/icons";
+import Image from "next/image";
 import Link from "next/link";
 
 import CategoryTag from "../../Components/CategoryTag";
@@ -96,7 +97,7 @@ function ExploreAuctions() {
                 <IonCard className="mt-3 rounded-2xl">
                   <div className="flex felx-row">
                     <div className="w-1/3 h-32">
-                      <img
+                      <Image
                         className="object-cover w-full p-2 rounded-2xl"
                         alt="Auction"
                         src={auction.nft.imgUrl}

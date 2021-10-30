@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const HowToMint = () => {
   return (
     <div className="flex flex-col items-center justify-center px-1 mx-5 md:mx-2 lg:mx-0">
@@ -36,7 +38,7 @@ type CardProps = {
 const Card = ({ text, imageSrc, alt }: CardProps) => {
   return (
     <div className="flex flex-col items-center justify-start w-full h-auto rounded-md">
-      <img className="object-contain" alt={alt} src={imageSrc} />
+      <Image className="object-contain" alt={alt} src={imageSrc} />
 
       <h2 className="pt-4 text-xl font-semibold text-center">{text}</h2>
     </div>

@@ -102,7 +102,7 @@ const About = () => {
             NFT.
           </p>
         </div>
-        <img
+        <Image
           className="z-0 self-end object-contain h-2/6 lg:h-1/2 xl:h-5/6"
           src={`${router.basePath}/assets/everyone-together.png`}
           alt="all wottles"

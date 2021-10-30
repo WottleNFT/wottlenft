@@ -25,7 +25,7 @@ type Props = {
 const Marketplace = ({ listings }: Props) => {
   return (
     <Main title="WottleNFT Marketplace">
-      <div className="px-4 md:px-12 2xl:px-52">
+      <div className="px-4 2xl:px-36">
         {listings[0] && <MarketNftBigCard marketplaceListing={listings[0]} />}
 
         <div className="flex flex-col gap-3 px-4 pb-10 md:px-10">

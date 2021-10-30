@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { Activity, ActivityStatus } from "../../types/Activity";
 
 interface Props {
@@ -11,7 +13,7 @@ const ActivityCard = ({ activity }: Props) => {
       className="flex flex-col m-8 transition-all rounded-2xl bg-gray-50 drop-shadow-md hover:drop-shadow-2xl hover:scale-110"
     >
       <div className="h-4/6">
-        <img
+        <Image
           className="object-contain w-full h-full pt-2"
           alt="Activity image"
           src={activity.image}

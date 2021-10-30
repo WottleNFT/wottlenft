@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { WalletState } from "../features/wallet/walletSlice";
@@ -9,7 +10,7 @@ const WalletInfoPill: React.FC<WalletState> = (props) => {
         <p className="w-full text-center text-white truncate">{`${
           !props.network ? "t" : ""
         }₳ ${props.balance / 1000000}`}</p>
-        <img
+        <Image
           src="/logo.png"
           alt="profile pic"
           className="object-contain m-2 bg-white border-2 border-gray-500 rounded-full h-7 w-7"

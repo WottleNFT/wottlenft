@@ -1,4 +1,5 @@
 import { IonButton, IonCard, IonCardHeader, IonCardTitle } from "@ionic/react";
+import Image from "next/image";
 
 import { Auction } from "../../types/Auction";
 
@@ -8,7 +9,7 @@ function AuctionCard({ auction }: { auction: Auction }) {
       <div className="felx felx-col">
         <div className="h-1/6 flex felx-row items-center">
           <div className="m-2 w-14 h-full">
-            <img
+            <Image
               src="https://picsum.photos/200"
               alt="nft pic"
               className="rounded-full"
@@ -19,7 +20,7 @@ function AuctionCard({ auction }: { auction: Auction }) {
           </div>
         </div>
 
-        <img
+        <Image
           className="p-2 w-auto h-1/2 object-cover rounded-3xl"
           alt="nft image"
           src={auction.nft.imgUrl}

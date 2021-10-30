@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { IonButton, IonLabel, IonRouterLink } from "@ionic/react";
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import AuctionCard from "../Components/Auctions/AuctionCard";
@@ -29,7 +30,7 @@ const Index = () => {
     <Main>
       {auctions[0] && (
         <div className="flex px-16 py-4 text-center truncate h-1/2 place-items-center">
-          <img
+          <Image
             className="object-cover w-1/2 h-full p-2 rounded-2xl"
             alt="Auction"
             src={auctions[0].nft.imgUrl}

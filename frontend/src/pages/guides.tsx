@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { Main } from "../templates/Main";
 
 const Guide = () => {
@@ -19,7 +21,7 @@ const Guide = () => {
             To minting your first NFT and selling it and buying more.
           </p>
         </div>
-        <img
+        <Image
           className="z-0 self-end object-contain h-2/6 lg:h-1/2 xl:h-5/6"
           src="/assets/everyone-together.png"
           alt="all wottles"

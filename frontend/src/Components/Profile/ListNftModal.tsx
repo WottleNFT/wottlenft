@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { IonButton, IonContent, IonIcon, IonSpinner } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
+import Image from "next/image";
 
 import { WottleEnabled } from "../../hooks/useWallet";
 import { listNft } from "../../lib/combinedMarketplaceEndpoints";
@@ -66,21 +67,21 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
 
   return (
     <IonContent>
-      <div className="flex flex-col h-full px-10 pt-5">
+      <div className="flex flex-col h-full px-0 sm:px-10 pt-5">
         <div className="relative py-2 border-b-2 border-solid border-primary-default">
           <p className={`inline-block w-full text-2xl font-bold text-center`}>
             {listTxId ? "Congratulations!" : "List NFT"}
             <IonIcon
               onClick={() => dismiss()}
               icon={closeOutline}
-              className="absolute right-0 text-black hover:cursor-pointer"
+              className="mr-4 sm:mr-0 absolute right-0 text-black hover:cursor-pointer"
               size="large"
             />
           </p>
         </div>
         {!listTxId && (
           <>
-            <img
+            <Image
               src={imageUrl}
               alt="NFT image"
               className="object-contain py-5 max-h-96"
@@ -115,7 +116,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
                   Select Sustainable Development Goal
                 </p>
                 <div className="flex justify-between w-full py-3">
-                  <img
+                  <Image
                     src="/assets/un_goals/zero_hunger.png"
                     alt="Zero hunger"
                     className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${
@@ -123,7 +124,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
                     }`}
                     onClick={() => setSdgGoal(UnGoal.ZeroHunger)}
                   />
-                  <img
+                  <Image
                     src="/assets/un_goals/quality_education.png"
                     alt="Quality education"
                     className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${
@@ -131,7 +132,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
                     }`}
                     onClick={() => setSdgGoal(UnGoal.QualityEducation)}
                   />
-                  <img
+                  <Image
                     src="/assets/un_goals/climate_action.png"
                     alt="Climate action"
                     className={`hover:ring-4 ring-blue-400 hover:cursor-pointer ${

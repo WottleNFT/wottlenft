@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 import PartnerCard from "../Components/Partners/PartnerCard";
@@ -36,7 +37,7 @@ const Partners = (props: Props) => {
             <b>contact@wottlenft.io</b>
           </p>
         </div>
-        <img
+        <Image
           className="z-0 self-end object-contain invisible md:visible w-1/2"
           src={`${router.basePath}/assets/shake-hands.png`}
           alt="all wottles"

@@ -8,8 +8,8 @@ const Footer = () => {
   // const [email, setEmail] = useState<string>();
   return (
     <div className="w-full h-auto truncate bg-gray-700">
-      <div className="flex flex-col md:flex-row place-content-around">
-        <div className="flex flex-col gap-5 px-8 pt-12 text-white md:px-12">
+      <div className="flex flex-col md:flex-row justify-start px-8 2xl:px-40">
+        <div className="w-1/2 flex flex-col gap-5 mx-4 pt-12 text-white">
           <div className="flex flex-row">
             <span>
               <b>Keeping up with</b>
@@ -63,7 +63,7 @@ const Footer = () => {
           </div> */}
         </div>
 
-        <div className="grid grid-cols-2 gap-5 p-8 px-8 md:px-12 md:pl-0 lg:grid-cols-3 xl:grid-cols-4 justify-self-center">
+        <div className="grid grid-cols-2 gap-5 my-8 mx-4 md:pl-0 lg:grid-cols-3 xl:grid-cols-4 justify-self-center">
           <div className="flex flex-col">
             <span className="text-primary-default">Marketplace</span>
             <Link href="/marketplacce" passHref>
