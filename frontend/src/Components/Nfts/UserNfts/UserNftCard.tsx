@@ -54,8 +54,8 @@ const UserNftCard = ({ nft, wallet, listed, price }: Props) => {
     >
       <div className="h-4/5">
         <img
-          style={{ height: 350 }}
-          className="object-contain w-full pt-2 hover:cursor-pointer"
+          style={{ height: 350, width: 350 }}
+          className="object-contain pt-2 hover:cursor-pointer"
           alt="Event"
           src={imageUrl}
           onClick={() => router.push(`nfts/${policyId}/${assetName}`)}
@@ -63,7 +63,7 @@ const UserNftCard = ({ nft, wallet, listed, price }: Props) => {
       </div>
       <div className="flex flex-col px-3 py-1">
         <p className="text-lg font-bold text-center">{assetName}</p>
-        <p className="text-center text-gray-600">{description}</p>
+        <p className="text-center text-gray-600 truncate">{description}</p>
         {!listed ? (
           <IonButton className="mx-auto" onClick={() => present()}>
             List
