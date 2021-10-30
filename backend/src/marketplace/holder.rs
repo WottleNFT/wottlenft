@@ -198,6 +198,7 @@ impl MarketplaceHolder {
                 AND tx_in.id IS NULL
                 WHERE address = $1
 				ORDER BY tx.id DESC
+				LIMIT 16
                 "#,
         )
         .bind(&self.address_bech32)
