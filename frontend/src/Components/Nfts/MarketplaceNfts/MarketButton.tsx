@@ -13,9 +13,10 @@ import { signTransaction } from "../../../lib/transactionApi";
 type MarketButtonProps = {
   listing: MarketplaceListing;
   wallet: WottleEnabled;
+  [other: string]: any;
 };
 
-const MarketButton = ({ listing, wallet }: MarketButtonProps) => {
+const MarketButton = ({ listing, wallet, ...props }: MarketButtonProps) => {
   const { address } = wallet.state;
   const { cardano } = wallet;
   const isSeller = listing.saleMetadata.namiAddress === address;
@@ -55,6 +56,7 @@ const MarketButton = ({ listing, wallet }: MarketButtonProps) => {
           cancel(listing);
         }
       }}
+      {...props}
     >
       {isSeller ? "Delist" : "Buy"}
     </IonButton>

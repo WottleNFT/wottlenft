@@ -1,3 +1,4 @@
+import { MarketplaceListing } from "../lib/marketplaceApi";
 import { Nft } from "../types/Nft";
 
 export const responseToNft = (nftResponse: any): Nft => {
@@ -11,6 +12,18 @@ export const responseToNft = (nftResponse: any): Nft => {
     quantity: 1,
     metadata,
   };
+};
+
+export const listingToNft = (listing: MarketplaceListing): Nft => {
+  const { policyId, assetName, assetMetadata } = listing;
+  const metadata = (assetMetadata[policyId] || {})[assetName];
+  const nft: Nft = {
+    policyId,
+    assetName,
+    quantity: 1,
+    metadata,
+  };
+  return nft;
 };
 
 export const getImgUrl = (image: string): string => {
