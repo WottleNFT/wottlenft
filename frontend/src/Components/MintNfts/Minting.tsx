@@ -138,6 +138,11 @@ const Minting = ({ wallet }: Props) => {
       return false;
     }
 
+    if (image.size > 10000000) {
+      setError("Image must be less than 10MB");
+      return false;
+    }
+
     if (!name) {
       setError("NFT Name must not be empty");
       return false;
@@ -315,7 +320,7 @@ const Minting = ({ wallet }: Props) => {
               {!image && (
                 <>
                   <label className="w-full pb-2 font-bold">
-                    Upload File (Max 15MB)
+                    Upload File (Max 10MB)
                   </label>
                   <label className="flex flex-row items-center justify-center w-full h-20 align-middle bg-gray-400 rounded-lg cursor-pointer hover:bg-gray-500">
                     Click here to upload!
