@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { IonIcon, IonSpinner, useIonModal } from "@ionic/react";
-import { createOutline } from "ionicons/icons";
+import { createOutline, logOutOutline } from "ionicons/icons";
 import { useRouter } from "next/router";
 
 import EditProfileModal from "../../Components/Profile/EditProfileModal";
@@ -15,7 +15,7 @@ import { getListings, MarketplaceListing } from "../../lib/marketplaceApi";
 import { Main } from "../../templates/Main";
 
 const Profile = () => {
-  const { isLoading, isLoggedIn, wallet } = useAuth();
+  const { isLoading, isLoggedIn, wallet, setLogout } = useAuth();
   const {
     profileDataReady,
     profileData,
@@ -110,13 +110,20 @@ const Profile = () => {
                       />
                     )}
                   </div>
-                  <div className="absolute -bottom-8 left-72">
+                  <div className="absolute -bottom-12 left-72">
                     <div
-                      className="flex items-end text-gray-700 hover:cursor-pointer"
+                      className="flex items-end text-gray-700 hover:cursor-pointer hover:text-primary-default"
                       onClick={() => present()}
                     >
                       <IonIcon icon={createOutline} />
                       <p className="leading-tight underline">Edit profile</p>
+                    </div>
+                    <div
+                      className="flex items-end text-gray-700 hover:cursor-pointer hover:text-primary-default"
+                      onClick={() => setLogout()}
+                    >
+                      <IonIcon icon={logOutOutline} />
+                      <p className="leading-tight underline">Logout</p>
                     </div>
                   </div>
                 </div>

@@ -78,6 +78,12 @@ const NftActionModal = ({ nft, dismiss, wallet, isSeller, listing }: Props) => {
               <span className="font-bold">
                 @{metadata.creator ? metadata.creator : "Unknown"}
               </span>
+              {!isSeller && (
+                <span>
+                  {" "}
+                  for <b>{listing.saleMetadata.price / 1000000}₳</b>
+                </span>
+              )}
             </p>
             <p>
               By clicking <b>{isSeller ? "Delist" : "Buy"}</b>, you are agreeing
