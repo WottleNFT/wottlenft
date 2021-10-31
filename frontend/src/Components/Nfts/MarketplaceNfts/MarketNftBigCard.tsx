@@ -40,7 +40,7 @@ const MarketNftBigCard = ({ marketplaceListing }: Props) => {
       </div>
 
       <div className="flex flex-col items-stretch justify-between w-full md:w-1/3 h-full gap-4 px-2 md:px-8 text-left lg:gap-8">
-        <p className="my-auto text-3xl font-bold whitespace-normal line-clamp-3">
+        <p className="my-auto text-3xl font-bold whitespace-normal line-clamp-3 break-words">
           {assetName}
         </p>
         <p className="text-xl truncate whitespace-normal line-clamp-3">
