@@ -29,7 +29,7 @@ const Footer = () => {
               <a
                 target="_blank"
                 className="text-primary-default"
-                href="https://discord.gg/GcDPbqvcGn"
+                href="https://discord.gg/rnEE2Unm8K"
                 rel="noreferrer"
               >
                 <FaDiscord />
