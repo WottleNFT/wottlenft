@@ -32,10 +32,10 @@ const About = () => {
 
   const ourFocus = (
     <p className="text-xl">
-      WottleNFT aims to focus on storytelling to allow more transparent pricing.
-      Interested collectors collectively decide where and how far prices should
-      go. No more unilateral pricing decisions conducted by creators in obscure
-      blackboxes. Everyone has a say in what price best reflects an NFT’s value.
+      WottleNFT focus is to help the whole of Cardano Community better determine
+      the appropriate prices for each NFT by creating a Cardano Marketplace that
+      is story focused, details centric and community driven. We believe that
+      price is only what you pay; value is what you get.
     </p>
   );
 
@@ -98,8 +98,8 @@ const About = () => {
           </p>
           <p className="mb-10 text-xl font-bold leading-tight lg:text-3xl">
             BETWEEN CARDANO NFTS <br />
-            AND SOCIAL ENTERPRISES WHILE SHARING THE STORIES BEHIND EACH CARDANO
-            NFT.
+            AND SOCIAL ENTERPRISES WHILE BEING STORY FOCUSED, DETAILS CENTRIC
+            AND COMMUNITY DRIVEN
           </p>
         </div>
         <img

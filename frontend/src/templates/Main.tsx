@@ -60,9 +60,9 @@ const Main = (props: IMainProps) => {
         openGraph={{
           type: "website",
           url: "https://wottlenft.io",
-          title: "WottleNFT | A sustainable Cardano NFT Marketplace",
+          title: "WottleNFT | Cardano NFT Marketplace with a Mission",
           description:
-            "WottleNFT is a sustainable NFT Marketplace built upon the Cardano blockchain.",
+            "Cardano NFT Markteplace with a mission to create a global interconnected ecosystem between cardano NFTs and social enterprises while sharing the stories behind each Cardano NFT",
           images: [
             {
               url: "/logo.png",
