@@ -35,17 +35,17 @@ function SideMenu() {
               <IonIcon color="primary" icon={storefront} slot="start" />
               <IonLabel>Marketplace</IonLabel>
             </IonItem>
-            <IonItem routerLink="/about">
+            <IonItem routerLink="/guides">
               <IonIcon color="primary" icon={information} slot="start" />
-              <IonLabel>About Us</IonLabel>
+              <IonLabel>Guides</IonLabel>
+            </IonItem>
+            <IonItem routerLink="/unsdg">
+              <IonIcon color="primary" icon={cashOutline} slot="start" />
+              <IonLabel>UNSDG</IonLabel>
             </IonItem>
             <IonItem routerLink="/mint-nft">
               <IonIcon color="primary" icon={construct} slot="start" />
               <IonLabel>Mint NFTs</IonLabel>
-            </IonItem>
-            <IonItem routerLink="/staking-pool">
-              <IonIcon color="primary" icon={cashOutline} slot="start" />
-              <IonLabel>Staking Pool</IonLabel>
             </IonItem>
             <IonItem routerLink="/profile">
               <IonIcon color="primary" icon={personCircle} slot="start" />

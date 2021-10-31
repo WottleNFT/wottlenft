@@ -77,10 +77,10 @@ const Main = (props: IMainProps) => {
       />
       <IonPage id="main">
         <IonHeader className="ion-no-border">
-          <div className="flex items-center justify-between px-8 2xl:px-40 bg-white">
+          <div className="flex items-center justify-between px-8 bg-white 2xl:px-40">
             <div className="flex items-center content-center flex-grow">
               <div
-                onClick={() => router.push("/landing")}
+                onClick={() => router.push("/marketplace")}
                 className="flex flex-row items-center cursor-pointer"
               >
                 <Image
