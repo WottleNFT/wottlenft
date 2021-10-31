@@ -88,7 +88,7 @@ const NftActionModal = ({ nft, dismiss, wallet, isSeller, listing }: Props) => {
             <p>
               By clicking <b>{isSeller ? "Delist" : "Buy"}</b>, you are agreeing
               to WottleNFT&apos;s
-              <b> Terms and Conditions</b>
+              <b> Terms of Service </b> and <b> Privacy Policy </b>
             </p>
             {error && <p className="text-sm text-red-500">{error}</p>}
             <div className="self-center w-56 py-5">

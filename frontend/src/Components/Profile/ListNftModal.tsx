@@ -94,7 +94,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
               </p>
               <p>
                 By clicking <b>List</b>, you are agreeing to WottleNFT&apos;s
-                Terms and Conditions
+                <b> Terms of Service </b> and <b> Privacy Policy </b>
               </p>
               <label className="mt-4 mb-1 font-bold">
                 Price: ₳
