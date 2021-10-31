@@ -39,7 +39,7 @@ const Guide = () => {
             </li>
             <li>
               <a className="text-primary-default" href="#get-first-ada">
-                Getting your first ADA
+                Buy/Sell ADA
               </a>
             </li>
             <li>
@@ -58,7 +58,7 @@ const Guide = () => {
 
         <GuideVideoSection
           sectionId="get-first-ada"
-          title="Buying, Selling and Withdrawing ADA"
+          title="Buy / Sell ADA"
           videoSrc="https://www.youtube.com/embed/s8yz3r2-XEk"
         />
 
@@ -100,7 +100,7 @@ const GuideVideoSection = ({
     <section className="flex flex-wrap justify-center py-5 mt-5 lg:justify-between lg:flex-nowrap">
       <div className="flex flex-col justify-center w-full ">
         <div className="flex flex-row items-baseline mb-11">
-          <p id={sectionId} className="text-3xl font-bold">
+          <p id={sectionId} className="text-xl md:text-3xl font-bold">
             {title}
           </p>
           <div className="flex flex-1" />
