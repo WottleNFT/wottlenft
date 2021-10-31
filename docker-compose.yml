@@ -6,6 +6,9 @@ services:
       context: ./frontend
       args:
         - NETWORK=$NETWORK
+        - BLOCKCHAIN_API=$BLOCKCHAIN_API
+        - PROFILE_API=$PROFILE_API
+        - SSR_BACKEND_API=$BLOCKCHAIN_API
     ports:
       - 3000:3000
     environment:
