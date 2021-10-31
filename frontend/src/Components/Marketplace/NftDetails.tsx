@@ -18,7 +18,7 @@ const NftDetails = ({ nft, price, button }: Props) => {
 
   return (
     <div className="flex flex-col items-center px-4 md:px-12 2xl:px-52">
-      <div className="relative m-4 w-full h-70vh min-h-320">
+      <div className="relative w-full m-4 h-70vh min-h-320">
         <Image
           className="rounded-2xl"
           alt="NFT Image"
@@ -36,7 +36,7 @@ const NftDetails = ({ nft, price, button }: Props) => {
             <span>
               Created By{" "}
               <span className="text-primary-default">
-                @{metadata.creator ? metadata.creator : "Unknown"}
+                @{metadata.creator || metadata.author || "Unknown"}
               </span>
             </span>
             <p className="mt-4 text-base whitespace-normal">{description}</p>
