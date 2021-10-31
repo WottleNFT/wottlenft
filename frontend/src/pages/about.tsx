@@ -128,7 +128,7 @@ const About = () => {
           <div className="flex flex-col justify-center w-full lg:w-1/2">
             <p className="text-5xl font-bold mb-11">Marketplace</p>
             {marketPlace}
-            <Link href="/coming-soon" passHref>
+            <Link href="/marketplace" passHref>
               <ButtonPill
                 text="View Marketplace"
                 onClick={() => {}}
