@@ -16,7 +16,7 @@ const PartnerCard = ({ partner }: Props) => {
     <Link href={websiteUrl}>
       <a target="_blank" className="flex flex-col items-center m-2">
         <div
-          className="w-full h-4/5 p-4 rounded-full border-black"
+          className="w-full h-4/5 p-4 rounded-full border-transparent"
           style={{ borderWidth: 1 }}
         >
           <div className="relative w-full h-full">

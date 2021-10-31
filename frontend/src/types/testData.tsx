@@ -141,13 +141,20 @@ const nus: Partner = {
     "https://user-images.githubusercontent.com/61874388/138596221-16e8ec88-d251-4e24-a42a-162b7c28e259.png",
 };
 
+const arm: Partner = {
+  name: "Armada Alliance",
+  websiteUrl: "https://armada-alliance.com/",
+  imgUrl:
+    "https://user-images.githubusercontent.com/57287843/138641070-eaa788f7-b645-47da-9c22-c0a796fe8bab.png",
+};
+
 // const testPartner: Partner = {
 //   name: "Partner",
 //   websiteUrl: "https://wottlenft.io/",
 //   imgUrl: "https://picsum.photos/200",
 // };
 
-export const testPartners: Partner[] = [nus];
+export const testPartners: Partner[] = [arm, nus];
 export const testSocialEnterprises: Partner[] = [trcl];
 
 export const testNft: Nft = {
