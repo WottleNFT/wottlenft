@@ -55,7 +55,7 @@ const Guide = () => {
 
         <GuideVideoSection
           sectionId="get-first-ada"
-          title="Getting your first ADA"
+          title="Buying, Selling and Withdrawing ADA"
           videoSrc="https://www.youtube.com/embed/s8yz3r2-XEk"
         />
 
