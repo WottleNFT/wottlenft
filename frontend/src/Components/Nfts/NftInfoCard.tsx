@@ -14,8 +14,10 @@ type Props = {
 
 const NftInfoCard = ({ nft, price, button }: Props) => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const { policyId, quantity } = nft;
-
+  const { policyId, quantity, metadata } = nft;
+  const otherFields = Object.entries(metadata).filter(
+    ([key]) => !["description", "image", "creator", "name"].includes(key)
+  ) as [string, string][];
   const [selectedSegment, setSelectedSegment] = useState("details");
   return (
     <IonCard className="rounded-2xl m-0 pt-3">
@@ -53,11 +55,16 @@ const NftInfoCard = ({ nft, price, button }: Props) => {
           </div>
         )}
         {selectedSegment === "properties" && (
-          <div className="grid grid-cols-3">
-            <CategoryTag color="primary" label="Key1 : Value1" />
-            <CategoryTag color="primary" label="Key2 : Value2" />
-            <CategoryTag color="primary" label="Key3 : Value3" />
-            <CategoryTag color="primary" label="Key4 : Value4" />
+          <div className="flex flex-col">
+            {otherFields.map(
+              ([key, value], idx): JSX.Element => (
+                <CategoryTag
+                  key={idx}
+                  color="primary"
+                  label={`${key} : ${value}`}
+                />
+              )
+            )}
           </div>
         )}
       </div>

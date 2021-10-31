@@ -36,7 +36,7 @@ const NftDetails = ({ nft, price, button }: Props) => {
             <span>
               Created By{" "}
               <span className="text-primary-default">
-                @{"author" in metadata ? metadata.author : "Unknown"}
+                @{metadata.creator ? metadata.creator : "Unknown"}
               </span>
             </span>
             <p className="mt-4 text-base whitespace-normal">{description}</p>

@@ -158,7 +158,6 @@ export const testNft: Nft = {
     description: "oct20 description",
     image: "https://picsum.photos/200",
     name: "oct20 name",
-    author: "WottleNFT",
     creator: "creator",
     owner: "WottleNFT",
   },
