@@ -41,7 +41,6 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
     // Convert to lovelace
     const priceInAda = Number.parseFloat(listPrice);
     const priceInLovelace = priceInAda * 1000000;
-
     // Price validation: Above 5 ada and within 6 DP
     if (priceInAda < 5) {
       setError("Please enter a list price that is at least ₳5.");
@@ -66,14 +65,14 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
 
   return (
     <IonContent>
-      <div className="flex flex-col h-full px-0 sm:px-10 pt-5">
+      <div className="flex flex-col h-full px-0 pt-5 sm:px-10">
         <div className="relative py-2 border-b-2 border-solid border-primary-default">
           <p className={`inline-block w-full text-2xl font-bold text-center`}>
             {listTxId ? "Congratulations!" : "List NFT"}
             <IonIcon
               onClick={() => dismiss()}
               icon={closeOutline}
-              className="mr-4 sm:mr-0 absolute right-0 text-black hover:cursor-pointer"
+              className="absolute right-0 mr-4 text-black sm:mr-0 hover:cursor-pointer"
               size="large"
             />
           </p>
