@@ -179,7 +179,7 @@ const About = () => {
           <div className="flex flex-col justify-center w-full lg:w-1/2">
             <p className="text-5xl font-bold mb-11">Staking Pool</p>
             {stakingPool}
-            <Link href="/coming-soon" passHref>
+            <Link href="/staking-pool" passHref>
               <ButtonPill
                 text="Stake Now"
                 onClick={() => {}}
