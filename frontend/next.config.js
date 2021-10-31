@@ -32,32 +32,32 @@ module.exports = withBundleAnalyzer({
       {
         source: '/',
         destination: '/marketplace',
-        permanent: true,
+        permanent: false,
       },
       {
         source: '/landing',
         destination: '/marketplace',
-        permanent: true,
+        permanent: false,
       },
       {
         source: '/auctions',
         destination: '/coming-soon',
-        permanent: true,
+        permanent: false,
       },
       {
         source: '/nfts/:slug',
         destination: '/nft-not-found',
-        permanent: true,
+        permanent: false,
       },
       {
         source: '/api/blockchain/:slug*',
         destination: `${process.env.BLOCKCHAIN_API}/:slug*`,
-        permanent: true,
+        permanent: false,
       },
       {
         source: '/api/profile/:slug*',
         destination: `${process.env.PROFILE_API}/:slug*`,
-        permanent: true,
+        permanent: false,
       },
     ];
   },
