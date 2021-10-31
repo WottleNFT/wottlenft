@@ -112,7 +112,7 @@ const Footer = () => {
               </a>
             </Link>
             <a
-              href="https://github.com/WottleNFT/wottlenft/files/7448156/WottleNFTLitepaper_ver1.0.pdf"
+              href="https://github.com/WottleNFT/filedump/raw/main/WottleNFTLitepaper_ver1.0.pdf"
               className="text-white"
             >
               Litepaper

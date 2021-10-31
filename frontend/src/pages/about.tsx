@@ -245,7 +245,7 @@ const About = () => {
         </div>
         <div className="flex flex-col items-center pb-5 mb-5">
           <div className="flex justify-center w-full md:w-3/4">
-            <a href="https://github.com/WottleNFT/wottlenft/files/7448156/WottleNFTLitepaper_ver1.0.pdf">
+            <a href="https://github.com/WottleNFT/filedump/raw/main/WottleNFTLitepaper_ver1.0.pdf">
               <ButtonPill
                 text="Download Litepaper"
                 onClick={() => {}}
