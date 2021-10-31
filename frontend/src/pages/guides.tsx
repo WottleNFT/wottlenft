@@ -1,3 +1,6 @@
+import React from "react";
+
+import ButtonPill from "../Components/About/ButtonPill";
 import { Main } from "../templates/Main";
 
 const Guide = () => {
@@ -64,6 +67,17 @@ const Guide = () => {
           title="Minting your first NFT"
           videoSrc="https://www.youtube.com/embed/W4zh3fdpVNI"
         />
+        <div className="flex flex-col items-center pb-5 mb-5">
+          <div className="flex justify-center w-full md:w-3/4">
+            <a href="https://github.com/WottleNFT/wottlenft/files/7448156/WottleNFTLitepaper_ver1.0.pdf">
+              <ButtonPill
+                text="Download Litepaper"
+                onClick={() => {}}
+                className="self-center my-8 hover:scale-105"
+              />
+            </a>
+          </div>
+        </div>
       </div>
     </Main>
   );
