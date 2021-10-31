@@ -9,10 +9,12 @@ services:
     ports:
       - 3000:3000
     environment:
+      - NETWORK=$NETWORK
       - PINATA_API_KEY=$PINATA_API_KEY
       - PINATA_SECRET=$PINATA_SECRET
       - BLOCKCHAIN_API=$BLOCKCHAIN_API
       - PROFILE_API=$PROFILE_API
+      - SSR_BACKEND_API=$BLOCKCHAIN_API
     restart: on-failure
   backend:
     build:
