@@ -150,7 +150,7 @@ const Footer = () => {
             <a href="https://github.com/WottleNFT/filedump/raw/main/Terms%20of%20Service%2031%20Oct%202021.pdf">
               <div className="flex">Terms of Service</div>
             </a>
-            <a href="https://github.com/WottleNFT/filedump/raw/main/Privacy%20policy%2031%20Oct%202021.pdf">
+            <a href="https://github.com/WottleNFT/filedump/raw/main/Privacy%20Policy%2031%20Oct%202021.pdf">
               <div className="flex">Privacy Policy</div>
             </a>
           </div>
