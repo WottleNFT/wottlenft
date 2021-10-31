@@ -36,11 +36,11 @@ const NftNotFound = () => {
             NFT Not Found
           </IonCardTitle>
           <IonCardTitle className="py-5 text-xl">
-            Here are a list of possible reasons:
+            Here is a list of possible reasons:
           </IonCardTitle>
           <p>
             1. Please make sure you have entered
-            <br /> correct information in the url
+            <br /> correct information in the URL
           </p>
           <p>
             2. Transaction takes time, please
