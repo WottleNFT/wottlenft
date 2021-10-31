@@ -43,7 +43,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             {
               property: "keywords",
               content:
-                "cardano, nft, marketplace, cardano nft, sustainable, auction, nft minter, lowest minting fee, singapore",
+                "cardano, nft, marketplace, cardano nft, cardano nft marketplace, sustainable, auction, nft minter, lowest minting fee, singapore",
             },
           ]}
           twitter={{
