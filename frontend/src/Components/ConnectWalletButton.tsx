@@ -12,6 +12,7 @@ import useWallet from "../hooks/useWallet";
 import { Subscription } from "../wallet";
 import NamiWalletPill from "./NamiWalletPill";
 import WalletInfoPill from "./WalletInfoPill";
+import WalletSwitch from "./WalletSwitch";
 
 const ConnectWalletButton: React.FC = () => {
   const wallet = useWallet();
@@ -44,27 +45,33 @@ const ConnectWalletButton: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet.status, dispatch]);
 
-  if (wallet.status === Status.Loading)
-    return (
-      <div className="flex h-20 place-items-center">
-        <IonSpinner name="crescent" />
-      </div>
-    );
-
-  if (wallet.status === Status.NoExtension) return <NamiWalletPill />;
-
-  if (wallet.status === Status.Enabled)
-    return <WalletInfoPill {...wallet.state} />;
-
   return (
-    <button
-      className="self-end w-48 h-12 m-5 text-white bg-black rounded-full"
-      onClick={() =>
-        wallet.cardano.enable().then(() => dispatch(initializeWallet()))
+    <WalletSwitch
+      wallet={wallet}
+      loading={
+        <div className="flex h-20 place-items-center">
+          <IonSpinner name="crescent" />
+        </div>
       }
-    >
-      Connect to wallet
-    </button>
+      noExtension={<NamiWalletPill />}
+      notEnabled={(notEnabledWallet) => (
+        <button
+          className="self-end w-48 h-12 m-5 text-white bg-black rounded-full"
+          onClick={() =>
+            notEnabledWallet.cardano
+              .enable()
+              .then(() => dispatch(initializeWallet()))
+          }
+        >
+          Connect to wallet
+        </button>
+      )}
+      enabled={(enabledWallet) => <WalletInfoPill {...enabledWallet.state} />}
+      wrongNetwork={({ message }) => (
+        <div className="flex h-20 pr-3 place-items-center">{message}</div>
+      )}
+      fallback={<></>}
+    />
   );
 };
 export default ConnectWalletButton;

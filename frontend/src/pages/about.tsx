@@ -32,10 +32,10 @@ const About = () => {
 
   const ourFocus = (
     <p className="text-xl">
-      WottleNFT aims to focus on storytelling to allow more transparent pricing.
-      Interested collectors collectively decide where and how far prices should
-      go. No more unilateral pricing decisions conducted by creators in obscure
-      blackboxes. Everyone has a say in what price best reflects an NFT’s value.
+      WottleNFT focus is to help the whole of Cardano Community better determine
+      the appropriate prices for each NFT by creating a Cardano Marketplace that
+      is story focused, details centric and community driven. We believe that
+      price is only what you pay; value is what you get.
     </p>
   );
 
@@ -47,7 +47,7 @@ const About = () => {
       NFT and <b>~1₳</b> for transactional Fee. Upon successful sale, we charge
       a <b>3%</b> fee, with a minimum of <b>2₳</b> for each transaction. This
       fee comprises: Service Fees <b>(1₳,2%)</b> and Social Donations{" "}
-      <b>(1₳,1%)</b>. If you are a successful Buyer/Seller, head over to the
+      <b>(1₳,1%)</b>. If you are a successful buyer/seller, head over to the
       profile section to choose one of the 3 UN Goals to support : Zero Hunger,
       Climate Action or Quality Education
     </p>
@@ -98,8 +98,8 @@ const About = () => {
           </p>
           <p className="mb-10 text-xl font-bold leading-tight lg:text-3xl">
             BETWEEN CARDANO NFTS <br />
-            AND SOCIAL ENTERPRISES WHILE SHARING THE STORIES BEHIND EACH CARDANO
-            NFT.
+            AND SOCIAL ENTERPRISES WHILE BEING STORY FOCUSED, DETAILS CENTRIC
+            AND COMMUNITY DRIVEN
           </p>
         </div>
         <img
@@ -128,7 +128,7 @@ const About = () => {
           <div className="flex flex-col justify-center w-full lg:w-1/2">
             <p className="text-5xl font-bold mb-11">Marketplace</p>
             {marketPlace}
-            <Link href="/coming-soon" passHref>
+            <Link href="/marketplace" passHref>
               <ButtonPill
                 text="View Marketplace"
                 onClick={() => {}}
@@ -241,6 +241,17 @@ const About = () => {
               alt="roadmap"
               className="object-contain bg-primary-default"
             />
+          </div>
+        </div>
+        <div className="flex flex-col items-center pb-5 mb-5">
+          <div className="flex justify-center w-full md:w-3/4">
+            <a href="https://github.com/WottleNFT/filedump/raw/main/WottleNFTLitepaper_ver1.0.pdf">
+              <ButtonPill
+                text="Download Litepaper"
+                onClick={() => {}}
+                className="self-center my-8 hover:scale-105"
+              />
+            </a>
           </div>
         </div>
       </div>

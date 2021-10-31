@@ -5,13 +5,14 @@ services:
     build:
       context: ./frontend
       args:
-        - TESTNET_API=$TESTNET_API
-        - MAINNET_API=$MAINNET_API
+        - NETWORK=$NETWORK
     ports:
       - 3000:3000
     environment:
       - PINATA_API_KEY=$PINATA_API_KEY
       - PINATA_SECRET=$PINATA_SECRET
+      - BLOCKCHAIN_API=$BLOCKCHAIN_API
+      - PROFILE_API=$PROFILE_API
     restart: on-failure
   backend:
     build:
@@ -27,7 +28,24 @@ services:
       - NFT_BECH32_TAXATION_ADDRESS=$NFT_BECH32_TAXATION_ADDRESS
       - DATABASE_URL=$DATABASE_URL
       - MARKETPLACE_PRIVATE_KEY_FILE=/marketplace/marketplace.skey
+      - MARKETPLACE_REVENUE_ADDRESS=addr1qytsgcswfrr92mzttxust6a9tdsn7uc3cdduwx2f0jm3tgmvxt62vf2zhyxjrfyhed97qk757ewzxyvvzet3e8vxhh8st0y7e7
+      - CLIMATE_ACTION_ADDRESS=addr1q89rhz0zl45yjnaaa8nl0vhmymc9v4rak9ram8xs43lq8w4d6j6rt6ckvgefywd77hhnqgkm4s4wvdqllguzprkmy4wqveep2v
+      - ZERO_HUNGER_ADDRESS=addr1q89rhz0zl45yjnaaa8nl0vhmymc9v4rak9ram8xs43lq8w4d6j6rt6ckvgefywd77hhnqgkm4s4wvdqllguzprkmy4wqveep2v
+      - QUALITY_EDUCATION_ADDRESS=addr1qyejyjgh979q2hh7p0dspzvytkqvnddg4np4utf93eykdsa6tl3wfrn2283m8yqwydt4zrgupen2lnnaxdrqtvzvffkq3z4y36
+
     restart: on-failure
+  profile-backend:
+    build:
+      context: ./profilebackend
+    ports:
+      - 3002:3002
+    environment:
+      - PORT=3002
+      - TOKEN_SECRET=$TOKEN_SECRET
+      - DBHOST=postgres
+      - DBUSER=$DBUSER
+      - DBPASSWORD=$DBPASSWORD
+      - RESET_DB_FLAG=$RESET_DB_FLAG
   postgres:
     image: postgres:11.5-alpine
     environment:

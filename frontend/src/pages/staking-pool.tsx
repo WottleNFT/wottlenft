@@ -3,7 +3,7 @@ import Image from "next/image";
 import poolParty from "../../public/assets/about/pool_party.png";
 import { Main } from "../templates/Main";
 
-const ComingSoon = () => {
+const StakingPool = () => {
   return (
     <Main>
       <div>
@@ -65,4 +65,5 @@ const ComingSoon = () => {
     </Main>
   );
 };
-export default ComingSoon;
+
+export default StakingPool;

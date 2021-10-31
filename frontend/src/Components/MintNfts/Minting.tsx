@@ -4,11 +4,13 @@ import { IonButton, IonIcon, IonSpinner, IonText } from "@ionic/react";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { trash, add, hammer } from "ionicons/icons";
 
-import { Status, MAINNET } from "../../features/wallet/walletSlice";
+import { Status } from "../../features/wallet/walletSlice";
 import useTextInput from "../../hooks/useTextInput";
 import { WottleEnabled } from "../../hooks/useWallet";
+import { blockchainApi } from "../../lib/blockchainApi";
 import { signTransaction } from "../../lib/transactionApi";
 import { NetworkError } from "../../types/NetworkError";
+import { PinataResponse } from "../../types/PinataResponse";
 import { HexCborString } from "../../wallet";
 import CopySection from "./CopySection";
 import DisplayTransaction from "./DisplayTransaction";
@@ -16,6 +18,7 @@ import DisplayTransaction from "./DisplayTransaction";
 type Metadata = {
   address: HexCborString;
   name: string;
+  creator: string;
   description: string;
   image: string;
   [key: string]: string;
@@ -29,13 +32,6 @@ type Policy = {
 type TransactionResponse = {
   transaction: HexCborString;
   policy: Policy;
-};
-
-type PinataResponse = {
-  IpfsHash: string;
-  PinSize: number;
-  Timestamp: string;
-  isDuplicate: boolean;
 };
 
 type CustomFields = Record<string, string | number>;
@@ -142,6 +138,11 @@ const Minting = ({ wallet }: Props) => {
       return false;
     }
 
+    if (image.size > 10000000) {
+      setError("Image must be less than 10MB");
+      return false;
+    }
+
     if (!name) {
       setError("NFT Name must not be empty");
       return false;
@@ -183,7 +184,6 @@ const Minting = ({ wallet }: Props) => {
     if (!validate()) return;
     setIsSubmitting(true);
     const { cardano } = wallet;
-    const { backendApi } = wallet.state;
 
     // Upload to IPFS using Pinata
     const url = "/api/ipfs";
@@ -214,6 +214,7 @@ const Minting = ({ wallet }: Props) => {
       const nftMetadata: Metadata = {
         address: wallet.state.address,
         name,
+        creator,
         description,
         image: ipfsNativeUrl,
         ...customFields,
@@ -223,16 +224,12 @@ const Minting = ({ wallet }: Props) => {
       const createNftRes = await axios.post<
         Metadata,
         AxiosResponse<TransactionResponse>
-      >(`${backendApi}/nft/create`, nftMetadata);
+      >(`${blockchainApi}/nft/create`, nftMetadata);
 
       const { transaction, policy } = createNftRes.data;
 
       const signature = await cardano.signTx(transaction, true);
-      const signResponse = await signTransaction(
-        backendApi,
-        transaction,
-        signature
-      );
+      const signResponse = await signTransaction(transaction, signature);
       setPolicyId(policy.id);
       setPolicyJson(policy.json);
       setTransactionId(signResponse.tx_id);
@@ -253,7 +250,7 @@ const Minting = ({ wallet }: Props) => {
 
   return (
     <>
-      <div className="mx-6 mb-3 text-center">
+      <div className="mx-6 mt-16 mb-3 text-center">
         <p className="text-4xl font-bold">Mint your Cardano NFT here!</p>
         <p className="mb-3 text-xl text-gray-900">
           Mint <b>1 CNFT</b> for just <b>1 ADA</b> under <b>1 MINUTE</b>
@@ -323,7 +320,7 @@ const Minting = ({ wallet }: Props) => {
               {!image && (
                 <>
                   <label className="w-full pb-2 font-bold">
-                    Upload File (Max 15MB)
+                    Upload File (Max 10MB)
                   </label>
                   <label className="flex flex-row items-center justify-center w-full h-20 align-middle bg-gray-400 rounded-lg cursor-pointer hover:bg-gray-500">
                     Click here to upload!
@@ -393,11 +390,9 @@ const Minting = ({ wallet }: Props) => {
           {transactionId && wallet.status === Status.Enabled && (
             <>
               <DisplayTransaction
-                isMainnet={wallet.state.network === MAINNET}
                 transactionId={transactionId}
                 policyJson={policyJson}
                 policyId={policyId}
-                apiUrl={wallet.state.backendApi}
               />
               <IonButton
                 size="large"

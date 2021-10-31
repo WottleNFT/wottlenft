@@ -41,9 +41,24 @@ async fn get_address_nfts(
     Ok(HttpResponse::Ok().json(nfts))
 }
 
+#[get("/{address}/listings")]
+async fn get_address_listings(
+    path: web::Path<String>,
+    data: web::Data<AppState>,
+) -> Result<HttpResponse> {
+    let address = super::parse_address(&path.into_inner())?;
+    let listings = data
+        .marketplace
+        .holder
+        .get_listings_from_user(&data.pool, &address)
+        .await?;
+    Ok(HttpResponse::Ok().json(listings))
+}
+
 pub fn create_address_service() -> Scope {
     web::scope("/address")
         .service(get_all_utxos)
         .service(get_address_balance)
         .service(get_address_nfts)
+        .service(get_address_listings)
 }

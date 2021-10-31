@@ -18,12 +18,17 @@ export async function getUserByWalletID(wallet_id: string): Promise<User | null>
 export async function changeUserPassword(username: string, newPassword: string): Promise<QueryResult> {
   return pool.query('UPDATE accounts SET password = $2 WHERE username = $1', [username, newPassword])
 }
-
+export async function changeUserUNGoal(username: string, un_goal: string): Promise<QueryResult> {
+  return pool.query('UPDATE accounts SET un_goal = $2 WHERE username = $1', [username, un_goal])
+}
 export async function changeUserBio(username: string, newBio: string): Promise<QueryResult> {
   return pool.query('UPDATE accounts SET bio = $2 WHERE username = $1', [username, newBio])
 }
 export async function changeUserPictureHash(username: string, profile_picture_hash: string): Promise<QueryResult> {
   return pool.query('UPDATE accounts SET profile_picture_hash = $2 WHERE username = $1', [username, profile_picture_hash])
+}
+export async function changeUserBannerHash(username: string, profile_banner_hash: string): Promise<QueryResult> {
+  return pool.query('UPDATE accounts SET profile_banner_hash = $2 WHERE username = $1', [username, profile_banner_hash])
 }
 export async function getUserByUsername(username: string): Promise<User| null> {
     const data = await pool.query("SELECT * FROM accounts WHERE username = $1", [username]);

@@ -5,16 +5,16 @@ import {
   SignTransactionResponse,
 } from "../types/Transactions";
 import { HexCborString } from "../wallet";
+import { blockchainApi } from "./blockchainApi";
 
 export const signTransaction = async (
-  backendApi: string,
   transaction: HexCborString,
   signature: HexCborString
 ): Promise<SignTransactionResponse> => {
   const signResponse = await axios.post<
     SignTransaction,
     AxiosResponse<SignTransactionResponse>
-  >(`${backendApi}/sign`, {
+  >(`${blockchainApi}/sign`, {
     signature,
     transaction,
   });

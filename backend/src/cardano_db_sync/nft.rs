@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use sqlx::postgres::PgRow;
 use sqlx::types::BigDecimal;
-use sqlx::{Error, PgPool, Row};
+use sqlx::{PgPool, Row};
 use tokio_stream::StreamExt;
 
 #[derive(Debug, Serialize, Deserialize)]

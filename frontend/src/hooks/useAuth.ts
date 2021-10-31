@@ -4,19 +4,22 @@ import { Status } from "../features/wallet/walletSlice";
 import useWallet from "./useWallet";
 
 const loggedInKey = "isLoggedIn";
-const tokenKey = "accessToken";
+export const tokenKey = "accessToken";
 
 const useAuth = () => {
   const wallet = useWallet();
+  // Keeps track of whether (1) wallet is ready and (2) authenticated status is ready
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>();
 
   // Retrieve information from local storage
   useEffect(() => {
-    const loggedIn = !!localStorage.getItem(loggedInKey) || false;
-    setIsLoggedIn(loggedIn);
-    setIsLoading(false);
-  }, []);
+    if (wallet.status === Status.Enabled) {
+      const loggedIn = !!localStorage.getItem(loggedInKey) || false;
+      setIsLoggedIn(loggedIn);
+      setIsLoading(false);
+    }
+  }, [wallet.status]);
 
   useEffect(() => {
     if (
@@ -26,6 +29,7 @@ const useAuth = () => {
       localStorage.removeItem(loggedInKey);
       localStorage.removeItem(tokenKey);
       setIsLoggedIn(false);
+      setIsLoading(false);
     }
   }, [wallet.status]);
 
@@ -43,11 +47,18 @@ const useAuth = () => {
     setIsLoggedIn(false);
   };
 
+  // Get access token
+  const getAccessToken = () => {
+    return localStorage.getItem(tokenKey);
+  };
+
   return {
     isLoading,
     isLoggedIn,
     setLogin,
     setLogout,
+    getAccessToken,
+    wallet,
   };
 };
 export default useAuth;

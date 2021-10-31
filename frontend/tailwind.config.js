@@ -21,6 +21,11 @@ module.exports = {
     maxWidth: {
       maxBody: '1730px',
       maxScreen: '100vw',
+      maxHalf: '50%',
+    },
+    maxHeight: {
+      '70vh': '70vh',
+      '90vh': '90vh',
     },
     minHeight: {
       0: '0',
@@ -43,7 +48,8 @@ module.exports = {
         1000: '1000px',
       },
       height: {
-        '90vh': '90%',
+        '70vh': '70vh',
+        '90vh': '90vh',
       },
       colors: {
         gray: {
@@ -69,6 +75,7 @@ module.exports = {
           900: '#2a4365',
         },
         primary: {
+          light: 'rgba(255, 223, 133, 0.3)',
           default: '#FAC748',
         },
       },
@@ -82,5 +89,10 @@ module.exports = {
   },
   variants: {},
   // eslint-disable-next-line global-require
-  plugins: [require('@tailwindcss/line-clamp')],
+  plugins: [
+    // eslint-disable-next-line global-require
+    require('@tailwindcss/line-clamp'),
+    // eslint-disable-next-line global-require
+    require('@tailwindcss/aspect-ratio'),
+  ],
 };

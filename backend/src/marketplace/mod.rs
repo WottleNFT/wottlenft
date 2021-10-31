@@ -1,16 +1,17 @@
 use crate::coin::TransactionWitnessSetParams;
-use crate::marketplace::holder::{MarketplaceHolder, SellMetadata};
-use crate::marketplace::un_goals::UnGoal;
+use crate::config::Config;
+use crate::marketplace::holder::{MarketplaceHolder, SellData, SellMetadata};
+use crate::marketplace::un_goals::{MarketplaceAddresses, UnGoal};
 use crate::{
     cardano_db_sync::{get_protocol_params, get_slot_number, query_user_address_utxo},
     coin::build_transaction_body,
     Error, Result,
 };
 use cardano_serialization_lib::address::Address;
-use cardano_serialization_lib::metadata::{
-    AuxiliaryData, GeneralTransactionMetadata, MetadataList, MetadataMap, TransactionMetadatum,
+use cardano_serialization_lib::crypto::Vkeywitnesses;
+use cardano_serialization_lib::utils::{
+    hash_transaction, to_bignum, TransactionUnspentOutput, Value,
 };
-use cardano_serialization_lib::utils::{to_bignum, Int, TransactionUnspentOutput, Value};
 use cardano_serialization_lib::{
     AssetName, Assets, MultiAsset, PolicyID, Transaction, TransactionOutput, TransactionWitnessSet,
 };
@@ -24,25 +25,27 @@ const ONE_HOUR: u32 = 3600;
 #[derive(Clone)]
 pub struct Marketplace {
     pub(crate) holder: MarketplaceHolder,
+    pub(crate) addresses: MarketplaceAddresses,
 }
 
 impl Marketplace {
+    pub fn from_config(config: &Config) -> Result<Marketplace> {
+        let holder = MarketplaceHolder::from_config(config)?;
+        let addresses = MarketplaceAddresses::from_config(config)?;
+        Ok(Self { holder, addresses })
+    }
+
     pub async fn sell(
         &self,
-        seller_address: &Address,
+        seller_address: Address,
         policy_id: PolicyID,
         asset_name: AssetName,
         un_goal: UnGoal,
         price: u64,
         pool: &PgPool,
     ) -> Result<Transaction> {
-        let seller_utxos = query_user_address_utxo(pool, seller_address).await?;
-        let (nft_utxo, seller_utxos) = find_nft(seller_utxos, &policy_id, &asset_name);
-        if nft_utxo.is_none() {
-            return Err(Error::Message("NFT not found in user's UTxOs".to_string()));
-        }
-
-        let nft_utxo = nft_utxo.unwrap();
+        let seller_utxos = query_user_address_utxo(pool, &seller_address).await?;
+        let (nft_utxo, seller_utxos) = find_nft(seller_utxos, &policy_id, &asset_name)?;
 
         let slot = get_slot_number(pool).await?;
         let protocol_params = get_protocol_params(pool).await?;
@@ -87,6 +90,156 @@ impl Marketplace {
             auxiliary_data,
         ))
     }
+
+    pub async fn buy(
+        &self,
+        buyer_address: Address,
+        policy_id: PolicyID,
+        asset_name: AssetName,
+        pool: &PgPool,
+    ) -> Result<Transaction> {
+        let buyer_utxos = query_user_address_utxo(pool, &buyer_address).await?;
+        let sell_metadata = self.get_sell_details(pool, &policy_id, &asset_name).await?;
+
+        let holder_utxos = query_user_address_utxo(pool, &self.holder.address).await?;
+        let (nft_utxo, _) = find_nft(holder_utxos, &policy_id, &asset_name)?;
+
+        let (revenue_cut, goal_cut, seller_cut) = calculate_cuts(sell_metadata.price);
+
+        let revenue_output = TransactionOutput::new(
+            self.addresses.get_revenue_address(),
+            &Value::new(&to_bignum(revenue_cut)),
+        );
+
+        let goal_output = TransactionOutput::new(
+            self.addresses.get_un_address(sell_metadata.un_goal),
+            &Value::new(&to_bignum(goal_cut)),
+        );
+
+        let seller_output = TransactionOutput::new(
+            &sell_metadata.seller_address,
+            &Value::new(&to_bignum(seller_cut)),
+        );
+
+        let nft_output = TransactionOutput::new(&buyer_address, &nft_utxo.output().amount());
+
+        let outputs = vec![revenue_output, goal_output, seller_output, nft_output];
+        let inputs = vec![nft_utxo];
+
+        let tx_witness_params = TransactionWitnessSetParams {
+            vkey_count: 2,
+            ..Default::default()
+        };
+        let slot = get_slot_number(pool).await?;
+        let protocol_params = get_protocol_params(pool).await?;
+
+        let tx_body = build_transaction_body(
+            buyer_utxos,
+            inputs,
+            outputs,
+            slot + ONE_HOUR,
+            &protocol_params,
+            None,
+            None,
+            &tx_witness_params,
+            None,
+        )?;
+
+        let tx_hash = hash_transaction(&tx_body);
+        let vkey = self.holder.sign_transaction_hash(&tx_hash);
+        let mut tx_witness_set = TransactionWitnessSet::new();
+        let mut vkeys = Vkeywitnesses::new();
+        vkeys.add(&vkey);
+        tx_witness_set.set_vkeys(&vkeys);
+
+        let tx = Transaction::new(&tx_body, &tx_witness_set, None);
+        Ok(tx)
+    }
+
+    pub async fn cancel(
+        &self,
+        seller_address: Address,
+        policy_id: PolicyID,
+        asset_name: AssetName,
+        pool: &PgPool,
+    ) -> Result<Transaction> {
+        let sell_metadata = self.get_sell_details(pool, &policy_id, &asset_name).await?;
+        if sell_metadata
+            .seller_address
+            .to_bytes()
+            .ne(&seller_address.to_bytes())
+        {
+            return Err(Error::Message(
+                "Only the seller can cancel the listing".to_string(),
+            ));
+        }
+
+        let seller_utxos = query_user_address_utxo(pool, &seller_address).await?;
+        let holder_utxos = query_user_address_utxo(pool, &self.holder.address).await?;
+        let (nft_utxo, _) = find_nft(holder_utxos, &policy_id, &asset_name)?;
+
+        let nft_output =
+            TransactionOutput::new(&sell_metadata.seller_address, &nft_utxo.output().amount());
+
+        let cancellation_output = TransactionOutput::new(
+            self.addresses.get_revenue_address(),
+            &Value::new(&to_bignum(ONE_ADA)),
+        );
+
+        let outputs = vec![nft_output, cancellation_output];
+        let inputs = vec![nft_utxo];
+
+        let tx_witness_params = TransactionWitnessSetParams {
+            vkey_count: 2,
+            ..Default::default()
+        };
+        let slot = get_slot_number(pool).await?;
+        let protocol_params = get_protocol_params(pool).await?;
+
+        let tx_body = build_transaction_body(
+            seller_utxos,
+            inputs,
+            outputs,
+            slot + ONE_HOUR,
+            &protocol_params,
+            None,
+            None,
+            &tx_witness_params,
+            None,
+        )?;
+
+        let tx_hash = hash_transaction(&tx_body);
+        let vkey = self.holder.sign_transaction_hash(&tx_hash);
+        let mut tx_witness_set = TransactionWitnessSet::new();
+        let mut vkeys = Vkeywitnesses::new();
+        vkeys.add(&vkey);
+        tx_witness_set.set_vkeys(&vkeys);
+
+        let tx = Transaction::new(&tx_body, &tx_witness_set, None);
+        Ok(tx)
+    }
+
+    async fn get_sell_details(
+        &self,
+        pool: &PgPool,
+        policy_id: &PolicyID,
+        asset_name: &AssetName,
+    ) -> Result<SellMetadata> {
+        self.holder
+            .get_nft_details(pool, &policy_id, &asset_name)
+            .await?
+            .ok_or_else(|| Error::Message("No such NFT is for sale".to_string()))
+    }
+}
+
+const ONE_ADA: u64 = 1_000_000;
+fn calculate_cuts(price: u64) -> (u64, u64, u64) {
+    let one_percent = price / 100;
+    let revenue_cut = (one_percent * 2).max(ONE_ADA);
+    let goal_cut = one_percent.max(ONE_ADA);
+    // The seller put in 2 ADA as deposit
+    let seller_cut = price - revenue_cut - goal_cut + (ONE_ADA * 2);
+    (revenue_cut, goal_cut, seller_cut)
 }
 
 fn create_value_with_single_nft(policy_id: &PolicyID, asset_name: &AssetName) -> Value {
@@ -107,10 +260,7 @@ pub fn find_nft(
     utxos: Vec<TransactionUnspentOutput>,
     policy_id: &PolicyID,
     asset_name: &AssetName,
-) -> (
-    Option<TransactionUnspentOutput>,
-    Vec<TransactionUnspentOutput>,
-) {
+) -> Result<(TransactionUnspentOutput, Vec<TransactionUnspentOutput>)> {
     let mut remaining_utxos = Vec::with_capacity(utxos.len());
     let mut nft_utxo = None;
 
@@ -129,5 +279,7 @@ pub fn find_nft(
         }
     }
 
-    (nft_utxo, remaining_utxos)
+    nft_utxo
+        .ok_or_else(|| Error::Message("No such NFT is for sale".to_string()))
+        .map(|nft| (nft, remaining_utxos))
 }

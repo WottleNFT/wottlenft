@@ -4,6 +4,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 module.exports = withBundleAnalyzer({
+  images: {
+    domains: [
+      'ipfs.io',
+      'user-images.githubusercontent.com',
+      'placekitten.com',
+    ],
+  },
   poweredByHeader: false,
   trailingSlash: true,
   basePath: '',
@@ -12,21 +19,44 @@ module.exports = withBundleAnalyzer({
   // You can remove `basePath` if you don't need it.
   reactStrictMode: true,
   env: {
-    testnetApi: process.env.TESTNET_API,
-    mainnetApi: process.env.MAINNET_API,
-    profileApi: process.env.PROFILE_API,
+    network: process.env.NETWORK,
+    ssrBackendApi: process.env.SSR_BACKEND_API,
+  },
+  experiments: {
+    asyncWebAssembly: true,
+    importAsync: true,
   },
   // TODO: delete this after marketplace is done
   async redirects() {
     return [
       {
         source: '/',
-        destination: '/landing',
+        destination: '/marketplace',
+        permanent: true,
+      },
+      {
+        source: '/landing',
+        destination: '/marketplace',
         permanent: true,
       },
       {
         source: '/auctions',
         destination: '/coming-soon',
+        permanent: true,
+      },
+      {
+        source: '/nfts/:slug',
+        destination: '/nft-not-found',
+        permanent: true,
+      },
+      {
+        source: '/api/blockchain/:slug*',
+        destination: `${process.env.BLOCKCHAIN_API}/:slug*`,
+        permanent: true,
+      },
+      {
+        source: '/api/profile/:slug*',
+        destination: `${process.env.PROFILE_API}/:slug*`,
         permanent: true,
       },
     ];

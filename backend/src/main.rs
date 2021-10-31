@@ -17,7 +17,6 @@ use envconfig::Envconfig;
 use error::Result;
 
 use crate::error::Error;
-use crate::marketplace::holder::MarketplaceHolder;
 
 #[actix_web::main]
 async fn main() -> Result<()> {

@@ -11,6 +11,8 @@ CREATE TABLE accounts(
   email VARCHAR NOT NULL,
   bio TEXT,
   profile_picture_hash VARCHAR,
+  profile_banner_hash VARCHAR,
+  un_goal VARCHAR,
   UNIQUE(wallet_id)
 );
 CREATE TYPE listing_status AS ENUM('completed', 'cancelled', 'listing');
@@ -18,8 +20,15 @@ CREATE TYPE listing_status AS ENUM('completed', 'cancelled', 'listing');
 CREATE TABLE listings(
   listing_id SERIAL PRIMARY KEY,
   nft_id VARCHAR NOT NULL,
+  nft_asset_name VARCHAR NOT NULL,
   buyer_wallet_id VARCHAR REFERENCES accounts(wallet_id),
   seller_wallet_id VARCHAR NOT NULL REFERENCES accounts(wallet_id),
   price DOUBLE PRECISION NOT NULL,
-  current_status listing_status NOT NULL
+  nft_metadata TEXT,
+  current_status listing_status NOT NULL,
+  seller_contribution DOUBLE PRECISION,
+  buyer_contribution DOUBLE PRECISION,
+  creation_time TIMESTAMP,
+  buy_or_cancel_time TIMESTAMP,
+  un_goal VARCHAR
 );

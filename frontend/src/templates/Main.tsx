@@ -1,15 +1,15 @@
 import React, { ReactNode, useEffect, useState } from "react";
 
 import { IonContent, IonHeader, IonPage } from "@ionic/react";
-import { DefaultSeo, NextSeoProps } from "next-seo";
+import { NextSeo, NextSeoProps } from "next-seo";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import wottleLogo from "../../public/logo.png";
 import ConnectWalletButton from "../Components/ConnectWalletButton";
 import Footer from "../Components/Footer";
-import NavSearchBar from "../Components/Navbar/NavSearchBar";
 import { MenuButton } from "../Components/SideMenu";
 import navbarStyles from "../styles/navbar.module.css";
 
@@ -56,13 +56,13 @@ const Main = (props: IMainProps) => {
         />
         <link rel="icon" href="/favicon.ico" key="favicon" />
       </Head>
-      <DefaultSeo
+      <NextSeo
         openGraph={{
           type: "website",
           url: "https://wottlenft.io",
-          title: "WottleNFT | A sustainable Cardano NFT Marketplace",
+          title: "WottleNFT | Cardano NFT Marketplace with a Mission",
           description:
-            "WottleNFT is a sustainable NFT Marketplace built upon the Cardano blockchain.",
+            "Cardano NFT Markteplace with a mission to create a global interconnected ecosystem between cardano NFTs and social enterprises while sharing the stories behind each Cardano NFT",
           images: [
             {
               url: "/logo.png",
@@ -77,10 +77,10 @@ const Main = (props: IMainProps) => {
       />
       <IonPage id="main">
         <IonHeader className="ion-no-border">
-          <div className="flex items-center justify-between pl-4 md:pl-12 2xl:pl-52 bg-primary-default">
+          <div className="flex items-center justify-between px-8 bg-white 2xl:px-40">
             <div className="flex items-center content-center flex-grow">
               <div
-                onClick={() => router.push("/landing")}
+                onClick={() => router.push("/marketplace")}
                 className="flex flex-row items-center cursor-pointer"
               >
                 <Image
@@ -92,7 +92,7 @@ const Main = (props: IMainProps) => {
                 />
                 <span className="p-0 text-xl font-bold">WottleNFT</span>
               </div>
-              <NavSearchBar />
+              {/* <NavSearchBar /> */}
             </div>
             {windowWidth === -1 && typeof window !== "undefined"
               ? setWidth(window.innerWidth)
@@ -101,17 +101,18 @@ const Main = (props: IMainProps) => {
                     <div className={navbarStyles.container}>
                       {navInfo.map((nav) => {
                         return (
-                          <a
-                            key={nav.name}
-                            href={nav.tempRoute}
-                            className={
-                              nav.route === router.pathname
-                                ? navbarStyles.selected
-                                : ""
-                            }
-                          >
-                            {nav.name}
-                          </a>
+                          <Link href={nav.tempRoute} key={nav.name}>
+                            <a
+                              href={nav.tempRoute}
+                              className={
+                                nav.route === router.pathname
+                                  ? navbarStyles.selected
+                                  : ""
+                              }
+                            >
+                              {nav.name}
+                            </a>
+                          </Link>
                         );
                       })}
                     </div>
@@ -136,17 +137,17 @@ const navInfo = [
   {
     name: "Marketplace",
     route: "/marketplace",
-    tempRoute: "/coming-soon",
+    tempRoute: "/marketplace",
   },
   {
-    name: "About Us",
-    route: "/about",
-    tempRoute: "/about",
+    name: "Guides",
+    route: "/guides",
+    tempRoute: "/guides",
   },
   {
-    name: "Creator",
-    route: "/creaters",
-    tempRoute: "/coming-soon",
+    name: "UNSDG",
+    route: "/unsdg",
+    tempRoute: "/unsdg",
   },
   {
     name: "Mint Now",

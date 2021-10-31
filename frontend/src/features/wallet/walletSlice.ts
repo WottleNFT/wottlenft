@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import { getBalance } from "../../lib/blockchainApi";
+import getBechAddr from "../../lib/convertWalletAddr";
 import { HexCborString, Network } from "../../wallet";
 
 export enum Status {
@@ -7,6 +9,7 @@ export enum Status {
   Loading,
   NotEnabled,
   Enabled,
+  WrongNetwork,
 }
 
 export type NoExtension = {
@@ -21,6 +24,11 @@ export type NotEnabled = {
   status: Status.NotEnabled;
 };
 
+export type WrongNetwork = {
+  status: Status.WrongNetwork;
+  message: string;
+};
+
 export type Enabled = {
   status: Status.Enabled;
   state: WalletState;
@@ -30,18 +38,24 @@ export type WalletState = {
   address: string;
   balance: number;
   network: Network;
-  backendApi: string;
+  bechAddr: string;
 };
 
-export type WalletStatus = NoExtension | Loading | NotEnabled | Enabled;
+export type WalletStatus =
+  | NoExtension
+  | Loading
+  | NotEnabled
+  | Enabled
+  | WrongNetwork;
 
 export const MAINNET = 1;
 export const TESTNET = 0;
 
-const getBackendApi = (network: Network) => {
-  return network === 1
-    ? (process.env.mainnetApi as string)
-    : (process.env.testnetApi as string);
+const getNetwork = (network: Network) =>
+  network === TESTNET ? "testnet" : "mainnet";
+
+const isCorrectNetwork = (network: Network) => {
+  return process.env.network === getNetwork(network);
 };
 
 const initialState: WalletStatus = {
@@ -62,12 +76,18 @@ export const initializeWallet = createAsyncThunk(
         status: Status.NotEnabled,
       };
     }
+
     const network = await cardano.getNetworkId();
-    const backendApi = getBackendApi(network);
+    if (!isCorrectNetwork(network)) {
+      return {
+        status: Status.WrongNetwork,
+        message: `Not available on ${getNetwork(network)}`,
+      };
+    }
 
     const address = await cardano.getChangeAddress();
-    const res = await fetch(`${backendApi}/address/${address}/balance`);
-    const balance = (await res.json()).total_value;
+    const balance = (await getBalance(address)).total_value;
+    const bechAddr = await getBechAddr(address);
 
     return {
       status: Status.Enabled,
@@ -75,7 +95,7 @@ export const initializeWallet = createAsyncThunk(
         address,
         balance,
         network,
-        backendApi,
+        bechAddr,
       },
     };
   }
@@ -106,7 +126,6 @@ const reducers = {
   networkChange: (state: WalletStatus, action: PayloadAction<Network>) => {
     if (state.status === Status.Enabled) {
       state.state.network = action.payload;
-      state.state.backendApi = getBackendApi(action.payload);
     }
   },
 
