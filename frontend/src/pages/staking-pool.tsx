@@ -67,4 +67,3 @@ const StakingPool = () => {
 };
 
 export default StakingPool;
-
