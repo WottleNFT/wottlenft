@@ -141,6 +141,11 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      <div className="flex flex-col md:flex-row px-8 2xl:px-40 pb-4">
+        <div className="w-1/2 flex flex-col gap-5 mx-4  text-white">
+          <div>©2021 WottleNFT</div>
+        </div>
+      </div>
     </div>
   );
 };
