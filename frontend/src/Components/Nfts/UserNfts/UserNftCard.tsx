@@ -4,10 +4,10 @@ import { IonButton, useIonModal } from "@ionic/react";
 import { useRouter } from "next/router";
 
 import { WottleEnabled } from "../../../hooks/useWallet";
-import { cancelNft, CancelNftRequest } from "../../../lib/marketplaceApi";
-import { signTransaction } from "../../../lib/transactionApi";
+import { MarketplaceListing } from "../../../lib/marketplaceApi";
 import { Nft } from "../../../types/Nft";
 import { getImgUrl } from "../../../utils/NftUtil";
+import NftActionModal from "../../Marketplace/NftActionModal";
 import ListNftModal from "../../Profile/ListNftModal";
 
 type Props = {
@@ -15,9 +15,10 @@ type Props = {
   wallet: WottleEnabled;
   listed: boolean;
   price?: number;
+  listing?: MarketplaceListing;
 };
 
-const UserNftCard = ({ nft, wallet, listed, price }: Props) => {
+const UserNftCard = ({ nft, wallet, listed, price, listing }: Props) => {
   const { assetName, metadata, policyId } = nft;
   const { description, image } = metadata;
   const router = useRouter();
@@ -28,24 +29,23 @@ const UserNftCard = ({ nft, wallet, listed, price }: Props) => {
     dismiss();
   };
 
-  const [present, dismiss] = useIonModal(ListNftModal, {
+  const [presentList, dismiss] = useIonModal(ListNftModal, {
     nft,
     dismiss: handleDismiss,
     wallet,
   });
 
-  const handleUnlist = async () => {
-    const request: CancelNftRequest = {
-      sellerAddress: wallet.state.address,
-      policyId: nft.policyId,
-      assetName: nft.assetName,
-    };
-
-    const { transaction } = await cancelNft(request);
-    const signature = await wallet.cardano.signTx(transaction);
-    const signResponse = await signTransaction(transaction, signature);
-    console.log(signResponse);
+  const handleDismissUnlist = () => {
+    dismissUnlist();
   };
+
+  const [presentUnlist, dismissUnlist] = useIonModal(NftActionModal, {
+    nft,
+    dismiss: handleDismissUnlist,
+    wallet,
+    isSeller: true,
+    listing,
+  });
 
   return (
     <div
@@ -65,7 +65,7 @@ const UserNftCard = ({ nft, wallet, listed, price }: Props) => {
         <p className="text-lg font-bold text-center">{assetName}</p>
         <p className="text-center text-gray-600 truncate">{description}</p>
         {!listed ? (
-          <IonButton className="mx-auto" onClick={() => present()}>
+          <IonButton className="mx-auto" onClick={() => presentList()}>
             List
           </IonButton>
         ) : (
@@ -73,7 +73,7 @@ const UserNftCard = ({ nft, wallet, listed, price }: Props) => {
             <p className="text-2xl text-primary-default">
               {(price as number) / 1000000} ₳
             </p>
-            <IonButton onClick={handleUnlist}>Unlist</IonButton>
+            <IonButton onClick={() => presentUnlist()}>Unlist</IonButton>
           </div>
         )}
       </div>
