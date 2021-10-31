@@ -73,7 +73,7 @@ const UserNftCard = ({ nft, wallet, listed, price, listing }: Props) => {
             <p className="text-2xl text-primary-default">
               {(price as number) / 1000000} ₳
             </p>
-            <IonButton onClick={() => presentUnlist()}>Unlist</IonButton>
+            <IonButton onClick={() => presentUnlist()}>Delist</IonButton>
           </div>
         )}
       </div>
