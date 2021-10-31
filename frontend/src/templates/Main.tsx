@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 
-import { IonContent, IonHeader, IonPage } from "@ionic/react";
+import { IonContent, IonPage } from "@ionic/react";
 import { NextSeo, NextSeoProps } from "next-seo";
 import Head from "next/head";
 import Image from "next/image";
@@ -76,8 +76,8 @@ const Main = (props: IMainProps) => {
         {...nextSeo}
       />
       <IonPage id="main">
-        <IonHeader className="ion-no-border">
-          <div className="flex items-center justify-between px-8 2xl:px-40 bg-transparent">
+        <div className="fixed w-full z-10">
+          <div className="flex items-center justify-between px-8 2xl:px-40">
             <div className="flex items-center content-center flex-grow">
               <div
                 onClick={() => router.push("/landing")}
@@ -121,8 +121,8 @@ const Main = (props: IMainProps) => {
                 )}
             {windowWidth < windowBreakpoint && <MenuButton className="mr-4" />}
           </div>
-        </IonHeader>
-        <IonContent id="main">
+        </div>
+        <IonContent id="main" className="z-0">
           {children}
           <Footer />
         </IonContent>
