@@ -127,7 +127,12 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
-                <StatsBar wallet={wallet} activity={2} contribution={3} />
+                <StatsBar
+                  wallet={wallet}
+                  listed={listings.length}
+                  activity={2}
+                  contribution={3}
+                />
                 <div className="flex flex-col self-start mt-5 ml-11">
                   <p className="text-4xl font-bold">
                     @{(profileData as ProfileData).user.username}

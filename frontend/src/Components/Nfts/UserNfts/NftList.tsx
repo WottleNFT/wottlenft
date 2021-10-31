@@ -23,16 +23,6 @@ const NftList = ({ address, wallet, listings }: Props) => {
 
   return (
     <div className="flex flex-wrap justify-center">
-      {data.map((nft) => {
-        return (
-          <UserNftCard
-            listed={false}
-            wallet={wallet}
-            nft={nft}
-            key={nft.policyId}
-          />
-        );
-      })}
       {listings.map((listingData) => {
         const metadata =
           listingData.assetMetadata[listingData.policyId][
@@ -51,6 +41,17 @@ const NftList = ({ address, wallet, listings }: Props) => {
             nft={nftInfo}
             key={nftInfo.policyId}
             price={listingData.saleMetadata.price}
+            listing={listingData}
+          />
+        );
+      })}
+      {data.map((nft) => {
+        return (
+          <UserNftCard
+            listed={false}
+            wallet={wallet}
+            nft={nft}
+            key={nft.policyId}
           />
         );
       })}
