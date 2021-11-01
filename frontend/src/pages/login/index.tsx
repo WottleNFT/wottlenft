@@ -37,7 +37,7 @@ const Login = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (isLoggedIn) {
-      router.push("/");
+      router.push("/profile");
     }
   }, [isLoggedIn, router]);
 
@@ -64,7 +64,6 @@ const Login = () => {
     if (response.status === 200) {
       const res = await response.json();
       setLogin(res.accessToken);
-      router.push("/");
     } else {
       setErrorMsg("No matching wallet ID/password combination");
     }

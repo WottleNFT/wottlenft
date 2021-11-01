@@ -104,7 +104,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
                   className="p-2 ml-2 border border-gray-200 border-solid rounded-lg shadow-md drop-shadow-md"
                   value={listPrice}
                   min="5"
-                  step="0.000001"
+                  step="0.1"
                   onChange={(e) => setListPrice(e.target.value)}
                 />
               </label>
