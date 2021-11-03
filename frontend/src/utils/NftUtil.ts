@@ -29,6 +29,9 @@ export const listingToNft = (listing: MarketplaceListing): Nft => {
 export const getImgUrl = (image: string): string => {
   if (image.startsWith("ipfs://")) {
     const imageHash = image.replace("ipfs://", "");
+    if (imageHash.startsWith("ipfs/")) {
+      return `https://ipfs.io/${imageHash}`;
+    }
     return `https://ipfs.io/ipfs/${imageHash}`;
   }
   return image;
