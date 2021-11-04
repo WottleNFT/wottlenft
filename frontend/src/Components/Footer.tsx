@@ -101,7 +101,7 @@ const Footer = () => {
                 Twitter
               </a>
             </Link>
-            <Link href="https://discord.gg/GcDPbqvcGn">
+            <Link href="https://discord.gg/rnEE2Unm8K">
               <a target="_blank" className="text-white">
                 Discord
               </a>
