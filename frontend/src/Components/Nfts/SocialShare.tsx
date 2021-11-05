@@ -9,7 +9,6 @@ import {
   TelegramShareButton,
   TwitterIcon,
   TwitterShareButton,
-  LinkedinShareButton,
   LinkedinIcon,
 } from "react-share";
 import ReactTooltip from "react-tooltip";
@@ -30,6 +29,16 @@ const SocialShare = ({ txHash, nft }: Props) => {
     navigator.clipboard.writeText(sharedLink);
   };
 
+  const handleLinkedinShare = () => {
+    window.open(
+      `https://www.linkedin.com/sharing/share-offsite/?mini=true&url=${encodeURIComponent(
+        sharedLink
+      )}`,
+      "",
+      "height=455,width=555"
+    );
+  };
+
   return (
     <div className="flex gap-3 my-3">
       <FacebookShareButton url={sharedLink}>
@@ -41,9 +50,11 @@ const SocialShare = ({ txHash, nft }: Props) => {
       <TelegramShareButton url={sharedLink}>
         <TelegramIcon size={36} className="rounded-lg" />
       </TelegramShareButton>
-      <LinkedinShareButton url={sharedLink}>
-        <LinkedinIcon size={36} className="rounded-lg" />
-      </LinkedinShareButton>
+      <LinkedinIcon
+        onClick={handleLinkedinShare}
+        size={36}
+        className="rounded-lg hover:cursor-pointer"
+      />
       <div
         data-tip="Link copied!"
         onClick={handleCopyLink}
