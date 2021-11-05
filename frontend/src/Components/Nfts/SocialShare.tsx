@@ -22,8 +22,8 @@ interface Props {
 
 const SocialShare = ({ txHash, nft }: Props) => {
   const sharedLink = txHash
-    ? `https://wottle.io/marketplace/${txHash}`
-    : `https://wottle.io/nfts/${nft.policyId}/${nft.assetName}`;
+    ? `https://wottlenft.io/marketplace/${txHash}`
+    : `https://wottlenft.io/nfts/${nft.policyId}/${nft.assetName}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(sharedLink);
