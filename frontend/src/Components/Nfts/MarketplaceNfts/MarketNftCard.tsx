@@ -18,7 +18,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
   const { price, unGoal } = saleMetadata;
 
   const metadata = (assetMetadata[policyId] || {})[assetName];
-  const { description, image } = metadata;
+  const { description, image, name } = metadata;
 
   const imageUrl = getImgUrl(image);
 
@@ -57,7 +57,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
         <div className="flex flex-col justify-center w-full h-1/3">
           <IonCardHeader className="px-2 truncate">
             <IonCardTitle className="text-base text-center truncate">
-              {assetName}
+              {name}
             </IonCardTitle>
             <p className="h-16 mt-2 text-left whitespace-normal line-clamp-3 overflow-ellipsis">
               {description}

@@ -85,6 +85,7 @@ const SingleMarketItem = ({ listing }: Props) => {
         nft={listingToNft(listing)}
         price={price}
         button={infoCardButton}
+        txHash={listing.transactionHash}
       />
     </Main>
   );
