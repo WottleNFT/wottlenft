@@ -57,7 +57,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
         <div className="flex flex-col justify-center w-full h-1/3">
           <IonCardHeader className="px-2 truncate">
             <IonCardTitle className="text-base text-center truncate">
-              {name}
+              {name || assetName}
             </IonCardTitle>
             <p className="h-16 mt-2 text-left whitespace-normal line-clamp-3 overflow-ellipsis">
               {description}
