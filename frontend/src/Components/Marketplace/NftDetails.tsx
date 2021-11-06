@@ -15,7 +15,7 @@ type Props = {
 };
 
 const NftDetails = ({ nft, price, button, txHash }: Props) => {
-  const { metadata } = nft;
+  const { metadata, assetName } = nft;
   const { description, image, name } = metadata;
 
   const imageUrl = getImgUrl(image || "");
@@ -35,7 +35,7 @@ const NftDetails = ({ nft, price, button, txHash }: Props) => {
         <div className="w-full">
           <div className="flex flex-col text-left">
             <p className="w-full text-2xl font-bold truncate whitespace-normal">
-              {name}
+              {name || assetName}
             </p>
             {(metadata.creator || metadata.author) && (
               <span>
