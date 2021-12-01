@@ -135,6 +135,11 @@ export { Main };
 
 const navInfo = [
   {
+    name: "NFT Drops",
+    route: "/nft-drops",
+    tempRoute: "/nft-drops",
+  },
+  {
     name: "Marketplace",
     route: "/marketplace",
     tempRoute: "/marketplace",
@@ -144,11 +149,11 @@ const navInfo = [
     route: "/guides",
     tempRoute: "/guides",
   },
-  {
-    name: "UNSDG",
-    route: "/unsdg",
-    tempRoute: "/unsdg",
-  },
+  // {
+  //   name: "UNSDG",
+  //   route: "/unsdg",
+  //   tempRoute: "/unsdg",
+  // },
   {
     name: "Mint Now",
     route: "/mint-nft",
