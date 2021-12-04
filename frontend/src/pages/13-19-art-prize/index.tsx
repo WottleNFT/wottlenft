@@ -37,7 +37,7 @@ const Exhibition = () => {
             TRCL 13-19 Art Prize <br />
           </p>
           <p className="mb-10 text-xl font-bold leading-tight lg:text-3xl">
-            Something here
+            Some description of the exhibition here
           </p>
         </div>
         <img
