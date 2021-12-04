@@ -26,7 +26,6 @@ async function  initialiseDatabase() {
     bio TEXT,
     profile_picture_hash VARCHAR,
     profile_banner_hash VARCHAR,
-    un_goal VARCHAR,
     UNIQUE(wallet_id)
   );
   CREATE TYPE listing_status AS ENUM('completed', 'cancelled', 'listing');
@@ -43,7 +42,6 @@ async function  initialiseDatabase() {
     buyer_contribution DOUBLE PRECISION,
     creation_time TIMESTAMP,
     buy_or_cancel_time TIMESTAMP,
-    un_goal VARCHAR
   );`)
   } catch (error: any) {
     console.log("Failed to initailise DB");
