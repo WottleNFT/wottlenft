@@ -3,17 +3,17 @@ import axios, { AxiosResponse } from "axios";
 import { TransactionResponse } from "../types/Transactions";
 import { blockchainApi } from "./blockchainApi";
 
-export enum UnGoal {
-  ClimateAction = "ClimateAction",
-  ZeroHunger = "ZeroHunger",
-  QualityEducation = "QualityEducation",
-}
+// export enum UnGoal {
+//   ClimateAction = "ClimateAction",
+//   ZeroHunger = "ZeroHunger",
+//   QualityEducation = "QualityEducation",
+// }
 
 export type SellNftRequest = {
   sellerAddress: string;
   policyId: string;
   assetName: string;
-  unGoal: UnGoal;
+  // unGoal: UnGoal;
   price: number;
 };
 
@@ -31,7 +31,7 @@ export const sellNft = async (
 export type SaleMetadata = {
   sellerAddress: string;
   price: number;
-  unGoal: UnGoal;
+  // unGoal: UnGoal;
   namiAddress: string;
 };
 

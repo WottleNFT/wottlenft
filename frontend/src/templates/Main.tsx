@@ -62,7 +62,7 @@ const Main = (props: IMainProps) => {
           url: "https://wottlenft.io",
           title: "WottleNFT | Cardano NFT Marketplace with a Mission",
           description:
-            "Cardano NFT Markteplace with a mission to create a global interconnected ecosystem between cardano NFTs and social enterprises while sharing the stories behind each Cardano NFT",
+            "Cardano NFT Markteplace with a Mission to share the stories behind each Cardano NFT",
           images: [
             {
               url: "/logo.png",
@@ -135,6 +135,11 @@ export { Main };
 
 const navInfo = [
   {
+    name: "NFTDrops",
+    route: "/nft-drops",
+    tempRoute: "/nft-drops",
+  },
+  {
     name: "Marketplace",
     route: "/marketplace",
     tempRoute: "/marketplace",
@@ -144,11 +149,11 @@ const navInfo = [
     route: "/guides",
     tempRoute: "/guides",
   },
-  {
-    name: "UNSDG",
-    route: "/unsdg",
-    tempRoute: "/unsdg",
-  },
+  // {
+  //   name: "UNSDG",
+  //   route: "/unsdg",
+  //   tempRoute: "/unsdg",
+  // },
   {
     name: "Mint Now",
     route: "/mint-nft",
