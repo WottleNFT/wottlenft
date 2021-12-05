@@ -8,7 +8,6 @@ import DisplayMessage from "../Nfts/DisplayMessage";
 import NftList from "../Nfts/UserNfts/NftList";
 import WalletSwitch from "../WalletSwitch";
 import ActivityTab from "./ActivityTab";
-import Contributions from "./Contributions";
 
 enum Tab {
   Collection,
@@ -98,9 +97,7 @@ const Tabs = ({ wallet, listings }: Props) => {
           </CSSTransition>
         )}
         {activeTab === Tab.Contribution && (
-          <CSSTransition timeout={300} classNames="tab">
-            <Contributions />
-          </CSSTransition>
+          <CSSTransition timeout={300} classNames="tab"></CSSTransition>
         )}
       </TransitionGroup>
     </div>

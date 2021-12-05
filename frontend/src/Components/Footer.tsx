@@ -117,12 +117,12 @@ const Footer = () => {
                 Instagram
               </a>
             </Link> */}
-            <a
+            {/* <a
               href="https://github.com/WottleNFT/filedump/raw/main/WottleNFTLitepaper_ver1.0.pdf"
               className="text-white"
             >
               Litepaper
-            </a>
+            </a> */}
           </div>
           {/* <div className="flex flex-col">
             <span className="text-primary-default">Auction</span>

@@ -1,6 +1,6 @@
 // Wallet that holds NFTs for sale
 
-use crate::marketplace::un_goals::UnGoal;
+// use crate::marketplace::un_goals::UnGoal;
 use crate::{config::Config, decode_private_key, Error, Result};
 use cardano_serialization_lib::address::{
     Address, EnterpriseAddress, NetworkInfo, StakeCredential,
@@ -36,7 +36,7 @@ pub struct SellData {
 pub struct SellMetadata {
     pub seller_address: Address,
     pub price: u64,
-    pub un_goal: UnGoal,
+    // pub un_goal: UnGoal,
 }
 
 impl SellMetadata {
@@ -54,15 +54,15 @@ impl SellMetadata {
             .and_then(|s| Address::from_bech32(&s).map_err(|e| Error::Js(e)));
         let price = value.get("price").and_then(|v| v.as_u64());
 
-        let un_goal = value.get("un_goal").ok_or(Error::Unknown).and_then(|v| {
-            serde_json::from_value::<UnGoal>(v.clone()).map_err(|e| Error::JsonDecode(e))
-        });
+        // let un_goal = value.get("un_goal").ok_or(Error::Unknown).and_then(|v| {
+        //     serde_json::from_value::<UnGoal>(v.clone()).map_err(|e| Error::JsonDecode(e))
+        // });
 
-        if let (Ok(seller_address), Some(price), Ok(un_goal)) = (seller_address, price, un_goal) {
+        if let (Ok(seller_address), Some(price)) = (seller_address, price) {
             Some(SellMetadata {
                 seller_address,
                 price,
-                un_goal,
+                // un_goal,
             })
         } else {
             None
@@ -343,7 +343,7 @@ impl Serialize for SellMetadata {
                 .map_err(|_| serde::ser::Error::custom("Failed to serialize seller address"))?,
         )?;
         serialize_struct.serialize_field("price", &self.price)?;
-        serialize_struct.serialize_field("unGoal", &self.un_goal)?;
+        // serialize_struct.serialize_field("unGoal", &self.un_goal)?;
         serialize_struct
             .serialize_field("namiAddress", &hex::encode(&self.seller_address.to_bytes()))?;
         serialize_struct.end()
@@ -354,13 +354,13 @@ impl SellMetadata {
     pub fn create_sell_nft_metadata(&self) -> Result<AuxiliaryData> {
         let SellMetadata {
             seller_address,
-            un_goal,
+            // un_goal,
             price,
         } = self;
-        let un_goal_serialized = serde_json::to_value(&un_goal)?
-            .as_str()
-            .unwrap()
-            .to_string();
+        // let un_goal_serialized = serde_json::to_value(&un_goal)?
+        //     .as_str()
+        //     .unwrap()
+        //     .to_string();
         let mut auxiliary_data = AuxiliaryData::new();
         let mut general_tx_data = GeneralTransactionMetadata::new();
 
@@ -370,10 +370,10 @@ impl SellMetadata {
                 "price",
                 &TransactionMetadatum::new_int(&Int::new(&to_bignum(*price))),
             )?;
-            map.insert_str(
-                "un_goal",
-                &TransactionMetadatum::new_text(un_goal_serialized)?,
-            )?;
+            // map.insert_str(
+            //     "un_goal",
+            //     &TransactionMetadatum::new_text(un_goal_serialized)?,
+            // )?;
 
             let addr_string = seller_address.to_bech32(None)?;
             let addr_string_list: Vec<String> = addr_string

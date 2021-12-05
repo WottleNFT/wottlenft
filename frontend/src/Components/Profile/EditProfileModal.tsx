@@ -6,7 +6,7 @@ import { closeOutline } from "ionicons/icons";
 import { useForm } from "react-hook-form";
 
 import { ProfileData } from "../../hooks/useProfile";
-import { UnGoal } from "../../lib/marketplaceApi";
+// import { UnGoal } from "../../lib/marketplaceApi";
 import { PinataResponse } from "../../types/PinataResponse";
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
     oldPassword: string,
     newPassword: string
   ) => Promise<Response>;
-  updateUnGoal: (unGoal: UnGoal) => Promise<Response>;
+  // updateUnGoal: (unGoal: UnGoal) => Promise<Response>;
 }
 
 interface ChangePassword {
@@ -32,23 +32,23 @@ const EditProfileModal = ({
   updateBio,
   updateProfilePic,
   updatePassword,
-  updateUnGoal,
-}: Props) => {
+}: // updateUnGoal,
+Props) => {
   const [image, setImage] = useState<File | undefined>();
   const [bio, setBio] = useState<string | undefined>();
-  const [sdgGoal, setSdgGoal] = useState<UnGoal | undefined>();
+  // const [sdgGoal, setSdgGoal] = useState<UnGoal | undefined>();
 
   // Submitting status
   const [submittingBio, setSubmittingBio] = useState<boolean>(false);
   const [submittingProfilePic, setSubmittingProfilePic] =
     useState<boolean>(false);
   const [submittingPassword, setSubmittingPassword] = useState<boolean>(false);
-  const [submittingSdg, setSubmittingSdg] = useState<boolean>(false);
+  // const [submittingSdg, setSubmittingSdg] = useState<boolean>(false);
 
   // Errors
   const [changePwError, setChangePwError] = useState<string | undefined>();
   const [profilePicError, setProfilePicError] = useState<string | undefined>();
-  const [sdgError, setSdgError] = useState<string | undefined>();
+  // const [sdgError, setSdgError] = useState<string | undefined>();
 
   const {
     register,
@@ -146,27 +146,27 @@ const EditProfileModal = ({
     }
   };
 
-  const handleUpdateSdg = async () => {
-    if (!sdgGoal) {
-      setSdgError("Select an SDG Goal");
-      return;
-    }
-    setSubmittingSdg(true);
-    try {
-      const res = await updateUnGoal(sdgGoal);
-      if (res.status === 202) {
-        alert("SDG successfully updated!");
-        window.location.reload();
-      } else {
-        setSdgError("An error occurred");
-      }
-    } catch (e) {
-      console.error(e);
-      setSdgError("An error occurred");
-    } finally {
-      setSubmittingSdg(false);
-    }
-  };
+  // const handleUpdateSdg = async () => {
+  //   if (!sdgGoal) {
+  //     setSdgError("Select an SDG Goal");
+  //     return;
+  //   }
+  //   setSubmittingSdg(true);
+  //   try {
+  //     const res = await updateUnGoal(sdgGoal);
+  //     if (res.status === 202) {
+  //       alert("SDG successfully updated!");
+  //       window.location.reload();
+  //     } else {
+  //       setSdgError("An error occurred");
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //     setSdgError("An error occurred");
+  //   } finally {
+  //     setSubmittingSdg(false);
+  //   }
+  // };
 
   const getErrorMessages = () => {
     if (errors.newPassword?.type === "pattern") {
@@ -245,7 +245,7 @@ const EditProfileModal = ({
             <IonButton onClick={handleUpdateBio}>Update Bio</IonButton>
           )}
         </div>
-        <div className="px-5 mt-5">
+        {/* <div className="px-5 mt-5">
           <p className="pl-2 text-lg font-bold">Sustainable Development Goal</p>
           <div className="flex justify-between w-full py-3">
             <img
@@ -272,15 +272,15 @@ const EditProfileModal = ({
               }`}
               onClick={() => setSdgGoal(UnGoal.ClimateAction)}
             />
-          </div>
-          {!submittingSdg && (
+          </div> */}
+        {/* {!submittingSdg && (
             <IonButton onClick={handleUpdateSdg}>Update SDG</IonButton>
           )}
           {submittingSdg && <IonSpinner name="crescent" />}
           {sdgError && (
             <span className="block text-sm text-red-500">{sdgError}</span>
-          )}
-        </div>
+          )} */}
+        {/* </div> */}
         <div className="px-5 py-5">
           <p className="pl-2 text-lg font-bold">Change password</p>
           <form
