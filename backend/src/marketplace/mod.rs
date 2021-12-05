@@ -25,14 +25,14 @@ const ONE_HOUR: u32 = 3600;
 #[derive(Clone)]
 pub struct Marketplace {
     pub(crate) holder: MarketplaceHolder,
-    pub(crate) addresses: MarketplaceAddresses,
+    // pub(crate) addresses: MarketplaceAddresses,
 }
 
 impl Marketplace {
     pub fn from_config(config: &Config) -> Result<Marketplace> {
         let holder = MarketplaceHolder::from_config(config)?;
-        let addresses = MarketplaceAddresses::from_config(config)?;
-        Ok(Self { holder, addresses })
+        // let addresses = MarketplaceAddresses::from_config(config)?;
+        Ok(Self { holder })
     }
 
     pub async fn sell(
@@ -233,7 +233,7 @@ impl Marketplace {
 }
 
 const ONE_ADA: u64 = 1_000_000;
-fn calculate_cuts(price: u64) -> (u64, u64, u64) {
+fn calculate_cuts(price: u64) -> (u64, u64) {
     let one_percent = price / 100;
     let revenue_cut = (one_percent * 2).max(ONE_ADA);
     // let goal_cut = one_percent.max(ONE_ADA);
