@@ -24,7 +24,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
 
   return (
     <IonCard className="px-2 pt-3 m-0 rounded-3xl md:px-4">
-      <div className="felx felx-col">
+      <div className="flex flex-col">
         {/* <div className="flex items-center h-1/6 felx-row">
           <div className="h-full m-2 w-14">
             <Image
@@ -42,7 +42,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
 
         <Link href={`/marketplace/${marketplaceListing.transactionHash}`}>
           <a>
-            <div className="w-full aspect-w-1 aspect-h-1 relative">
+            <div className="relative w-full aspect-w-1 aspect-h-1">
               <Image
                 className="rounded-2xl"
                 alt="NFT Image"

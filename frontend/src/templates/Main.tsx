@@ -101,9 +101,9 @@ const Main = (props: IMainProps) => {
                     <div className={navbarStyles.container}>
                       {navInfo.map((nav) => {
                         return (
-                          <Link href={nav.tempRoute} key={nav.name}>
+                          <Link href={nav.route} key={nav.name}>
                             <a
-                              href={nav.tempRoute}
+                              href={nav.route}
                               className={
                                 nav.route === router.pathname
                                   ? navbarStyles.selected
@@ -142,21 +142,17 @@ const navInfo = [
   {
     name: "Marketplace",
     route: "/marketplace",
-    tempRoute: "/marketplace",
   },
   {
     name: "Guides",
     route: "/guides",
-    tempRoute: "/guides",
   },
-  // {
-  //   name: "UNSDG",
-  //   route: "/unsdg",
-  //   tempRoute: "/unsdg",
-  // },
   {
     name: "Mint Now",
     route: "/mint-nft",
-    tempRoute: "/mint-nft",
+  },
+  {
+    name: "TRCL Art Exhibition",
+    route: "/13-19-art-prize",
   },
 ];
