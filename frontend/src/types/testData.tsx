@@ -18,10 +18,10 @@ export const testCategories: Category[] = [
     id: 3,
     name: "Climate action",
   },
-  {
-    id: 4,
-    name: "More UN goals",
-  },
+  // {
+  //   id: 4,
+  //   name: "More UN goals",
+  // },
 ];
 
 export const testNfts: Asset[] = [

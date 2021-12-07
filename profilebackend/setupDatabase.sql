@@ -12,7 +12,6 @@ CREATE TABLE accounts(
   bio TEXT,
   profile_picture_hash VARCHAR,
   profile_banner_hash VARCHAR,
-  un_goal VARCHAR,
   UNIQUE(wallet_id)
 );
 CREATE TYPE listing_status AS ENUM('completed', 'cancelled', 'listing');
@@ -30,5 +29,4 @@ CREATE TABLE listings(
   buyer_contribution DOUBLE PRECISION,
   creation_time TIMESTAMP,
   buy_or_cancel_time TIMESTAMP,
-  un_goal VARCHAR
 );

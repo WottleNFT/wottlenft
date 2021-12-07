@@ -8,7 +8,7 @@ import {
   MarketplaceListing,
   sellNft,
   SellNftRequest,
-  UnGoal,
+  // UnGoal,
 } from "./marketplaceApi";
 import { profileBaseUrl } from "./profileApi";
 import { signTransaction } from "./transactionApi";
@@ -37,7 +37,7 @@ export interface Listing {
   nft_id: string;
   seller_wallet_id: string;
   nft_asset_name: string;
-  un_goal?: UnGoal;
+  // un_goal?: UnGoal;
   nft_metadata: NftMetadata;
 }
 
@@ -48,8 +48,8 @@ const marketplaceBaseUrl = `${profileBaseUrl}/marketplace`;
 export const listNft = async (
   wallet: WottleEnabled,
   nft: Nft,
-  price: number,
-  unGoal: UnGoal
+  price: number
+  // unGoal: UnGoal
 ) => {
   // List on profilebackend first
   // const payload: ListNftBody = {
@@ -79,7 +79,7 @@ export const listNft = async (
     sellerAddress: wallet.state.address,
     policyId: nft.policyId,
     assetName: nft.assetName,
-    unGoal,
+    // unGoal,
     price,
   };
   const { transaction } = await sellNft(request);

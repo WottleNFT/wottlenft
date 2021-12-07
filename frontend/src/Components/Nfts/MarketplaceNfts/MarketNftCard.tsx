@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { MarketplaceListing } from "../../../lib/marketplaceApi";
 import { formatPrice, getImgUrl } from "../../../utils/NftUtil";
-import CategoryTag from "../../CategoryTag";
+// import CategoryTag from "../../CategoryTag";
 
 type Props = {
   marketplaceListing: MarketplaceListing;
@@ -15,7 +15,7 @@ type Props = {
 const MarketNftCard = ({ marketplaceListing }: Props) => {
   const { saleMetadata, policyId, assetName, assetMetadata } =
     marketplaceListing;
-  const { price, unGoal } = saleMetadata;
+  const { price } = saleMetadata;
 
   const metadata = (assetMetadata[policyId] || {})[assetName];
   const { description, image, name } = metadata;
@@ -63,7 +63,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
               {description}
             </p>
             <div className="flex flex-col items-start">
-              <CategoryTag label={unGoal} color="primary" className="-ml-2" />
+              {/* <CategoryTag label={unGoal} color="primary" className="-ml-2" /> */}
               <div className="flex flex-row items-end self-stretch justify-between pt-2">
                 <span className="text-2xl text-primary-default">{`${formatPrice(
                   price / 1000000

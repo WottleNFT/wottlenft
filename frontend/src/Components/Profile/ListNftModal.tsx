@@ -5,7 +5,7 @@ import { closeOutline } from "ionicons/icons";
 
 import { WottleEnabled } from "../../hooks/useWallet";
 import { listNft } from "../../lib/combinedMarketplaceEndpoints";
-import { UnGoal } from "../../lib/marketplaceApi";
+// import { UnGoal } from "../../lib/marketplaceApi";
 import { Nft } from "../../types/Nft";
 import ListSuccessModal from "./ListSuccessModal";
 
@@ -25,7 +25,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
   const [listTxId, setListTxId] = useState<string | undefined>();
-  const [sdgGoal, setSdgGoal] = useState<UnGoal | undefined>();
+  // const [sdgGoal, setSdgGoal] = useState<UnGoal | undefined>();
 
   // Handles listing of nft
   const handleListNft = async () => {
@@ -33,10 +33,10 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
       setError("Enter a list price!");
       return;
     }
-    if (!sdgGoal) {
-      setError("Please select a UN Goal");
-      return;
-    }
+    // if (!sdgGoal) {
+    //   setError("Please select a UN Goal");
+    //   return;
+    // }
 
     // Convert to lovelace
     const priceInAda = Number.parseFloat(listPrice);
@@ -53,7 +53,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
 
     setIsSubmitting(true);
     try {
-      const res = await listNft(wallet, nft, priceInLovelace, sdgGoal);
+      const res = await listNft(wallet, nft, priceInLovelace);
       setListTxId(res);
     } catch (e) {
       console.error(e);
@@ -109,7 +109,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
                 />
               </label>
               <p className="text-sm">Minimum list price: ₳5</p>
-              <div className="px-5 mt-5">
+              {/* <div className="px-5 mt-5">
                 <p className="pl-2 text-lg font-bold text-left">
                   Select Sustainable Development Goal
                 </p>
@@ -139,7 +139,7 @@ const ListNftModal = ({ nft, dismiss, wallet }: Props) => {
                     onClick={() => setSdgGoal(UnGoal.ClimateAction)}
                   />
                 </div>
-              </div>
+              </div> */}
               {error && <p className="text-sm text-red-500">{error}</p>}
               <div className="self-center w-56 py-5">
                 {isSubmitting ? (
