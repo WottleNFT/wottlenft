@@ -1,24 +1,35 @@
 import { IonCard } from "@ionic/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
-import cardnorcBanner from "../../../public/assets/nft_drop/cardanorc_banner.png";
 import styles from "../../styles/nftDrop.module.css";
 import CountdownTimer from "../Auctions/CountdownTimer";
 
-const DropCountdownCard = () => {
+interface Props {
+  banner: StaticImageData;
+  countdownTo: number;
+  nameLink: string;
+}
+
+const DropCountdownCard = ({ banner, countdownTo, nameLink }: Props) => {
+  const router = useRouter();
+
   return (
-    <IonCard className={styles.nftDropBanner}>
+    <IonCard
+      className={styles.nftDropBanner}
+      onClick={() => router.push(`/nft-drops/${nameLink}`)}
+    >
       <div className={styles.innerBanner}>
         <Image
           layout="fill"
           alt="Cardanorc banner"
           objectFit="cover"
-          src={cardnorcBanner}
+          src={banner}
         />
       </div>
       <CountdownTimer
-        countdownTimestamp={1639435078}
-        className="absolute bottom-0 w-full text-base font-bold text-center text-black sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl"
+        countdownTimestamp={countdownTo}
+        className="absolute bottom-0 w-full text-lg font-bold leading-snug text-center text-black sm:leading-normal sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl"
       />
     </IonCard>
   );

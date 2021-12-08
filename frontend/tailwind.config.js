@@ -23,6 +23,7 @@ module.exports = {
       maxBody: "1730px",
       maxScreen: "100vw",
       maxHalf: "50%",
+      1300: "1300px",
     },
     maxHeight: {
       "70vh": "70vh",

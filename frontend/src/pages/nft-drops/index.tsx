@@ -1,3 +1,4 @@
+import cardanorcBanner from "../../../public/assets/nft_drop/cardanorc_banner.png";
 import DropCountdownCard from "../../Components/NftDrop/DropCountdownCard";
 import { Main } from "../../templates/Main";
 
@@ -10,7 +11,11 @@ const NFTDrops = () => {
             NFT DROPS
           </p>
           <div className="flex flex-col items-center w-full py-5">
-            <DropCountdownCard />
+            <DropCountdownCard
+              banner={cardanorcBanner}
+              countdownTo={1639411200}
+              nameLink="cardanorcs"
+            />
           </div>
         </div>
       </div>

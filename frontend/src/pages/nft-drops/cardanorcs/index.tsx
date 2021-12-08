@@ -1,8 +1,13 @@
+import React from "react";
+
 import Image from "next/image";
 import Link from "next/link";
+import { BsTwitter } from "react-icons/bs";
+import { FaDiscord } from "react-icons/fa";
 
-import wottleCardanorc from "../../../../public/assets/nft_drop/wottle_cardanorc.png";
-import PurchaseDropCard from "../../../Components/NftDrop/PurchaseDropCard";
+import cardanorcBanner from "../../../../public/assets/nft_drop/cardanorc_banner.png";
+import wottleCardanorc from "../../../../public/assets/nft_drop/wottle_cardanorc_2.png";
+import DropCountdownCard from "../../../Components/NftDrop/DropCountdownCard";
 import { Main } from "../../../templates/Main";
 
 const Cardanorcs = () => {
@@ -15,7 +20,7 @@ const Cardanorcs = () => {
               <p className="text-5xl font-bold leading-snug break-words sm:break-normal md:text-6xl lg:text-7xl">
                 NFT DROPS
               </p>
-              <p className="text-5xl font-bold">CARDANORCS</p>
+              <p className="text-4xl font-bold md:text-5xl">CARDANORCS</p>
               <p className="text-lg">
                 LEGEND OF THE CARDANORC <br />
                 In the ever expanding universe of Cardano, is a world where
@@ -33,7 +38,7 @@ const Cardanorcs = () => {
             </div>
             <div
               className="relative hidden md:block"
-              style={{ height: "500px", width: "500px" }}
+              style={{ height: "500px", width: "300px" }}
             >
               <Image
                 src={wottleCardanorc}
@@ -43,7 +48,30 @@ const Cardanorcs = () => {
               />
             </div>
           </div>
-          <PurchaseDropCard />
+          <div className="flex justify-end w-full gap-4 text-2xl lg:text-4xl max-w-1300">
+            <a
+              target="_blank"
+              href="https://twitter.com/cardanorcs"
+              rel="noreferrer"
+            >
+              <BsTwitter />
+            </a>
+            <a
+              target="_blank"
+              href="https://discord.gg/xs32ewMWBf"
+              rel="noreferrer"
+            >
+              <FaDiscord />
+            </a>
+          </div>
+          <DropCountdownCard
+            banner={cardanorcBanner}
+            countdownTo={1639411200}
+            nameLink="cardanorcs"
+          />
+          {/* Purchase component to be used after drop
+						<PurchaseDropCard banner={cardanorcBanner} price={35} quantity={300} totalQuantity={500} />
+					*/}
         </div>
       </div>
     </Main>
