@@ -102,7 +102,7 @@ const Footer = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">Initiatives</span>
-            <Link href="/initiatives">
+            <Link href="/TRCL-13-19-art-prize">
               <a className="text-white">TRCL 13-19 Art Prize</a>
             </Link>
           </div>
