@@ -1,11 +1,11 @@
-import { GetServerSideProps } from "next";
-import Image from "next/image";
+import { GetServerSideProps } from 'next';
+import Image from 'next/image';
 
-import shakeHands from "../../public/assets/shake-hands.png";
-import PartnerCard from "../Components/Partners/PartnerCard";
-import { Main } from "../templates/Main";
-import { Partner } from "../types/Partner";
-import { testPartners } from "../types/testData";
+import shakeHands from '../../public/assets/shake-hands.png';
+import PartnerCard from '../Components/Partners/PartnerCard';
+import { Main } from '../templates/Main';
+import { Partner } from '../types/Partner';
+import { testPartners } from '../types/testData';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
@@ -31,15 +31,16 @@ const Partners = (props: Props) => {
             partnerships with people with great visions for NFTs.
             <br />
             <br />
-            Interested? Drop us an email at{" "}
-            <b>contact@wottlenft.io</b>
+            Interested? Drop us an email at <b>contact@wottlenft.io</b>
           </p>
         </div>
-        <Image
-          className="object-contain "
-          src={shakeHands}
-          alt="all wottles"
-        />
+        <div className="flex w-1/2 max-w-lg">
+          <Image
+            className="object-contain"
+            src={shakeHands}
+            alt="all wottles"
+          />
+        </div>
       </div>
 
       <div className="flex flex-col gap-3 px-6 md:px-10 py-10">
