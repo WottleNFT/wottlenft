@@ -5,9 +5,9 @@ import Link from "next/link";
 import { BsTwitter } from "react-icons/bs";
 import { FaDiscord } from "react-icons/fa";
 
-import cardanorcBanner from "../../../../public/assets/nft_drop/cardanorc_banner.png";
+import cardanorcBanner from "../../../../public/assets/nft_drop/cardanorcsBanner.png";
 import wottleCardanorc from "../../../../public/assets/nft_drop/wottle_cardanorc_2.png";
-import DropCountdownCard from "../../../Components/NftDrop/DropCountdownCard";
+import DropCountdownCard from "../../../Components/Nftdrop/DropCountdownCard";
 import { Main } from "../../../templates/Main";
 
 const Cardanorcs = () => {

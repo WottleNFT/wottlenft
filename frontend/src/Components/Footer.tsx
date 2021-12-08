@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import Link from "next/link";
-import { BsTwitter, BsInstagram } from "react-icons/bs";
-import { FaDiscord } from "react-icons/fa";
+import Link from 'next/link';
+import { BsTwitter, BsInstagram } from 'react-icons/bs';
+import { FaDiscord } from 'react-icons/fa';
 
 const Footer = () => {
   // const [email, setEmail] = useState<string>();
@@ -99,52 +99,13 @@ const Footer = () => {
             <Link href="/partners">
               <a className="text-white">Partners</a>
             </Link>
-            <Link href="/initiatives">
-              <a className="text-white">Initiatives</a>
-            </Link>
-            {/* <Link href="https://twitter.com/wottlenft">
-              <a target="_blank" className="text-white">
-                Twitter
-              </a>
-            </Link>
-            <Link href="https://discord.gg/rnEE2Unm8K">
-              <a target="_blank" className="text-white">
-                Discord
-              </a>
-            </Link>
-            <Link href="https://www.instagram.com/wottlenft/">
-              <a target="_blank" className="text-white">
-                Instagram
-              </a>
-            </Link> */}
-            {/* <a
-              href="https://github.com/WottleNFT/filedump/raw/main/WottleNFTLitepaper_ver1.0.pdf"
-              className="text-white"
-            >
-              Litepaper
-            </a> */}
           </div>
-          {/* <div className="flex flex-col">
-            <span className="text-primary-default">Auction</span>
-            <Link href="/coming-soon">
-              <a className="text-white">Coming Soon</a>
+          <div className="flex flex-col">
+            <span className="text-primary-default">Initiatives</span>
+            <Link href="/initiatives">
+              <a className="text-white">TRCL 13-19 Art Prize</a>
             </Link>
-          </div> */}
-          {/* <div className="flex flex-col">
-            <span className="text-primary-default">Staking Pool</span>
-            <Link href="/staking-pool">
-              <a className="text-white">Stake Now</a>
-            </Link>
-          </div> */}
-          {/* <div className="flex flex-col">
-            <span className="text-primary-default">Impact</span>
-            <Link href="/unsdg">
-              <a className="text-white">UNSDG</a>
-            </Link>
-            <Link href="/social-enterprises">
-              <a className="text-white">Social Enterprises</a>
-            </Link>
-          </div> */}
+          </div>
         </div>
       </div>
       <div className="flex flex-col md:flex-row px-8 2xl:px-40 pb-4">

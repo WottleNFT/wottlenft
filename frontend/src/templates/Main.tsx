@@ -152,7 +152,7 @@ const navInfo = [
     route: "/mint-nft",
   },
   {
-    name: "TRCL Art Exhibition",
-    route: "/13-19-art-prize",
+    name: "TRCL 13-19 Art Prize",
+    route: "/TRCL-13-19-art-prize",
   },
 ];

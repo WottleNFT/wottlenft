@@ -48,17 +48,17 @@ const artworks = [
 
 const Exhibition = () => {
   return (
-    <Main title="13-19 Art Prize Exhibition">
+    <Main title="TRCL 13-19 Art Prize Exhibition">
       <div className="flex justify-between w-full min-h-full overflow-hidden bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default">
         <div className="z-10 w-3/5 pl-8 pr-2 md:ml-14 2xl:ml-56 my-44 max-w-maxScreen">
-          <p className="text-5xl font-bold leading-snug break-words sm:break-normal md:text-7xl">
-            WELCOME <br />
+          <p className="text-5xl font-bold leading-snug break-words sm:break-normal md:text-6xl">
+            WELCOME TO <br />
           </p>
           <p className="text-xl font-bold leading-tight md:text-5xl">
-            TO TRCL ART AUCTION
+            13-19 Art Prize Exhibition
           </p>
-          <p className="mb-10 text-lg font-bold leading-tight md:text-4xl">
-            (The Rice Company Limited)
+          <p className="mb-10 text-lg font-normal leading-tight md:text-4xl">
+            HOSTED BY TRCL
           </p>
           <p className="mb-10 text-lg leading-tight md:text-3xl">
             The auction is held to help children and youth to pursue the arts
