@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import styles from "../../styles/nftDrop.module.css";
 import CountdownTimer from "../Auctions/CountdownTimer";
 
-interface Props {
+type Props = {
   banner: StaticImageData;
   countdownTo: number;
   nameLink: string;

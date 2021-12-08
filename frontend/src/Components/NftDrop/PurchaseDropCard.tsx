@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import styles from "../../styles/nftDrop.module.css";
 
-interface Props {
+type Props = {
   banner: StaticImageData;
   price: number;
   quantity: number;
