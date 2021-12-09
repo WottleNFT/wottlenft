@@ -27,6 +27,10 @@ const DropCountdownCard = ({ banner, countdownTo, nameLink }: Props) => {
           src={banner}
         />
       </div>
+      <div>
+        14 December 2021
+        
+      </div>
       <CountdownTimer
         countdownTimestamp={countdownTo}
         className="absolute bottom-0 w-full text-lg font-bold leading-snug text-center text-black sm:leading-normal sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl"

@@ -66,7 +66,7 @@ const Cardanorcs = () => {
           </div>
           <DropCountdownCard
             banner={cardanorcBanner}
-            countdownTo={1639411200}
+            countdownTo={1639454400}
             nameLink="cardanorcs"
           />
           {/* Purchase component to be used after drop
