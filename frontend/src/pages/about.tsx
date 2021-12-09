@@ -18,7 +18,7 @@ const About = () => {
   const ourStory = (
     <p className="text-xl">
       Here at WottleNFT, we aim to bring out the <b>true value</b> behind each
-      Cardano NFT by providing a space for the Creators to share their stories.
+      Cardano NFT by providing a space and a voice for the Creators to share their stories.
       It is also important to give back, especially with the outbreak of the{" "}
       <b>Covid-19 Pandemic</b>. That is why, WottleNFT will also be taking on
       initiatives that aligns best with our values.
@@ -85,7 +85,6 @@ const About = () => {
           <p className="mb-16 text-4xl font-bold leading-snug break-words sm:break-normal md:text-5xl lg:text-6xl">
             CARDANO NFT <br />
             MARKETPLACE <br />
-            WITH A MISSION
           </p>
           <p className="mb-10 text-3xl font-bold leading-tight lg:text-3xl">
             STORY FOCUSED <br />
@@ -100,7 +99,7 @@ const About = () => {
         />
       </div>
       <div className="w-full px-8 pt-20 pb-0 text-justify lg:text-left md:px-20 2xl:px-56 2xl:max-w-maxBody 2xl:m-auto">
-        <p className="text-5xl font-bold mb-11">OUR STORY</p>
+        <p className="text-5xl font-bold mb-11">OUR MISSION</p>
         {ourStory}
         <div className="flex flex-wrap justify-center py-5 lg:justify-between lg:flex-nowrap">
           <Image
