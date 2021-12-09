@@ -1,4 +1,4 @@
-import { IonButton, IonCard } from "@ionic/react";
+import { IonButton, IonCard } from '@ionic/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -27,19 +27,22 @@ const DropCountdownCard = ({ banner, countdownTo, nameLink }: Props) => {
           src={banner}
         />
       </div>
-      <div className="flex flex-row grid-cols-2">
-        <div className="flex flex-col">
-          <div className="flex">Cardanorcs</div>
+      <div className="flex flex-row grid-cols-2 min-h-full ">
+        <div className="flex flex-col w-1/2 ml-8">
+          <div className="flex">
+            <p className="font-bold text-black text-lg">Cardanorcs</p></div>
           <div className="flex">Launch Date : 14 December 2021</div>
           <div className="flex"> Supply : 5000 Unique Cardanorcs</div>
           <div className="flex"> Price : 35 ₳</div>
         </div>
-        <div className="flex flex-col justify-end justify-items-end">
-        <CountdownTimer
-          countdownTimestamp={countdownTo}
-          className="flex justify-end w-full text-lg font-bold leading-snug text-black sm:leading-normal sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl"
-        />
-        <IonButton size="default" className="flex justify-end">View</IonButton>
+        <div className="flex flex-col justify-items-end">
+          <CountdownTimer
+            countdownTimestamp={countdownTo}
+            className="flex w-full text-lg font-bold leading-snug text-black sm:leading-normal sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl"
+          />
+          <IonButton size="default" className="flex ">
+            View
+          </IonButton>
         </div>
       </div>
     </IonCard>
