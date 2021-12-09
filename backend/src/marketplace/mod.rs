@@ -2,6 +2,7 @@ use crate::coin::TransactionWitnessSetParams;
 use crate::config::Config;
 use crate::marketplace::holder::{MarketplaceHolder, SellData, SellMetadata};
 // use crate::marketplace::un_goals::{MarketplaceAddresses, UnGoal};
+use crate::marketplace::address::MarketplaceAddresses;
 use crate::{
     cardano_db_sync::{get_protocol_params, get_slot_number, query_user_address_utxo},
     coin::build_transaction_body,
@@ -17,22 +18,22 @@ use cardano_serialization_lib::{
 };
 use sqlx::PgPool;
 
+pub mod address;
 pub mod holder;
-// pub mod un_goals;
 
 const ONE_HOUR: u32 = 3600;
 
 #[derive(Clone)]
 pub struct Marketplace {
     pub(crate) holder: MarketplaceHolder,
-    // pub(crate) addresses: MarketplaceAddresses,
+    pub(crate) addresses: MarketplaceAddresses,
 }
 
 impl Marketplace {
     pub fn from_config(config: &Config) -> Result<Marketplace> {
         let holder = MarketplaceHolder::from_config(config)?;
-        // let addresses = MarketplaceAddresses::from_config(config)?;
-        Ok(Self { holder })
+        let addresses = MarketplaceAddresses::from_config(config)?;
+        Ok(Self { holder, addresses })
     }
 
     pub async fn sell(
@@ -40,7 +41,6 @@ impl Marketplace {
         seller_address: Address,
         policy_id: PolicyID,
         asset_name: AssetName,
-        // un_goal: UnGoal,
         price: u64,
         pool: &PgPool,
     ) -> Result<Transaction> {
@@ -69,7 +69,6 @@ impl Marketplace {
         let seller_metadata = SellMetadata {
             seller_address: seller_address.clone(),
             price,
-            // un_goal,
         };
         let auxiliary_data = Some(seller_metadata.create_sell_nft_metadata()?);
         let tx_body = build_transaction_body(
@@ -110,11 +109,6 @@ impl Marketplace {
             self.addresses.get_revenue_address(),
             &Value::new(&to_bignum(revenue_cut)),
         );
-
-        // let goal_output = TransactionOutput::new(
-        //     self.addresses.get_un_address(sell_metadata.un_goal),
-        //     &Value::new(&to_bignum(goal_cut)),
-        // );
 
         let seller_output = TransactionOutput::new(
             &sell_metadata.seller_address,
@@ -233,10 +227,10 @@ impl Marketplace {
 }
 
 const ONE_ADA: u64 = 1_000_000;
+
 fn calculate_cuts(price: u64) -> (u64, u64) {
     let one_percent = price / 100;
     let revenue_cut = (one_percent * 2).max(ONE_ADA);
-    // let goal_cut = one_percent.max(ONE_ADA);
     // The seller put in 2 ADA as deposit
     let seller_cut = price - revenue_cut + (ONE_ADA * 2);
     (revenue_cut, seller_cut)

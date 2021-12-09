@@ -1,5 +1,4 @@
 use crate::error::Error;
-// use crate::marketplace::un_goals::UnGoal;
 use crate::rest::{parse_address, respond_with_transaction, AppState};
 use crate::Result;
 use actix_web::{get, post, web, HttpResponse, Scope};
@@ -29,11 +28,6 @@ async fn get_single_sale(
         .await?;
     Ok(HttpResponse::Ok().json(sell_data))
 }
-
-// #[get("/unsdg")]
-// async fn get_unsdg_details(data: web::Data<AppState>) -> Result<HttpResponse> {
-//     Ok(HttpResponse::Ok().json(data.marketplace.addresses.get_statistics()?))
-// }
 
 #[derive(Deserialize, Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
