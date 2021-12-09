@@ -1,11 +1,11 @@
-import { GetServerSideProps } from 'next';
-import Image from 'next/image';
+import { GetServerSideProps } from "next";
+import Image from "next/image";
 
-import shakeHands from '../../public/assets/shake-hands.png';
-import PartnerCard from '../Components/Partners/PartnerCard';
-import { Main } from '../templates/Main';
-import { Partner } from '../types/Partner';
-import { testPartners } from '../types/testData';
+import shakeHands from "../../public/assets/shake-hands.png";
+import PartnerCard from "../Components/Partners/PartnerCard";
+import { Main } from "../templates/Main";
+import { Partner } from "../types/Partner";
+import { testPartners } from "../types/testData";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {

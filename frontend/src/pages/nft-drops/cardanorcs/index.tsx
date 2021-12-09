@@ -7,7 +7,7 @@ import { FaDiscord } from "react-icons/fa";
 
 import cardanorcBanner from "../../../../public/assets/nft_drop/cardanorcsBanner.png";
 import wottleCardanorc from "../../../../public/assets/nft_drop/wottle_cardanorc_2.png";
-import DropCountdownCard from "../../../Components/Nftdrop/DropCountdownCard";
+import DropCountdownCard from "../../../Components/NftDrop/DropCountdownCard";
 import { Main } from "../../../templates/Main";
 
 const Cardanorcs = () => {

@@ -18,10 +18,10 @@ const About = () => {
   const ourStory = (
     <p className="text-xl">
       Here at WottleNFT, we aim to bring out the <b>true value</b> behind each
-      Cardano NFT by providing a space and a voice for the Creators to share their stories.
-      It is also important to give back, especially with the outbreak of the{" "}
-      <b>Covid-19 Pandemic</b>. That is why, WottleNFT will also be taking on
-      initiatives that aligns best with our values.
+      Cardano NFT by providing a space and a voice for the Creators to share
+      their stories. It is also important to give back, especially with the
+      outbreak of the <b>Covid-19 Pandemic</b>. That is why, WottleNFT will also
+      be taking on initiatives that aligns best with our values.
     </p>
   );
 
