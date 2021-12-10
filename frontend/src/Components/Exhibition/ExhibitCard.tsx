@@ -12,7 +12,7 @@ const ExhibitCard = ({ imageUrl, description, author }: Props) => {
   return (
     <IonCard className="px-2 pt-3 m-0 rounded-3xl md:px-4">
       <div className="flex flex-col">
-        <Link href="/13-19-art-prize/1">
+        <Link href="/TRCL-13-19-art-prize/1">
           <a>
             <div className="relative w-full aspect-w-1 aspect-h-1">
               <Image

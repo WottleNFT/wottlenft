@@ -48,7 +48,7 @@ const Cardanorcs = () => {
               />
             </div>
           </div>
-          <div className="flex justify-end w-full gap-4 text-2xl lg:text-4xl max-w-1300">
+          <div className="flex justify-end w-full gap-4 text-2xl lg:text-4xl lg:w-lgBanner xl:w-xlBanner md:w-mdBanner">
             <a
               target="_blank"
               href="https://twitter.com/cardanorcs"
@@ -68,9 +68,13 @@ const Cardanorcs = () => {
             banner={cardanorcBanner}
             countdownTo={1639454400}
             nameLink="cardanorcs"
+            showViewButton={false}
+            launch="14 December 2021, 4 A.M. UTC"
+            supply="5000 Unique Cardanorcs"
+            price={35}
           />
-          {/* Purchase component to be used after drop
-						<PurchaseDropCard banner={cardanorcBanner} price={35} quantity={300} totalQuantity={500} />
+          {/* Component to use after drop
+					<PurchaseDropCard banner={cardanorcBanner} price={35} quantity={300} totalQuantity={500} />
 					*/}
         </div>
       </div>

@@ -56,10 +56,10 @@ module.exports = {
       height: {
         "70vh": "70vh",
         "90vh": "90vh",
-        xlBanner: "500px",
-        lgBanner: "380px",
-        mdBanner: "266px",
-        smBanner: "152px",
+        xlBanner: "530px",
+        lgBanner: "430px",
+        mdBanner: "330px",
+        smBanner: "250px",
       },
       colors: {
         gray: {
