@@ -49,15 +49,15 @@ const artworks = [
 const Exhibition = () => {
   return (
     <Main title="TRCL 13-19 Art Prize Exhibition">
-      <div className="flex justify-between w-full min-h-full overflow-hidden bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default">
-        <div className="z-10 w-3/5 pl-8 pr-2 md:ml-14 2xl:ml-56 my-44 max-w-maxScreen">
+      <div className="flex flex-col justify-between w-full min-h-full overflow-hidden bg-bottom bg-no-repeat bg-cover lg:flex-row lg:min-w-1200 bg-primary-default">
+        <div className="z-10 w-full pl-8 pr-2 lg:w-3/5 md:ml-5 2xl:ml-56 mt-44 mb-22 max-w-maxScreen">
           <p className="text-5xl font-bold leading-snug break-words sm:break-normal md:text-6xl">
             WELCOME TO <br />
           </p>
-          <p className="text-xl font-bold leading-tight md:text-5xl">
+          <p className="text-3xl font-bold leading-tight md:text-5xl">
             13-19 Art Prize Exhibition
           </p>
-          <p className="mb-10 text-lg font-normal leading-tight md:text-4xl">
+          <p className="mb-10 text-2xl font-normal leading-tight md:text-4xl">
             HOSTED BY TRCL
           </p>
           <p className="mb-10 text-lg leading-tight md:text-3xl">
@@ -67,7 +67,7 @@ const Exhibition = () => {
           </p>
         </div>
         <img
-          className="z-0 self-center hidden object-contain pr-32 h-2/6 lg:block lg:h-1/2 xl:h-5/6"
+          className="z-0 self-end object-contain lg:self-center lg:pr-32 h-2/6 lg:h-1/2 xl:h-5/6"
           src="/assets/TRCL_exhibition/TRCL_wottle.png"
           alt="all wottles"
         />
