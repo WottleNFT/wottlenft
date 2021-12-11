@@ -21,7 +21,7 @@ const Main = (props: IMainProps) => {
   const router = useRouter();
   const [windowWidth, setWidth] = useState(-1);
   const { children, ...nextSeo } = props;
-  const windowBreakpoint = 768;
+  const windowBreakpoint = 900;
 
   useEffect(() => {
     const handleWindowResize = () => setWidth(window.innerWidth);

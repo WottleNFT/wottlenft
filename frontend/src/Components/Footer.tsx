@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import Link from 'next/link';
-import { BsTwitter, BsInstagram } from 'react-icons/bs';
-import { FaDiscord } from 'react-icons/fa';
+import Link from "next/link";
+import { BsTwitter, BsInstagram } from "react-icons/bs";
+import { FaDiscord } from "react-icons/fa";
 
 const Footer = () => {
   // const [email, setEmail] = useState<string>();
