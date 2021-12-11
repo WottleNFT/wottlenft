@@ -137,7 +137,6 @@ const navInfo = [
   {
     name: "NFTDrops",
     route: "/nft-drops",
-    tempRoute: "/nft-drops",
   },
   {
     name: "Marketplace",
