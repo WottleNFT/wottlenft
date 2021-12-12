@@ -39,7 +39,8 @@ impl Submitter {
             .send()
             .await?;
 
-        let text = res.error_for_status()?.text().await?.replace("\"", "");
+        let text = res.text().await?.replace("\"", "");
+        println!("{}", text);
 
         TransactionHash::from_bytes(hex::decode(text.as_bytes())?).map_err(|_| {
             Error::Message("Unsuccessful transaction. Please try again".to_string())

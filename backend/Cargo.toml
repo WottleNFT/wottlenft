@@ -3,9 +3,13 @@ name = "backend"
 version = "0.1.0"
 edition = "2018"
 
+[lib]
+name = "backend"
+path = "src/lib.rs"
+
 [[bin]]
 name = "backend"
-path = "src/main.rs"
+path = "src/bin/server.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -22,7 +26,7 @@ actix-web = "4.0.0-beta.5"
 actix-cors = "0.6.0-beta.2"
 tokio = { version = "1.4.0", features = ["time"] }
 chrono = "0.4"
-reqwest = "0.11.4"
+reqwest = { version = "0.11.4", features = ["multipart", "blocking", "json"] }
 dotenv = "0.15.0"
 lazy_static = "1.4.0"
 sqlx = { version = "0.5.6", features = ["postgres", "runtime-tokio-rustls", "bigdecimal"]}

@@ -139,6 +139,30 @@ impl NftPolicy {
         })
     }
 
+    pub fn from_existing(skey: PrivateKey, ttl: u32) -> Self {
+        let vkey = skey.to_public();
+
+        let pub_key_script = NativeScript::new_script_pubkey(&ScriptPubkey::new(&vkey.hash()));
+        let time_expiry_script = NativeScript::new_timelock_expiry(&TimelockExpiry::new(ttl));
+
+        let mut native_scripts = NativeScripts::new();
+        native_scripts.add(&time_expiry_script);
+        native_scripts.add(&pub_key_script);
+
+        let script = NativeScript::new_script_all(&ScriptAll::new(&native_scripts));
+        let hash =
+            ScriptHash::from_bytes(script.hash(ScriptHashNamespace::NativeScript).to_bytes())
+                .unwrap();
+
+        Self {
+            skey,
+            vkey,
+            ttl,
+            script,
+            hash,
+        }
+    }
+
     pub fn to_json(&self) -> serde_json::Value {
         serde_json::json!({
         "type": "all",
