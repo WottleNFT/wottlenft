@@ -22,4 +22,10 @@ pub struct Config {
 
     #[envconfig(from = "MARKETPLACE_REVENUE_ADDRESS")]
     pub marketplace_revenue_address: String,
+
+    #[envconfig(from = "PROJECTS_PRIVATE_KEY_FILE")]
+    pub projects_private_key_file: String,
+
+    #[envconfig(from = "PROJECTS_REVENUE_ADDRESS")]
+    pub projects_revenue_address: String,
 }

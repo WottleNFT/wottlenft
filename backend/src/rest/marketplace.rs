@@ -1,16 +1,43 @@
 use crate::error::Error;
+use crate::marketplace::holder::Filters;
 use crate::rest::{parse_address, respond_with_transaction, AppState};
 use crate::Result;
 use actix_web::{get, post, web, HttpResponse, Scope};
 use cardano_serialization_lib::{AssetName, PolicyID};
 use serde::{Deserialize, Serialize};
 
+#[derive(Deserialize)]
+pub struct WebFilter {
+    page: Option<u32>,
+    policy: Option<String>,
+    asset_name: Option<String>,
+}
+
+impl WebFilter {
+    pub(crate) fn into_filters(self) -> Result<Filters> {
+        let page = self.page.unwrap_or(1);
+        let policy = match self.policy {
+            Some(ps) => Some(PolicyID::from_bytes(hex::decode(ps)?)?),
+            None => None,
+        };
+        Ok(Filters {
+            page,
+            policy,
+            asset_name: self.asset_name,
+        })
+    }
+}
+
 #[get("")]
-async fn get_all_sales(data: web::Data<AppState>) -> Result<HttpResponse> {
+async fn get_all_sales(
+    data: web::Data<AppState>,
+    query: web::Query<WebFilter>,
+) -> Result<HttpResponse> {
+    let filters = query.into_inner().into_filters()?;
     let sales = data
         .marketplace
         .holder
-        .get_nfts_for_sale(&data.pool)
+        .get_nfts_for_sale(&data.pool, filters)
         .await?;
     Ok(HttpResponse::Ok().json(sales))
 }
