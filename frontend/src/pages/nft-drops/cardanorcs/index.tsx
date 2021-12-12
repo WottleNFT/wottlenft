@@ -14,21 +14,21 @@ const Cardanorcs = () => {
   return (
     <Main title="NFT Drops | Cardanorcs">
       <div className="bg-primary-default">
-        <div className="flex flex-col items-center w-full min-h-full px-12 2xl:px-40 py-10 max-w-maxBody">
-          <div className=" flex flex-row justify-between lg:w-lgBanner xl:w-xlBanner md:w-mdBanner">
+        <div className="flex flex-col items-center w-full min-h-full px-12 py-10 2xl:px-40 max-w-maxBody">
+          <div className="flex flex-row justify-between lg:w-lgBanner xl:w-xlBanner md:w-mdBanner">
             <div className="flex flex-col md:max-w-maxHalf">
               <p className="text-5xl font-bold leading-snug break-words sm:break-normal md:text-6xl lg:text-7xl">
                 NFT DROPS
               </p>
               <p className="text-4xl font-bold md:text-5xl">CARDANORCS</p>
               <p className="text-lg">
-                LEGEND OF THE CARDANORC <br />
-                In the ever expanding universe of Cardano, is a world where
-                berries, friendly astronauts floating skulls, clay creatures,
-                and other beings coexist. While each of them get to live
-                peacefully, a notorious existence find themselves in a seemingly
-                endless struggle for survival. Who are these creatures and will
-                their emergence from the void disrupt Cardano?
+                WELCOME TO THE HORDE <br />
+                Cardanorcs are a fantasy civilisation of unique non-fungible
+                Orcs inspired by mythology, legacy and lore. In the context of
+                the metaverse, Cardanorcs are NFTs that live on the Cardano
+                Blockchain. We will soon release The Orctagon (Orc Metaverse) as
+                a play-to-earn game! Live virtually as an Orc, farm resources,
+                breed, battle, build kingdoms and interact with each other.
               </p>
             </div>
             <div
@@ -43,7 +43,7 @@ const Cardanorcs = () => {
               />
             </div>
           </div>
-          <div className="flex pt-4 w-full flex-row lg:text-4xl lg:w-lgBanner xl:w-xlBanner md:w-mdBanner">
+          <div className="flex flex-row w-full pt-4 lg:text-4xl lg:w-lgBanner xl:w-xlBanner md:w-mdBanner">
             <div className="flex justify-start w-1/2 text-2xl lg:text-4xl ">
               <Link href="https://cardanorcs.com/">
                 <a className="w-32 text-2xl text-blue-700 hover:underline">
@@ -51,7 +51,7 @@ const Cardanorcs = () => {
                 </a>
               </Link>
             </div>
-            <div className=" flex justify-end w-1/2 gap-4 text-2xl lg:text-4xl ">
+            <div className="flex justify-end w-1/2 gap-4 text-2xl lg:text-4xl">
               <a
                 target="_blank"
                 href="https://twitter.com/cardanorcs"
