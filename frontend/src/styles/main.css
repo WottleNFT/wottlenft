@@ -89,8 +89,14 @@ ion-searchbar .searchbar-input-container ion-icon {
 }
 
 ion-button {
-  --background: #000000 !important;
+  --background: #000000;
   --color: var(--ion-color-primary) !important;
+}
+
+/* Use for clickable icons in ionic components */
+.transparent-button {
+	--background: transparentize(100);
+	--background-hover:#FFFFFF;
 }
 
 .modal-wrapper {

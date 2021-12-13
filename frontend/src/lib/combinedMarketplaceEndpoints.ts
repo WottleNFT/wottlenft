@@ -105,7 +105,6 @@ export const buy = async (
   const signature = await wallet.cardano.signTx(transaction, true);
   const signResponse = await signTransaction(transaction, signature);
   const transactionId = signResponse.tx_id;
-  console.log(transactionId);
   return transactionId;
 };
 
@@ -120,11 +119,9 @@ export const buyDrop = async (
   };
 
   const { transaction } = await buyNftDrop(request);
-  console.log(transaction);
   const signature = await wallet.cardano.signTx(transaction, true);
   const signResponse = await signTransaction(transaction, signature);
   const transactionId = signResponse.tx_id;
-  console.log(transactionId);
   return transactionId;
 };
 

@@ -35,6 +35,7 @@ const MarketButton = ({ listing, wallet, ...props }: MarketButtonProps) => {
     listing,
     hideNft,
     altNftName: props.altNftName,
+    altImage: props.altImage,
   });
 
   return (

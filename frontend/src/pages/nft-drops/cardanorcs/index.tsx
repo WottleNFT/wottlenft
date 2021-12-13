@@ -13,8 +13,16 @@ import { MarketplaceListing } from "../../../lib/marketplaceApi";
 import { Main } from "../../../templates/Main";
 
 export const getServerSideProps: GetServerSideProps = async () => {
+  const blockchainApi = process.env.BLOCKCHAIN_API;
+  let policyId;
+  // Check if testnet or mainnet
+  if (blockchainApi === "https://test-net.wottlenft.io") {
+    policyId = "62264a920c007b90d6b950f34245d42c66f6fd23c1547f1662bfa547";
+  } else {
+    policyId = "6113dafb03b4eb0d6fbad8eecaf13d12d37d5df9c9bcf9ca05144d20";
+  }
   const res = await fetch(
-    `${process.env.BLOCKCHAIN_API}/projects?policy=62264a920c007b90d6b950f34245d42c66f6fd23c1547f1662bfa547&page=1`
+    `${blockchainApi}/projects?policy=${policyId}&page=1`
   );
 
   const drops = await res.json();

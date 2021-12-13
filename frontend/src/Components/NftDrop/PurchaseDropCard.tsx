@@ -41,6 +41,7 @@ const PurchaseDropCard = ({ banner, price, drop }: Props) => {
                 listing={drop}
                 hideNft={true}
                 altNftName="Cardanorc NFT"
+                altImage="/assets/nft_drop/wottle_cardanorc_2.png"
               />
             )}
             loading={<IonSpinner />}

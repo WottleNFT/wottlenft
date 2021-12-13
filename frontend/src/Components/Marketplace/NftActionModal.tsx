@@ -17,6 +17,7 @@ interface Props {
   listing: MarketplaceListing;
   hideNft: boolean;
   altNftName?: string;
+  altImage?: string;
 }
 
 const NftActionModal = ({
@@ -27,6 +28,7 @@ const NftActionModal = ({
   listing,
   hideNft,
   altNftName,
+  altImage,
 }: Props) => {
   const { assetName, metadata } = nft;
   const { image } = metadata;
@@ -73,23 +75,27 @@ const NftActionModal = ({
             <p className={`inline-block w-full text-2xl font-bold text-center`}>
               {isSeller ? "Delist NFT" : "Buy NFT"}
             </p>
-            <IonIcon
+            <IonButton
+              fill="clear"
+              className="absolute right-0 text-black transparent-button hover:cursor-pointer"
               onClick={() => dismiss()}
-              icon={closeOutline}
-              className="absolute right-0 text-black hover:cursor-pointer"
-              size="large"
-            />
+            >
+              <IonIcon
+                onClick={() => console.log("lskdjf")}
+                slot="icon-only"
+                icon={closeOutline}
+                size="large"
+              />
+            </IonButton>
           </div>
-          {!hideNft && (
-            <img
-              src={imageUrl}
-              alt="NFT image"
-              className="object-contain py-5 max-h-96"
-            />
-          )}
+          <img
+            src={!hideNft ? imageUrl : altImage}
+            alt="NFT image"
+            className={`object-contain py-5 ${!hideNft ? "max-h-96" : "h-96"}`}
+          />
           <div
             className={`flex flex-col text-lg leading-loose text-center ${
-              hideNft && "h-full justify-center"
+              hideNft && "mt-10"
             }`}
           >
             {!hideNft ? (
