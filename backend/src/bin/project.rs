@@ -42,6 +42,30 @@ fn remove_label(path: &str, metadata_file_name: &str, final_file_name: &str) -> 
     }
 }
 
+fn rename_assets(metadata_full_path: &str) -> Result<()> {
+    let json = serde_json::from_str::<Map<String, Value>>(
+        &fs::read_to_string(metadata_full_path).unwrap(),
+    )
+    .unwrap();
+    let mut new_map = Map::with_capacity(json.len());
+    for (key, value) in json {
+        let name = value
+            .as_object()
+            .unwrap()
+            .get("name")
+            .unwrap()
+            .as_str()
+            .unwrap()
+            .to_string();
+        new_map.insert(name, value);
+    }
+    fs::write(
+        metadata_full_path,
+        serde_json::to_string_pretty(&new_map).unwrap(),
+    );
+    Ok(())
+}
+
 fn upload_metadata_images(
     metadata_file_path: &str,
     path: &str,
@@ -402,7 +426,7 @@ async fn main() -> Result<()> {
     remove_label(&ROOT_PATH, &USER_METADATA_FILE, &metadata_file)?;
 
     upload_metadata_images(&metadata_file, &ROOT_PATH, &PINATA_KEY, &PINATA_SECRET)?;
-
+    rename_assets(&metadata_file);
     let minter = Minter::new(&KEY_PATH, IS_TEST);
     println!("Minter address: {}", &minter.address_bech32);
     let db_pool = PgPool::connect(&DB_URL).await?;
