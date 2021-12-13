@@ -236,7 +236,7 @@ async fn mint_batch(
         .unwrap_or_else(|e| {
             let new_key = PrivateKey::generate_ed25519().unwrap();
             let key_bech32 = hex::encode(new_key.as_bytes());
-            let slot = current_slot + (60 * 60 * 72);
+            let slot = current_slot + (60 * 60 * 24);
 
             let mint_details = MintingKeyDetails { key_bech32, slot };
             let mint_details_str = serde_json::to_string_pretty(&mint_details).unwrap();
@@ -246,6 +246,10 @@ async fn mint_batch(
 
     println!("{:?}", &minting_key_details);
     let nft_policy = NftPolicy::from_existing(minting_key_details.key(), minting_key_details.slot);
+    println!(
+        "PolicyID: {}",
+        hex::encode(nft_policy.hash.clone().to_bytes())
+    );
     println!("Policy: {}", nft_policy.to_json());
     let mut seller_address = Address::from_bech32(seller_addr_str).unwrap();
     if is_testnet {
