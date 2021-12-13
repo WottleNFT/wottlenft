@@ -1,5 +1,6 @@
 import React from "react";
 
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { BsTwitter } from "react-icons/bs";
@@ -7,10 +8,32 @@ import { FaDiscord } from "react-icons/fa";
 
 import cardanorcBanner from "../../../../public/assets/nft_drop/cardanorcsBanner.png";
 import wottleCardanorc from "../../../../public/assets/nft_drop/wottle_cardanorc_2.png";
-import DropCountdownCard from "../../../Components/NftDrop/DropCountdownCard";
+import PurchaseDropCard from "../../../Components/NftDrop/PurchaseDropCard";
+import { MarketplaceListing } from "../../../lib/marketplaceApi";
 import { Main } from "../../../templates/Main";
 
-const Cardanorcs = () => {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const res = await fetch(
+    `${process.env.BLOCKCHAIN_API}/projects?policy=62264a920c007b90d6b950f34245d42c66f6fd23c1547f1662bfa547&page=1`
+  );
+
+  const drops = await res.json();
+  const drop = drops[
+    Math.floor(Math.random() * drops.length)
+  ] as MarketplaceListing;
+
+  return {
+    props: {
+      drop,
+    },
+  };
+};
+
+interface Props {
+  drop: MarketplaceListing;
+}
+
+const Cardanorcs = ({ drop }: Props) => {
   return (
     <Main title="NFT Drops | Cardanorcs">
       <div className="bg-primary-default">
@@ -68,6 +91,7 @@ const Cardanorcs = () => {
               </a>
             </div>
           </div>
+          {/*
           <DropCountdownCard
             banner={cardanorcBanner}
             countdownTo={1639454400}
@@ -77,9 +101,8 @@ const Cardanorcs = () => {
             supply="5000 Unique Cardanorcs"
             price={35}
           />
-          {/* Component to use after drop
-					<PurchaseDropCard banner={cardanorcBanner} price={35} quantity={300} totalQuantity={500} />
 					*/}
+          <PurchaseDropCard drop={drop} banner={cardanorcBanner} price={35} />
         </div>
       </div>
     </Main>

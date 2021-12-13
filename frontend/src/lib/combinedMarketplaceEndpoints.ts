@@ -2,6 +2,7 @@ import { WottleEnabled } from "../hooks/useWallet";
 import { Nft, NftMetadata } from "../types/Nft";
 import {
   buyNft,
+  buyNftDrop,
   BuyNftRequest,
   cancelNft,
   CancelNftRequest,
@@ -101,6 +102,25 @@ export const buy = async (
   };
 
   const { transaction } = await buyNft(request);
+  const signature = await wallet.cardano.signTx(transaction, true);
+  const signResponse = await signTransaction(transaction, signature);
+  const transactionId = signResponse.tx_id;
+  console.log(transactionId);
+  return transactionId;
+};
+
+export const buyDrop = async (
+  wallet: WottleEnabled,
+  listing: MarketplaceListing
+) => {
+  const request: BuyNftRequest = {
+    buyerAddress: wallet.state.address,
+    policyId: listing.policyId,
+    assetName: listing.assetName,
+  };
+
+  const { transaction } = await buyNftDrop(request);
+  console.log(transaction);
   const signature = await wallet.cardano.signTx(transaction, true);
   const signResponse = await signTransaction(transaction, signature);
   const transactionId = signResponse.tx_id;

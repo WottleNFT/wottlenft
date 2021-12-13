@@ -14,6 +14,7 @@ type MarketButtonProps = {
 const MarketButton = ({ listing, wallet, ...props }: MarketButtonProps) => {
   const { address } = wallet.state;
   const isSeller = listing.saleMetadata.namiAddress === address;
+  const hideNft = !!props.hideNft;
 
   const nft: Nft = {
     policyId: listing.policyId,
@@ -32,6 +33,8 @@ const MarketButton = ({ listing, wallet, ...props }: MarketButtonProps) => {
     wallet,
     isSeller,
     listing,
+    hideNft,
+    altNftName: props.altNftName,
   });
 
   return (
