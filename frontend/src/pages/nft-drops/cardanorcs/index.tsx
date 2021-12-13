@@ -102,7 +102,7 @@ const Cardanorcs = ({ drop }: Props) => {
               </a>
             </div>
           </div>
-          {time < 1639454400 ? (
+          {time < 1 ? (
             <DropCountdownCard
               banner={cardanorcBanner}
               countdownTo={1639454400}
