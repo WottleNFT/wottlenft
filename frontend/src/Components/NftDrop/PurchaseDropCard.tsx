@@ -1,21 +1,22 @@
 import React from "react";
 
-import { IonButton, IonCard } from "@ionic/react";
+import { IonCard, IonSpinner } from "@ionic/react";
 import Image from "next/image";
+
+import useWallet from "../../hooks/useWallet";
+import { MarketplaceListing } from "../../lib/marketplaceApi";
+import MarketButton from "../Nfts/MarketplaceNfts/MarketButton";
+import WalletSwitch from "../WalletSwitch";
 
 type Props = {
   banner: StaticImageData;
   price: number;
-  quantity: number;
-  totalQuantity: number;
+  drop: MarketplaceListing;
 };
 
-const PurchaseDropCard = ({
-  banner,
-  price,
-  quantity,
-  totalQuantity,
-}: Props) => {
+const PurchaseDropCard = ({ banner, price, drop }: Props) => {
+  const wallet = useWallet();
+
   return (
     <IonCard className="w-full rounded-2xl h-smBanner md:w-mdBanner md:h-mdBanner lg:h-lgBanner lg:w-lgBanner xl:h-xlBanner xl:w-xlBanner">
       <div className="relative w-full h-3/5 lg:h-4/6">
@@ -32,10 +33,25 @@ const PurchaseDropCard = ({
           </p>
         </div>
         <div className="flex flex-col w-26 md:w-36 justify-items-center xl:w-52">
-          <IonButton size="default">Purchase</IonButton>
+          <WalletSwitch
+            wallet={wallet}
+            enabled={(enabled) => (
+              <MarketButton
+                wallet={enabled}
+                listing={drop}
+                hideNft={true}
+                altNftName="Cardanorc NFT"
+                altImage="/assets/nft_drop/wottle_cardanorc_2.png"
+              />
+            )}
+            loading={<IonSpinner />}
+            fallback={<div>Please connect a wallet</div>}
+          />
+          {/*
           <p className="text-center">
             Quantity {quantity}/{totalQuantity}
           </p>
+						*/}
         </div>
       </div>
     </IonCard>

@@ -1,5 +1,6 @@
 import React from "react";
 
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { BsTwitter } from "react-icons/bs";
@@ -8,9 +9,42 @@ import { FaDiscord } from "react-icons/fa";
 import cardanorcBanner from "../../../../public/assets/nft_drop/cardanorcsBanner.png";
 import wottleCardanorc from "../../../../public/assets/nft_drop/wottle_cardanorc_2.png";
 import DropCountdownCard from "../../../Components/NftDrop/DropCountdownCard";
+import PurchaseDropCard from "../../../Components/NftDrop/PurchaseDropCard";
+import { MarketplaceListing } from "../../../lib/marketplaceApi";
 import { Main } from "../../../templates/Main";
 
-const Cardanorcs = () => {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const blockchainApi = process.env.BLOCKCHAIN_API;
+  let policyId;
+  // Check if testnet or mainnet
+  if (blockchainApi === "https://test-net.wottlenft.io") {
+    policyId = "62264a920c007b90d6b950f34245d42c66f6fd23c1547f1662bfa547";
+  } else {
+    policyId = "6113dafb03b4eb0d6fbad8eecaf13d12d37d5df9c9bcf9ca05144d20";
+  }
+  const res = await fetch(
+    `${blockchainApi}/projects?policy=${policyId}&page=1`
+  );
+
+  const drops = await res.json();
+  const drop = drops[
+    Math.floor(Math.random() * drops.length)
+  ] as MarketplaceListing;
+
+  return {
+    props: {
+      drop,
+    },
+  };
+};
+
+interface Props {
+  drop: MarketplaceListing;
+}
+
+const Cardanorcs = ({ drop }: Props) => {
+  const time = Math.round(new Date().getTime() / 1000);
+
   return (
     <Main title="NFT Drops | Cardanorcs">
       <div className="bg-primary-default">
@@ -68,18 +102,19 @@ const Cardanorcs = () => {
               </a>
             </div>
           </div>
-          <DropCountdownCard
-            banner={cardanorcBanner}
-            countdownTo={1639454400}
-            nameLink="cardanorcs"
-            showViewButton={false}
-            launch="14 December 2021, 4 A.M. UTC"
-            supply="5000 Unique Cardanorcs"
-            price={35}
-          />
-          {/* Component to use after drop
-					<PurchaseDropCard banner={cardanorcBanner} price={35} quantity={300} totalQuantity={500} />
-					*/}
+          {time < 1639454400 ? (
+            <DropCountdownCard
+              banner={cardanorcBanner}
+              countdownTo={1639454400}
+              nameLink="cardanorcs"
+              showViewButton={false}
+              launch="14 December 2021, 4 A.M. UTC"
+              supply="5000 Unique Cardanorcs"
+              price={35}
+            />
+          ) : (
+            <PurchaseDropCard drop={drop} banner={cardanorcBanner} price={35} />
+          )}
         </div>
       </div>
     </Main>
