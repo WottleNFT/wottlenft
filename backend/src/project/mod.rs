@@ -148,8 +148,7 @@ impl Projects {
 const ONE_ADA: u64 = 1_000_000;
 
 fn calculate_cuts(price: u64) -> (u64, u64) {
-    let one_percent = price / 100;
-    let revenue_cut = (one_percent * 2).max(ONE_ADA);
+    let revenue_cut = 1_500_000;
     // The seller put in 2 ADA as deposit
     let seller_cut = price - revenue_cut;
     (revenue_cut, seller_cut)
