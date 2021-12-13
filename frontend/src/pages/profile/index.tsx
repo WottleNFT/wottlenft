@@ -22,7 +22,7 @@ const Profile = () => {
     updateBio,
     updateProfilePic,
     updatePassword,
-    updateUnGoal,
+    // updateUnGoal,
   } = useProfile();
   const router = useRouter();
   const [listings, setListings] = useState<MarketplaceListing[] | undefined>();
@@ -38,7 +38,7 @@ const Profile = () => {
     updateBio,
     updateProfilePic,
     updatePassword,
-    updateUnGoal,
+    // updateUnGoal,
   });
 
   useEffect(() => {
@@ -140,13 +140,13 @@ const Profile = () => {
                   <p className="w-56 ml-10 text-blue-400 underline truncate">
                     {(profileData as ProfileData).user.wallet_id}
                   </p>
-                  {(profileData as ProfileData).user.un_goal && (
+                  {/* {(profileData as ProfileData).user.un_goal && (
                     <div className="flex items-center self-start h-8 px-4 mt-3 rounded-2xl bg-primary-light">
                       <p className="font-semibold text-primary-default">
                         {(profileData as ProfileData).user.un_goal}
                       </p>
                     </div>
-                  )}
+                  )} */}
                   <p className="mt-4 text-3xl font-bold">
                     {(profileData as ProfileData).user.bio
                       ? (profileData as ProfileData).user.bio

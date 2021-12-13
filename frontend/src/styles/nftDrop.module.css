@@ -1,0 +1,25 @@
+.nftDropBanner {
+	width: 100%; 
+	max-width: 1300px;
+	padding-top: 35%;
+	border-radius: 30px;
+}
+
+.nftDropBanner:hover {
+	cursor: pointer;
+}
+
+.nftPurchaseBanner {
+	width: 100%; 
+	max-width: 1300px;
+	padding-top: 35%;
+	border-radius: 30px;
+}
+
+.innerBanner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 65%;
+}

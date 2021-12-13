@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import nftMinted from "../../public/assets/about/minted.png";
-import poolParty from "../../public/assets/about/pool_party.png";
+// import poolParty from '../../public/assets/about/pool_party.png';
 import targetWottles from "../../public/assets/about/target_wottles.png";
 import wottleStand from "../../public/assets/about/wottle_stand.png";
 import roadmap from "../../public/assets/roadmap.png";
@@ -18,15 +18,10 @@ const About = () => {
   const ourStory = (
     <p className="text-xl">
       Here at WottleNFT, we aim to bring out the <b>true value</b> behind each
-      Cardano NFT by providing a space for the Creators to share their stories.
-      It is also important to give back, especially with the outbreak of the{" "}
-      <b>Covid-19 Pandemic</b>. That is why, WottleNFT will be aligning its
-      business model with the United Nation Sustainable Development Goals (
-      <b>SDGs</b>) to support Social Enterprises worldwide. Furthermore, we are
-      empowering you to support them! With every transaction made on WottleNFT,
-      you get to choose which of the UN Goal to support. For now, WottleNFT is
-      focusing on 3 UN Goals : Zero Hunger, Climate Action and Quality
-      Education.
+      Cardano NFT by providing a space and a voice for the Creators to share
+      their stories. It is also important to give back, especially with the
+      outbreak of the <b>Covid-19 Pandemic</b>. That is why, WottleNFT will also
+      be taking on initiatives that aligns best with our values.
     </p>
   );
 
@@ -43,13 +38,9 @@ const About = () => {
     <p className="text-xl">
       WottleNFT will first focus on building an amazing marketplace. Afterwhich,
       we aim to integrate Cardano Smart Contracts by December. Listing is{" "}
-      <b>FREE*</b>. You just need to pay <b>~2₳</b> : <b>1₳</b> pegged to your
-      NFT and <b>~1₳</b> for transactional Fee. Upon successful sale, we charge
-      a <b>3%</b> fee, with a minimum of <b>2₳</b> for each transaction. This
-      fee comprises: Service Fees <b>(1₳,2%)</b> and Social Donations{" "}
-      <b>(1₳,1%)</b>. If you are a successful buyer/seller, head over to the
-      profile section to choose one of the 3 UN Goals to support : Zero Hunger,
-      Climate Action or Quality Education
+      <b>FREE*</b>. There is an estimated <b>~2₳</b> transactional fee :{" "}
+      <b>1₳</b> pegged to your NFT and <b>~1₳</b> for transactional fee. Upon
+      successful sale, we charge a <b>2%</b> flat fee.
     </p>
   );
 
@@ -70,36 +61,35 @@ const About = () => {
     </p>
   );
 
-  const stakingPool = (
-    <p className="text-xl">
-      <p className="mb-5">
-        WottleNFT is running a sustainable staking pool <b>[WOT]</b> built on
-        multi-Raspberry Pi system. By supporting WottleNFT, you are supporting
-        Social Enterprises as <b>10%</b> of <b>[WOT]</b>’s rewards will be
-        channeled towards Social Enterprises.
-      </p>
-      <p>
-        Furthermore, we are offering <b>0% fees</b>! As a reward, delegators who
-        stake a minimum of <b>1000 ADA</b> will receive our very first,{" "}
-        <b>exclusive utility NFT drop</b> by the start of next year! More
-        information will be released soon.
-      </p>
-    </p>
-  );
+  // const stakingPool = (
+  //   <p className="text-xl">
+  //     <p className="mb-5">
+  //       WottleNFT is running a sustainable staking pool <b>[WOT]</b> built on
+  //       multi-Raspberry Pi system. By supporting WottleNFT, you are supporting
+  //       Social Enterprises as <b>10%</b> of <b>[WOT]</b>’s rewards will be
+  //       channeled towards Social Enterprises.
+  //     </p>
+  //     <p>
+  //       Furthermore, we are offering <b>0% fees</b>! As a reward, delegators who
+  //       stake a minimum of <b>1000 ADA</b> will receive our very first,{' '}
+  //       <b>exclusive utility NFT drop</b> by the start of next year! More
+  //       information will be released soon.
+  //     </p>
+  //   </p>
+  // );
 
   return (
     <Main title="About Us">
       <div className="flex justify-between w-full min-h-full overflow-hidden bg-bottom bg-no-repeat bg-cover min-w-1200 bg-primary-default bg-background-seascape">
         <div className="z-10 w-2/5 pl-8 pr-2 md:ml-14 2xl:ml-56 my-44 max-w-maxScreen">
           <p className="mb-16 text-4xl font-bold leading-snug break-words sm:break-normal md:text-5xl lg:text-6xl">
-            CREATING A GLOBAL <br />
-            INTERCONNECTED <br />
-            ECOSYSTEM
+            CARDANO NFT <br />
+            MARKETPLACE <br />
           </p>
-          <p className="mb-10 text-xl font-bold leading-tight lg:text-3xl">
-            BETWEEN CARDANO NFTS <br />
-            AND SOCIAL ENTERPRISES WHILE BEING STORY FOCUSED, DETAILS CENTRIC
-            AND COMMUNITY DRIVEN
+          <p className="mb-10 text-3xl font-bold leading-tight lg:text-3xl">
+            STORY FOCUSED <br />
+            DETAILS CENTRIC <br />
+            COMMUNITY DRIVEN
           </p>
         </div>
         <img
@@ -109,7 +99,7 @@ const About = () => {
         />
       </div>
       <div className="w-full px-8 pt-20 pb-0 text-justify lg:text-left md:px-20 2xl:px-56 2xl:max-w-maxBody 2xl:m-auto">
-        <p className="text-5xl font-bold mb-11">OUR STORY</p>
+        <p className="text-5xl font-bold mb-11">OUR MISSION</p>
         {ourStory}
         <div className="flex flex-wrap justify-center py-5 lg:justify-between lg:flex-nowrap">
           <Image
@@ -175,26 +165,7 @@ const About = () => {
             </Link>
           </div>
         </div>
-        <div className="flex flex-wrap-reverse justify-center py-5 lg:flex-nowrap lg:justify-between">
-          <div className="flex flex-col justify-center w-full lg:w-1/2">
-            <p className="text-5xl font-bold mb-11">Staking Pool</p>
-            {stakingPool}
-            <Link href="/staking-pool" passHref>
-              <ButtonPill
-                text="Stake Now"
-                onClick={() => {}}
-                className="self-center my-8 hover:scale-105"
-              />
-            </Link>
-          </div>
-          <Image
-            src={poolParty}
-            alt="Pool party"
-            height={400}
-            width={400}
-            className="object-contain"
-          />
-        </div>
+
         <p className="text-5xl font-bold text-left mb-11">Meet the Founders</p>
         <div className="flex flex-col pt-5 pb-8">
           <div className="flex flex-wrap justify-around">
@@ -243,7 +214,7 @@ const About = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col items-center pb-5 mb-5">
+        {/* <div className="flex flex-col items-center pb-5 mb-5">
           <div className="flex justify-center w-full md:w-3/4">
             <a href="https://github.com/WottleNFT/filedump/raw/main/WottleNFTLitepaper_ver1.0.pdf">
               <ButtonPill
@@ -253,7 +224,7 @@ const About = () => {
               />
             </a>
           </div>
-        </div>
+        </div> */}
       </div>
     </Main>
   );

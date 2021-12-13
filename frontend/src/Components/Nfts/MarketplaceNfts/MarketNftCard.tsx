@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { MarketplaceListing } from "../../../lib/marketplaceApi";
 import { formatPrice, getImgUrl } from "../../../utils/NftUtil";
-import CategoryTag from "../../CategoryTag";
+// import CategoryTag from "../../CategoryTag";
 
 type Props = {
   marketplaceListing: MarketplaceListing;
@@ -15,7 +15,7 @@ type Props = {
 const MarketNftCard = ({ marketplaceListing }: Props) => {
   const { saleMetadata, policyId, assetName, assetMetadata } =
     marketplaceListing;
-  const { price, unGoal } = saleMetadata;
+  const { price } = saleMetadata;
 
   const metadata = (assetMetadata[policyId] || {})[assetName];
   const { description, image, name } = metadata;
@@ -24,7 +24,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
 
   return (
     <IonCard className="px-2 pt-3 m-0 rounded-3xl md:px-4">
-      <div className="felx felx-col">
+      <div className="flex flex-col">
         {/* <div className="flex items-center h-1/6 felx-row">
           <div className="h-full m-2 w-14">
             <Image
@@ -42,7 +42,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
 
         <Link href={`/marketplace/${marketplaceListing.transactionHash}`}>
           <a>
-            <div className="w-full aspect-w-1 aspect-h-1 relative">
+            <div className="relative w-full aspect-w-1 aspect-h-1">
               <Image
                 className="rounded-2xl"
                 alt="NFT Image"
@@ -63,7 +63,7 @@ const MarketNftCard = ({ marketplaceListing }: Props) => {
               {description}
             </p>
             <div className="flex flex-col items-start">
-              <CategoryTag label={unGoal} color="primary" className="-ml-2" />
+              {/* <CategoryTag label={unGoal} color="primary" className="-ml-2" /> */}
               <div className="flex flex-row items-end self-stretch justify-between pt-2">
                 <span className="text-2xl text-primary-default">{`${formatPrice(
                   price / 1000000

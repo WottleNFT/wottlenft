@@ -54,7 +54,7 @@ export async function createListing(req: express.Request, res: express.Response)
       buyer_contribution: null,
       creation_time: new Date(),
       buy_or_cancel_time: null,
-      un_goal: req.body.un_goal, 
+      // un_goal: req.body.un_goal, 
     })
     return res.status(StatusCodes.OK).json({
       msg: "Successful Listing!"

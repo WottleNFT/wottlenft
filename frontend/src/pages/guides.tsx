@@ -100,7 +100,7 @@ const GuideVideoSection = ({
     <section className="flex flex-wrap justify-center py-5 mt-5 lg:justify-between lg:flex-nowrap">
       <div className="flex flex-col justify-center w-full ">
         <div className="flex flex-row items-baseline mb-11">
-          <p id={sectionId} className="text-xl md:text-3xl font-bold">
+          <p id={sectionId} className="text-xl font-bold md:text-3xl">
             {title}
           </p>
           <div className="flex flex-1" />

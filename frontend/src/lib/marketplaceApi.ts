@@ -3,17 +3,17 @@ import axios, { AxiosResponse } from "axios";
 import { TransactionResponse } from "../types/Transactions";
 import { blockchainApi } from "./blockchainApi";
 
-export enum UnGoal {
-  ClimateAction = "ClimateAction",
-  ZeroHunger = "ZeroHunger",
-  QualityEducation = "QualityEducation",
-}
+// export enum UnGoal {
+//   ClimateAction = "ClimateAction",
+//   ZeroHunger = "ZeroHunger",
+//   QualityEducation = "QualityEducation",
+// }
 
 export type SellNftRequest = {
   sellerAddress: string;
   policyId: string;
   assetName: string;
-  unGoal: UnGoal;
+  // unGoal: UnGoal;
   price: number;
 };
 
@@ -31,7 +31,7 @@ export const sellNft = async (
 export type SaleMetadata = {
   sellerAddress: string;
   price: number;
-  unGoal: UnGoal;
+  // unGoal: UnGoal;
   namiAddress: string;
 };
 
@@ -63,6 +63,17 @@ export const buyNft = async (
     BuyNftRequest,
     AxiosResponse<TransactionResponse>
   >(`${blockchainApi}/marketplace/buy`, request);
+
+  return response.data;
+};
+
+export const buyNftDrop = async (
+  request: BuyNftRequest
+): Promise<TransactionResponse> => {
+  const response = await axios.post<
+    BuyNftRequest,
+    AxiosResponse<TransactionResponse>
+  >(`${blockchainApi}/projects/buy`, request);
 
   return response.data;
 };

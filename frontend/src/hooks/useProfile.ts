@@ -6,11 +6,11 @@ import {
   editBioApi,
   editPasswordApi,
   editProfilePictureApi,
-  editUNGoalApi,
+  // editUNGoalApi,
   profileInfoApi,
 } from "../lib/profileApi";
 import useAuth from "./useAuth";
-import { UnGoal } from "../lib/marketplaceApi";
+// import { UnGoal } from "../lib/marketplaceApi";
 
 export interface ProfileData {
   user: User;
@@ -22,7 +22,7 @@ export interface User {
   wallet_id: string;
   bio?: string;
   profile_picture_hash?: string;
-	un_goal?: string;
+  // un_goal?: string;
 }
 
 const useProfile = () => {
@@ -53,7 +53,7 @@ const useProfile = () => {
             console.error("No such profile found");
             setLogout();
             router.push("/login");
-						return;
+            return;
           }
           const data = await res.json();
           setProfileData(data);
@@ -123,21 +123,21 @@ const useProfile = () => {
     return res;
   };
 
-	const updateUnGoal = async (unGoal: UnGoal) => {
-		const payload = {
-			newUNGoal: unGoal,
-		}
+  // const updateUnGoal = async (unGoal: UnGoal) => {
+  // 	const payload = {
+  // 		newUNGoal: unGoal,
+  // 	}
 
-		const res = await fetch(editUNGoalApi, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${getAccessToken()}`,
-			},
-			body: JSON.stringify(payload),
-		});
-		return res;
-	}
+  // 	const res = await fetch(editUNGoalApi, {
+  // 		method: "PUT",
+  // 		headers: {
+  // 			"Content-Type": "application/json",
+  // 			Authorization: `Bearer ${getAccessToken()}`,
+  // 		},
+  // 		body: JSON.stringify(payload),
+  // 	});
+  // 	return res;
+  // }
 
   return {
     profileDataReady,
@@ -145,7 +145,7 @@ const useProfile = () => {
     updateBio,
     updateProfilePic,
     updatePassword,
-		updateUnGoal,
+    // updateUnGoal,
   };
 };
 export default useProfile;

@@ -69,6 +69,9 @@ const Footer = () => {
             <Link href="/marketplace">
               <a className="text-white">Browse</a>
             </Link>
+            <Link href="/nft-drops">
+              <a className="text-white">NFT Drops</a>
+            </Link>
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">NFT Minter</span>
@@ -96,47 +99,11 @@ const Footer = () => {
             <Link href="/partners">
               <a className="text-white">Partners</a>
             </Link>
-            <Link href="https://twitter.com/wottlenft">
-              <a target="_blank" className="text-white">
-                Twitter
-              </a>
-            </Link>
-            <Link href="https://discord.gg/rnEE2Unm8K">
-              <a target="_blank" className="text-white">
-                Discord
-              </a>
-            </Link>
-            <Link href="https://www.instagram.com/wottlenft/">
-              <a target="_blank" className="text-white">
-                Instagram
-              </a>
-            </Link>
-            <a
-              href="https://github.com/WottleNFT/filedump/raw/main/WottleNFTLitepaper_ver1.0.pdf"
-              className="text-white"
-            >
-              Litepaper
-            </a>
           </div>
           <div className="flex flex-col">
-            <span className="text-primary-default">Auction</span>
-            <Link href="/coming-soon">
-              <a className="text-white">Coming Soon</a>
-            </Link>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-primary-default">Staking Pool</span>
-            <Link href="/staking-pool">
-              <a className="text-white">Stake Now</a>
-            </Link>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-primary-default">Impact</span>
-            <Link href="/unsdg">
-              <a className="text-white">UNSDG</a>
-            </Link>
-            <Link href="/social-enterprises">
-              <a className="text-white">Social Enterprises</a>
+            <span className="text-primary-default">Initiatives</span>
+            <Link href="/TRCL-13-19-art-prize">
+              <a className="text-white">TRCL 13-19 Art Prize</a>
             </Link>
           </div>
         </div>
@@ -145,7 +112,7 @@ const Footer = () => {
         <div className="w-1/2 flex flex-col mb-2 md:mb-0 gap-5 mx-4  text-white ">
           <div>©2021 WottleNFT</div>
         </div>
-        <div className="w-1/2 flex flex-col mx-4  text-white ">
+        <div className="w-1/2 flex flex-col mx-4 text-white ">
           <div className="flex flex-row md:justify-end gap-x-4">
             <a href="https://github.com/WottleNFT/filedump/raw/main/Terms%20of%20Service%2031%20Oct%202021.pdf">
               <div className="flex">Terms of Service</div>

@@ -4,7 +4,7 @@ import { IonButton, IonContent, IonIcon, IonSpinner } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 
 import { WottleEnabled } from "../../hooks/useWallet";
-import { buy, delist } from "../../lib/combinedMarketplaceEndpoints";
+import { buy, buyDrop, delist } from "../../lib/combinedMarketplaceEndpoints";
 import { MarketplaceListing } from "../../lib/marketplaceApi";
 import { Nft } from "../../types/Nft";
 import MarketButtonModal, { MarketButtonType } from "./MarketButtonModal";
@@ -15,9 +15,21 @@ interface Props {
   wallet: WottleEnabled;
   isSeller: boolean;
   listing: MarketplaceListing;
+  hideNft: boolean;
+  altNftName?: string;
+  altImage?: string;
 }
 
-const NftActionModal = ({ nft, dismiss, wallet, isSeller, listing }: Props) => {
+const NftActionModal = ({
+  nft,
+  dismiss,
+  wallet,
+  isSeller,
+  listing,
+  hideNft,
+  altNftName,
+  altImage,
+}: Props) => {
   const { assetName, metadata } = nft;
   const { image } = metadata;
 
@@ -39,6 +51,10 @@ const NftActionModal = ({ nft, dismiss, wallet, isSeller, listing }: Props) => {
       if (isSeller) {
         const res = await delist(wallet, listing);
         handleResponse(res);
+      } else if (hideNft) {
+        const res = await buyDrop(wallet, listing);
+        console.log(res);
+        handleResponse(res);
       } else {
         const res = await buy(wallet, listing);
         handleResponse(res);
@@ -58,33 +74,50 @@ const NftActionModal = ({ nft, dismiss, wallet, isSeller, listing }: Props) => {
           <div className="relative py-2 border-b-2 border-solid border-primary-default">
             <p className={`inline-block w-full text-2xl font-bold text-center`}>
               {isSeller ? "Delist NFT" : "Buy NFT"}
+            </p>
+            <IonButton
+              fill="clear"
+              className="absolute right-0 text-black transparent-button hover:cursor-pointer"
+              onClick={() => dismiss()}
+            >
               <IonIcon
-                onClick={() => dismiss()}
+                onClick={() => console.log("lskdjf")}
+                slot="icon-only"
                 icon={closeOutline}
-                className="absolute right-0 text-black hover:cursor-pointer"
                 size="large"
               />
-            </p>
+            </IonButton>
           </div>
           <img
-            src={imageUrl}
+            src={!hideNft ? imageUrl : altImage}
             alt="NFT image"
-            className="object-contain py-5 max-h-96"
+            className={`object-contain py-5 ${!hideNft ? "max-h-96" : "h-96"}`}
           />
-          <div className="flex flex-col text-lg leading-loose text-center">
-            <p>
-              You are about to {isSeller ? "delist" : "buy"}{" "}
-              <span className="font-bold">{assetName}</span>, created by{" "}
-              <span className="font-bold">
-                @{metadata.creator ? metadata.creator : "Unknown"}
-              </span>
-              {!isSeller && (
-                <span>
-                  {" "}
-                  for <b>{listing.saleMetadata.price / 1000000}₳</b>
+          <div
+            className={`flex flex-col text-lg leading-loose text-center ${
+              hideNft && "mt-10"
+            }`}
+          >
+            {!hideNft ? (
+              <p>
+                You are about to {isSeller ? "delist" : "buy"}{" "}
+                <span className="font-bold">{assetName}</span>, created by{" "}
+                <span className="font-bold">
+                  @{metadata.creator ? metadata.creator : "Unknown"}
                 </span>
-              )}
-            </p>
+                {!isSeller && (
+                  <span>
+                    {" "}
+                    for <b>{listing.saleMetadata.price / 1000000}₳</b>
+                  </span>
+                )}
+              </p>
+            ) : (
+              <p>
+                You are about to buy a <b>{altNftName}</b> for{" "}
+                <b>{listing.saleMetadata.price / 1000000}₳</b>
+              </p>
+            )}
             <p>
               By clicking <b>{isSeller ? "Delist" : "Buy"}</b>, you are agreeing
               to WottleNFT&apos;s

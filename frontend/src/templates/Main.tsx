@@ -21,7 +21,7 @@ const Main = (props: IMainProps) => {
   const router = useRouter();
   const [windowWidth, setWidth] = useState(-1);
   const { children, ...nextSeo } = props;
-  const windowBreakpoint = 768;
+  const windowBreakpoint = 900;
 
   useEffect(() => {
     const handleWindowResize = () => setWidth(window.innerWidth);
@@ -62,7 +62,7 @@ const Main = (props: IMainProps) => {
           url: "https://wottlenft.io",
           title: "WottleNFT | Cardano NFT Marketplace with a Mission",
           description:
-            "Cardano NFT Markteplace with a mission to create a global interconnected ecosystem between cardano NFTs and social enterprises while sharing the stories behind each Cardano NFT",
+            "Cardano NFT Markteplace with a Mission to share the stories behind each Cardano NFT",
           images: [
             {
               url: "/logo.png",
@@ -101,9 +101,9 @@ const Main = (props: IMainProps) => {
                     <div className={navbarStyles.container}>
                       {navInfo.map((nav) => {
                         return (
-                          <Link href={nav.tempRoute} key={nav.name}>
+                          <Link href={nav.route} key={nav.name}>
                             <a
-                              href={nav.tempRoute}
+                              href={nav.route}
                               className={
                                 nav.route === router.pathname
                                   ? navbarStyles.selected
@@ -135,23 +135,26 @@ export { Main };
 
 const navInfo = [
   {
+    name: "NFTDrops",
+    route: "/nft-drops",
+  },
+  {
     name: "Marketplace",
     route: "/marketplace",
-    tempRoute: "/marketplace",
   },
   {
     name: "Guides",
     route: "/guides",
-    tempRoute: "/guides",
-  },
-  {
-    name: "UNSDG",
-    route: "/unsdg",
-    tempRoute: "/unsdg",
   },
   {
     name: "Mint Now",
     route: "/mint-nft",
-    tempRoute: "/mint-nft",
   },
 ];
+
+/*
+  {
+    name: "TRCL 13-19 Art Prize",
+    route: "/TRCL-13-19-art-prize",
+  },
+*/

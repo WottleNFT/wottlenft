@@ -17,7 +17,7 @@ export async function registerUser(req: Request, res: Response) {
             wallet_id: req.body.wallet_id,
             bio: null,
             profile_picture_hash: null,
-            un_goal: null,
+            // un_goal: null,
             profile_banner_hash: null
         })
 

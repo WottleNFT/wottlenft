@@ -1,17 +1,43 @@
 use crate::error::Error;
-use crate::marketplace::un_goals::UnGoal;
+use crate::marketplace::holder::Filters;
 use crate::rest::{parse_address, respond_with_transaction, AppState};
 use crate::Result;
 use actix_web::{get, post, web, HttpResponse, Scope};
 use cardano_serialization_lib::{AssetName, PolicyID};
 use serde::{Deserialize, Serialize};
 
+#[derive(Deserialize)]
+pub struct WebFilter {
+    page: Option<u32>,
+    policy: Option<String>,
+    asset_name: Option<String>,
+}
+
+impl WebFilter {
+    pub(crate) fn into_filters(self) -> Result<Filters> {
+        let page = self.page.unwrap_or(1);
+        let policy = match self.policy {
+            Some(ps) => Some(PolicyID::from_bytes(hex::decode(ps)?)?),
+            None => None,
+        };
+        Ok(Filters {
+            page,
+            policy,
+            asset_name: self.asset_name,
+        })
+    }
+}
+
 #[get("")]
-async fn get_all_sales(data: web::Data<AppState>) -> Result<HttpResponse> {
+async fn get_all_sales(
+    data: web::Data<AppState>,
+    query: web::Query<WebFilter>,
+) -> Result<HttpResponse> {
+    let filters = query.into_inner().into_filters()?;
     let sales = data
         .marketplace
         .holder
-        .get_nfts_for_sale(&data.pool)
+        .get_nfts_for_sale(&data.pool, filters)
         .await?;
     Ok(HttpResponse::Ok().json(sales))
 }
@@ -30,18 +56,12 @@ async fn get_single_sale(
     Ok(HttpResponse::Ok().json(sell_data))
 }
 
-#[get("/unsdg")]
-async fn get_unsdg_details(data: web::Data<AppState>) -> Result<HttpResponse> {
-    Ok(HttpResponse::Ok().json(data.marketplace.addresses.get_statistics()?))
-}
-
 #[derive(Deserialize, Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct Sell {
     seller_address: String,
     policy_id: String,
     asset_name: String,
-    un_goal: UnGoal,
     price: u64,
 }
 
@@ -65,7 +85,6 @@ async fn sell_nft(
             seller_address,
             policy_id,
             asset_name,
-            sell_details.un_goal,
             sell_details.price,
             &data.pool,
         )
@@ -128,6 +147,5 @@ pub fn create_marketplace_service() -> Scope {
         .service(buy_nft)
         .service(cancel_nft)
         .service(get_all_sales)
-        .service(get_unsdg_details)
         .service(get_single_sale)
 }
