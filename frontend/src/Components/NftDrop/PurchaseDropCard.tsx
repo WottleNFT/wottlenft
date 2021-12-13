@@ -29,7 +29,9 @@ const PurchaseDropCard = ({ banner, price, drop }: Props) => {
           </p>
           <p className="text-sm leading-tight text-black lg:text-base">
             <b>Supply :</b> 5000 Unique Cardanorcs <br />
-            <b>Price :</b> {price} ₳
+            <b>Price :</b> {price} ₳ <br />
+            <b>Policy ID:</b>{" "}
+            6113dafb03b4eb0d6fbad8eecaf13d12d37d5df9c9bcf9ca05144d20
           </p>
         </div>
         <div className="flex flex-col w-26 md:w-36 justify-items-center xl:w-52">
