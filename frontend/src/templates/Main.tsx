@@ -150,8 +150,11 @@ const navInfo = [
     name: "Mint Now",
     route: "/mint-nft",
   },
+];
+
+/*
   {
     name: "TRCL 13-19 Art Prize",
     route: "/TRCL-13-19-art-prize",
   },
-];
+*/
