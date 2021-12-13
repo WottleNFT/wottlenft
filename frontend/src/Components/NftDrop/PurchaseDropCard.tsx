@@ -19,7 +19,7 @@ const PurchaseDropCard = ({ banner, price, drop }: Props) => {
 
   return (
     <IonCard className="w-full rounded-2xl h-smBanner md:w-mdBanner md:h-mdBanner lg:h-lgBanner lg:w-lgBanner xl:h-xlBanner xl:w-xlBanner">
-      <div className="relative w-full h-3/5 lg:h-4/6">
+      <div className="relative w-full h-3/6 sm:h-3/5 lg:h-4/6">
         <Image layout="fill" alt="Drop banner" objectFit="cover" src={banner} />
       </div>
       <div className="flex flex-row items-center justify-between grid-cols-2 p-2 md:px-4 md:py-6">

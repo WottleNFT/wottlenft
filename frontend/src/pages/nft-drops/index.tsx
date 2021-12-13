@@ -6,9 +6,9 @@ const NFTDrops = () => {
   return (
     <Main title="NFT Drops">
       <div className="w-full min-h-full bg-primary-default">
-        <div className="flex flex-col w-full min-h-full px-12 py-10 max-w-maxBody">
-          <div className="flex lg:w-lgBanner xl:w-xlBanner md:w-mdBanner font-bold break-words ">
-            <p className="text-3xl md:text-4xl lg:text-5xl w-full px-4 sm:px-8 2xl:px-40">
+        <div className="flex flex-col w-full min-h-full py-10 px:2 lg:px-12 max-w-maxBody">
+          <div className="flex font-bold break-words lg:w-lgBanner xl:w-xlBanner md:w-mdBanner ">
+            <p className="w-full px-4 text-3xl md:text-4xl lg:text-5xl sm:px-8 2xl:px-40">
               NFT DROPS
             </p>
           </div>
