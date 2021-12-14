@@ -1,3 +1,4 @@
+/* eslint-disable */
 import ExhibitCard from "../../Components/Exhibition/ExhibitCard";
 import { Main } from "../../templates/Main";
 import valerieTan from "../../../public/assets/TRCL_exhibition/artworks/a_dream_is_a_wish_valerie_tan.png";
@@ -80,6 +81,7 @@ const artworks = [
 		author: "Sofia Liana Piracci",
 	}
 ];
+/* eslint-enable */
 
 const Exhibition = () => {
   return (
@@ -113,7 +115,7 @@ const Exhibition = () => {
             return (
               <div key={idx}>
                 <ExhibitCard
-									title={artwork.title}
+                  title={artwork.title}
                   image={artwork.image}
                   description={artwork.description}
                   author={artwork.author}
