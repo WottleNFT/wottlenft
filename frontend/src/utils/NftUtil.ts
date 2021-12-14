@@ -14,6 +14,19 @@ export const responseToNft = (nftResponse: any): Nft => {
   };
 };
 
+// For policy with multiple assetnames
+export const altResponseToNft = (nftResponse: any, assetName: string): Nft => {
+	const policyId = Object.keys(nftResponse)[0]!;
+	const metadata = nftResponse[policyId][assetName];
+
+	return {
+		policyId,
+		assetName,
+		quantity: 1,
+		metadata,
+	}
+}
+
 export const listingToNft = (listing: MarketplaceListing): Nft => {
   const { policyId, assetName, assetMetadata } = listing;
   const metadata = (assetMetadata[policyId] || {})[assetName];
