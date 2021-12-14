@@ -1,49 +1,84 @@
 import ExhibitCard from "../../Components/Exhibition/ExhibitCard";
 import { Main } from "../../templates/Main";
+import valerieTan from "../../../public/assets/TRCL_exhibition/artworks/a_dream_is_a_wish_valerie_tan.png";
+import irdina from "../../../public/assets/TRCL_exhibition/artworks/all_my_blood_irdina.jpg";
+import chewYeeSin from "../../../public/assets/TRCL_exhibition/artworks/girl_with_flowers_chew.jpg";
+import luZhiYue from "../../../public/assets/TRCL_exhibition/artworks/make_a_wish_lu_zhi_yue.png";
+import zhongRuiYun from "../../../public/assets/TRCL_exhibition/artworks/oppressive_artwork_zhong_rui_yun.jpg";
+import elodie from "../../../public/assets/TRCL_exhibition/artworks/our_true_heroes_elodie_guillet.jpg";
+import yapChengAn from "../../../public/assets/TRCL_exhibition/artworks/our_world_our_decision_yap.jpg";
+import tanFangTing from "../../../public/assets/TRCL_exhibition/artworks/read_my_essay.png";
+import jamesLee from "../../../public/assets/TRCL_exhibition/artworks/the_notion_of_innocence.jpg";
+import hannah from "../../../public/assets/TRCL_exhibition/artworks/trapped_beginnings_hannah.jpg";
+import sofia from "../../../public/assets/TRCL_exhibition/artworks/witch_kitchen_sofia.jpeg";
 
 const artworks = [
   {
-    imageUrl: "https://placekitten.com/400/400",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-    author: "author name here",
+		title: "A Dream Is A Wish",
+    image: valerieTan,
+    description: "Of one's desire to dream upon a wish and make it true",
+    author: "Valerie Tan",
   },
-  {
-    imageUrl: "https://placekitten.com/400/400",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-    author: "author name here",
-  },
-  {
-    imageUrl: "https://placekitten.com/400/400",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-    author: "author name here",
-  },
-  {
-    imageUrl: "https://placekitten.com/400/400",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-    author: "author name here",
-  },
-  {
-    imageUrl: "https://placekitten.com/400/400",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-    author: "author name here",
-  },
-  {
-    imageUrl: "https://placekitten.com/400/400",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-    author: "author name here",
-  },
-  {
-    imageUrl: "https://placekitten.com/400/400",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-    author: "author name here",
-  },
+	{
+		title: "All My Blood", 
+		image: irdina,
+		description: "A nameless girl depicted as someone entrapped and as a knight",
+		author: "Nur Irdina Bte Muhd Amsyari",
+	},
+	{
+		title: "Girl With Flowers",
+		image: chewYeeSin, 
+		description: "A work with blue flowers surrounding a girl",
+		author: "Chew Yee Sin", 
+	},
+	{
+		title: "Make a Wish",
+		image: luZhiYue,
+		description: "On the theme of positivity and hope especially in difficult times",
+		author: "Lu Zhiyue",
+	},
+	{
+		title: "Oppressive artwork",
+		image: zhongRuiYun,
+		description: "Depicting stifled creativity felt by one in school",
+		author: "Zhong Rui Yun",
+	},
+	{
+		title: "Our True Heroes", 
+		image: elodie, 
+		description: "A tribute to the sacrifices of frontline heroes", 
+		author: "Elodie Guillet",
+	},
+	{
+		title: "Our World, Our Decision",
+		image: yapChengAn,
+		description: "A juxtaposition of a peaceful world with a world at war",
+		author: "Yap Cheng An", 
+	},
+	{
+		title: "Read My Essay",
+		image: tanFangTing,
+		description: "Highlighting the plight of students with learning disabilities",
+		author: "Tan Fang Ting Valerie", 
+	},
+	{
+		title: "The Notion of Innocence",
+		image: jamesLee,
+		description: "A showcase of childish joy and satisfaction from a board game",
+		author: "James Lee Rey Chong",
+	},
+	{
+		title: "Trapped Beginnings",
+		image: hannah,
+		description: "About emerging from darkness and confusion through self-reflection",
+		author: "Hannah Chong", 
+	},
+	{
+		title: "Witch's Kitchen",
+		image: sofia, 
+		description: "An exploration of magical characters using light and soft shades",
+		author: "Sofia Liana Piracci",
+	}
 ];
 
 const Exhibition = () => {
@@ -78,7 +113,8 @@ const Exhibition = () => {
             return (
               <div key={idx}>
                 <ExhibitCard
-                  imageUrl={artwork.imageUrl}
+									title={artwork.title}
+                  image={artwork.image}
                   description={artwork.description}
                   author={artwork.author}
                 />
