@@ -100,14 +100,12 @@ const Footer = () => {
               <a className="text-white">Partners</a>
             </Link>
           </div>
-          {/*
           <div className="flex flex-col">
             <span className="text-primary-default">Initiatives</span>
             <Link href="/TRCL-13-19-art-prize">
               <a className="text-white">TRCL 13-19 Art Prize</a>
             </Link>
           </div>
-					*/}
         </div>
       </div>
       <div className="flex flex-col px-8 pb-4 md:flex-row 2xl:px-40">

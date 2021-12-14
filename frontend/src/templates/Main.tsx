@@ -139,6 +139,10 @@ const navInfo = [
     route: "/nft-drops",
   },
   {
+    name: "TRCL 13-19 Art Prize",
+    route: "/TRCL-13-19-art-prize",
+  },
+  {
     name: "Marketplace",
     route: "/marketplace",
   },
@@ -152,9 +156,3 @@ const navInfo = [
   },
 ];
 
-/*
-  {
-    name: "TRCL 13-19 Art Prize",
-    route: "/TRCL-13-19-art-prize",
-  },
-*/
