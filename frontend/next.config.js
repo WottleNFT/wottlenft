@@ -59,6 +59,12 @@ module.exports = withBundleAnalyzer({
         destination: `${process.env.PROFILE_API}/:slug*`,
         permanent: false,
       },
+			// Maintenance page redirect
+			{
+				source: '/:slug((?!maintenance).*)/:more*',
+				destination: '/maintenance/',
+				permanent: false,
+			},
     ];
   },
 });
