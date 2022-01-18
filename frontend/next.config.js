@@ -1,19 +1,19 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
 });
 
 module.exports = withBundleAnalyzer({
   images: {
     domains: [
-      'ipfs.io',
-      'user-images.githubusercontent.com',
-      'placekitten.com',
+      "ipfs.io",
+      "user-images.githubusercontent.com",
+      "placekitten.com",
     ],
   },
   poweredByHeader: false,
   trailingSlash: true,
-  basePath: '',
+  basePath: "",
   // The starter code load resources from `public` folder with `router.basePath` in React components.
   // So, the source code is "basePath-ready".
   // You can remove `basePath` if you don't need it.
@@ -30,41 +30,41 @@ module.exports = withBundleAnalyzer({
   async redirects() {
     return [
       {
-        source: '/',
-        destination: '/marketplace',
+        source: "/",
+        destination: "/marketplace",
         permanent: false,
       },
       {
-        source: '/landing',
-        destination: '/marketplace',
+        source: "/landing",
+        destination: "/marketplace",
         permanent: false,
       },
       {
-        source: '/auctions',
-        destination: '/coming-soon',
+        source: "/auctions",
+        destination: "/coming-soon",
         permanent: false,
       },
       {
-        source: '/nfts/:slug',
-        destination: '/nft-not-found',
+        source: "/nfts/:slug",
+        destination: "/nft-not-found",
         permanent: false,
       },
       {
-        source: '/api/blockchain/:slug*',
+        source: "/api/blockchain/:slug*",
         destination: `${process.env.BLOCKCHAIN_API}/:slug*`,
         permanent: false,
       },
       {
-        source: '/api/profile/:slug*',
+        source: "/api/profile/:slug*",
         destination: `${process.env.PROFILE_API}/:slug*`,
         permanent: false,
       },
-			// Maintenance page redirect
-			{
-				source: '/:slug((?!maintenance).*)/:more*',
-				destination: '/maintenance/',
-				permanent: false,
-			},
+      // Maintenance page redirect
+      // {
+      // 	source: '/:slug((?!maintenance).*)/:more*',
+      // 	destination: '/maintenance/',
+      // 	permanent: false,
+      // },
     ];
   },
 });
