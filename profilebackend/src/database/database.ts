@@ -41,7 +41,7 @@ async function  initialiseDatabase() {
     seller_contribution DOUBLE PRECISION,
     buyer_contribution DOUBLE PRECISION,
     creation_time TIMESTAMP,
-    buy_or_cancel_time TIMESTAMP,
+    buy_or_cancel_time TIMESTAMP
   );`)
   } catch (error: any) {
     console.log("Failed to initailise DB");
