@@ -3,7 +3,7 @@ import { GetServerSideProps } from "next";
 import NftDetails from "../../../../Components/Marketplace/NftDetails";
 import { Main } from "../../../../templates/Main";
 import { Nft } from "../../../../types/Nft";
-import { getImgUrl, responseToNft } from "../../../../utils/NftUtil";
+import { altResponseToNft, getImgUrl } from "../../../../utils/NftUtil";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { policyId, assetName } = context.params!;
@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      nft: responseToNft(responseJson),
+      nft: altResponseToNft(responseJson, name),
     },
   };
 };

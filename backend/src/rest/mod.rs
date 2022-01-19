@@ -1,9 +1,11 @@
 mod address;
 mod marketplace;
 mod nft;
+mod project;
 
 use crate::coin::combine_witness_set;
 use crate::marketplace::Marketplace;
+use crate::project::Projects;
 use crate::{config::Config, transaction::Submitter, Error, Result};
 use actix_cors::Cors;
 use actix_web::{post, web, web::Data, App, HttpResponse, HttpServer};
@@ -18,6 +20,7 @@ struct AppState {
     submitter: Submitter,
     tax_address: Address,
     marketplace: Marketplace,
+    project: Projects,
 }
 
 pub fn parse_address(address: &str) -> Result<Address> {
@@ -70,6 +73,7 @@ pub async fn start_server(config: Config) -> Result<()> {
     let db_pool = PgPool::connect(&config.database_url).await?;
     let address = format!("0.0.0.0:{}", config.port);
     let marketplace = Marketplace::from_config(&config)?;
+    let project = Projects::from_config(&config)?;
     println!("Starting server on {}", &address);
     Ok(HttpServer::new(move || {
         App::new()
@@ -84,10 +88,12 @@ pub async fn start_server(config: Config) -> Result<()> {
                 submitter: Submitter::for_url(&config.submit_api_base_url),
                 tax_address: tax_address.clone(),
                 marketplace: marketplace.clone(),
+                project: project.clone(),
             }))
             .service(address::create_address_service())
             .service(nft::create_nft_service())
             .service(marketplace::create_marketplace_service())
+            .service(project::create_project_service())
             .service(sign_transaction)
     })
     .bind(address)?

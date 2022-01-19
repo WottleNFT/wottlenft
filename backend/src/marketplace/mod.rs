@@ -1,12 +1,10 @@
 use crate::coin::TransactionWitnessSetParams;
 use crate::config::Config;
-use crate::marketplace::holder::{MarketplaceHolder, SellData, SellMetadata};
-// use crate::marketplace::un_goals::{MarketplaceAddresses, UnGoal};
-use crate::marketplace::address::MarketplaceAddresses;
+use crate::marketplace::holder::{MarketplaceHolder, SellMetadata};
 use crate::{
     cardano_db_sync::{get_protocol_params, get_slot_number, query_user_address_utxo},
     coin::build_transaction_body,
-    Error, Result,
+    convert_to_testnet, Error, Result,
 };
 use cardano_serialization_lib::address::Address;
 use cardano_serialization_lib::crypto::Vkeywitnesses;
@@ -18,7 +16,6 @@ use cardano_serialization_lib::{
 };
 use sqlx::PgPool;
 
-pub mod address;
 pub mod holder;
 
 const ONE_HOUR: u32 = 3600;
@@ -26,14 +23,24 @@ const ONE_HOUR: u32 = 3600;
 #[derive(Clone)]
 pub struct Marketplace {
     pub(crate) holder: MarketplaceHolder,
-    pub(crate) addresses: MarketplaceAddresses,
+    pub(crate) revenue_address: Address,
 }
 
 impl Marketplace {
     pub fn from_config(config: &Config) -> Result<Marketplace> {
-        let holder = MarketplaceHolder::from_config(config)?;
-        let addresses = MarketplaceAddresses::from_config(config)?;
-        Ok(Self { holder, addresses })
+        let holder = MarketplaceHolder::from_key_file(
+            &config.marketplace_private_key_file,
+            config.is_testnet,
+        )?;
+        let mut revenue_address = Address::from_bech32(&config.marketplace_revenue_address)?;
+
+        if config.is_testnet {
+            revenue_address = convert_to_testnet(revenue_address);
+        }
+        Ok(Self {
+            holder,
+            revenue_address,
+        })
     }
 
     pub async fn sell(
@@ -105,10 +112,8 @@ impl Marketplace {
 
         let (revenue_cut, seller_cut) = calculate_cuts(sell_metadata.price);
 
-        let revenue_output = TransactionOutput::new(
-            self.addresses.get_revenue_address(),
-            &Value::new(&to_bignum(revenue_cut)),
-        );
+        let revenue_output =
+            TransactionOutput::new(&self.revenue_address, &Value::new(&to_bignum(revenue_cut)));
 
         let seller_output = TransactionOutput::new(
             &sell_metadata.seller_address,
@@ -175,10 +180,8 @@ impl Marketplace {
         let nft_output =
             TransactionOutput::new(&sell_metadata.seller_address, &nft_utxo.output().amount());
 
-        let cancellation_output = TransactionOutput::new(
-            self.addresses.get_revenue_address(),
-            &Value::new(&to_bignum(ONE_ADA)),
-        );
+        let cancellation_output =
+            TransactionOutput::new(&self.revenue_address, &Value::new(&to_bignum(ONE_ADA)));
 
         let outputs = vec![nft_output, cancellation_output];
         let inputs = vec![nft_utxo];

@@ -7,6 +7,7 @@ mod config;
 mod error;
 mod marketplace;
 mod nft;
+mod project;
 mod rest;
 mod transaction;
 
@@ -17,6 +18,7 @@ use envconfig::Envconfig;
 use error::Result;
 
 use crate::error::Error;
+use cardano_serialization_lib::address::{Address, BaseAddress, NetworkInfo};
 
 #[actix_web::main]
 async fn main() -> Result<()> {
@@ -59,4 +61,14 @@ fn decode_private_key(key_path: &str) -> Result<PrivateKey> {
     let bytes = raw.bytes()?;
 
     Ok(PrivateKey::from_normal_bytes(&bytes)?)
+}
+
+fn convert_to_testnet(address: Address) -> Address {
+    let base_addr = BaseAddress::from_address(&address).unwrap();
+    return BaseAddress::new(
+        NetworkInfo::testnet().network_id(),
+        &base_addr.payment_cred(),
+        &base_addr.stake_cred(),
+    )
+    .to_address();
 }

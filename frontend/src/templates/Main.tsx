@@ -137,7 +137,10 @@ const navInfo = [
   {
     name: "NFTDrops",
     route: "/nft-drops",
-    tempRoute: "/nft-drops",
+  },
+  {
+    name: "TRCL 13-19 Art Prize",
+    route: "/TRCL-13-19-art-prize",
   },
   {
     name: "Marketplace",
@@ -151,8 +154,5 @@ const navInfo = [
     name: "Mint Now",
     route: "/mint-nft",
   },
-  {
-    name: "TRCL 13-19 Art Prize",
-    route: "/TRCL-13-19-art-prize",
-  },
 ];
+

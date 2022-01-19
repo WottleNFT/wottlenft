@@ -67,6 +67,17 @@ export const buyNft = async (
   return response.data;
 };
 
+export const buyNftDrop = async (
+  request: BuyNftRequest
+): Promise<TransactionResponse> => {
+  const response = await axios.post<
+    BuyNftRequest,
+    AxiosResponse<TransactionResponse>
+  >(`${blockchainApi}/projects/buy`, request);
+
+  return response.data;
+};
+
 export type CancelNftRequest = {
   sellerAddress: string;
   policyId: string;

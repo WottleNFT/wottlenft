@@ -1,7 +1,6 @@
 // Wallet that holds NFTs for sale
 
-// use crate::marketplace::un_goals::UnGoal;
-use crate::{config::Config, decode_private_key, Error, Result};
+use crate::{decode_private_key, Error, Result};
 use cardano_serialization_lib::address::{
     Address, EnterpriseAddress, NetworkInfo, StakeCredential,
 };
@@ -114,11 +113,27 @@ impl Clone for MarketplaceHolder {
     }
 }
 
+pub struct Filters {
+    pub page: u32,
+    pub policy: Option<PolicyID>,
+    pub asset_name: Option<String>,
+}
+
+impl Default for Filters {
+    fn default() -> Self {
+        Self {
+            page: 1,
+            policy: None,
+            asset_name: None,
+        }
+    }
+}
+
 impl MarketplaceHolder {
-    pub fn from_config(config: &Config) -> Result<Self> {
-        let private_key = decode_private_key(&config.marketplace_private_key_file)?;
+    pub fn from_key_file(key_file_path: &str, is_testnet: bool) -> Result<Self> {
+        let private_key = decode_private_key(key_file_path)?;
         let pub_key_hash = private_key.to_public().hash();
-        let network = if config.is_testnet {
+        let network = if is_testnet {
             NetworkInfo::testnet().network_id()
         } else {
             NetworkInfo::mainnet().network_id()
@@ -169,16 +184,33 @@ impl MarketplaceHolder {
             .and_then(|sell_metadata| SellMetadata::try_from_value(sell_metadata.sale_json)))
     }
 
-    pub async fn get_nfts_for_sale(&self, pool: &PgPool) -> Result<Vec<SellData>> {
-        let mut rows = sqlx::query_as::<_, PgSellData>(
-            r#"
-                SELECT 
+    pub async fn get_nfts_for_sale(
+        &self,
+        pool: &PgPool,
+        filters: Filters,
+    ) -> Result<Vec<SellData>> {
+        let offset = filters.page.saturating_sub(1) * 16;
+        let policy_filter = match filters.policy {
+            Some(policy) => format!("%{}%", hex::encode(policy.to_bytes()).to_lowercase()),
+            None => "%%".to_string(),
+        };
+        let asset_name_filter = match filters.asset_name {
+            Some(asset_name) => format!("%{}%", asset_name.to_lowercase()),
+            None => "%%".to_string(),
+        };
+
+        println!(
+            "Page: {}, Policy: {}, Asset: {}",
+            offset, policy_filter, asset_name_filter
+        );
+        let mut rows = sqlx::query_as::<_, PgSellData>(r#"
+                SELECT
 				 	encode(tx.hash, 'hex') as hash,
                     ma_tx_out.policy,
                     ma_tx_out.name,
                     sale_metadata.json AS sale_json,
                     asset_metadata.json AS asset_json
-                FROM tx_out 
+                FROM tx_out
                 LEFT JOIN tx_in ON tx_out.tx_id = tx_in.tx_out_id AND tx_out.index = tx_in.tx_out_index
                 INNER JOIN tx_metadata AS sale_metadata
                 ON tx_out.tx_id = sale_metadata.tx_id AND sale_metadata.key = 888
@@ -192,12 +224,17 @@ impl MarketplaceHolder {
 				ON ma_tx_mint.tx_id = asset_metadata.tx_id AND asset_metadata.key = 721
                 AND tx_in.id IS NULL
                 WHERE address = $1
+                AND lower(convert_from(ma_tx_out.name, 'utf-8')) LIKE $2
+                AND lower(encode(ma_tx_out.policy, 'hex')) LIKE $3
 				ORDER BY tx.id DESC
 				LIMIT 16
-                "#,
-        )
-        .bind(&self.address_bech32)
-        .fetch(pool);
+				OFFSET $4
+                "#)
+            .bind(&self.address_bech32)
+            .bind(asset_name_filter)
+            .bind(policy_filter)
+            .bind(offset)
+            .fetch(pool);
 
         let mut sell_datas = vec![];
 
@@ -215,7 +252,7 @@ impl MarketplaceHolder {
         pool: &PgPool,
         hash: &str,
     ) -> Result<Option<SellData>> {
-        let mut op_pg_sell_data: Option<PgSellData> = sqlx::query_as::<_, PgSellData>(
+        let op_pg_sell_data: Option<PgSellData> = sqlx::query_as::<_, PgSellData>(
             r#"
                 SELECT 
 				 	encode(tx.hash, 'hex') as hash,
