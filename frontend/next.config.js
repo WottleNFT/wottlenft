@@ -60,11 +60,11 @@ module.exports = withBundleAnalyzer({
         permanent: false,
       },
       // Maintenance page redirect
-      // {
-      // 	source: '/:slug((?!maintenance).*)/:more*',
-      // 	destination: '/maintenance/',
-      // 	permanent: false,
-      // },
+      {
+        source: "/:slug((?!maintenance).*)/:more*",
+        destination: "/maintenance/",
+        permanent: false,
+      },
     ];
   },
 });
