@@ -28,7 +28,7 @@ module.exports = withBundleAnalyzer({
   },
   // TODO: delete this after marketplace is done
   async redirects() {
-    return [
+    let routes = [
       {
         source: "/",
         destination: "/marketplace",
@@ -58,15 +58,18 @@ module.exports = withBundleAnalyzer({
         source: "/api/profile/:slug*",
         destination: `${process.env.PROFILE_API}/:slug*`,
         permanent: false,
-      },
-      // Maintenance page redirect
-      process.env.MAINTENANCE_MODE === "1"
-      ? {
+      }
+    ];
+    
+    // Maintenance page redirect
+    if (process.env.MAINTENANCE_MODE === "1") {
+      routes.push({
         source: "/:slug((?!maintenance).*)/:more*",
         destination: "/maintenance/",
         permanent: false,
-      }
-      : null,
-    ];
+      })
+    }
+
+    return routes
   },
 });
