@@ -8,9 +8,13 @@ use backend::transaction::Submitter;
 use cardano_serialization_lib::address::{
     Address, EnterpriseAddress, NetworkInfo, StakeCredential,
 };
-use cardano_serialization_lib::crypto::Vkeywitnesses;
-use cardano_serialization_lib::utils::{hash_transaction, make_vkey_witness, to_bignum, Value};
-use cardano_serialization_lib::{Transaction, TransactionOutput, TransactionWitnessSet};
+use cardano_serialization_lib::crypto::{ScriptHash, Vkeywitnesses};
+use cardano_serialization_lib::utils::{
+    hash_transaction, make_vkey_witness, min_ada_required, to_bignum, Value,
+};
+use cardano_serialization_lib::{
+    Assets, MultiAsset, Transaction, TransactionOutput, TransactionWitnessSet,
+};
 use sqlx::PgPool;
 use std::collections::{HashMap, HashSet};
 
@@ -57,13 +61,57 @@ async fn main() -> Result<()> {
         );
     }
 
+    let mut amount = 35_000_000;
+    let mut count = 0;
+    let mut value = Value::new(&to_bignum(amount));
+    let mut multiasset = MultiAsset::new();
+    let mut assets = Assets::new();
+    let mut policy: Option<ScriptHash> = None;
     for utxo in utxos.iter().take(25) {
         if let Some(ma) = utxo.output().amount().multiasset() {
-            let output = TransactionOutput::new(&orcs_address, &utxo.output().amount());
-            outputs.push(output);
+            for i in 0..ma.keys().len() {
+                let key = ma.keys().get(i);
+                policy = Some(key.clone());
+                let asset = ma.get(&key);
+                if let Some(asset) = asset {
+                    for j in 0..asset.keys().len() {
+                        let asset_name = asset.keys().get(j);
+                        assets.insert(&asset_name, &to_bignum(1));
+                        count += 1;
+
+                        if count == 300 {
+                            multiasset.insert(&key, &assets);
+                            value.set_multiasset(&multiasset);
+                            // let coin =
+                            //     min_ada_required(&value, &protocol_params.minimum_utxo_value);
+                            // value.set_coin(&coin);
+                            let output = TransactionOutput::new(&orcs_address, &value);
+                            outputs.push(output);
+
+                            count = 0;
+                            value = Value::new(&to_bignum(amount));
+                            multiasset = MultiAsset::new();
+                            assets = Assets::new();
+                        }
+                    }
+                }
+            }
             inputs.push(utxo.clone());
         }
     }
+
+    if count > 0 {
+        multiasset.insert(&policy.unwrap(), &assets);
+        value.set_multiasset(&multiasset);
+        let mut amt = (amount / 300) * count;
+        if amt < 1_000_000 {
+            amt = 1_500_000
+        }
+        value.set_coin(&to_bignum(amt));
+        let output = TransactionOutput::new(&orcs_address, &value);
+        outputs.push(output);
+    }
+
     let tx_body = build_transaction_body(
         utxos,
         inputs,
