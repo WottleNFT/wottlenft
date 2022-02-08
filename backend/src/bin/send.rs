@@ -57,9 +57,10 @@ async fn main() -> Result<()> {
         );
     }
 
-    for utxo in utxos.iter().take(1) {
+    for utxo in utxos.iter().take(25) {
         if let Some(ma) = utxo.output().amount().multiasset() {
-            outputs.push(utxo.output());
+            let output = TransactionOutput::new(&orcs_address, &utxo.output().amount());
+            outputs.push(output);
             inputs.push(utxo.clone());
         }
     }
