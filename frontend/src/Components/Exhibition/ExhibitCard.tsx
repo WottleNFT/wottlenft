@@ -5,7 +5,7 @@ interface Props {
   image: StaticImageData;
   description: string;
   author: string;
-	title: string;
+  title: string;
 }
 
 const ExhibitCard = ({ image, description, author, title }: Props) => {
@@ -30,7 +30,8 @@ const ExhibitCard = ({ image, description, author, title }: Props) => {
         <div className="flex flex-col justify-center w-full h-1/3">
           <IonCardHeader className="px-2 truncate">
             <IonCardTitle className="mb-2 text-base font-bold text-center truncate">
-							{title}
+              {" "}
+              {title}
             </IonCardTitle>
             <p className="italic">by {author}</p>
             <p className="h-12 mt-2 text-left whitespace-normal line-clamp-3 overflow-ellipsis">

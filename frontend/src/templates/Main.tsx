@@ -134,10 +134,10 @@ const Main = (props: IMainProps) => {
 export { Main };
 
 const navInfo = [
-  {
-    name: "NFTDrops",
-    route: "/nft-drops",
-  },
+  // {
+  //   name: "NFTDrops",
+  //   route: "/nft-drops",
+  // },
   {
     name: "TRCL 13-19 Art Prize",
     route: "/TRCL-13-19-art-prize",
@@ -155,4 +155,3 @@ const navInfo = [
     route: "/mint-nft",
   },
 ];
-

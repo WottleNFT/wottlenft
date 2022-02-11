@@ -16,7 +16,7 @@ import {
   personCircle,
   storefront,
   information,
-	images,
+  images,
 } from "ionicons/icons";
 import { GiHamburgerMenu } from "react-icons/gi";
 
@@ -34,10 +34,6 @@ function SideMenu() {
             <IonItem routerLink="/TRCL-13-19-art-prize">
               <IonIcon color="primary" icon={images} slot="start" />
               <IonLabel>TRCL 13-19 Art Prize</IonLabel>
-            </IonItem>
-            <IonItem routerLink="/nft-drops">
-              <IonIcon color="primary" icon={storefront} slot="start" />
-              <IonLabel>NFT Drops</IonLabel>
             </IonItem>
             <IonItem routerLink="/marketplace">
               <IonIcon color="primary" icon={storefront} slot="start" />
