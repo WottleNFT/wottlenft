@@ -69,9 +69,9 @@ const Footer = () => {
             <Link href="/marketplace">
               <a className="text-white">Browse</a>
             </Link>
-            <Link href="/nft-drops">
+            {/* <Link href="/nft-drops">
               <a className="text-white">NFT Drops</a>
-            </Link>
+            </Link> */}
           </div>
           <div className="flex flex-col">
             <span className="text-primary-default">NFT Minter</span>
